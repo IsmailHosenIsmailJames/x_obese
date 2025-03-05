@@ -1,0 +1,100 @@
+import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
+import 'package:get/get.dart';
+import 'package:o_xbese/src/screens/auth/info_collector/controller/controller.dart';
+import 'package:o_xbese/src/theme/colors.dart' show MyAppColors;
+import 'package:o_xbese/src/widgets/text_input_decoration.dart';
+
+class NameCollectPage extends StatefulWidget {
+  final PageController pageController;
+  const NameCollectPage({super.key, required this.pageController});
+
+  @override
+  State<NameCollectPage> createState() => _NameCollectPageState();
+}
+
+class _NameCollectPageState extends State<NameCollectPage> {
+  final formKey = GlobalKey<FormState>();
+  final AllInfoController allInfoController = Get.find();
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: MyAppColors.primary,
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(24.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+
+            children: [
+              SizedBox(height: 50, width: 50),
+              Gap(32),
+              LinearProgressIndicator(
+                value: 1 / 5,
+                borderRadius: BorderRadius.circular(7),
+                color: MyAppColors.third,
+              ),
+              Gap(32),
+              Align(
+                alignment: Alignment.topLeft,
+                child: Text(
+                  'What’s your name?',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                ),
+              ),
+              Gap(32),
+              Form(
+                key: formKey,
+                child: TextFormField(
+                  controller: TextEditingController(
+                    text: allInfoController.allInfo.value.name,
+                  ),
+                  onTapOutside: (event) {
+                    FocusScope.of(context).unfocus();
+                  },
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your name';
+                    }
+
+                    return null;
+                  },
+                  onChanged: (value) {
+                    allInfoController.allInfo.value.name = value;
+                  },
+                  keyboardType: TextInputType.name,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  decoration: getTextInputDecoration(
+                    context,
+                    hintText: 'Enter Your Name',
+                  ),
+                ),
+              ),
+              Spacer(),
+              SizedBox(
+                height: 51,
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () {
+                    if (formKey.currentState?.validate() == true) {
+                      widget.pageController.animateToPage(
+                        1,
+                        duration: Duration(milliseconds: 500),
+                        curve: Curves.easeIn,
+                      );
+                    }
+                  },
+                  child: Text(
+                    'Next',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}

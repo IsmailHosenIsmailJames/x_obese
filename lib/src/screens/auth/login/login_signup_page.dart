@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:o_xbese/src/screens/auth/controller/auth_controller.dart';
+import 'package:o_xbese/src/screens/auth/login/otp_page.dart';
 import 'package:o_xbese/src/theme/colors.dart';
 
 class LoginSignupPage extends StatefulWidget {
@@ -230,7 +231,12 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                               phoneController.text,
                             );
                             if (otpSend) {
-                              Get.toNamed('/otp');
+                              Get.to(
+                                () => OtpPage(
+                                  isSignup: pageName == 'login' ? false : true,
+                                  phone: phoneController.text,
+                                ),
+                              );
                             }
                           }
                         },

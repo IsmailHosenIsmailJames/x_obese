@@ -1,0 +1,217 @@
+import 'dart:async';
+import 'dart:math';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:gap/gap.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:o_xbese/src/core/location_service/location_service.dart';
+import 'package:o_xbese/src/screens/auth/info_collector/controller/controller.dart';
+import 'package:o_xbese/src/theme/colors.dart';
+import 'package:o_xbese/src/widgets/text_input_decoration.dart';
+
+class LocationCollector extends StatefulWidget {
+  final PageController pageController;
+
+  const LocationCollector({super.key, required this.pageController});
+
+  @override
+  State<LocationCollector> createState() => _LocationCollectorState();
+}
+
+class _LocationCollectorState extends State<LocationCollector> {
+  final AllInfoController controller = Get.find();
+  Completer<GoogleMapController> _googleMapController =
+      Completer<GoogleMapController>();
+  @override
+  void initState() {
+    initialCalls();
+    super.initState();
+  }
+
+  Set<Marker> markers = {};
+
+  void initialCalls() async {
+    Position? position = await LocationService.getUserLocation();
+    if (position != null) {
+      if (_googleMapController.isCompleted) {
+        GoogleMapController controller = await _googleMapController.future;
+        controller.animateCamera(
+          CameraUpdate.newCameraPosition(
+            CameraPosition(
+              target: LatLng(position.latitude, position.longitude),
+              zoom: 14,
+            ),
+          ),
+        );
+      }
+      String address = LocationService.getAddressString(
+        await LocationService.getAddressPlacemark(
+          LatLng(position.latitude, position.longitude),
+        ),
+      );
+      markers = {
+        Marker(
+          markerId: MarkerId("location"),
+          position: LatLng(position.latitude, position.longitude),
+          infoWindow: InfoWindow(title: "Your Location"),
+        ),
+      };
+      controller.allInfo.value.address = address;
+      addressController.text = address;
+      setState(() {});
+    }
+  }
+
+  TextEditingController addressController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: MyAppColors.primary,
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(24.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+
+            children: [
+              SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: SizedBox(
+                        height: 50,
+                        width: 50,
+                        child: IconButton(
+                          onPressed: () {
+                            widget.pageController.animateToPage(
+                              3,
+                              duration: Duration(milliseconds: 500),
+                              curve: Curves.easeIn,
+                            );
+                          },
+                          icon: SvgPicture.string(
+                            '''<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <rect x="0.5" y="0.5" width="39" height="39" rx="19.5" stroke="#F3F3F3"/>
+                      <path d="M18 16L14 20M14 20L18 24M14 20L26 20" stroke="#047CEC" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                      ''',
+                          ),
+                        ),
+                      ),
+                    ),
+                    Gap(32),
+                    LinearProgressIndicator(
+                      value: ((widget.pageController.page ?? 0) + 1) / 5,
+                      borderRadius: BorderRadius.circular(7),
+                      color: MyAppColors.third,
+                    ),
+                    Gap(15),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: Container(
+                        height: 200,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color: MyAppColors.transparentGray,
+                        ),
+                        child: GoogleMap(
+                          onMapCreated: (GoogleMapController controller) {
+                            if (_googleMapController.isCompleted) {
+                              _googleMapController =
+                                  Completer<GoogleMapController>();
+                              _googleMapController.complete(controller);
+                            } else {
+                              _googleMapController.complete(controller);
+                            }
+                          },
+
+                          onTap: (latLng) async {
+                            String address = LocationService.getAddressString(
+                              await LocationService.getAddressPlacemark(latLng),
+                            );
+                            markers = {};
+                            markers = {
+                              Marker(
+                                markerId: MarkerId(
+                                  Random().nextInt(10000).toString(),
+                                ),
+                                position: latLng,
+                                infoWindow: InfoWindow(title: "Your Location"),
+                                icon: BitmapDescriptor.defaultMarkerWithHue(
+                                  BitmapDescriptor.hueRed,
+                                ),
+                                visible: true,
+                              ),
+                            };
+                            controller.allInfo.value.address = address;
+                            addressController.text = address;
+                            setState(() {});
+                          },
+                          markers: markers,
+                          myLocationButtonEnabled: true,
+                          myLocationEnabled: true,
+                          zoomControlsEnabled: false,
+                          mapType: MapType.normal,
+                          initialCameraPosition: CameraPosition(
+                            target: LatLng(23.8041, 90.4152),
+                            zoom: 12,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Gap(20),
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: Text(
+                        'What’s Your Location?',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                    Gap(32),
+                    TextFormField(
+                      controller: addressController,
+                      decoration: getTextInputDecoration(
+                        context,
+                        hintText: 'Enter Home Address',
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Spacer(),
+              SizedBox(
+                height: 51,
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () {
+                    if (controller.allInfo.value.address != null &&
+                        controller.allInfo.value.address!.isNotEmpty) {
+                      widget.pageController.animateToPage(
+                        5,
+                        duration: Duration(milliseconds: 500),
+                        curve: Curves.easeIn,
+                      );
+                    }
+                  },
+                  child: Text(
+                    'Next',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}

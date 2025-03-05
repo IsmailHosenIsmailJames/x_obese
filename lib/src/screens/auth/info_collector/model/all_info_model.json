@@ -1,0 +1,9 @@
+{
+    "name": "any string",
+    "email": "any string",
+    "gender": "Male of Female",
+    "date_of_birth": "10-10-2002",
+    "height": "5.5",
+    "weight": "122 Kg",
+    "address": "Dhaka, Bangladesh"
+}

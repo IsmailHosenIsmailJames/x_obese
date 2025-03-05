@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:rive/rive.dart';
+import 'package:get/get.dart';
 
 class LoginSuccessPage extends StatelessWidget {
-  const LoginSuccessPage({super.key});
+  final bool isSignUp;
+  const LoginSuccessPage({super.key, required this.isSignUp});
+
+  autoRoute() async {
+    await Future.delayed(Duration(seconds: 1));
+    Get.offAllNamed(isSignUp ? '/nameCollectPage' : '/home');
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: RiveAnimation.asset('assets/animations/login_successful.riv'),
+        child: SvgPicture.asset('assets/img/intro/success_screen.svg'),
       ),
     );
   }

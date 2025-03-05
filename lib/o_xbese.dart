@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
-import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:o_xbese/src/screens/auth/info_collector/info_collector.dart';
 import 'package:o_xbese/src/screens/auth/login/login_signup_page.dart';
-import 'package:o_xbese/src/screens/auth/login/otp_page.dart';
-import 'package:o_xbese/src/screens/auth/login/success_page.dart';
+import 'package:o_xbese/src/screens/home/home_page.dart';
 import 'package:o_xbese/src/screens/intro/intro_page.dart';
-import 'package:o_xbese/src/screens/intro/pages/intro_page_1.dart';
-import 'package:o_xbese/src/screens/intro/pages/intro_page_2.dart';
-import 'package:o_xbese/src/screens/intro/pages/intro_page_3.dart';
 import 'package:o_xbese/src/theme/colors.dart';
 
 class OXbese extends StatelessWidget {
@@ -41,12 +38,16 @@ class OXbese extends StatelessWidget {
       getPages: [
         GetPage(name: '/intro', page: () => IntroPage()),
         GetPage(name: '/login', page: () => LoginSignupPage()),
-        GetPage(name: '/otp', page: () => OtpPage()),
-        GetPage(name: '/login_success', page: () => LoginSuccessPage()),
+        GetPage(name: '/home', page: () => HomePage()),
+        GetPage(name: '/infoCollector', page: () => InfoCollector()),
       ],
       initialRoute:
           Hive.box('user').get('info', defaultValue: null) == null
               ? '/intro'
+              : (Hive.box('user').get('info', defaultValue: null)
+                      as Map)['name'] ==
+                  null
+              ? '/infoCollector'
               : '/home',
       onInit: () async {
         FlutterNativeSplash.remove();

@@ -3,12 +3,17 @@ import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:o_xbese/src/screens/auth/controller/auth_controller.dart';
+import 'package:o_xbese/src/screens/auth/info_collector/info_collector.dart';
+import 'package:o_xbese/src/screens/auth/login/success_page.dart';
 import 'package:o_xbese/src/theme/colors.dart';
 import 'package:pinput/pinput.dart';
 
 class OtpPage extends StatefulWidget {
-  const OtpPage({super.key});
+  final bool isSignup;
+  final String phone;
+  const OtpPage({super.key, required this.isSignup, required this.phone});
 
   @override
   State<OtpPage> createState() => _OtpPageState();
@@ -18,7 +23,12 @@ class _OtpPageState extends State<OtpPage> {
   final AuthController authController = Get.find();
   Future<void> checkOTP(String otp) async {
     if (await authController.verifyOTP(otp) == true) {
-      Get.offNamed('/login_success');
+      Hive.box('user').put('info', {'phone': widget.phone});
+      if (widget.isSignup) {
+        Get.offAll(() => InfoCollector());
+      } else {
+        Get.offAll(() => LoginSuccessPage(isSignUp: widget.isSignup));
+      }
     }
   }
 
@@ -37,16 +47,20 @@ class _OtpPageState extends State<OtpPage> {
             children: [
               Align(
                 alignment: Alignment.centerLeft,
-                child: IconButton(
-                  onPressed: () {
-                    Get.back();
-                  },
-                  icon: SvgPicture.string(
-                    '''<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                child: SizedBox(
+                  height: 50,
+                  width: 50,
+                  child: IconButton(
+                    onPressed: () {
+                      Get.back();
+                    },
+                    icon: SvgPicture.string(
+                      '''<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <rect x="0.5" y="0.5" width="39" height="39" rx="19.5" stroke="#F3F3F3"/>
                       <path d="M18 16L14 20M14 20L18 24M14 20L26 20" stroke="#047CEC" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                       </svg>
                       ''',
+                    ),
                   ),
                 ),
               ),
