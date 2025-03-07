@@ -4,8 +4,8 @@ import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:o_xbese/src/screens/auth/info_collector/info_collector.dart';
 import 'package:o_xbese/src/screens/auth/login/login_signup_page.dart';
-import 'package:o_xbese/src/screens/home/home_page.dart';
 import 'package:o_xbese/src/screens/intro/intro_page.dart';
+import 'package:o_xbese/src/screens/navs/naves_page.dart';
 import 'package:o_xbese/src/theme/colors.dart';
 
 class OXbese extends StatelessWidget {
@@ -38,7 +38,7 @@ class OXbese extends StatelessWidget {
       getPages: [
         GetPage(name: '/intro', page: () => IntroPage()),
         GetPage(name: '/login', page: () => LoginSignupPage()),
-        GetPage(name: '/home', page: () => HomePage()),
+        GetPage(name: '/home', page: () => NavesPage()),
         GetPage(name: '/infoCollector', page: () => InfoCollector()),
       ],
       initialRoute:
