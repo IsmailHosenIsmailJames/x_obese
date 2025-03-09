@@ -10,7 +10,7 @@ Column pointsOverviewWidget(BuildContext context) {
     children: [
       Container(
         height: 150,
-        padding: EdgeInsets.all(8),
+        padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
           color: MyAppColors.cardsBackground,
           borderRadius: BorderRadius.circular(8),
@@ -33,8 +33,8 @@ Column pointsOverviewWidget(BuildContext context) {
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Text(
-                              "150",
+                            const Text(
+                              '150',
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w700,
@@ -57,7 +57,7 @@ Column pointsOverviewWidget(BuildContext context) {
                         sectionsSpace: 3,
                         pieTouchData: PieTouchData(
                           enabled: true,
-                          longPressDuration: Duration(milliseconds: 200),
+                          longPressDuration: const Duration(milliseconds: 200),
                         ),
                         centerSpaceRadius: 40,
                         sections: [
@@ -89,14 +89,14 @@ Column pointsOverviewWidget(BuildContext context) {
                         ],
                       ),
 
-                      duration: Duration(milliseconds: 150),
+                      duration: const Duration(milliseconds: 150),
                       curve: Curves.linear,
                     ),
                   ],
                 ),
               ),
             ),
-            Gap(8),
+            const Gap(8),
             Expanded(
               child: Column(
                 children: [
@@ -106,7 +106,7 @@ Column pointsOverviewWidget(BuildContext context) {
                       color: MyAppColors.primary,
                       borderRadius: BorderRadius.circular(4),
                     ),
-                    padding: EdgeInsets.all(8),
+                    padding: const EdgeInsets.all(8),
                     child: getPointsWidget(
                       context: context,
                       svg: stepsIconRed,
@@ -114,7 +114,7 @@ Column pointsOverviewWidget(BuildContext context) {
                       points: '3303.0',
                     ),
                   ),
-                  Gap(6),
+                  const Gap(6),
 
                   Container(
                     height: 64,
@@ -122,7 +122,7 @@ Column pointsOverviewWidget(BuildContext context) {
                       color: MyAppColors.primary,
                       borderRadius: BorderRadius.circular(4),
                     ),
-                    padding: EdgeInsets.all(8),
+                    padding: const EdgeInsets.all(8),
                     child: getPointsWidget(
                       context: context,
                       svg: calorieIconBlue,
@@ -136,9 +136,9 @@ Column pointsOverviewWidget(BuildContext context) {
           ],
         ),
       ),
-      Gap(16),
+      const Gap(16),
       Container(
-        padding: EdgeInsets.all(8),
+        padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
           color: MyAppColors.cardsBackground,
           borderRadius: BorderRadius.circular(8),
@@ -148,7 +148,7 @@ Column pointsOverviewWidget(BuildContext context) {
             Expanded(
               child: Container(
                 height: 60,
-                padding: EdgeInsets.all(8),
+                padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
                   color: MyAppColors.primary,
                   borderRadius: BorderRadius.circular(4),
@@ -161,11 +161,11 @@ Column pointsOverviewWidget(BuildContext context) {
                 ),
               ),
             ),
-            Gap(10),
+            const Gap(10),
             Expanded(
               child: Container(
                 height: 60,
-                padding: EdgeInsets.all(8),
+                padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
                   color: MyAppColors.primary,
                   borderRadius: BorderRadius.circular(4),
@@ -196,7 +196,7 @@ Widget getPointsWidget({
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       SizedBox(width: 22, height: 22, child: SvgPicture.string(svg)),
-      Gap(7),
+      const Gap(7),
       Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -211,7 +211,7 @@ Widget getPointsWidget({
           ),
           Text(
             points,
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
           ),
         ],
       ),

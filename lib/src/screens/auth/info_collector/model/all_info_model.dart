@@ -43,26 +43,26 @@ class AllInfoModel {
   String toJson() => json.encode(toMap());
 
   factory AllInfoModel.fromMap(Map<String, dynamic> json) => AllInfoModel(
-    name: json["name"],
-    email: json["email"],
-    gender: json["gender"],
+    name: json['name'],
+    email: json['email'],
+    gender: json['gender'],
     dateOfBirth:
-        json["date_of_birth"] == null
+        json['date_of_birth'] == null
             ? null
-            : DateTime.parse(json["date_of_birth"]),
-    height: json["height"]?.toDouble(),
-    weight: json["weight"]?.toDouble(),
-    address: json["address"],
+            : DateTime.parse(json['date_of_birth']),
+    height: json['height']?.toDouble(),
+    weight: json['weight']?.toDouble(),
+    address: json['address'],
   );
 
   Map<String, dynamic> toMap() => {
-    "name": name,
-    "email": email,
-    "gender": gender,
-    "date_of_birth":
+    'name': name,
+    'email': email,
+    'gender': gender,
+    'date_of_birth':
         "${dateOfBirth!.year.toString().padLeft(4, '0')}-${dateOfBirth!.month.toString().padLeft(2, '0')}-${dateOfBirth!.day.toString().padLeft(2, '0')}",
-    "height": height,
-    "weight": weight,
-    "address": address,
+    'height': height,
+    'weight': weight,
+    'address': address,
   };
 }

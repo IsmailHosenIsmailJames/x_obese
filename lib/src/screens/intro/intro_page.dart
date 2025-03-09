@@ -29,7 +29,7 @@ class _IntroPageState extends State<IntroPage> {
           ],
         ),
         Align(
-          alignment: Alignment(0.9, 0.2),
+          alignment: const Alignment(0.9, 0.2),
           child: SmoothPageIndicator(
             controller: pageController,
             count: 3,
@@ -44,7 +44,7 @@ class _IntroPageState extends State<IntroPage> {
             onDotClicked: (index) {
               pageController.animateToPage(
                 index,
-                duration: Duration(milliseconds: 500),
+                duration: const Duration(milliseconds: 500),
                 curve: Curves.easeIn,
               );
             },

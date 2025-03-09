@@ -25,7 +25,7 @@ class _InfoCollectorState extends State<InfoCollector> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: PageView(
-        physics: NeverScrollableScrollPhysics(),
+        physics: const NeverScrollableScrollPhysics(),
         controller: pageController,
         children: [
           NameCollectPage(pageController: pageController),

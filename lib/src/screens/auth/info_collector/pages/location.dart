@@ -54,9 +54,9 @@ class _LocationCollectorState extends State<LocationCollector> {
       );
       markers = {
         Marker(
-          markerId: MarkerId("location"),
+          markerId: const MarkerId('location'),
           position: LatLng(position.latitude, position.longitude),
-          infoWindow: InfoWindow(title: "Your Location"),
+          infoWindow: const InfoWindow(title: 'Your Location'),
         ),
       };
       controller.allInfo.value.address = address;
@@ -91,7 +91,7 @@ class _LocationCollectorState extends State<LocationCollector> {
                           onPressed: () {
                             widget.pageController.animateToPage(
                               3,
-                              duration: Duration(milliseconds: 500),
+                              duration: const Duration(milliseconds: 500),
                               curve: Curves.easeIn,
                             );
                           },
@@ -105,13 +105,13 @@ class _LocationCollectorState extends State<LocationCollector> {
                         ),
                       ),
                     ),
-                    Gap(32),
+                    const Gap(32),
                     LinearProgressIndicator(
                       value: ((widget.pageController.page ?? 0) + 1) / 5,
                       borderRadius: BorderRadius.circular(7),
                       color: MyAppColors.third,
                     ),
-                    Gap(15),
+                    const Gap(15),
                     ClipRRect(
                       borderRadius: BorderRadius.circular(8),
                       child: Container(
@@ -142,7 +142,9 @@ class _LocationCollectorState extends State<LocationCollector> {
                                   Random().nextInt(10000).toString(),
                                 ),
                                 position: latLng,
-                                infoWindow: InfoWindow(title: "Your Location"),
+                                infoWindow: const InfoWindow(
+                                  title: 'Your Location',
+                                ),
                                 icon: BitmapDescriptor.defaultMarkerWithHue(
                                   BitmapDescriptor.hueRed,
                                 ),
@@ -158,15 +160,15 @@ class _LocationCollectorState extends State<LocationCollector> {
                           myLocationEnabled: true,
                           zoomControlsEnabled: false,
                           mapType: MapType.normal,
-                          initialCameraPosition: CameraPosition(
+                          initialCameraPosition: const CameraPosition(
                             target: LatLng(23.8041, 90.4152),
                             zoom: 12,
                           ),
                         ),
                       ),
                     ),
-                    Gap(20),
-                    Align(
+                    const Gap(20),
+                    const Align(
                       alignment: Alignment.topLeft,
                       child: Text(
                         'What’s Your Location?',
@@ -176,7 +178,7 @@ class _LocationCollectorState extends State<LocationCollector> {
                         ),
                       ),
                     ),
-                    Gap(32),
+                    const Gap(32),
                     TextFormField(
                       controller: addressController,
                       decoration: getTextInputDecoration(
@@ -187,7 +189,7 @@ class _LocationCollectorState extends State<LocationCollector> {
                   ],
                 ),
               ),
-              Spacer(),
+              const Spacer(),
               SizedBox(
                 height: 51,
                 width: double.infinity,
@@ -197,12 +199,12 @@ class _LocationCollectorState extends State<LocationCollector> {
                         controller.allInfo.value.address!.isNotEmpty) {
                       widget.pageController.animateToPage(
                         5,
-                        duration: Duration(milliseconds: 500),
+                        duration: const Duration(milliseconds: 500),
                         curve: Curves.easeIn,
                       );
                     }
                   },
-                  child: Text(
+                  child: const Text(
                     'Next',
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                   ),

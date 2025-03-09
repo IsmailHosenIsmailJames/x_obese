@@ -49,7 +49,7 @@ class _FullFromInfoCollectorState extends State<FullFromInfoCollector> {
                       onPressed: () {
                         widget.pageController.animateToPage(
                           0,
-                          duration: Duration(milliseconds: 500),
+                          duration: const Duration(milliseconds: 500),
                           curve: Curves.easeIn,
                         );
                       },
@@ -62,15 +62,15 @@ class _FullFromInfoCollectorState extends State<FullFromInfoCollector> {
                       ),
                     ),
                   ),
-                  Text(
+                  const Text(
                     'Profile',
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                   ),
-                  SizedBox(height: 50, width: 50),
+                  const SizedBox(height: 50, width: 50),
                 ],
               ),
 
-              Gap(15),
+              const Gap(15),
               Expanded(
                 child: SingleChildScrollView(
                   child: Form(
@@ -125,24 +125,24 @@ class _FullFromInfoCollectorState extends State<FullFromInfoCollector> {
                                       }
                                     });
                                   },
-                                  icon: Icon(Icons.add_a_photo_outlined),
+                                  icon: const Icon(Icons.add_a_photo_outlined),
                                 ),
                               ),
                             ],
                           ),
                         ),
-                        Gap(16),
+                        const Gap(16),
                         Center(
                           child: Text(
                             controller.allInfo.value.name ?? '',
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
                         ),
-                        Gap(24),
-                        Align(
+                        const Gap(24),
+                        const Align(
                           alignment: Alignment.topLeft,
                           child: Text(
                             'Email',
@@ -152,7 +152,7 @@ class _FullFromInfoCollectorState extends State<FullFromInfoCollector> {
                             ),
                           ),
                         ),
-                        Gap(8),
+                        const Gap(8),
                         TextFormField(
                           decoration: getTextInputDecoration(
                             context,
@@ -166,8 +166,8 @@ class _FullFromInfoCollectorState extends State<FullFromInfoCollector> {
                             return null;
                           },
                         ),
-                        Gap(12),
-                        Align(
+                        const Gap(12),
+                        const Align(
                           alignment: Alignment.topLeft,
                           child: Text(
                             'Name',
@@ -177,7 +177,7 @@ class _FullFromInfoCollectorState extends State<FullFromInfoCollector> {
                             ),
                           ),
                         ),
-                        Gap(8),
+                        const Gap(8),
                         TextFormField(
                           decoration: getTextInputDecoration(context),
                           controller: TextEditingController(
@@ -185,8 +185,8 @@ class _FullFromInfoCollectorState extends State<FullFromInfoCollector> {
                           ),
                           enabled: false,
                         ),
-                        Gap(12),
-                        Align(
+                        const Gap(12),
+                        const Align(
                           alignment: Alignment.topLeft,
                           child: Text(
                             'Gender',
@@ -196,7 +196,7 @@ class _FullFromInfoCollectorState extends State<FullFromInfoCollector> {
                             ),
                           ),
                         ),
-                        Gap(8),
+                        const Gap(8),
                         TextFormField(
                           decoration: getTextInputDecoration(context),
                           controller: TextEditingController(
@@ -204,8 +204,8 @@ class _FullFromInfoCollectorState extends State<FullFromInfoCollector> {
                           ),
                           enabled: false,
                         ),
-                        Gap(12),
-                        Align(
+                        const Gap(12),
+                        const Align(
                           alignment: Alignment.topLeft,
                           child: Text(
                             'Birth Of Date',
@@ -215,7 +215,7 @@ class _FullFromInfoCollectorState extends State<FullFromInfoCollector> {
                             ),
                           ),
                         ),
-                        Gap(8),
+                        const Gap(8),
                         TextFormField(
                           decoration: getTextInputDecoration(context),
                           controller: TextEditingController(
@@ -225,8 +225,8 @@ class _FullFromInfoCollectorState extends State<FullFromInfoCollector> {
                           ),
                           enabled: false,
                         ),
-                        Gap(12),
-                        Align(
+                        const Gap(12),
+                        const Align(
                           alignment: Alignment.topLeft,
                           child: Text(
                             'Weight',
@@ -236,16 +236,16 @@ class _FullFromInfoCollectorState extends State<FullFromInfoCollector> {
                             ),
                           ),
                         ),
-                        Gap(8),
+                        const Gap(8),
                         TextFormField(
                           decoration: getTextInputDecoration(context),
                           controller: TextEditingController(
-                            text: "${controller.allInfo.value.weight} Kg",
+                            text: '${controller.allInfo.value.weight} Kg',
                           ),
                           enabled: false,
                         ),
-                        Gap(12),
-                        Align(
+                        const Gap(12),
+                        const Align(
                           alignment: Alignment.topLeft,
                           child: Text(
                             'Height',
@@ -255,17 +255,17 @@ class _FullFromInfoCollectorState extends State<FullFromInfoCollector> {
                             ),
                           ),
                         ),
-                        Gap(8),
+                        const Gap(8),
                         TextFormField(
                           decoration: getTextInputDecoration(context),
                           controller: TextEditingController(
                             text:
-                                "${controller.allInfo.value.height!.toInt()} Feet ${((controller.allInfo.value.height! % controller.allInfo.value.height!.toInt()) * 12).toPrecision(2).toInt()} inch",
+                                '${controller.allInfo.value.height!.toInt()} Feet ${((controller.allInfo.value.height! % controller.allInfo.value.height!.toInt()) * 12).toPrecision(2).toInt()} inch',
                           ),
                           enabled: false,
                         ),
-                        Gap(12),
-                        Align(
+                        const Gap(12),
+                        const Align(
                           alignment: Alignment.topLeft,
                           child: Text(
                             'Address',
@@ -275,7 +275,7 @@ class _FullFromInfoCollectorState extends State<FullFromInfoCollector> {
                             ),
                           ),
                         ),
-                        Gap(8),
+                        const Gap(8),
                         TextFormField(
                           decoration: getTextInputDecoration(context),
                           controller: TextEditingController(
@@ -283,7 +283,7 @@ class _FullFromInfoCollectorState extends State<FullFromInfoCollector> {
                           ),
                           enabled: false,
                         ),
-                        Gap(12),
+                        const Gap(12),
                       ],
                     ),
                   ),
@@ -316,7 +316,7 @@ class _FullFromInfoCollectorState extends State<FullFromInfoCollector> {
                       Get.offAllNamed('/home');
                     }
                   },
-                  child: Text(
+                  child: const Text(
                     'Save to Continue',
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                   ),

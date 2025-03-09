@@ -52,7 +52,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                             color: MyAppColors.primary,
                           ),
                         ),
-                        Gap(7),
+                        const Gap(7),
                         Text(
                           pageName == 'login'
                               ? 'Unlock Your Fitness Journey Today'
@@ -76,9 +76,9 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                       ],
                     ),
                   ),
-                  Gap(120),
+                  const Gap(120),
                   Container(
-                    padding: EdgeInsets.all(4),
+                    padding: const EdgeInsets.all(4),
                     decoration: BoxDecoration(
                       color: MyAppColors.transparentGray,
                       borderRadius: BorderRadius.circular(100),
@@ -110,7 +110,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                                 pageName = 'login';
                               });
                             },
-                            child: Text(
+                            child: const Text(
                               'Login',
                               style: TextStyle(
                                 fontWeight: FontWeight.w500,
@@ -145,7 +145,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                                 pageName = 'signup';
                               });
                             },
-                            child: Text(
+                            child: const Text(
                               'Signup',
                               style: TextStyle(
                                 fontWeight: FontWeight.w500,
@@ -157,7 +157,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                       ],
                     ),
                   ),
-                  Gap(50),
+                  const Gap(50),
                   Form(
                     key: formKey,
                     child: TextFormField(
@@ -194,7 +194,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                           ),
                         ),
 
-                        label: Text(
+                        label: const Text(
                           'Phone Number',
                           style: TextStyle(
                             fontSize: 14,
@@ -219,7 +219,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                       ),
                     ),
                   ),
-                  Gap(50),
+                  const Gap(50),
                   SafeArea(
                     child: SizedBox(
                       height: 56,
@@ -242,7 +242,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                         },
                         child: Text(
                           pageName == 'login' ? 'Log In' : 'Sign Up',
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w600,
                           ),

@@ -8,12 +8,12 @@ import 'package:o_xbese/src/theme/colors.dart';
 Widget getMarathonCard(BuildContext context) {
   return Container(
     width: 280,
-    margin: EdgeInsets.only(left: 15),
-    padding: EdgeInsets.all(10),
+    margin: const EdgeInsets.only(left: 15),
+    padding: const EdgeInsets.all(10),
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(4),
       image: DecorationImage(
-        image: CachedNetworkImageProvider(
+        image: const CachedNetworkImageProvider(
           'https://static.scientificamerican.com/sciam/cache/file/1DEF27E3-F6FB-4756-9E847D78AEBA16BA_source.jpg?w=900',
         ),
         colorFilter: ColorFilter.mode(
@@ -32,7 +32,7 @@ Widget getMarathonCard(BuildContext context) {
           width: 33,
           child: SvgPicture.string(runningMarathonProgramSVGIcon),
         ),
-        Gap(14),
+        const Gap(14),
         Text(
           'Every Step Tells a Story',
           style: TextStyle(
@@ -41,19 +41,22 @@ Widget getMarathonCard(BuildContext context) {
             color: MyAppColors.primary,
           ),
         ),
-        Gap(4),
+        const Gap(4),
         Text(
           'Run for the journey, celebrate the victory with every step',
           style: TextStyle(fontSize: 14, color: MyAppColors.primary),
         ),
-        Gap(16),
+        const Gap(16),
         SizedBox(
           width: 260,
           child: ElevatedButton.icon(
             style: ElevatedButton.styleFrom(iconAlignment: IconAlignment.end),
             onPressed: () {},
-            label: Text('Virtual Challenge', style: TextStyle(fontSize: 14)),
-            icon: Icon(Icons.arrow_forward, color: Colors.black),
+            label: const Text(
+              'Virtual Challenge',
+              style: TextStyle(fontSize: 14),
+            ),
+            icon: const Icon(Icons.arrow_forward, color: Colors.black),
           ),
         ),
       ],

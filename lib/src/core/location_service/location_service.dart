@@ -31,50 +31,50 @@ class LocationService {
 
   static String getAddressString(List<Placemark> placemarkList) {
     if (placemarkList.isEmpty) {
-      return "Unknown Location";
+      return 'Unknown Location';
     }
 
     Placemark placemark = placemarkList.first;
-    String address = "";
+    String address = '';
 
     if (placemark.street != null && placemark.street!.isNotEmpty) {
       address += placemark.street!;
     }
     if (placemark.subLocality != null && placemark.subLocality!.isNotEmpty) {
       if (address.isNotEmpty) {
-        address += ", ";
+        address += ', ';
       }
       address += placemark.subLocality!;
     }
     if (placemark.locality != null && placemark.locality!.isNotEmpty) {
       if (address.isNotEmpty) {
-        address += ", ";
+        address += ', ';
       }
       address += placemark.locality!;
     }
     if (placemark.subAdministrativeArea != null &&
         placemark.subAdministrativeArea!.isNotEmpty) {
       if (address.isNotEmpty) {
-        address += ", ";
+        address += ', ';
       }
       address += placemark.subAdministrativeArea!;
     }
     if (placemark.administrativeArea != null &&
         placemark.administrativeArea!.isNotEmpty) {
       if (address.isNotEmpty) {
-        address += ", ";
+        address += ', ';
       }
       address += placemark.administrativeArea!;
     }
     if (placemark.postalCode != null && placemark.postalCode!.isNotEmpty) {
       if (address.isNotEmpty) {
-        address += ", ";
+        address += ', ';
       }
       address += placemark.postalCode!;
     }
     if (placemark.country != null && placemark.country!.isNotEmpty) {
       if (address.isNotEmpty) {
-        address += ", ";
+        address += ', ';
       }
       address += placemark.country!;
     }

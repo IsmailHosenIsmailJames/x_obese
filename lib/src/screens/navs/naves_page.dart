@@ -1,8 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:o_xbese/src/screens/activity/activity_page.dart';
@@ -52,12 +50,12 @@ class _NavesPageState extends State<NavesPage> {
                 // ),
               ),
             ),
-            Gap(8),
+            const Gap(8),
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                const Text(
                   'Hello 👋',
                   style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
                 ),
@@ -71,7 +69,7 @@ class _NavesPageState extends State<NavesPage> {
                 ),
               ],
             ),
-            Spacer(),
+            const Spacer(),
             IconButton(
               onPressed: () {},
               icon: SvgPicture.string(notificationSvg),
@@ -84,7 +82,12 @@ class _NavesPageState extends State<NavesPage> {
         onPageChanged: (value) {
           navsController.changeBottomNav(value);
         },
-        children: [HomePage(), ActivityPage(), MarathonPage(), SettingsPage()],
+        children: [
+          const HomePage(),
+          const ActivityPage(),
+          const MarathonPage(),
+          const SettingsPage(),
+        ],
       ),
       bottomNavigationBar: GetX<NavsController>(
         builder:
@@ -93,7 +96,7 @@ class _NavesPageState extends State<NavesPage> {
                 controller.changeBottomNav(value);
                 pageController.animateToPage(
                   value,
-                  duration: Duration(milliseconds: 300),
+                  duration: const Duration(milliseconds: 300),
                   curve: Curves.linear,
                 );
               },

@@ -25,7 +25,7 @@ class _OtpPageState extends State<OtpPage> {
     if (await authController.verifyOTP(otp) == true) {
       Hive.box('user').put('info', {'phone': widget.phone});
       if (widget.isSignup) {
-        Get.offAll(() => InfoCollector());
+        Get.offAll(() => const InfoCollector());
       } else {
         Get.offAll(() => LoginSuccessPage(isSignUp: widget.isSignup));
       }
@@ -64,7 +64,7 @@ class _OtpPageState extends State<OtpPage> {
                   ),
                 ),
               ),
-              Gap(20),
+              const Gap(20),
               SizedBox(
                 height: 40,
                 width: 40,
@@ -86,17 +86,17 @@ class _OtpPageState extends State<OtpPage> {
               ''',
                 ),
               ),
-              Gap(10),
-              Text(
+              const Gap(10),
+              const Text(
                 'Verification Code',
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
               ),
-              Text(
+              const Text(
                 '''We have sent the code Verification to your mobile number ''',
                 style: TextStyle(fontSize: 14, fontWeight: FontWeight.w300),
                 textAlign: TextAlign.center,
               ),
-              Gap(50),
+              const Gap(50),
               Pinput(
                 onCompleted: (pin) {
                   checkOTP(pin);
@@ -105,7 +105,7 @@ class _OtpPageState extends State<OtpPage> {
                 defaultPinTheme: PinTheme(
                   height: 56,
                   width: 56,
-                  margin: EdgeInsets.all(5),
+                  margin: const EdgeInsets.all(5),
                   decoration: BoxDecoration(
                     border: Border.all(
                       color: MyAppColors.transparentGray,
@@ -115,7 +115,7 @@ class _OtpPageState extends State<OtpPage> {
                   ),
                 ),
               ),
-              Gap(30),
+              const Gap(30),
               TextButton(
                 onPressed: () {},
                 child: Text(
@@ -127,7 +127,7 @@ class _OtpPageState extends State<OtpPage> {
                   ),
                 ),
               ),
-              Gap(30),
+              const Gap(30),
               SizedBox(
                 height: 51,
                 width: double.infinity,
@@ -143,7 +143,7 @@ class _OtpPageState extends State<OtpPage> {
                       );
                     }
                   },
-                  child: Text(
+                  child: const Text(
                     'Verify Now',
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                   ),

@@ -28,22 +28,22 @@ class _NameCollectPageState extends State<NameCollectPage> {
             crossAxisAlignment: CrossAxisAlignment.center,
 
             children: [
-              SizedBox(height: 50, width: 50),
-              Gap(32),
+              const SizedBox(height: 50, width: 50),
+              const Gap(32),
               LinearProgressIndicator(
                 value: 1 / 5,
                 borderRadius: BorderRadius.circular(7),
                 color: MyAppColors.third,
               ),
-              Gap(32),
-              Align(
+              const Gap(32),
+              const Align(
                 alignment: Alignment.topLeft,
                 child: Text(
                   'What’s your name?',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
                 ),
               ),
-              Gap(32),
+              const Gap(32),
               Form(
                 key: formKey,
                 child: TextFormField(
@@ -71,7 +71,7 @@ class _NameCollectPageState extends State<NameCollectPage> {
                   ),
                 ),
               ),
-              Spacer(),
+              const Spacer(),
               SizedBox(
                 height: 51,
                 width: double.infinity,
@@ -80,12 +80,12 @@ class _NameCollectPageState extends State<NameCollectPage> {
                     if (formKey.currentState?.validate() == true) {
                       widget.pageController.animateToPage(
                         1,
-                        duration: Duration(milliseconds: 500),
+                        duration: const Duration(milliseconds: 500),
                         curve: Curves.easeIn,
                       );
                     }
                   },
-                  child: Text(
+                  child: const Text(
                     'Next',
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                   ),

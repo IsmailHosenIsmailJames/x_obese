@@ -24,7 +24,7 @@ class OXbese extends StatelessWidget {
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
             elevation: 0,
-            padding: EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
             backgroundColor: MyAppColors.second,
             foregroundColor: Colors.black,
             shape: RoundedRectangleBorder(
@@ -36,10 +36,10 @@ class OXbese extends StatelessWidget {
       defaultTransition: Transition.leftToRight,
       themeMode: ThemeMode.light,
       getPages: [
-        GetPage(name: '/intro', page: () => IntroPage()),
-        GetPage(name: '/login', page: () => LoginSignupPage()),
-        GetPage(name: '/home', page: () => NavesPage()),
-        GetPage(name: '/infoCollector', page: () => InfoCollector()),
+        GetPage(name: '/intro', page: () => const IntroPage()),
+        GetPage(name: '/login', page: () => const LoginSignupPage()),
+        GetPage(name: '/home', page: () => const NavesPage()),
+        GetPage(name: '/infoCollector', page: () => const InfoCollector()),
       ],
       initialRoute:
           Hive.box('user').get('info', defaultValue: null) == null

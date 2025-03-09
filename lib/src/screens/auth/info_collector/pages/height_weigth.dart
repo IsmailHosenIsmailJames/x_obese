@@ -51,7 +51,7 @@ class _HeightWeigthCollectorState extends State<HeightWeigthCollector> {
                     onPressed: () {
                       widget.pageController.animateToPage(
                         2,
-                        duration: Duration(milliseconds: 500),
+                        duration: const Duration(milliseconds: 500),
                         curve: Curves.easeIn,
                       );
                     },
@@ -65,21 +65,21 @@ class _HeightWeigthCollectorState extends State<HeightWeigthCollector> {
                   ),
                 ),
               ),
-              Gap(32),
+              const Gap(32),
               LinearProgressIndicator(
                 value: 4 / 5,
                 borderRadius: BorderRadius.circular(7),
                 color: MyAppColors.third,
               ),
-              Gap(32),
-              Align(
+              const Gap(32),
+              const Align(
                 alignment: Alignment.topLeft,
                 child: Text(
                   'Choice Your Gender 👨‍👩‍👦‍👦',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
                 ),
               ),
-              Gap(32),
+              const Gap(32),
               Row(
                 mainAxisAlignment:
                     MainAxisAlignment
@@ -88,14 +88,14 @@ class _HeightWeigthCollectorState extends State<HeightWeigthCollector> {
                 children: [
                   Column(
                     children: [
-                      Text(
+                      const Text(
                         'Height',
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
-                      Gap(20),
+                      const Gap(20),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -123,7 +123,7 @@ class _HeightWeigthCollectorState extends State<HeightWeigthCollector> {
                                   ),
                             ),
                           ),
-                          Gap(10),
+                          const Gap(10),
                           Container(
                             width: 60,
                             height: MediaQuery.of(context).size.height * 0.5,
@@ -153,14 +153,14 @@ class _HeightWeigthCollectorState extends State<HeightWeigthCollector> {
                   ),
                   Column(
                     children: [
-                      Text(
+                      const Text(
                         'Weight',
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
-                      Gap(20),
+                      const Gap(20),
                       Container(
                         width: 70,
                         height: MediaQuery.of(context).size.height * 0.5,
@@ -188,7 +188,7 @@ class _HeightWeigthCollectorState extends State<HeightWeigthCollector> {
                   ),
                 ],
               ),
-              Spacer(),
+              const Spacer(),
               SizedBox(
                 height: 51,
                 width: double.infinity,
@@ -200,12 +200,12 @@ class _HeightWeigthCollectorState extends State<HeightWeigthCollector> {
                       controller.allInfo.value.weight = weight!.toDouble();
                       widget.pageController.animateToPage(
                         4,
-                        duration: Duration(milliseconds: 500),
+                        duration: const Duration(milliseconds: 500),
                         curve: Curves.easeIn,
                       );
                     }
                   },
-                  child: Text(
+                  child: const Text(
                     'Next',
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                   ),

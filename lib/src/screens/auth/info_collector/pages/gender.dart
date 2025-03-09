@@ -44,7 +44,7 @@ class _GenderCollectorState extends State<GenderCollector> {
                     onPressed: () {
                       widget.pageController.animateToPage(
                         0,
-                        duration: Duration(milliseconds: 500),
+                        duration: const Duration(milliseconds: 500),
                         curve: Curves.easeIn,
                       );
                     },
@@ -58,21 +58,21 @@ class _GenderCollectorState extends State<GenderCollector> {
                   ),
                 ),
               ),
-              Gap(32),
+              const Gap(32),
               LinearProgressIndicator(
                 value: 2 / 5,
                 borderRadius: BorderRadius.circular(7),
                 color: MyAppColors.third,
               ),
-              Gap(32),
-              Align(
+              const Gap(32),
+              const Align(
                 alignment: Alignment.topLeft,
                 child: Text(
                   'Choice Your Gender 👨‍👩‍👦‍👦',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
                 ),
               ),
-              Gap(32),
+              const Gap(32),
               SizedBox(
                 width: double.infinity,
                 height: 53,
@@ -93,13 +93,13 @@ class _GenderCollectorState extends State<GenderCollector> {
                       controller.allInfo.value.gender = 'Male';
                     });
                   },
-                  child: Text(
+                  child: const Text(
                     'Male',
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                   ),
                 ),
               ),
-              Gap(24),
+              const Gap(24),
               SizedBox(
                 width: double.infinity,
                 height: 53,
@@ -119,13 +119,13 @@ class _GenderCollectorState extends State<GenderCollector> {
                       controller.allInfo.value.gender = 'Female';
                     });
                   },
-                  child: Text(
+                  child: const Text(
                     'Female',
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                   ),
                 ),
               ),
-              Spacer(),
+              const Spacer(),
               SizedBox(
                 height: 51,
                 width: double.infinity,
@@ -133,11 +133,11 @@ class _GenderCollectorState extends State<GenderCollector> {
                   onPressed: () {
                     widget.pageController.animateToPage(
                       2,
-                      duration: Duration(milliseconds: 500),
+                      duration: const Duration(milliseconds: 500),
                       curve: Curves.easeIn,
                     );
                   },
-                  child: Text(
+                  child: const Text(
                     'Next',
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                   ),

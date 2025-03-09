@@ -6,7 +6,7 @@ import 'package:o_xbese/src/theme/colors.dart';
 Widget getBlogCard(BuildContext context) {
   return Container(
     width: 165,
-    margin: EdgeInsets.only(left: 15),
+    margin: const EdgeInsets.only(left: 15),
     child: Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -17,7 +17,7 @@ Widget getBlogCard(BuildContext context) {
 
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(4),
-            image: DecorationImage(
+            image: const DecorationImage(
               image: CachedNetworkImageProvider(
                 'https://images.pexels.com/photos/8899546/pexels-photo-8899546.jpeg?auto=compress&cs=tinysrgb&w=600',
               ),
@@ -26,12 +26,12 @@ Widget getBlogCard(BuildContext context) {
             ),
           ),
         ),
-        Gap(8),
+        const Gap(8),
         Text(
           '5 min Read',
           style: TextStyle(fontSize: 12, color: MyAppColors.third),
         ),
-        Text('10 Easy Home Workouts', style: TextStyle(fontSize: 12)),
+        const Text('10 Easy Home Workouts', style: TextStyle(fontSize: 12)),
       ],
     ),
   );

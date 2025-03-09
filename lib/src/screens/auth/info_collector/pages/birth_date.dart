@@ -67,7 +67,7 @@ class _BirthDateCollectorState extends State<BirthDateCollector> {
                     onPressed: () {
                       widget.pageController.animateToPage(
                         1,
-                        duration: Duration(milliseconds: 500),
+                        duration: const Duration(milliseconds: 500),
                         curve: Curves.easeIn,
                       );
                     },
@@ -81,21 +81,21 @@ class _BirthDateCollectorState extends State<BirthDateCollector> {
                   ),
                 ),
               ),
-              Gap(32),
+              const Gap(32),
               LinearProgressIndicator(
                 value: 3 / 5,
                 borderRadius: BorderRadius.circular(7),
                 color: MyAppColors.third,
               ),
-              Gap(32),
-              Align(
+              const Gap(32),
+              const Align(
                 alignment: Alignment.topLeft,
                 child: Text(
                   'When Where Are You Born.?',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
                 ),
               ),
-              Gap(32),
+              const Gap(32),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -104,8 +104,8 @@ class _BirthDateCollectorState extends State<BirthDateCollector> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Month'),
-                      Gap(5),
+                      const Text('Month'),
+                      const Gap(5),
                       SizedBox(
                         width:
                             ((MediaQuery.of(context).size.width - 48) / 10) * 3,
@@ -135,8 +135,8 @@ class _BirthDateCollectorState extends State<BirthDateCollector> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Day'),
-                      Gap(5),
+                      const Text('Day'),
+                      const Gap(5),
                       SizedBox(
                         width:
                             ((MediaQuery.of(context).size.width - 48) / 10) *
@@ -167,8 +167,8 @@ class _BirthDateCollectorState extends State<BirthDateCollector> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Year'),
-                      Gap(5),
+                      const Text('Year'),
+                      const Gap(5),
                       SizedBox(
                         width:
                             ((MediaQuery.of(context).size.width - 48) / 10) * 3,
@@ -195,7 +195,7 @@ class _BirthDateCollectorState extends State<BirthDateCollector> {
                   ),
                 ],
               ),
-              Spacer(),
+              const Spacer(),
               SizedBox(
                 height: 51,
                 width: double.infinity,
@@ -210,14 +210,14 @@ class _BirthDateCollectorState extends State<BirthDateCollector> {
                       setState(() {});
                       widget.pageController.animateToPage(
                         3,
-                        duration: Duration(milliseconds: 500),
+                        duration: const Duration(milliseconds: 500),
                         curve: Curves.easeIn,
                       );
                     } else {
                       Fluttertoast.showToast(msg: 'Please select all fields');
                     }
                   },
-                  child: Text(
+                  child: const Text(
                     'Next',
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                   ),
@@ -239,7 +239,7 @@ class _BirthDateCollectorState extends State<BirthDateCollector> {
       ),
       filled: true,
       fillColor: MyAppColors.transparentGray,
-      contentPadding: EdgeInsets.all(3),
+      contentPadding: const EdgeInsets.all(3),
     );
   }
 }

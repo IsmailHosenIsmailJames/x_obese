@@ -1,12 +1,7 @@
-import 'dart:developer';
-
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
-import 'package:get/get.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:o_xbese/src/screens/navs/controller/navs_controller.dart';
 import 'package:o_xbese/src/resources/svg_string.dart';
 import 'package:o_xbese/src/theme/colors.dart';
 import 'package:o_xbese/src/widgets/get_blog_card.dart';
@@ -33,7 +28,7 @@ class _HomePageState extends State<HomePage> {
               padding: const EdgeInsets.all(15.0),
               child: pointsOverviewWidget(context),
             ),
-            Gap(20),
+            const Gap(20),
             Padding(
               padding: const EdgeInsets.all(15.0),
               child: SizedBox(
@@ -48,23 +43,23 @@ class _HomePageState extends State<HomePage> {
                         height: 40,
                         width: 40,
                         color: MyAppColors.transparentGray,
-                        padding: EdgeInsets.all(8),
+                        padding: const EdgeInsets.all(8),
                         child: SvgPicture.string(workoutPlanIconSvgBlue),
                       ),
                     ),
-                    Gap(12),
+                    const Gap(12),
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
+                        const Text(
                           'Workout Plan',
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w500,
                           ),
                         ),
-                        Gap(4),
+                        const Gap(4),
                         SizedBox(
                           width: 180,
                           child: Text(
@@ -78,7 +73,7 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ],
                     ),
-                    Spacer(),
+                    const Spacer(),
                     SizedBox(
                       width: 85,
                       height: 32,
@@ -90,7 +85,7 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                         onPressed: () {},
-                        child: Text('Create'),
+                        child: const Text('Create'),
                       ),
                     ),
                   ],
@@ -103,7 +98,7 @@ class _HomePageState extends State<HomePage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
+                  const Text(
                     'Marathon Program',
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                   ),
@@ -135,7 +130,7 @@ class _HomePageState extends State<HomePage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
+                  const Text(
                     'Our Blogs & Tips',
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                   ),
