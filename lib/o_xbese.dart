@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -15,6 +16,7 @@ class OXbese extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
+
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
           seedColor: MyAppColors.primary,
@@ -35,6 +37,7 @@ class OXbese extends StatelessWidget {
       ),
       defaultTransition: Transition.leftToRight,
       themeMode: ThemeMode.light,
+      darkTheme: ThemeData.dark(),
       getPages: [
         GetPage(name: '/intro', page: () => const IntroPage()),
         GetPage(name: '/login', page: () => const LoginSignupPage()),

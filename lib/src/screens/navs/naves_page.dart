@@ -26,68 +26,20 @@ class _NavesPageState extends State<NavesPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: MyAppColors.primary,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        title: Row(
+
+      body: SafeArea(
+        child: PageView(
+          controller: pageController,
+          onPageChanged: (value) {
+            navsController.changeBottomNav(value);
+          },
           children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(100),
-              child: Container(
-                height: 40,
-                width: 40,
-                color: MyAppColors.transparentGray,
-                child: CachedNetworkImage(
-                  imageUrl:
-                      'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Pierre-Person.jpg/400px-Pierre-Person.jpg?20170622160125',
-                  alignment: Alignment.topCenter,
-                  fit: BoxFit.cover,
-                ),
-                //  Icon(
-                //   FluentIcons.person_24_regular,
-                //   size: 30,
-                //   color: MyAppColors.mutedGray,
-                // ),
-              ),
-            ),
-            const Gap(8),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'Hello 👋',
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
-                ),
-                Text(
-                  'My Names',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w300,
-                    color: MyAppColors.mutedGray,
-                  ),
-                ),
-              ],
-            ),
-            const Spacer(),
-            IconButton(
-              onPressed: () {},
-              icon: SvgPicture.string(notificationSvg),
-            ),
+            const HomePage(),
+            const ActivityPage(),
+            MarathonPage(pageController: pageController),
+            const SettingsPage(),
           ],
         ),
-      ),
-      body: PageView(
-        controller: pageController,
-        onPageChanged: (value) {
-          navsController.changeBottomNav(value);
-        },
-        children: [
-          const HomePage(),
-          const ActivityPage(),
-          const MarathonPage(),
-          const SettingsPage(),
-        ],
       ),
       bottomNavigationBar: GetX<NavsController>(
         builder:
@@ -106,6 +58,14 @@ class _NavesPageState extends State<NavesPage> {
               selectedItemColor: MyAppColors.third,
               unselectedItemColor: MyAppColors.mutedGray,
               showUnselectedLabels: true,
+              selectedLabelStyle: const TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w300,
+              ),
+              unselectedLabelStyle: const TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w300,
+              ),
               items: [
                 BottomNavigationBarItem(
                   icon: SvgPicture.string(homeOutLine),

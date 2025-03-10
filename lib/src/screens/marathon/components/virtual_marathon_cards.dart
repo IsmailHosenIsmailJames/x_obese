@@ -2,13 +2,19 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
+import 'package:get/get.dart';
 import 'package:o_xbese/src/resources/svg_string.dart';
+import 'package:o_xbese/src/screens/marathon/details_marathon/marathon_details_view.dart';
 import 'package:o_xbese/src/theme/colors.dart';
 
-Widget getMarathonCard(BuildContext context) {
+Widget getMarathonCard({
+  required BuildContext context,
+  EdgeInsetsGeometry? margin,
+}) {
   return Container(
     width: 280,
-    margin: const EdgeInsets.only(left: 15),
+    margin: margin,
+
     padding: const EdgeInsets.all(10),
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(4),
@@ -17,8 +23,8 @@ Widget getMarathonCard(BuildContext context) {
           'https://static.scientificamerican.com/sciam/cache/file/1DEF27E3-F6FB-4756-9E847D78AEBA16BA_source.jpg?w=900',
         ),
         colorFilter: ColorFilter.mode(
-          Colors.black.withOpacity(0.5), // Adjust opacity for brightness
-          BlendMode.darken, // Or BlendMode.srcOver, BlendMode.multiply, etc.
+          Colors.black.withOpacity(0.5),
+          BlendMode.darken,
         ),
         fit: BoxFit.cover,
       ),
@@ -48,10 +54,13 @@ Widget getMarathonCard(BuildContext context) {
         ),
         const Gap(16),
         SizedBox(
-          width: 260,
+          height: 46,
+          width: double.infinity,
           child: ElevatedButton.icon(
             style: ElevatedButton.styleFrom(iconAlignment: IconAlignment.end),
-            onPressed: () {},
+            onPressed: () {
+              Get.to(() => const MarathonDetailsView(isVirtual: true));
+            },
             label: const Text(
               'Virtual Challenge',
               style: TextStyle(fontSize: 14),

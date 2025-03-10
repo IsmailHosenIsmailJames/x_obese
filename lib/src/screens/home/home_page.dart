@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
@@ -5,7 +6,7 @@ import 'package:hive_flutter/adapters.dart';
 import 'package:o_xbese/src/resources/svg_string.dart';
 import 'package:o_xbese/src/theme/colors.dart';
 import 'package:o_xbese/src/widgets/get_blog_card.dart';
-import 'package:o_xbese/src/widgets/marathon_cards.dart';
+import 'package:o_xbese/src/screens/marathon/components/virtual_marathon_cards.dart';
 import 'package:o_xbese/src/widgets/points_overview_widget.dart';
 
 class HomePage extends StatefulWidget {
@@ -24,6 +25,55 @@ class _HomePageState extends State<HomePage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
+            Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Row(
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(100),
+                    child: Container(
+                      height: 40,
+                      width: 40,
+                      color: MyAppColors.transparentGray,
+                      child: CachedNetworkImage(
+                        imageUrl:
+                            'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Pierre-Person.jpg/400px-Pierre-Person.jpg?20170622160125',
+                        alignment: Alignment.topCenter,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                  const Gap(8),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Hello 👋',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                      Text(
+                        'My Names',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w300,
+                          color: MyAppColors.mutedGray,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const Spacer(),
+                  IconButton(
+                    onPressed: () {},
+                    icon: SvgPicture.string(notificationSvg),
+                  ),
+                ],
+              ),
+            ),
+
             Padding(
               padding: const EdgeInsets.all(15.0),
               child: pointsOverviewWidget(context),
@@ -118,9 +168,18 @@ class _HomePageState extends State<HomePage> {
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 children: [
-                  getMarathonCard(context),
-                  getMarathonCard(context),
-                  getMarathonCard(context),
+                  getMarathonCard(
+                    context: context,
+                    margin: const EdgeInsets.only(left: 15),
+                  ),
+                  getMarathonCard(
+                    context: context,
+                    margin: const EdgeInsets.only(left: 15),
+                  ),
+                  getMarathonCard(
+                    context: context,
+                    margin: const EdgeInsets.only(left: 15),
+                  ),
                 ],
               ),
             ),
