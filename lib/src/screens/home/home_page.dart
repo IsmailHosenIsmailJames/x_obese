@@ -2,8 +2,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
+import 'package:get/get.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:o_xbese/src/resources/svg_string.dart';
+import 'package:o_xbese/src/screens/blog/blog_list_view.dart';
 import 'package:o_xbese/src/theme/colors.dart';
 import 'package:o_xbese/src/widgets/get_blog_card.dart';
 import 'package:o_xbese/src/screens/marathon/components/virtual_marathon_cards.dart';
@@ -194,7 +196,9 @@ class _HomePageState extends State<HomePage> {
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                   ),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Get.to(() => const BlogListView());
+                    },
                     child: Text(
                       'See All',
                       style: TextStyle(color: MyAppColors.third),
