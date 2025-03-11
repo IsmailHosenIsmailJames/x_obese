@@ -22,7 +22,7 @@ class OXbese extends StatelessWidget {
           seedColor: MyAppColors.primary,
           brightness: Brightness.light,
         ),
-        fontFamily: 'Montserrat',
+        fontFamily: 'Lexend',
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
             elevation: 0,

@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:o_xbese/src/resources/svg_string.dart';
 import 'package:o_xbese/src/screens/blog/blog_list_view.dart';
+import 'package:o_xbese/src/screens/create_workout_plan/create_workout_plan.dart';
 import 'package:o_xbese/src/theme/colors.dart';
 import 'package:o_xbese/src/widgets/get_blog_card.dart';
 import 'package:o_xbese/src/screens/marathon/components/virtual_marathon_cards.dart';
@@ -136,7 +137,9 @@ class _HomePageState extends State<HomePage> {
                             borderRadius: BorderRadius.circular(100),
                           ),
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          Get.to(() => CreateWorkoutPlan());
+                        },
                         child: const Text('Create'),
                       ),
                     ),
