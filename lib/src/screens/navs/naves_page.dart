@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:o_xbese/src/screens/activity/activity_page.dart';
+import 'package:o_xbese/src/screens/activity/workout_page.dart';
 import 'package:o_xbese/src/screens/home/home_page.dart';
 import 'package:o_xbese/src/resources/svg_string.dart';
 import 'package:o_xbese/src/screens/marathon/marathon_page.dart';
@@ -35,7 +35,7 @@ class _NavesPageState extends State<NavesPage> {
           },
           children: [
             const HomePage(),
-            const ActivityPage(),
+            ActivityPage(pageController: pageController),
             MarathonPage(pageController: pageController),
             const SettingsPage(),
           ],
