@@ -1,9 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:o_xbese/src/screens/auth/info_collector/info_collector.dart';
+import 'package:o_xbese/src/screens/auth/info_collector/model/all_info_model.dart';
 import 'package:o_xbese/src/screens/auth/login/login_signup_page.dart';
 import 'package:o_xbese/src/screens/intro/intro_page.dart';
 import 'package:o_xbese/src/screens/navs/naves_page.dart';
@@ -42,13 +45,22 @@ class OXbese extends StatelessWidget {
         GetPage(name: '/intro', page: () => const IntroPage()),
         GetPage(name: '/login', page: () => const LoginSignupPage()),
         GetPage(name: '/home', page: () => const NavesPage()),
-        GetPage(name: '/infoCollector', page: () => const InfoCollector()),
+        GetPage(
+          name: '/infoCollector',
+          page:
+              () => InfoCollector(
+                initialData: AllInfoModel.fromJson(
+                  Hive.box('user').get('info'),
+                ),
+              ),
+        ),
       ],
       initialRoute:
           Hive.box('user').get('info', defaultValue: null) == null
               ? '/intro'
-              : (Hive.box('user').get('info', defaultValue: null)
-                      as Map)['name'] ==
+              : jsonDecode(
+                    Hive.box('user').get('info', defaultValue: null),
+                  )['fullName'] ==
                   null
               ? '/infoCollector'
               : '/home',

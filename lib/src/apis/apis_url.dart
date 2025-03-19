@@ -1,0 +1,6 @@
+String baseAPI = 'http://116.68.200.97:6053';
+String signUpPath = '/api/auth/v1/users/sign-up';
+String logInPath = '/api/auth/v1/users/login';
+String verifyOTPPath = '/api/auth/v1/users/verify-otp';
+String getUserDataPath = '/api/user/v1/profile/token';
+String userDataPath = '/api/user/v1/profile/token';

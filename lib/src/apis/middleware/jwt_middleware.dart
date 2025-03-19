@@ -140,30 +140,11 @@ class DioClient {
     return _dio.post(path, data: data);
   }
 
-  Future<void> signup(String username, String password) async {
-    try {
-      final response = await _dio.post(
-        '/signup', // Your signup endpoint
-        data: {'username': username, 'password': password},
-      );
-
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        // 201 for created
-        final accessToken = response.data['access_token'];
-        final refreshToken = response.data['refresh_token'];
-        await _saveTokens(accessToken, refreshToken);
-        // Optionally, navigate to the home screen or show a success message.
-      } else {
-        // Handle signup error (e.g., show an error message)
-        print('Signup failed: ${response.statusCode}, ${response.data}');
-        // Example: throw Exception('Signup failed');
-      }
-    } catch (e) {
-      // Handle network errors or other exceptions
-      print('Signup error: $e');
-      // Example: throw Exception('Signup error');
-    }
+  Future<Response> patch(String path, {dynamic data}) async {
+    return _dio.patch(path, data: data);
   }
 
-  // ... (rest of the DioClient class as before)
+  Future<Response> delete(String path, {dynamic data}) async {
+    return _dio.delete(path, data: data);
+  }
 }

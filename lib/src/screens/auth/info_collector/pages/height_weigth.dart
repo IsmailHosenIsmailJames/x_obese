@@ -22,10 +22,10 @@ class _HeightWeigthCollectorState extends State<HeightWeigthCollector> {
   int? weight;
   @override
   void initState() {
-    if (controller.allInfo.value.height != null &&
+    if (controller.allInfo.value.heightFt != null &&
         controller.allInfo.value.weight != null) {
-      fit = controller.allInfo.value.height!.toInt();
-      inch = ((controller.allInfo.value.height! % fit!) * 12).toInt();
+      fit = controller.allInfo.value.heightFt;
+      inch = controller.allInfo.value.heightIn;
       weight = controller.allInfo.value.weight!.toInt();
     }
     super.initState();
@@ -183,9 +183,9 @@ class _HeightWeigthCollectorState extends State<HeightWeigthCollector> {
                 child: ElevatedButton(
                   onPressed: () {
                     if (fit != null && weight != null) {
-                      controller.allInfo.value.height =
-                          fit! + ((inch ?? 0) / 12);
-                      controller.allInfo.value.weight = weight!.toDouble();
+                      controller.allInfo.value.heightFt = fit;
+                      controller.allInfo.value.heightIn = inch;
+                      controller.allInfo.value.weight = weight;
                       widget.pageController.animateToPage(
                         4,
                         duration: const Duration(milliseconds: 500),

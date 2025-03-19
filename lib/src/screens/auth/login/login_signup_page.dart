@@ -1,10 +1,16 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:o_xbese/src/screens/auth/controller/auth_controller.dart';
 import 'package:o_xbese/src/screens/auth/login/otp_page.dart';
 import 'package:o_xbese/src/theme/colors.dart';
+import 'package:dio/dio.dart' as dio;
+import 'package:o_xbese/src/widgets/loading_popup.dart';
 
 class LoginSignupPage extends StatefulWidget {
   const LoginSignupPage({super.key});
@@ -227,17 +233,37 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                       child: ElevatedButton(
                         onPressed: () async {
                           if (formKey.currentState?.validate() == true) {
-                            bool otpSend = await authController.login(
-                              phoneController.text,
-                            );
-                            if (otpSend) {
-                              Get.to(
-                                () => OtpPage(
-                                  isSignup: pageName == 'login' ? false : true,
-                                  phone: phoneController.text,
-                                ),
+                            if (!(await InternetConnection()
+                                .hasInternetAccess)) {
+                              Fluttertoast.showToast(
+                                msg: 'Check Internet Connection!',
                               );
+                              return;
                             }
+                            showLoadingPopUp(context);
+                            try {
+                              dio.Response? response =
+                                  pageName == 'login'
+                                      ? await authController.login(
+                                        phoneController.text,
+                                      )
+                                      : await authController.signup(
+                                        phoneController.text,
+                                      );
+                              if (response != null) {
+                                Get.to(
+                                  () => OtpPage(
+                                    isSignup:
+                                        pageName == 'login' ? false : true,
+                                    phone: phoneController.text,
+                                    response: response,
+                                  ),
+                                );
+                              }
+                            } catch (e) {
+                              log(e.toString());
+                            }
+                            Navigator.pop(context);
                           }
                         },
                         child: Text(

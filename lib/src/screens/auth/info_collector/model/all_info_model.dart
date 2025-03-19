@@ -1,40 +1,57 @@
+import 'package:meta/meta.dart';
 import 'dart:convert';
 
 class AllInfoModel {
-  String? name;
-  String? email;
-  String? gender;
-  DateTime? dateOfBirth;
-  double? height;
-  double? weight;
-  String? address;
+  String? id;
+  String? mobile;
+  dynamic fullName;
+  dynamic email;
+  dynamic image;
+  dynamic gender;
+  dynamic address;
+  DateTime? birth;
+  int? heightFt;
+  int? heightIn;
+  int? weight;
 
   AllInfoModel({
-    this.name,
+    this.id,
+    this.mobile,
+    this.fullName,
     this.email,
+    this.image,
     this.gender,
-    this.dateOfBirth,
-    this.height,
-    this.weight,
     this.address,
+    this.birth,
+    this.heightFt,
+    this.heightIn,
+    this.weight,
   });
 
   AllInfoModel copyWith({
-    String? name,
-    String? email,
-    String? gender,
-    DateTime? dateOfBirth,
-    double? height,
-    double? weight,
-    String? address,
+    String? id,
+    String? mobile,
+    dynamic fullName,
+    dynamic email,
+    dynamic image,
+    dynamic gender,
+    dynamic address,
+    DateTime? birth,
+    int? heightFt,
+    int? heightIn,
+    int? weight,
   }) => AllInfoModel(
-    name: name ?? this.name,
+    id: id ?? this.id,
+    mobile: mobile ?? this.mobile,
+    fullName: fullName ?? this.fullName,
     email: email ?? this.email,
+    image: image ?? this.image,
     gender: gender ?? this.gender,
-    dateOfBirth: dateOfBirth ?? this.dateOfBirth,
-    height: height ?? this.height,
-    weight: weight ?? this.weight,
     address: address ?? this.address,
+    birth: birth ?? this.birth,
+    heightFt: heightFt ?? this.heightFt,
+    heightIn: heightIn ?? this.heightIn,
+    weight: weight ?? this.weight,
   );
 
   factory AllInfoModel.fromJson(String str) =>
@@ -43,26 +60,30 @@ class AllInfoModel {
   String toJson() => json.encode(toMap());
 
   factory AllInfoModel.fromMap(Map<String, dynamic> json) => AllInfoModel(
-    name: json['name'],
+    id: json['id'],
+    mobile: json['mobile'],
+    fullName: json['fullName'],
     email: json['email'],
+    image: json['image'],
     gender: json['gender'],
-    dateOfBirth:
-        json['date_of_birth'] == null
-            ? null
-            : DateTime.parse(json['date_of_birth']),
-    height: json['height']?.toDouble(),
-    weight: json['weight']?.toDouble(),
     address: json['address'],
+    birth: DateTime.parse(json['birth']),
+    heightFt: json['heightFt'],
+    heightIn: json['heightIn'],
+    weight: json['weight'],
   );
 
   Map<String, dynamic> toMap() => {
-    'name': name,
+    'id': id,
+    'mobile': mobile,
+    'fullName': fullName,
     'email': email,
+    'image': image,
     'gender': gender,
-    'date_of_birth':
-        "${dateOfBirth!.year.toString().padLeft(4, '0')}-${dateOfBirth!.month.toString().padLeft(2, '0')}-${dateOfBirth!.day.toString().padLeft(2, '0')}",
-    'height': height,
-    'weight': weight,
     'address': address,
+    'birth': birth?.toIso8601String(),
+    'heightFt': heightFt,
+    'heightIn': heightIn,
+    'weight': weight,
   };
 }

@@ -38,8 +38,8 @@ class _BirthDateCollectorState extends State<BirthDateCollector> {
   ];
   @override
   void initState() {
-    if (controller.allInfo.value.dateOfBirth != null) {
-      DateTime birthDate = controller.allInfo.value.dateOfBirth!;
+    if (controller.allInfo.value.birth != null) {
+      DateTime birthDate = controller.allInfo.value.birth!;
       month = birthDate.month;
       day = birthDate.day;
       year = birthDate.year;
@@ -190,7 +190,7 @@ class _BirthDateCollectorState extends State<BirthDateCollector> {
                 child: ElevatedButton(
                   onPressed: () {
                     if (day != null && month != null && year != null) {
-                      controller.allInfo.value.dateOfBirth = DateTime(
+                      controller.allInfo.value.birth = DateTime(
                         year!,
                         month!,
                         day!,

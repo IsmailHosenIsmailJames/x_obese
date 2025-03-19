@@ -1,0 +1,5084 @@
+{
+	"info": {
+		"_postman_id": "66d77dc8-f97e-4855-92b3-cfd7681d50a1",
+		"name": "X-Obese API",
+		"description": "# 🚀 Get started here\n\nThis template guides you through CRUD operations (GET, POST, PUT, DELETE), variables, and tests.\n\n## 🔖 **How to use this template**\n\n#### **Step 1: Send requests**\n\nRESTful APIs allow you to perform CRUD operations using the POST, GET, PUT, and DELETE HTTP methods.\n\nThis collection contains each of these [request](https://learning.postman.com/docs/sending-requests/requests/) types. Open each request and click \"Send\" to see what happens.\n\n#### **Step 2: View responses**\n\nObserve the response tab for status code (200 OK), response time, and size.\n\n#### **Step 3: Send new Body data**\n\nUpdate or add new data in \"Body\" in the POST request. Typically, Body data is also used in PUT request.\n\n```\n{\n    \"name\": \"Add your name in the body\"\n}\n\n ```\n\n#### **Step 4: Update the variable**\n\nVariables enable you to store and reuse values in Postman. We have created a [variable](https://learning.postman.com/docs/sending-requests/variables/) called `base_url` with the sample request [https://postman-api-learner.glitch.me](https://postman-api-learner.glitch.me). Replace it with your API endpoint to customize this collection.\n\n#### **Step 5: Add tests in the \"Scripts\" tab**\n\nAdding tests to your requests can help you confirm that your API is working as expected. You can write test scripts in JavaScript and view the output in the \"Test Results\" tab.\n\n<img src=\"https://content.pstmn.io/fa30ea0a-373d-4545-a668-e7b283cca343/aW1hZ2UucG5n\" alt=\"\" height=\"1530\" width=\"2162\">\n\n## 💪 Pro tips\n\n- Use folders to group related requests and organize the collection.\n    \n- Add more [scripts](https://learning.postman.com/docs/writing-scripts/intro-to-scripts/) to verify if the API works as expected and execute workflows.\n    \n\n## 💡Related templates\n\n[API testing basics](https://go.postman.co/redirect/workspace?type=personal&collectionTemplateId=e9a37a28-055b-49cd-8c7e-97494a21eb54&sourceTemplateId=ddb19591-3097-41cf-82af-c84273e56719)  \n[API documentation](https://go.postman.co/redirect/workspace?type=personal&collectionTemplateId=e9c28f47-1253-44af-a2f3-20dce4da1f18&sourceTemplateId=ddb19591-3097-41cf-82af-c84273e56719)  \n[Authorization methods](https://go.postman.co/redirect/workspace?type=personal&collectionTemplateId=31a9a6ed-4cdf-4ced-984c-d12c9aec1c27&sourceTemplateId=ddb19591-3097-41cf-82af-c84273e56719)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "39311113",
+		"_collection_link": "https://impala-devs.postman.co/workspace/X-Obsese-API~f5a6a61e-8a11-4cb8-bc01-28a0459b0ec0/collection/39311113-66d77dc8-f97e-4855-92b3-cfd7681d50a1?action=share&source=collection_link&creator=39311113"
+	},
+	"item": [
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "user",
+					"item": [
+						{
+							"name": "login by otp",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"mobile\": \"01785945968\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/auth/v1/users/login",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"auth",
+										"v1",
+										"users",
+										"login"
+									],
+									"query": [
+										{
+											"key": "mobile",
+											"value": "01785945968",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "400",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"url": {
+											"raw": "{{base_url}}/api/auth/v1/users/login",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"api",
+												"auth",
+												"v1",
+												"users",
+												"login"
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "157"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"9d-s0xAWpQKmpFSK2J6nAz+TuobSiA\""
+										},
+										{
+											"key": "Date",
+											"value": "Tue, 04 Mar 2025 05:42:06 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": false,\n    \"code\": 40002,\n    \"error\": \"Bad Request\",\n    \"message\": \"Invalid input data\",\n    \"errors\": [\n        {\n            \"field\": \"mobile\",\n            \"message\": \"Required\",\n            \"code\": \"INVALID_INPUT\"\n        }\n    ]\n}"
+								},
+								{
+									"name": "404",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"mobile\": \"01785945968\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{base_url}}/api/auth/v1/users/login",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"api",
+												"auth",
+												"v1",
+												"users",
+												"login"
+											],
+											"query": [
+												{
+													"key": "mobile",
+													"value": "01785945968",
+													"disabled": true
+												}
+											]
+										}
+									},
+									"status": "Not Found",
+									"code": 404,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "101"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"65-q1rXTq0Q6yTcKUXj1il4ZfPnazo\""
+										},
+										{
+											"key": "Date",
+											"value": "Tue, 04 Mar 2025 05:47:56 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": false,\n    \"code\": 40401,\n    \"error\": \"Not found!\",\n    \"message\": \"User does not exists with this mobile\"\n}"
+								}
+							]
+						},
+						{
+							"name": "verify otp",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"code\": \"889327\",\r\n    \"type\": \"signup\" // login or signup\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/auth/v1/users/verify-otp/:id",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"auth",
+										"v1",
+										"users",
+										"verify-otp",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "d9856399-2a4e-4cd2-91be-0351276010b1",
+											"description": "login or sign up response id"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "400",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"code\": \"101705\",\r\n    \"type\": \"signup\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{base_url}}/api/auth/v1/users/verify-otp/:id",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"api",
+												"auth",
+												"v1",
+												"users",
+												"verify-otp",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "515f79ab-d17a-4c4c-a6c9-a97fcf30ad05",
+													"description": "login or sign up response id"
+												}
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "79"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"4f-pCsKpAHWNuZ+46evUPqcQiH+CrA\""
+										},
+										{
+											"key": "Date",
+											"value": "Tue, 04 Mar 2025 06:49:43 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": false,\n    \"code\": 40001,\n    \"error\": \"Bad Request\",\n    \"message\": \"OTP is expired\"\n}"
+								},
+								{
+									"name": "201",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"code\": \"634802\",\r\n    \"type\": \"signup\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{base_url}}/api/auth/v1/users/verify-otp/:id",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"api",
+												"auth",
+												"v1",
+												"users",
+												"verify-otp",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "12641b1d-853c-4493-b733-f0013eb61271",
+													"description": "login or sign up response id"
+												}
+											]
+										}
+									},
+									"status": "Created",
+									"code": 201,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "239"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"ef-u3lfVrkPu1TU9J1VHQOIbYwQDFs\""
+										},
+										{
+											"key": "Date",
+											"value": "Tue, 04 Mar 2025 07:09:01 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": true,\n    \"message\": \"SIGNUP is successful\",\n    \"data\": {\n        \"accessToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhZjUxZDVjLWQzN2EtNDU1OC05OWY5LTY2ZTgzMDE1OGM5NiIsImlhdCI6MTc0MTIxMjA3OX0.wqPXfLVze9n1TNVsmeNJ1EKvUjj4jBWASo1wH0XAOCY\"\n    }\n}"
+								}
+							]
+						},
+						{
+							"name": "signup by otp",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"mobile\": \"01785945968\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/auth/v1/users/sign-up",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"auth",
+										"v1",
+										"users",
+										"sign-up"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "400",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"url": {
+											"raw": "{{base_url}}/api/auth/v1/users/sign-up",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"api",
+												"auth",
+												"v1",
+												"users",
+												"sign-up"
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "157"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"9d-s0xAWpQKmpFSK2J6nAz+TuobSiA\""
+										},
+										{
+											"key": "Date",
+											"value": "Tue, 04 Mar 2025 06:01:13 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": false,\n    \"code\": 40002,\n    \"error\": \"Bad Request\",\n    \"message\": \"Invalid input data\",\n    \"errors\": [\n        {\n            \"field\": \"mobile\",\n            \"message\": \"Required\",\n            \"code\": \"INVALID_INPUT\"\n        }\n    ]\n}"
+								},
+								{
+									"name": "201",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"mobile\": \"01785945968\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{base_url}}/api/auth/v1/users/sign-up",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"api",
+												"auth",
+												"v1",
+												"users",
+												"sign-up"
+											]
+										}
+									},
+									"status": "Created",
+									"code": 201,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "296"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"128-Brjj6J+Zlk8Y65A2novq6rvEwlg\""
+										},
+										{
+											"key": "Date",
+											"value": "Tue, 04 Mar 2025 06:08:29 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": true,\n    \"message\": \"OTP is sent to 01785945968\",\n    \"data\": {\n        \"id\": \"515f79ab-d17a-4c4c-a6c9-a97fcf30ad05\",\n        \"userId\": null,\n        \"mobile\": \"01785945968\",\n        \"expireAt\": \"2025-03-04T06:22:04.348Z\"\n    }\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "admin",
+					"item": [
+						{
+							"name": "login",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\": \"jahidul\",\r\n    \"password\": \"42598475\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/auth/v1/admins/login",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"auth",
+										"v1",
+										"admins",
+										"login"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "users",
+			"item": [
+				{
+					"name": "profile",
+					"item": [
+						{
+							"name": "get by token",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{user_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/user/v1/profile/token",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"user",
+										"v1",
+										"profile",
+										"token"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "200",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{base_url}}/api/user/v1/profile",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"api",
+												"user",
+												"v1",
+												"profile"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "337"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"151-fMa15DPWoAlfvXxZvEXSldEgUKM\""
+										},
+										{
+											"key": "Date",
+											"value": "Thu, 06 Mar 2025 04:59:37 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": true,\n    \"message\": \"Get user profile details successfully!\",\n    \"data\": {\n        \"id\": \"6af51d5c-d37a-4558-99f9-66e830158c96\",\n        \"mobile\": \"01785945968\",\n        \"fullName\": null,\n        \"email\": null,\n        \"gender\": null,\n        \"address\": null,\n        \"birth\": null,\n        \"heightFt\": null,\n        \"heightin\": null,\n        \"weight\": null,\n        \"createdAt\": \"2025-03-05T22:01:19.303Z\",\n        \"updateAt\": \"2025-03-05T22:01:19.303Z\"\n    }\n}"
+								}
+							]
+						},
+						{
+							"name": "update by token",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{user_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "image",
+											"type": "file",
+											"src": "/D:/Impala/Doctor Project/UI/doctor.jpg"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}/api/user/v1/profile/token",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"user",
+										"v1",
+										"profile",
+										"token"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "200",
+									"originalRequest": {
+										"method": "PATCH",
+										"header": [],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "image",
+													"type": "file",
+													"src": "/D:/Impala/Doctor Project/UI/doctor.jpg"
+												}
+											],
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{base_url}}/api/user/v1/profile",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"api",
+												"user",
+												"v1",
+												"profile"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "409"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"199-fEc6h0r5p071n+4AHRX7yDdk5z4\""
+										},
+										{
+											"key": "Date",
+											"value": "Thu, 06 Mar 2025 05:39:53 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": true,\n    \"message\": \"User profile updated successfully!\",\n    \"data\": {\n        \"id\": \"6af51d5c-d37a-4558-99f9-66e830158c96\",\n        \"mobile\": \"01785945968\",\n        \"fullName\": \"Jahidul Islam\",\n        \"email\": null,\n        \"image\": \"a06e79f2-8283-4e27-a3fc-cb9ed64c50ef-1741239593786.jpg\",\n        \"gender\": null,\n        \"address\": null,\n        \"birth\": null,\n        \"heightFt\": null,\n        \"heightin\": null,\n        \"weight\": null,\n        \"createdAt\": \"2025-03-05T22:01:19.303Z\",\n        \"updateAt\": \"2025-03-06T05:39:53.842Z\"\n    }\n}"
+								}
+							]
+						},
+						{
+							"name": "delete by token",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{user_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/user/v1/profile/token",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"user",
+										"v1",
+										"profile",
+										"token"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "403",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{base_url}}/api/user/v1/profile",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"api",
+												"user",
+												"v1",
+												"profile"
+											]
+										}
+									},
+									"status": "Forbidden",
+									"code": 403,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "77"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"4d-fEiYZ25Vn7jLKgJYej+Q/0fSzEc\""
+										},
+										{
+											"key": "Date",
+											"value": "Thu, 06 Mar 2025 05:53:56 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": false,\n    \"code\": 40301,\n    \"error\": \"Forbidden!\",\n    \"message\": \"Invalid token\"\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "workout",
+					"item": [
+						{
+							"name": "get user workout stats",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{user_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "file",
+									"file": {}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/user/v1/workout",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"user",
+										"v1",
+										"workout"
+									],
+									"query": [
+										{
+											"key": "view",
+											"value": "daily",
+											"description": "daily, monthly, weekly - default: daily",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "200",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{base_url}}/api/user/v1/workout?view=daily",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"api",
+												"user",
+												"v1",
+												"workout"
+											],
+											"query": [
+												{
+													"key": "view",
+													"value": "daily",
+													"description": "daily, monthly, weekly - default: daily"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "179"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"b3-TBlLimMOQgKNBiDpKloGdt1GPVw\""
+										},
+										{
+											"key": "Date",
+											"value": "Thu, 06 Mar 2025 06:56:27 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": true,\n    \"message\": \"Get user workout details successfully!\",\n    \"data\": {\n        \"_sum\": {\n            \"calories\": \"150\",\n            \"distance\": \"12\",\n            \"steps\": 1000,\n            \"duration\": \"41\"\n        },\n        \"_avg\": {\n            \"heartPts\": \"17.083333\"\n        }\n    }\n}"
+								}
+							]
+						},
+						{
+							"name": "create user workout",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{user_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"distance\": \"1\", // km\r\n    \"type\": \"walking\", \r\n    \"duration\": \"900000\", // milliseconds --- 15 mins\r\n    \"steps\": 1000 // optional\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/user/v1/workout",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"user",
+										"v1",
+										"workout"
+									],
+									"query": [
+										{
+											"key": "view",
+											"value": "daily",
+											"description": "daily, monthly, weekly - default: daily",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "400",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"url": {
+											"raw": "{{base_url}}/api/user/v1/workout",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"api",
+												"user",
+												"v1",
+												"workout"
+											],
+											"query": [
+												{
+													"key": "view",
+													"value": "daily",
+													"description": "daily, monthly, weekly - default: daily",
+													"disabled": true
+												}
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "157"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"9d-jWS2X5kLqij1FDgD1tf1QxvI//Y\""
+										},
+										{
+											"key": "Date",
+											"value": "Thu, 06 Mar 2025 06:40:10 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": false,\n    \"code\": 40002,\n    \"error\": \"Bad Request\",\n    \"message\": \"Invalid input data\",\n    \"errors\": [\n        {\n            \"field\": \"userId\",\n            \"message\": \"Required\",\n            \"code\": \"INVALID_INPUT\"\n        }\n    ]\n}"
+								},
+								{
+									"name": "201",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"calories\": \"50\",\r\n    \"distance\": \"2\",\r\n    \"type\": \"cycling\",\r\n    \"duration\": \"20.5\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{base_url}}/api/user/v1/workout",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"api",
+												"user",
+												"v1",
+												"workout"
+											],
+											"query": [
+												{
+													"key": "view",
+													"value": "daily",
+													"description": "daily, monthly, weekly - default: daily",
+													"disabled": true
+												}
+											]
+										}
+									},
+									"status": "Created",
+									"code": 201,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "362"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"16a-lI10Ul51sS1DRyYygbGE+Vu9CPg\""
+										},
+										{
+											"key": "Date",
+											"value": "Thu, 06 Mar 2025 06:53:09 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": true,\n    \"message\": \"New user workout added successfully!\",\n    \"data\": {\n        \"id\": \"e8287d0c-b2bb-4bea-a3e1-78a8966e2670\",\n        \"userId\": \"6af51d5c-d37a-4558-99f9-66e830158c96\",\n        \"calories\": \"100\",\n        \"distance\": \"10\",\n        \"heartPts\": \"20.5\",\n        \"steps\": 1000,\n        \"workoutTime\": null,\n        \"type\": \"walking\",\n        \"duration\": \"20.5\",\n        \"createdAt\": \"2025-03-06T06:53:09.311Z\",\n        \"updatedAt\": \"2025-03-06T06:53:09.311Z\"\n    }\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "wokout plan",
+					"item": [
+						{
+							"name": "get multi by token",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{user_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/user/v1/workout/plan",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"user",
+										"v1",
+										"workout",
+										"plan"
+									],
+									"query": [
+										{
+											"key": "startDate",
+											"value": "2025-03-11",
+											"disabled": true
+										},
+										{
+											"key": "endDate",
+											"value": "2025-03-11",
+											"disabled": true
+										},
+										{
+											"key": "page",
+											"value": "1",
+											"disabled": true
+										},
+										{
+											"key": "size",
+											"value": "20",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "403",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{base_url}}/api/user/v1/workout/plan",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"api",
+												"user",
+												"v1",
+												"workout",
+												"plan"
+											]
+										}
+									},
+									"status": "Forbidden",
+									"code": 403,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "77"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"4d-fEiYZ25Vn7jLKgJYej+Q/0fSzEc\""
+										},
+										{
+											"key": "Date",
+											"value": "Tue, 11 Mar 2025 06:26:48 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": false,\n    \"code\": 40301,\n    \"error\": \"Forbidden!\",\n    \"message\": \"Invalid token\"\n}"
+								},
+								{
+									"name": "200",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{base_url}}/api/user/v1/workout/plan",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"api",
+												"user",
+												"v1",
+												"workout",
+												"plan"
+											],
+											"query": [
+												{
+													"key": "startDate",
+													"value": "2025-03-11",
+													"disabled": true
+												},
+												{
+													"key": "endDate",
+													"value": "2025-03-11",
+													"disabled": true
+												},
+												{
+													"key": "page",
+													"value": "1",
+													"disabled": true
+												},
+												{
+													"key": "size",
+													"value": "20",
+													"disabled": true
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "601"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"259-eRCbRuEN1+A33Uqbsu21tBAxHNo\""
+										},
+										{
+											"key": "Date",
+											"value": "Wed, 12 Mar 2025 04:44:30 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": true,\n    \"message\": \"Get user workout plan details successfully!\",\n    \"data\": [\n        {\n            \"id\": \"63b439ac-baf3-4dea-888a-ff2fefc7b829\",\n            \"userId\": \"6af51d5c-d37a-4558-99f9-66e830158c96\",\n            \"bmi\": \"21.19\",\n            \"weightGoal\": 70,\n            \"goalType\": \"gain_muscle\",\n            \"workoutTime\": \"15\",\n            \"workoutDays\": \"sunday, monday, friday\",\n            \"activateReminder\": false,\n            \"reminderTime\": null,\n            \"totalDays\": 2,\n            \"consumption\": \"741.14\",\n            \"startDate\": \"2025-03-11T00:00:00.000Z\",\n            \"endDate\": \"2025-03-10T00:00:00.000Z\",\n            \"createdAt\": \"2025-03-11T09:26:43.966Z\",\n            \"updatedAt\": \"2025-03-11T09:26:43.966Z\"\n        }\n    ],\n    \"pagination\": {\n        \"current_page\": 1,\n        \"per_page\": 20,\n        \"total_page\": 1,\n        \"total_items\": 1\n    }\n}"
+								}
+							]
+						},
+						{
+							"name": "create by token",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{user_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"weightGoal\": \"70\",\r\n    \"goalType\": \"gain_muscle\",\r\n    // \"activateReminder\": false, // default false\r\n    // \"reminderTime\": \"\", // if activate reminder\r\n    \"workoutTime\": \"900000\",  // milliseconds per day --- 15 mins\r\n    \"workoutDays\": \"sunday,monday,friday\",\r\n    \"startDate\": \"2025-03-11\",\r\n    \"endDate\": \"2025-03-15\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/user/v1/workout/plan",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"user",
+										"v1",
+										"workout",
+										"plan"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "403",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{base_url}}/api/user/v1/workout/plan",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"api",
+												"user",
+												"v1",
+												"workout",
+												"plan"
+											]
+										}
+									},
+									"status": "Forbidden",
+									"code": 403,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "77"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"4d-fEiYZ25Vn7jLKgJYej+Q/0fSzEc\""
+										},
+										{
+											"key": "Date",
+											"value": "Tue, 11 Mar 2025 06:26:48 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": false,\n    \"code\": 40301,\n    \"error\": \"Forbidden!\",\n    \"message\": \"Invalid token\"\n}"
+								},
+								{
+									"name": "400",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"url": {
+											"raw": "{{base_url}}/api/user/v1/workout/plan",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"api",
+												"user",
+												"v1",
+												"workout",
+												"plan"
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "247"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"f7-d/BtNtAEVon9jkDJV+495NCM+xw\""
+										},
+										{
+											"key": "Date",
+											"value": "Tue, 11 Mar 2025 06:48:09 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": false,\n    \"code\": 40002,\n    \"error\": \"Bad Request\",\n    \"message\": \"Invalid input data\",\n    \"errors\": [\n        {\n            \"field\": \"weightGoal\",\n            \"message\": \"Expected number, received nan\",\n            \"code\": \"INVALID_INPUT\"\n        },\n        {\n            \"field\": \"goalType\",\n            \"message\": \"Required\",\n            \"code\": \"INVALID_INPUT\"\n        }\n    ]\n}"
+								},
+								{
+									"name": "200",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"weightGoal\": \"70\",\r\n    \"goalType\": \"gain_muscle\",\r\n    // \"activateReminder\": false, // default false\r\n    // \"reminderTime\": \"\", // if activate reminder\r\n    \"workoutTime\": \"900000\",  // milliseconds per day --- 15 mins\r\n    \"workoutDays\": \"sunday,monday,friday\",\r\n    \"startDate\": \"2025-03-11\",\r\n    \"endDate\": \"2025-03-15\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{base_url}}/api/user/v1/workout/plan",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"api",
+												"user",
+												"v1",
+												"workout",
+												"plan"
+											]
+										}
+									},
+									"status": "Created",
+									"code": 201,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "518"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"206-zd/MEehxlCx2ocHVlwkRgJlX8yw\""
+										},
+										{
+											"key": "Date",
+											"value": "Wed, 12 Mar 2025 06:46:15 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": true,\n    \"message\": \"New user workout plan added successfully!\",\n    \"data\": {\n        \"id\": \"e3c1d555-8769-4f6b-8a69-e630410ac70c\",\n        \"userId\": \"6af51d5c-d37a-4558-99f9-66e830158c96\",\n        \"bmi\": \"21.19\",\n        \"weightGoal\": 70,\n        \"goalType\": \"gain_muscle\",\n        \"workoutTime\": \"900000\",\n        \"workoutDays\": \"sunday,monday,friday\",\n        \"activateReminder\": false,\n        \"reminderTime\": null,\n        \"totalDays\": 1,\n        \"caloriesGoal\": 741,\n        \"startDate\": \"2025-03-11T00:00:00.000Z\",\n        \"endDate\": \"2025-03-15T00:00:00.000Z\",\n        \"createdAt\": \"2025-03-12T06:46:15.082Z\",\n        \"updatedAt\": \"2025-03-12T06:46:15.082Z\"\n    }\n}"
+								}
+							]
+						},
+						{
+							"name": "update by token",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{user_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"weightGoal\": \"70\"\r\n    // \"goalType\": \"gain_muscle\",\r\n    // \"activateReminder\": false, // default false\r\n    // \"reminderTime\": \"\", // if activate reminder\r\n    // \"workoutTime\": \"900000\",  // milliseconds per day --- 15 mins\r\n    // \"workoutDays\": \"sunday,monday,friday\",\r\n    // \"startDate\": \"2025-03-11\",\r\n    // \"endDate\": \"2025-03-15\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/user/v1/workout/plan/:id",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"user",
+										"v1",
+										"workout",
+										"plan",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "a3e1d86d-4422-44b0-aab4-01eb2599b8f9"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "403",
+									"originalRequest": {
+										"method": "PATCH",
+										"header": [],
+										"url": {
+											"raw": "{{base_url}}/api/user/v1/workout/plan/:id",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"api",
+												"user",
+												"v1",
+												"workout",
+												"plan",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "1"
+												}
+											]
+										}
+									},
+									"status": "Unauthorized",
+									"code": 401,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "79"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"4f-dGiixh1Zd8ChjkxBdcKIiJsqvBg\""
+										},
+										{
+											"key": "Date",
+											"value": "Wed, 12 Mar 2025 05:49:43 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": false,\n    \"code\": 40101,\n    \"error\": \"Unauthorized\",\n    \"message\": \"Invalid token\"\n}"
+								},
+								{
+									"name": "200",
+									"originalRequest": {
+										"method": "PATCH",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"weightGoal\": \"70\"\r\n    // \"goalType\": \"gain_muscle\",\r\n    // \"activateReminder\": false, // default false\r\n    // \"reminderTime\": \"\", // if activate reminder\r\n    // \"workoutTime\": \"900000\",  // milliseconds per day --- 15 mins\r\n    // \"workoutDays\": \"sunday,monday,friday\",\r\n    // \"startDate\": \"2025-03-11\",\r\n    // \"endDate\": \"2025-03-15\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{base_url}}/api/user/v1/workout/plan/:id",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"api",
+												"user",
+												"v1",
+												"workout",
+												"plan",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "a3e1d86d-4422-44b0-aab4-01eb2599b8f9"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "516"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"204-VaWW3RFbBYoYcrpV/U+a9vU/ius\""
+										},
+										{
+											"key": "Date",
+											"value": "Wed, 12 Mar 2025 05:58:26 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": true,\n    \"message\": \"User workout plan updated successfully!\",\n    \"data\": {\n        \"id\": \"a3e1d86d-4422-44b0-aab4-01eb2599b8f9\",\n        \"userId\": \"6af51d5c-d37a-4558-99f9-66e830158c96\",\n        \"bmi\": \"21.19\",\n        \"weightGoal\": 70,\n        \"goalType\": \"gain_muscle\",\n        \"workoutTime\": \"900000\",\n        \"workoutDays\": \"sunday,monday,friday\",\n        \"activateReminder\": false,\n        \"reminderTime\": null,\n        \"totalDays\": 1,\n        \"caloriesGoal\": 741,\n        \"startDate\": \"2025-03-11T00:00:00.000Z\",\n        \"endDate\": \"2025-03-15T00:00:00.000Z\",\n        \"createdAt\": \"2025-03-12T05:38:01.613Z\",\n        \"updatedAt\": \"2025-03-12T05:58:26.144Z\"\n    }\n}"
+								}
+							]
+						},
+						{
+							"name": "get single by token",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{user_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/user/v1/workout/plan/:id",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"user",
+										"v1",
+										"workout",
+										"plan",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "a3e1d86d-4422-44b0-aab4-01eb2599b8f9"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "403",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{base_url}}/api/user/v1/workout/plan/:id",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"api",
+												"user",
+												"v1",
+												"workout",
+												"plan",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "1"
+												}
+											]
+										}
+									},
+									"status": "Forbidden",
+									"code": 403,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "77"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"4d-fEiYZ25Vn7jLKgJYej+Q/0fSzEc\""
+										},
+										{
+											"key": "Date",
+											"value": "Wed, 12 Mar 2025 06:02:35 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": false,\n    \"code\": 40301,\n    \"error\": \"Forbidden!\",\n    \"message\": \"Invalid token\"\n}"
+								},
+								{
+									"name": "404",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{base_url}}/api/user/v1/workout/plan/:id",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"api",
+												"user",
+												"v1",
+												"workout",
+												"plan",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "1"
+												}
+											]
+										}
+									},
+									"status": "Not Found",
+									"code": 404,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "87"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"57-aJyShF3v+Fji5IQuA31W4maRm3c\""
+										},
+										{
+											"key": "Date",
+											"value": "Wed, 12 Mar 2025 06:02:56 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": false,\n    \"code\": 40401,\n    \"error\": \"Not found!\",\n    \"message\": \"Workout plan not found!\"\n}"
+								},
+								{
+									"name": "200",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{base_url}}/api/user/v1/workout/plan/:id",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"api",
+												"user",
+												"v1",
+												"workout",
+												"plan",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "a3e1d86d-4422-44b0-aab4-01eb2599b8f9"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "515"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"203-+NStCxKDrlUgQpNZ1APF9usv558\""
+										},
+										{
+											"key": "Date",
+											"value": "Wed, 12 Mar 2025 06:03:16 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": true,\n    \"message\": \"Get workout plan details successfully!\",\n    \"data\": {\n        \"id\": \"a3e1d86d-4422-44b0-aab4-01eb2599b8f9\",\n        \"userId\": \"6af51d5c-d37a-4558-99f9-66e830158c96\",\n        \"bmi\": \"21.19\",\n        \"weightGoal\": 70,\n        \"goalType\": \"gain_muscle\",\n        \"workoutTime\": \"900000\",\n        \"workoutDays\": \"sunday,monday,friday\",\n        \"activateReminder\": false,\n        \"reminderTime\": null,\n        \"totalDays\": 1,\n        \"caloriesGoal\": 741,\n        \"startDate\": \"2025-03-11T00:00:00.000Z\",\n        \"endDate\": \"2025-03-15T00:00:00.000Z\",\n        \"createdAt\": \"2025-03-12T05:38:01.613Z\",\n        \"updatedAt\": \"2025-03-12T05:58:26.144Z\"\n    }\n}"
+								}
+							]
+						},
+						{
+							"name": "delete by token",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{user_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/user/v1/workout/plan/:Id",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"user",
+										"v1",
+										"workout",
+										"plan",
+										":Id"
+									],
+									"variable": [
+										{
+											"key": "Id",
+											"value": "a3e1d86d-4422-44b0-aab4-01eb2599b8f9"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "403",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{base_url}}/api/user/v1/workout/plan/:Id",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"api",
+												"user",
+												"v1",
+												"workout",
+												"plan",
+												":Id"
+											],
+											"variable": [
+												{
+													"key": "Id",
+													"value": "1"
+												}
+											]
+										}
+									},
+									"status": "Forbidden",
+									"code": 403,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "77"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"4d-fEiYZ25Vn7jLKgJYej+Q/0fSzEc\""
+										},
+										{
+											"key": "Date",
+											"value": "Wed, 12 Mar 2025 06:05:25 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": false,\n    \"code\": 40301,\n    \"error\": \"Forbidden!\",\n    \"message\": \"Invalid token\"\n}"
+								},
+								{
+									"name": "404",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{base_url}}/api/user/v1/workout/plan/:Id",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"api",
+												"user",
+												"v1",
+												"workout",
+												"plan",
+												":Id"
+											],
+											"variable": [
+												{
+													"key": "Id",
+													"value": "1"
+												}
+											]
+										}
+									},
+									"status": "Not Found",
+									"code": 404,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "87"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"57-DqI4Jj0RBPKoyuVnS9dWqaLyhh0\""
+										},
+										{
+											"key": "Date",
+											"value": "Wed, 12 Mar 2025 06:05:42 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": false,\n    \"code\": 40401,\n    \"error\": \"Not found!\",\n    \"message\": \"Workout goad not found!\"\n}"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "marathon",
+			"item": [
+				{
+					"name": "marathon",
+					"item": [
+						{
+							"name": "get multi",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/marathon/v1/marathon",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"marathon",
+										"v1",
+										"marathon"
+									],
+									"query": [
+										{
+											"key": "type",
+											"value": "virtual",
+											"description": "virtual, onsite // default: all",
+											"disabled": true
+										},
+										{
+											"key": "search",
+											"value": null,
+											"description": "title search",
+											"disabled": true
+										},
+										{
+											"key": "page",
+											"value": null,
+											"disabled": true
+										},
+										{
+											"key": "size",
+											"value": null,
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "200",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{base_url}}/api/marathon/v1/marathon",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"api",
+												"marathon",
+												"v1",
+												"marathon"
+											],
+											"query": [
+												{
+													"key": "type",
+													"value": "virtual",
+													"disabled": true
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "1416"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"588-eeBRstAzE+nnD3k/9Y+fhAuWW2A\""
+										},
+										{
+											"key": "Date",
+											"value": "Wed, 12 Mar 2025 09:11:19 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": true,\n    \"message\": \"Get user workout plan details successfully!\",\n    \"data\": [\n        {\n            \"id\": \"849445b9-01f2-45dc-b2f0-686bbf971cb6\",\n            \"title\": \"February 5k Challenge Run\",\n            \"description\": \"A program designed to push your limits, build endurance, and celebrate your strength!\",\n            \"about\": \"A program designed to push your limits, build endurance, and celebrate your strength! Whether this program offers personalized training plans, progress tracking, and a vibrant community to keep you motivated every step of the way.\",\n            \"startDate\": \"2025-03-01T00:00:00.000Z\",\n            \"endDate\": \"2025-03-11T00:00:00.000Z\",\n            \"imagePath\": null,\n            \"type\": \"onsite\",\n            \"createdBy\": null,\n            \"createdAt\": \"2025-03-12T09:07:54.152Z\",\n            \"updatedAt\": \"2025-03-12T09:07:54.152Z\"\n        },\n        {\n            \"id\": \"46656746-c4ac-4aef-af78-ec98d3a99450\",\n            \"title\": \"February 5k Challenge Run\",\n            \"description\": \"A program designed to push your limits, build endurance, and celebrate your strength!\",\n            \"about\": \"A program designed to push your limits, build endurance, and celebrate your strength! Whether this program offers personalized training plans, progress tracking, and a vibrant community to keep you motivated every step of the way.\",\n            \"startDate\": \"2025-03-01T00:00:00.000Z\",\n            \"endDate\": \"2025-03-11T00:00:00.000Z\",\n            \"imagePath\": null,\n            \"type\": \"onsite\",\n            \"createdBy\": null,\n            \"createdAt\": \"2025-03-12T09:07:18.497Z\",\n            \"updatedAt\": \"2025-03-12T09:07:18.497Z\"\n        }\n    ],\n    \"pagination\": {\n        \"current_page\": 1,\n        \"per_page\": 20,\n        \"total_page\": 1,\n        \"total_items\": 2\n    }\n}"
+								}
+							]
+						},
+						{
+							"name": "create one",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{admin_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"title\": \"February 5k Challenge Run\",\r\n    \"description\": \"A program designed to push your limits, build endurance, and celebrate your strength!\",\r\n    \"about\": \"A program designed to push your limits, build endurance, and celebrate your strength! Whether this program offers personalized training plans, progress tracking, and a vibrant community to keep you motivated every step of the way.\",\r\n    \"startDate\": \"2025-03-01\",\r\n    \"endDate\": \"2025-03-11\",\r\n    \"type\": \"virtual\",\r\n    \"rewards\": [\r\n        \"gold medel\",\r\n        \"prize money\"\r\n    ]\r\n    // \"imagepath\": \"\" // to upload image, use formdata\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/marathon/v1/marathon",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"marathon",
+										"v1",
+										"marathon"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "400",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"url": {
+											"raw": "{{base_url}}/api/marathon/v1/marathon",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"api",
+												"marathon",
+												"v1",
+												"marathon"
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "488"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"1e8-2ig5cuIlsceeETRQUEe++UDTLXk\""
+										},
+										{
+											"key": "Date",
+											"value": "Wed, 12 Mar 2025 08:46:03 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": false,\n    \"code\": 40002,\n    \"error\": \"Bad Request\",\n    \"message\": \"Invalid input data\",\n    \"errors\": [\n        {\n            \"field\": \"title\",\n            \"message\": \"Required\",\n            \"code\": \"INVALID_INPUT\"\n        },\n        {\n            \"field\": \"description\",\n            \"message\": \"Required\",\n            \"code\": \"INVALID_INPUT\"\n        },\n        {\n            \"field\": \"about\",\n            \"message\": \"Required\",\n            \"code\": \"INVALID_INPUT\"\n        },\n        {\n            \"field\": \"startDate\",\n            \"message\": \"Invalid date\",\n            \"code\": \"INVALID_INPUT\"\n        },\n        {\n            \"field\": \"endDate\",\n            \"message\": \"Invalid date\",\n            \"code\": \"INVALID_INPUT\"\n        },\n        {\n            \"field\": \"rewards\",\n            \"message\": \"Required\",\n            \"code\": \"INVALID_INPUT\"\n        }\n    ]\n}"
+								},
+								{
+									"name": "201",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"title\": \"February 5k Challenge Run\",\r\n    \"description\": \"A program designed to push your limits, build endurance, and celebrate your strength!\",\r\n    \"about\": \"A program designed to push your limits, build endurance, and celebrate your strength! Whether this program offers personalized training plans, progress tracking, and a vibrant community to keep you motivated every step of the way.\",\r\n    \"startDate\": \"2025-03-01\",\r\n    \"endDate\": \"2025-03-11\",\r\n    \"rewards\": [\r\n        \"gold medel\",\r\n        \"prize money\"\r\n    ]\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{base_url}}/api/marathon/v1/marathon",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"api",
+												"marathon",
+												"v1",
+												"marathon"
+											]
+										}
+									},
+									"status": "Created",
+									"code": 201,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "1104"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"450-OuxIwgI+zlorqTblL8moGmMY84o\""
+										},
+										{
+											"key": "Date",
+											"value": "Wed, 12 Mar 2025 09:07:54 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": true,\n    \"message\": \"New marathon created successfully!\",\n    \"data\": {\n        \"id\": \"849445b9-01f2-45dc-b2f0-686bbf971cb6\",\n        \"title\": \"February 5k Challenge Run\",\n        \"description\": \"A program designed to push your limits, build endurance, and celebrate your strength!\",\n        \"about\": \"A program designed to push your limits, build endurance, and celebrate your strength! Whether this program offers personalized training plans, progress tracking, and a vibrant community to keep you motivated every step of the way.\",\n        \"startDate\": \"2025-03-01T00:00:00.000Z\",\n        \"endDate\": \"2025-03-11T00:00:00.000Z\",\n        \"imagePath\": null,\n        \"type\": \"onsite\",\n        \"createdBy\": null,\n        \"createdAt\": \"2025-03-12T09:07:54.152Z\",\n        \"updatedAt\": \"2025-03-12T09:07:54.152Z\",\n        \"Rewards\": [\n            {\n                \"id\": \"30a4f944-2110-40e6-9dd3-adadf0826317\",\n                \"text\": \"gold medel\",\n                \"marathonId\": \"849445b9-01f2-45dc-b2f0-686bbf971cb6\",\n                \"createdAt\": \"2025-03-12T09:07:54.152Z\",\n                \"updatedAt\": \"2025-03-12T09:07:54.152Z\"\n            },\n            {\n                \"id\": \"c3662c71-b74e-491a-8461-012f1372593c\",\n                \"text\": \"prize money\",\n                \"marathonId\": \"849445b9-01f2-45dc-b2f0-686bbf971cb6\",\n                \"createdAt\": \"2025-03-12T09:07:54.152Z\",\n                \"updatedAt\": \"2025-03-12T09:07:54.152Z\"\n            }\n        ]\n    }\n}"
+								}
+							]
+						},
+						{
+							"name": "get single",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/marathon/v1/marathon/:id",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"marathon",
+										"v1",
+										"marathon",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "6eaeedeb-9b82-444c-9a92-bfa1b6f45fd5"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "200",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{base_url}}/api/marathon/v1/marathon/:id",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"api",
+												"marathon",
+												"v1",
+												"marathon",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "e90df277-9a03-4e56-8d3a-f90c5d1702fe"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "699"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"2bb-qLbVMLCMfbmqd+L71dHsYrimK20\""
+										},
+										{
+											"key": "Date",
+											"value": "Wed, 12 Mar 2025 09:17:04 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": true,\n    \"message\": \"Get Marathon details successfully!\",\n    \"data\": {\n        \"id\": \"6eaeedeb-9b82-444c-9a92-bfa1b6f45fd5\",\n        \"title\": \"February 5k Challenge Run\",\n        \"description\": \"A program designed to push your limits, build endurance, and celebrate your strength!\",\n        \"about\": \"A program designed to push your limits, build endurance, and celebrate your strength! Whether this program offers personalized training plans, progress tracking, and a vibrant community to keep you motivated every step of the way.\",\n        \"startDate\": \"2025-03-01T00:00:00.000Z\",\n        \"endDate\": \"2025-03-11T00:00:00.000Z\",\n        \"imagePath\": \"9fa877b2-48c8-40a5-b8b6-3cb7eab6cdef-1741854403493.png\",\n        \"type\": \"virtual\",\n        \"createdBy\": null,\n        \"createdAt\": \"2025-03-13T08:25:58.630Z\",\n        \"updatedAt\": \"2025-03-13T08:26:43.507Z\"\n    },\n    \"totalParticiants\": 0\n}"
+								}
+							]
+						},
+						{
+							"name": "update one",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "imagePath",
+											"type": "file",
+											"src": "/C:/Users/jahid/Downloads/Rectangle 1055.png"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}/api/marathon/v1/marathon/:id",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"marathon",
+										"v1",
+										"marathon",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "6eaeedeb-9b82-444c-9a92-bfa1b6f45fd5"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "200",
+									"originalRequest": {
+										"method": "PATCH",
+										"header": [],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "imagePath",
+													"type": "file",
+													"src": "/D:/Impala/Doctor Project/UI/doctor.jpg"
+												}
+											]
+										},
+										"url": {
+											"raw": "{{base_url}}/api/marathon/v1/marathon/:id",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"api",
+												"marathon",
+												"v1",
+												"marathon",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "46656746-c4ac-4aef-af78-ec98d3a99450"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "751"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"2ef-tBg6jFsR5nFsBe5zcn+LPlZfBn0\""
+										},
+										{
+											"key": "Date",
+											"value": "Wed, 12 Mar 2025 09:32:02 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": true,\n    \"message\": \"User profile updated successfully!\",\n    \"data\": {\n        \"id\": \"46656746-c4ac-4aef-af78-ec98d3a99450\",\n        \"title\": \"February 5k Challenge Run\",\n        \"description\": \"A program designed to push your limits, build endurance, and celebrate your strength!\",\n        \"about\": \"A program designed to push your limits, build endurance, and celebrate your strength! Whether this program offers personalized training plans, progress tracking, and a vibrant community to keep you motivated every step of the way.\",\n        \"startDate\": \"2025-03-01T00:00:00.000Z\",\n        \"endDate\": \"2025-03-11T00:00:00.000Z\",\n        \"imagePath\": \"4b41ee51-960f-4c09-a70a-fe5ac1137cd0-1741771922149.jpg\",\n        \"type\": \"onsite\",\n        \"createdBy\": null,\n        \"createdAt\": \"2025-03-12T09:07:18.497Z\",\n        \"updatedAt\": \"2025-03-12T09:32:02.191Z\"\n    }\n}"
+								}
+							]
+						},
+						{
+							"name": "delete one",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/marathon/v1/marathon/:id",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"marathon",
+										"v1",
+										"marathon",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "6eaeedeb-9b82-444c-9a92-bfa1b6f45fd5"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "200",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{base_url}}/api/marathon/v1/marathon/:id",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"api",
+												"marathon",
+												"v1",
+												"marathon",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "e90df277-9a03-4e56-8d3a-f90c5d1702fe"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "698"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"2ba-hwbX/guJOsA7rh7NMUQbYzy6acQ\""
+										},
+										{
+											"key": "Date",
+											"value": "Wed, 12 Mar 2025 09:18:19 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": true,\n    \"message\": \"Marathon is deleted successfully!\",\n    \"data\": {\n        \"id\": \"e90df277-9a03-4e56-8d3a-f90c5d1702fe\",\n        \"title\": \"February 5k Challenge Run\",\n        \"description\": \"A program designed to push your limits, build endurance, and celebrate your strength!\",\n        \"about\": \"A program designed to push your limits, build endurance, and celebrate your strength! Whether this program offers personalized training plans, progress tracking, and a vibrant community to keep you motivated every step of the way.\",\n        \"startDate\": \"2025-03-01T00:00:00.000Z\",\n        \"endDate\": \"2025-03-11T00:00:00.000Z\",\n        \"imagePath\": null,\n        \"type\": \"onsite\",\n        \"createdBy\": null,\n        \"createdAt\": \"2025-03-12T09:14:22.486Z\",\n        \"updatedAt\": \"2025-03-12T09:14:22.486Z\"\n    }\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "workout",
+					"item": []
+				},
+				{
+					"name": "user",
+					"item": [
+						{
+							"name": "get multi",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/marathon/v1/user",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"marathon",
+										"v1",
+										"user"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1",
+											"description": "default: 1",
+											"disabled": true
+										},
+										{
+											"key": "size",
+											"value": "20",
+											"description": "default: 20",
+											"disabled": true
+										},
+										{
+											"key": "search",
+											"value": null,
+											"description": "by user name",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "200",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{base_url}}/api/marathon/v1/user",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"api",
+												"marathon",
+												"v1",
+												"user"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "403"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"193-VWhAH84VufogtN+bwlWzvSDEiH8\""
+										},
+										{
+											"key": "Date",
+											"value": "Thu, 13 Mar 2025 08:29:46 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": true,\n    \"message\": \"Get marathon users successfully!\",\n    \"data\": [\n        {\n            \"id\": \"mu-uuid-1\",\n            \"userId\": \"user-uuid-1\",\n            \"marathonId\": \"m-uuid-1\",\n            \"distanceKm\": \"5\",\n            \"durationMs\": 900000,\n            \"createdAt\": \"2025-03-13T09:27:25.681Z\",\n            \"updatedAt\": \"2025-03-13T09:27:25.681Z\"\n        },\n        {\n            \"id\": \"mu-uuid-2\",\n            \"userId\": \"user-uuid-2\",\n            \"marathonId\": \"m-uuid-1\",\n            \"distanceKm\": \"5\",\n            \"durationMs\": 950000,\n            \"createdAt\": \"2025-03-13T09:27:25.727Z\",\n            \"updatedAt\": \"2025-03-13T09:27:25.727Z\"\n        },\n        {\n            \"id\": \"mu-uuid-3\",\n            \"userId\": \"user-uuid-3\",\n            \"marathonId\": \"m-uuid-1\",\n            \"distanceKm\": \"4.5\",\n            \"durationMs\": 800000,\n            \"createdAt\": \"2025-03-13T09:27:25.754Z\",\n            \"updatedAt\": \"2025-03-13T09:27:25.754Z\"\n        },\n        {\n            \"id\": \"mu-uuid-4\",\n            \"userId\": \"user-uuid-4\",\n            \"marathonId\": \"m-uuid-1\",\n            \"distanceKm\": \"3.5\",\n            \"durationMs\": 700000,\n            \"createdAt\": \"2025-03-13T09:27:25.782Z\",\n            \"updatedAt\": \"2025-03-13T09:27:25.782Z\"\n        }\n    ],\n    \"pagination\": {\n        \"current_page\": 1,\n        \"per_page\": 20,\n        \"total_page\": 1,\n        \"total_items\": 4\n    }\n}"
+								}
+							]
+						},
+						{
+							"name": "create user",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{user_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"marathonId\": \"6eaeedeb-9b82-444c-9a92-bfa1b6f45fd5\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/marathon/v1/user",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"marathon",
+										"v1",
+										"user"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "403",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"url": {
+											"raw": "{{base_url}}/api/marathon/v1/user",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"api",
+												"marathon",
+												"v1",
+												"user"
+											]
+										}
+									},
+									"status": "Forbidden",
+									"code": 403,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "77"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"4d-fEiYZ25Vn7jLKgJYej+Q/0fSzEc\""
+										},
+										{
+											"key": "Date",
+											"value": "Thu, 13 Mar 2025 08:25:22 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": false,\n    \"code\": 40301,\n    \"error\": \"Forbidden!\",\n    \"message\": \"Invalid token\"\n}"
+								},
+								{
+									"name": "201",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"marathonId\": \"6eaeedeb-9b82-444c-9a92-bfa1b6f45fd5\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{base_url}}/api/marathon/v1/user",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"api",
+												"marathon",
+												"v1",
+												"user"
+											]
+										}
+									},
+									"status": "Created",
+									"code": 201,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "337"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"151-VZhjrIMB60ON/xFrSk0aP3gXY0A\""
+										},
+										{
+											"key": "Date",
+											"value": "Thu, 13 Mar 2025 08:29:23 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": true,\n    \"message\": \"Your are added to this marathon successfully!\",\n    \"data\": {\n        \"id\": \"37903a87-9bed-46e1-85ce-9184ec039095\",\n        \"userId\": \"6af51d5c-d37a-4558-99f9-66e830158c96\",\n        \"marathonId\": \"6eaeedeb-9b82-444c-9a92-bfa1b6f45fd5\",\n        \"distanceKm\": \"0\",\n        \"durationMs\": 0,\n        \"createdAt\": \"2025-03-13T08:29:23.297Z\",\n        \"updatedAt\": \"2025-03-13T08:29:23.297Z\"\n    }\n}"
+								}
+							]
+						},
+						{
+							"name": "get single user",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{user_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/marathon/v1/user/:id",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"marathon",
+										"v1",
+										"user",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "37903a87-9bed-46e1-85ce-9184ec039095"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "403",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{base_url}}/api/marathon/v1/user/:id",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"api",
+												"marathon",
+												"v1",
+												"user",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "37903a87-9bed-46e1-85ce-9184ec039095"
+												}
+											]
+										}
+									},
+									"status": "Forbidden",
+									"code": 403,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "77"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"4d-fEiYZ25Vn7jLKgJYej+Q/0fSzEc\""
+										},
+										{
+											"key": "Date",
+											"value": "Thu, 13 Mar 2025 08:30:03 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": false,\n    \"code\": 40301,\n    \"error\": \"Forbidden!\",\n    \"message\": \"Invalid token\"\n}"
+								},
+								{
+									"name": "401",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{base_url}}/api/marathon/v1/user/:id",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"api",
+												"marathon",
+												"v1",
+												"user",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "37903a87-9bed-46e1-85ce-9184ec039095"
+												}
+											]
+										}
+									},
+									"status": "Unauthorized",
+									"code": 401,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "78"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"4e-j82PXED+1yjdmEMyybQW54rdufg\""
+										},
+										{
+											"key": "Date",
+											"value": "Thu, 13 Mar 2025 08:30:25 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": false,\n    \"code\": 40101,\n    \"error\": \"Unauthorized\",\n    \"message\": \"Unauthorized\"\n}"
+								},
+								{
+									"name": "200",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{base_url}}/api/marathon/v1/user/:id",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"api",
+												"marathon",
+												"v1",
+												"user",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "37903a87-9bed-46e1-85ce-9184ec039095"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "331"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"14b-+ZCeMB0Ty7IC+UGrNoQmLZ19rf8\""
+										},
+										{
+											"key": "Date",
+											"value": "Thu, 13 Mar 2025 08:32:17 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": true,\n    \"message\": \"Get Marathon user details successfully!\",\n    \"data\": {\n        \"id\": \"37903a87-9bed-46e1-85ce-9184ec039095\",\n        \"userId\": \"6af51d5c-d37a-4558-99f9-66e830158c96\",\n        \"marathonId\": \"6eaeedeb-9b82-444c-9a92-bfa1b6f45fd5\",\n        \"distanceKm\": \"0\",\n        \"durationMs\": 0,\n        \"createdAt\": \"2025-03-13T08:29:23.297Z\",\n        \"updatedAt\": \"2025-03-13T08:29:23.297Z\"\n    }\n}"
+								}
+							]
+						},
+						{
+							"name": "update single user",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{user_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"distanceKm\": 1,\r\n    \"durationMs\": 900000\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/marathon/v1/user/:id",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"marathon",
+										"v1",
+										"user",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "37903a87-9bed-46e1-85ce-9184ec039095"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "403",
+									"originalRequest": {
+										"method": "PATCH",
+										"header": [],
+										"url": {
+											"raw": "{{base_url}}/api/marathon/v1/user/:id",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"api",
+												"marathon",
+												"v1",
+												"user",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": ""
+												}
+											]
+										}
+									},
+									"status": "Forbidden",
+									"code": 403,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "77"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"4d-fEiYZ25Vn7jLKgJYej+Q/0fSzEc\""
+										},
+										{
+											"key": "Date",
+											"value": "Thu, 13 Mar 2025 08:33:33 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": false,\n    \"code\": 40301,\n    \"error\": \"Forbidden!\",\n    \"message\": \"Invalid token\"\n}"
+								},
+								{
+									"name": "200",
+									"originalRequest": {
+										"method": "PATCH",
+										"header": [],
+										"url": {
+											"raw": "{{base_url}}/api/marathon/v1/user/:id",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"api",
+												"marathon",
+												"v1",
+												"user",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "37903a87-9bed-46e1-85ce-9184ec039095"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "327"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"147-bRodnJBrk6jXk1+fbqUgFTOvO7Q\""
+										},
+										{
+											"key": "Date",
+											"value": "Thu, 13 Mar 2025 08:33:51 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": true,\n    \"message\": \"Marathon user updated successfully!\",\n    \"data\": {\n        \"id\": \"37903a87-9bed-46e1-85ce-9184ec039095\",\n        \"userId\": \"6af51d5c-d37a-4558-99f9-66e830158c96\",\n        \"marathonId\": \"6eaeedeb-9b82-444c-9a92-bfa1b6f45fd5\",\n        \"distanceKm\": \"0\",\n        \"durationMs\": 0,\n        \"createdAt\": \"2025-03-13T08:29:23.297Z\",\n        \"updatedAt\": \"2025-03-13T08:29:23.297Z\"\n    }\n}"
+								}
+							]
+						},
+						{
+							"name": "delete single user",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{user_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/marathon/v1/user/:id",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"marathon",
+										"v1",
+										"user",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "37903a87-9bed-46e1-85ce-9184ec039095"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "403",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{base_url}}/api/marathon/v1/user/:id",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"api",
+												"marathon",
+												"v1",
+												"user",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "37903a87-9bed-46e1-85ce-9184ec039095"
+												}
+											]
+										}
+									},
+									"status": "Forbidden",
+									"code": 403,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "77"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"4d-fEiYZ25Vn7jLKgJYej+Q/0fSzEc\""
+										},
+										{
+											"key": "Date",
+											"value": "Thu, 13 Mar 2025 08:35:10 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": false,\n    \"code\": 40301,\n    \"error\": \"Forbidden!\",\n    \"message\": \"Invalid token\"\n}"
+								},
+								{
+									"name": "200",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{base_url}}/api/marathon/v1/user/:id",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"api",
+												"marathon",
+												"v1",
+												"user",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "37903a87-9bed-46e1-85ce-9184ec039095"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "335"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"14f-hw+Ag7Xc3U7Kb9KXTrwibHJMTqU\""
+										},
+										{
+											"key": "Date",
+											"value": "Thu, 13 Mar 2025 08:35:24 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": true,\n    \"message\": \"Marathon user is deleted successfully!\",\n    \"data\": {\n        \"id\": \"37903a87-9bed-46e1-85ce-9184ec039095\",\n        \"userId\": \"6af51d5c-d37a-4558-99f9-66e830158c96\",\n        \"marathonId\": \"6eaeedeb-9b82-444c-9a92-bfa1b6f45fd5\",\n        \"distanceKm\": \"1\",\n        \"durationMs\": 900000,\n        \"createdAt\": \"2025-03-13T08:29:23.297Z\",\n        \"updatedAt\": \"2025-03-13T08:34:52.263Z\"\n    }\n}"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "other",
+			"item": [
+				{
+					"name": "blog",
+					"item": [
+						{
+							"name": "get multi",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/other/v1/blog",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"other",
+										"v1",
+										"blog"
+									],
+									"query": [
+										{
+											"key": "search",
+											"value": null,
+											"disabled": true
+										},
+										{
+											"key": "page",
+											"value": null,
+											"disabled": true
+										},
+										{
+											"key": "size",
+											"value": null,
+											"disabled": true
+										},
+										{
+											"key": "sort",
+											"value": null,
+											"description": "asc, desc --- default: desc",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "200",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{base_url}}/api/other/v1/blog",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"api",
+												"other",
+												"v1",
+												"blog"
+											],
+											"query": [
+												{
+													"key": "search",
+													"value": null,
+													"disabled": true
+												},
+												{
+													"key": "page",
+													"value": null,
+													"disabled": true
+												},
+												{
+													"key": "size",
+													"value": null,
+													"disabled": true
+												},
+												{
+													"key": "sort",
+													"value": null,
+													"description": "asc, desc --- default: desc",
+													"disabled": true
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "979"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"3d3-OqPXja1HyH6ZQFyqwTBJOHyiMyo\""
+										},
+										{
+											"key": "Date",
+											"value": "Thu, 13 Mar 2025 05:40:04 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": true,\n    \"message\": \"Get blogs successfully!\",\n    \"data\": [\n        {\n            \"id\": \"031cc692-4fa0-49da-b7ea-e8fa8aa0c18d\",\n            \"createdBy\": null,\n            \"title\": \"10 Easy Home Workouts \",\n            \"readTime\": 5,\n            \"description\": \"Stay fit with simple exercises like push-ups, planks, lunges, and jumping jacks, requiring no equipment \",\n            \"details\": \" When an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, \\\\n  Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source.\",\n            \"imagePath\": \"1a3f8c5d-7444-4cf2-829d-fa3cc8907144-1741844384379.png\",\n            \"createdAt\": \"2025-03-13T05:39:44.382Z\",\n            \"updatedAt\": \"2025-03-13T05:39:44.382Z\"\n        }\n    ],\n    \"pagination\": {\n        \"current_page\": 1,\n        \"per_page\": 20,\n        \"total_page\": 1,\n        \"total_items\": 1\n    }\n}"
+								}
+							]
+						},
+						{
+							"name": "create new",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "title",
+											"value": "10 Easy Home Workouts ",
+											"type": "text"
+										},
+										{
+											"key": "description",
+											"value": "Stay fit with simple exercises like push-ups, planks, lunges, and jumping jacks, requiring no equipment ",
+											"type": "text"
+										},
+										{
+											"key": "details",
+											"value": " When an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, \\n  Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source.",
+											"type": "text"
+										},
+										{
+											"key": "imagePath",
+											"type": "file",
+											"src": "/C:/Users/jahid/Downloads/image.png"
+										},
+										{
+											"key": "readTime",
+											"value": "5",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}/api/other/v1/blog",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"other",
+										"v1",
+										"blog"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "400",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"url": {
+											"raw": "{{base_url}}/api/other/v1/blog",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"api",
+												"other",
+												"v1",
+												"blog"
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "440"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"1b8-xnJ0wgDoB/8VbgMKfDXVL1ml2fo\""
+										},
+										{
+											"key": "Date",
+											"value": "Thu, 13 Mar 2025 05:36:32 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": false,\n    \"code\": 40002,\n    \"error\": \"Bad Request\",\n    \"message\": \"Invalid input data\",\n    \"errors\": [\n        {\n            \"field\": \"title\",\n            \"message\": \"Required\",\n            \"code\": \"INVALID_INPUT\"\n        },\n        {\n            \"field\": \"description\",\n            \"message\": \"Required\",\n            \"code\": \"INVALID_INPUT\"\n        },\n        {\n            \"field\": \"details\",\n            \"message\": \"Required\",\n            \"code\": \"INVALID_INPUT\"\n        },\n        {\n            \"field\": \"imagePath\",\n            \"message\": \"Required\",\n            \"code\": \"INVALID_INPUT\"\n        },\n        {\n            \"field\": \"readTime\",\n            \"message\": \"Expected number, received nan\",\n            \"code\": \"INVALID_INPUT\"\n        }\n    ]\n}"
+								},
+								{
+									"name": "201",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "title",
+													"value": "10 Easy Home Workouts ",
+													"type": "text"
+												},
+												{
+													"key": "description",
+													"value": "Stay fit with simple exercises like push-ups, planks, lunges, and jumping jacks, requiring no equipment ",
+													"type": "text"
+												},
+												{
+													"key": "details",
+													"value": " When an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, \\n  Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source.",
+													"type": "text"
+												},
+												{
+													"key": "imagePath",
+													"type": "file",
+													"src": "/C:/Users/jahid/Downloads/image.png"
+												},
+												{
+													"key": "readTime",
+													"value": "5",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "{{base_url}}/api/other/v1/blog",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"api",
+												"other",
+												"v1",
+												"blog"
+											]
+										}
+									},
+									"status": "Created",
+									"code": 201,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "907"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"38b-OZkDuS9LQkvkaPBM9q51S3IF5dc\""
+										},
+										{
+											"key": "Date",
+											"value": "Thu, 13 Mar 2025 05:39:44 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": true,\n    \"message\": \"New blog created successfully!\",\n    \"data\": {\n        \"id\": \"031cc692-4fa0-49da-b7ea-e8fa8aa0c18d\",\n        \"createdBy\": null,\n        \"title\": \"10 Easy Home Workouts \",\n        \"readTime\": 5,\n        \"description\": \"Stay fit with simple exercises like push-ups, planks, lunges, and jumping jacks, requiring no equipment \",\n        \"details\": \" When an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, \\\\n  Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source.\",\n        \"imagePath\": \"1a3f8c5d-7444-4cf2-829d-fa3cc8907144-1741844384379.png\",\n        \"createdAt\": \"2025-03-13T05:39:44.382Z\",\n        \"updatedAt\": \"2025-03-13T05:39:44.382Z\"\n    }\n}"
+								}
+							]
+						},
+						{
+							"name": "get single",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/other/v1/blog/:id",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"other",
+										"v1",
+										"blog",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "031cc692-4fa0-49da-b7ea-e8fa8aa0c18d"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "200",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{base_url}}/api/other/v1/blog/:id",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"api",
+												"other",
+												"v1",
+												"blog",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "031cc692-4fa0-49da-b7ea-e8fa8aa0c18d"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "907"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"38b-8OqTuisOdhYJZp7PMw9zDMxaLUQ\""
+										},
+										{
+											"key": "Date",
+											"value": "Thu, 13 Mar 2025 05:40:41 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": true,\n    \"message\": \"Get Blog details successfully!\",\n    \"data\": {\n        \"id\": \"031cc692-4fa0-49da-b7ea-e8fa8aa0c18d\",\n        \"createdBy\": null,\n        \"title\": \"10 Easy Home Workouts \",\n        \"readTime\": 5,\n        \"description\": \"Stay fit with simple exercises like push-ups, planks, lunges, and jumping jacks, requiring no equipment \",\n        \"details\": \" When an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, \\\\n  Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source.\",\n        \"imagePath\": \"1a3f8c5d-7444-4cf2-829d-fa3cc8907144-1741844384379.png\",\n        \"createdAt\": \"2025-03-13T05:39:44.382Z\",\n        \"updatedAt\": \"2025-03-13T05:39:44.382Z\"\n    }\n}"
+								}
+							]
+						},
+						{
+							"name": "update one",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "title",
+											"value": "10 Easy Home Workouts",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}/api/other/v1/blog/:id",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"other",
+										"v1",
+										"blog",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "031cc692-4fa0-49da-b7ea-e8fa8aa0c18d"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "200",
+									"originalRequest": {
+										"method": "PATCH",
+										"header": [],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "title",
+													"value": "10 Easy Home Workouts",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "{{base_url}}/api/other/v1/blog/:id",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"api",
+												"other",
+												"v1",
+												"blog",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "031cc692-4fa0-49da-b7ea-e8fa8aa0c18d"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "902"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"386-bKN5cXEfraI37gUHA25Y2Xz3DS0\""
+										},
+										{
+											"key": "Date",
+											"value": "Thu, 13 Mar 2025 05:49:06 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": true,\n    \"message\": \"Blog updated successfully!\",\n    \"data\": {\n        \"id\": \"031cc692-4fa0-49da-b7ea-e8fa8aa0c18d\",\n        \"createdBy\": null,\n        \"title\": \"10 Easy Home Workouts\",\n        \"readTime\": 5,\n        \"description\": \"Stay fit with simple exercises like push-ups, planks, lunges, and jumping jacks, requiring no equipment \",\n        \"details\": \" When an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, \\\\n  Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source.\",\n        \"imagePath\": \"1a3f8c5d-7444-4cf2-829d-fa3cc8907144-1741844384379.png\",\n        \"createdAt\": \"2025-03-13T05:39:44.382Z\",\n        \"updatedAt\": \"2025-03-13T05:49:06.128Z\"\n    }\n}"
+								}
+							]
+						},
+						{
+							"name": "delete one",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/other/v1/blog/:id",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"other",
+										"v1",
+										"blog",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "031cc692-4fa0-49da-b7ea-e8fa8aa0c18d"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "200",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{base_url}}/api/other/v1/blog/:id",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"api",
+												"other",
+												"v1",
+												"blog",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "031cc692-4fa0-49da-b7ea-e8fa8aa0c18d"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "905"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"389-4bR06rtOK9UXNjo4M3v4ImXdCFQ\""
+										},
+										{
+											"key": "Date",
+											"value": "Thu, 13 Mar 2025 05:49:35 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": true,\n    \"message\": \"Blog is deleted successfully!\",\n    \"data\": {\n        \"id\": \"031cc692-4fa0-49da-b7ea-e8fa8aa0c18d\",\n        \"createdBy\": null,\n        \"title\": \"10 Easy Home Workouts\",\n        \"readTime\": 5,\n        \"description\": \"Stay fit with simple exercises like push-ups, planks, lunges, and jumping jacks, requiring no equipment \",\n        \"details\": \" When an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, \\\\n  Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source.\",\n        \"imagePath\": \"1a3f8c5d-7444-4cf2-829d-fa3cc8907144-1741844384379.png\",\n        \"createdAt\": \"2025-03-13T05:39:44.382Z\",\n        \"updatedAt\": \"2025-03-13T05:49:06.128Z\"\n    }\n}"
+								},
+								{
+									"name": "404",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{base_url}}/api/other/v1/blog/:id",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"api",
+												"other",
+												"v1",
+												"blog",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "031cc692-4fa0-49da-b7ea-e8fa8aa0c18d"
+												}
+											]
+										}
+									},
+									"status": "Not Found",
+									"code": 404,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "79"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"4f-G9iA5QHi1N3U40x3LPmn1RNCsbY\""
+										},
+										{
+											"key": "Date",
+											"value": "Thu, 13 Mar 2025 05:49:53 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": false,\n    \"code\": 40401,\n    \"error\": \"Not found!\",\n    \"message\": \"Blog not found!\"\n}"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "admin",
+			"item": [
+				{
+					"name": "get multi",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/admin/v1/admin",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"v1",
+								"admin"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "200",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/admin/v1/admin",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"v1",
+										"admin"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "326"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"146-y3CMnr8W7ZanoW3xa+A3e4NUaW4\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 16 Mar 2025 05:51:23 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"message\": \"Get admins successfully!\",\n    \"data\": [\n        {\n            \"name\": \"Jahidul Islam\",\n            \"username\": \"jahidul\",\n            \"id\": \"0277f5a4-e59e-4c86-ac59-d38fc8733f9a\",\n            \"role\": \"superadmin\",\n            \"createdAt\": \"2025-03-13T06:32:11.426Z\",\n            \"updateAt\": \"2025-03-13T06:32:11.426Z\"\n        }\n    ],\n    \"pagination\": {\n        \"current_page\": 1,\n        \"per_page\": 20,\n        \"total_page\": 1,\n        \"total_items\": 1\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "create new",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Ismail james\",\r\n    \"username\": \"ismail\",\r\n    \"password\": \"123456\",\r\n    \"role\": \"admin\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/admin/v1/admin",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"v1",
+								"admin"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "403",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/admin/v1/admin",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"v1",
+										"admin"
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "77"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"4d-fEiYZ25Vn7jLKgJYej+Q/0fSzEc\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 16 Mar 2025 05:52:21 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": false,\n    \"code\": 40301,\n    \"error\": \"Forbidden!\",\n    \"message\": \"Invalid token\"\n}"
+						},
+						{
+							"name": "401",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/admin/v1/admin",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"v1",
+										"admin"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "104"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"68-nrqp0lKOPfBvrJziMa+hgu2ZbFY\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 16 Mar 2025 05:52:50 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": false,\n    \"code\": 40101,\n    \"error\": \"Unauthorized\",\n    \"message\": \"Your are not permitted for this action\"\n}"
+						},
+						{
+							"name": "400",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/admin/v1/admin",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"v1",
+										"admin"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "347"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"15b-aqkI3JKEG5B53vVwaw/94RBiJKs\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 16 Mar 2025 05:53:15 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": false,\n    \"code\": 40002,\n    \"error\": \"Bad Request\",\n    \"message\": \"Invalid input data\",\n    \"errors\": [\n        {\n            \"field\": \"name\",\n            \"message\": \"Required\",\n            \"code\": \"INVALID_INPUT\"\n        },\n        {\n            \"field\": \"username\",\n            \"message\": \"Required\",\n            \"code\": \"INVALID_INPUT\"\n        },\n        {\n            \"field\": \"password\",\n            \"message\": \"Required\",\n            \"code\": \"INVALID_INPUT\"\n        },\n        {\n            \"field\": \"roles\",\n            \"message\": \"Required\",\n            \"code\": \"INVALID_INPUT\"\n        }\n    ]\n}"
+						},
+						{
+							"name": "200",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Ismail james\",\r\n    \"username\": \"ismail\",\r\n    \"password\": \"123456\",\r\n    \"role\": \"admin\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/admin/v1/admin",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"v1",
+										"admin"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "349"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"15d-iB28VzPMkRtovQiV5lUo8DAknlA\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 16 Mar 2025 06:00:08 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"message\": \"New admin created successfully!\",\n    \"data\": {\n        \"id\": \"b4330baf-1f89-4354-acb9-ecaece27e4d5\",\n        \"name\": \"Ismail james\",\n        \"username\": \"ismail\",\n        \"password\": \"ujJTh2rta8ItSm/1PYQGxq2GQZXtFEq1yHYhtsIztUi66uaVbfNG7IwX9eoQ817jy8UUeX7X3dMUVGTioLq0Ew==\",\n        \"role\": \"admin\",\n        \"createdAt\": \"2025-03-16T06:00:08.752Z\",\n        \"updateAt\": \"2025-03-16T06:00:08.752Z\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "get single",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/admin/v1/admin/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"v1",
+								"admin",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "b4330baf-1f89-4354-acb9-ecaece27e4d5"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "200",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/admin/v1/admin/:id",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"v1",
+										"admin",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "b4330baf-1f89-4354-acb9-ecaece27e4d5"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "349"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"15d-wIGITMmmrE+QcBiSKlXEg3pHLqU\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 16 Mar 2025 06:00:55 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"message\": \"Get Admin details successfully!\",\n    \"data\": {\n        \"id\": \"b4330baf-1f89-4354-acb9-ecaece27e4d5\",\n        \"name\": \"Ismail james\",\n        \"username\": \"ismail\",\n        \"password\": \"ujJTh2rta8ItSm/1PYQGxq2GQZXtFEq1yHYhtsIztUi66uaVbfNG7IwX9eoQ817jy8UUeX7X3dMUVGTioLq0Ew==\",\n        \"role\": \"admin\",\n        \"createdAt\": \"2025-03-16T06:00:08.752Z\",\n        \"updateAt\": \"2025-03-16T06:00:08.752Z\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "update one",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"password\": \"123456\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/admin/v1/admin/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"v1",
+								"admin",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "b4330baf-1f89-4354-acb9-ecaece27e4d5"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "200",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"password\": \"123456\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/admin/v1/admin/:id",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"v1",
+										"admin",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "b4330baf-1f89-4354-acb9-ecaece27e4d5"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "345"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"159-jCL8vnsjtnYB3Fz77lcoLvDe/X4\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 16 Mar 2025 06:02:57 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"message\": \"Admin updated successfully!\",\n    \"data\": {\n        \"id\": \"b4330baf-1f89-4354-acb9-ecaece27e4d5\",\n        \"name\": \"Ismail james\",\n        \"username\": \"ismail\",\n        \"password\": \"ujJTh2rta8ItSm/1PYQGxq2GQZXtFEq1yHYhtsIztUi66uaVbfNG7IwX9eoQ817jy8UUeX7X3dMUVGTioLq0Ew==\",\n        \"role\": \"admin\",\n        \"createdAt\": \"2025-03-16T06:00:08.752Z\",\n        \"updateAt\": \"2025-03-16T06:02:57.818Z\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "delete one",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/admin/v1/admin/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"v1",
+								"admin",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "b4330baf-1f89-4354-acb9-ecaece27e4d5"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "200",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/admin/v1/admin/:id",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"v1",
+										"admin",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "b4330baf-1f89-4354-acb9-ecaece27e4d5"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "348"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"15c-7uolvpboNxywGhtUsh0oBQ6xDwE\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 16 Mar 2025 06:03:15 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"message\": \"Admin is deleted successfully!\",\n    \"data\": {\n        \"id\": \"b4330baf-1f89-4354-acb9-ecaece27e4d5\",\n        \"name\": \"Ismail james\",\n        \"username\": \"ismail\",\n        \"password\": \"ujJTh2rta8ItSm/1PYQGxq2GQZXtFEq1yHYhtsIztUi66uaVbfNG7IwX9eoQ817jy8UUeX7X3dMUVGTioLq0Ew==\",\n        \"role\": \"admin\",\n        \"createdAt\": \"2025-03-16T06:00:08.752Z\",\n        \"updateAt\": \"2025-03-16T06:02:57.818Z\"\n    }\n}"
+						}
+					]
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "id",
+			"value": "1"
+		},
+		{
+			"key": "base_url",
+			"value": "https://postman-rest-api-learner.glitch.me/"
+		},
+		{
+			"key": "user_token",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhZjUxZDVjLWQzN2EtNDU1OC05OWY5LTY2ZTgzMDE1OGM5NiIsImlhdCI6MTc0MTIxMjA3OX0.wqPXfLVze9n1TNVsmeNJ1EKvUjj4jBWASo1wH0XAOCY",
+			"type": "default"
+		},
+		{
+			"key": "admin_token",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAyNzdmNWE0LWU1OWUtNGM4Ni1hYzU5LWQzOGZjODczM2Y5YSIsImlhdCI6MTc0MjEwMzc5MX0.qynbyg4kHE_nUPqLIXSoO4SJkvHgi644th51eGw4x7o",
+			"type": "default"
+		}
+	]
+}

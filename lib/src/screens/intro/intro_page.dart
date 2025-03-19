@@ -14,7 +14,6 @@ class IntroPage extends StatefulWidget {
 
 class _IntroPageState extends State<IntroPage> {
   PageController pageController = PageController();
-  int currentPage = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +21,7 @@ class _IntroPageState extends State<IntroPage> {
       children: [
         PageView(
           controller: pageController,
+          physics: const NeverScrollableScrollPhysics(),
           children: [
             IntroPage1(pageController: pageController),
             IntroPage2(pageController: pageController),

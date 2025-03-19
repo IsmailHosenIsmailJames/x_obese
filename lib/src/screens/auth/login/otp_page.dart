@@ -1,19 +1,33 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:o_xbese/src/screens/auth/controller/auth_controller.dart';
 import 'package:o_xbese/src/screens/auth/info_collector/info_collector.dart';
+import 'package:o_xbese/src/screens/auth/info_collector/model/all_info_model.dart';
 import 'package:o_xbese/src/screens/auth/login/success_page.dart';
 import 'package:o_xbese/src/theme/colors.dart';
+import 'package:o_xbese/src/widgets/loading_popup.dart';
 import 'package:pinput/pinput.dart';
+import 'package:dio/dio.dart' as dio;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class OtpPage extends StatefulWidget {
   final bool isSignup;
   final String phone;
-  const OtpPage({super.key, required this.isSignup, required this.phone});
+  final dio.Response response;
+  const OtpPage({
+    super.key,
+    required this.isSignup,
+    required this.phone,
+    required this.response,
+  });
 
   @override
   State<OtpPage> createState() => _OtpPageState();
@@ -22,14 +36,58 @@ class OtpPage extends StatefulWidget {
 class _OtpPageState extends State<OtpPage> {
   final AuthController authController = Get.find();
   Future<void> checkOTP(String otp) async {
-    if (await authController.verifyOTP(otp) == true) {
-      Hive.box('user').put('info', {'phone': widget.phone});
-      if (widget.isSignup) {
-        Get.offAll(() => const InfoCollector());
-      } else {
-        Get.offAll(() => LoginSuccessPage(isSignUp: widget.isSignup));
-      }
+    String id = widget.response.data['data']?['id'] ?? '';
+    String type = widget.isSignup ? 'signup' : 'login';
+    if (!(await InternetConnection().hasInternetAccess)) {
+      Fluttertoast.showToast(msg: 'Check Internet Connection!');
+      return;
     }
+    showLoadingPopUp(context);
+    try {
+      final response = await authController.verifyOTP(otp, type, id);
+      if (response != null) {
+        await Hive.box('user').put('info', {'phone': widget.phone});
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString(
+          'access_token',
+          response.data['data']['accessToken'].toString(),
+        );
+        await prefs.setString(
+          'refresh_token',
+          response.data['data']['refreshToken'].toString(),
+        );
+        dio.Response? userDataResponse = await authController.getUserData(
+          widget.phone,
+        );
+
+        // {"id":"a5f7a89a-44c5-4423-984c-6df0ad0ea9cf","mobile":"01741095333","fullName":null,"email":null,"image":null,"gender":null,"address":null,"birth":null,"heightFt":null,"heightIn":null,"weight":null}
+        if (userDataResponse != null) {
+          printResponse(userDataResponse);
+          final userData = AllInfoModel.fromMap(
+            Map<String, dynamic>.from(userDataResponse.data['data']),
+          );
+          await Hive.box('user').put('info', userData.toJson());
+          if (userData.image == null ||
+              userData.fullName == null ||
+              userData.email == null ||
+              userData.address == null ||
+              userData.birth == null ||
+              userData.gender == null ||
+              userData.heightFt == null ||
+              userData.heightIn == null ||
+              userData.weight == null) {
+            Get.offAll(() => InfoCollector(initialData: userData));
+            return;
+          } else {
+            Get.offAll(() => LoginSuccessPage(isSignUp: widget.isSignup));
+            return;
+          }
+        }
+      }
+    } catch (e) {
+      log(e.toString());
+    }
+    Navigator.pop(context);
   }
 
   TextEditingController otpController = TextEditingController();
@@ -102,6 +160,7 @@ class _OtpPageState extends State<OtpPage> {
                   checkOTP(pin);
                 },
                 controller: otpController,
+                length: 6,
                 defaultPinTheme: PinTheme(
                   height: 56,
                   width: 56,

@@ -1,9 +1,13 @@
 {
-    "name": "any string",
-    "email": "any string",
-    "gender": "Male of Female",
-    "date_of_birth": "10-10-2002",
-    "height": "5.5",
-    "weight": "122 Kg",
-    "address": "Dhaka, Bangladesh"
+    "id": "a5f7a89a-44c5-4423-984c-6df0ad0ea9cf",
+    "mobile": "01741095333",
+    "fullName": null,
+    "email": null,
+    "image": null,
+    "gender": null,
+    "address": null,
+    "birth": null,
+    "heightFt": null,
+    "heightIn": null,
+    "weight": null
 }

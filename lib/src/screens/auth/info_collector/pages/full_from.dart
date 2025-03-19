@@ -1,17 +1,23 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:mime/mime.dart';
 import 'package:o_xbese/src/screens/auth/info_collector/controller/controller.dart';
+import 'package:o_xbese/src/screens/auth/info_collector/model/all_info_model.dart';
 import 'package:o_xbese/src/theme/colors.dart';
 import 'package:o_xbese/src/widgets/back_button.dart';
 import 'package:o_xbese/src/widgets/text_input_decoration.dart';
+import 'package:toastification/toastification.dart';
+import 'package:dio/dio.dart' as dio;
 
 class FullFromInfoCollector extends StatefulWidget {
   final PageController pageController;
@@ -26,6 +32,36 @@ class _FullFromInfoCollectorState extends State<FullFromInfoCollector> {
   File? profileImage;
   final ImagePicker imagePicker = ImagePicker();
   final formKey = GlobalKey<FormState>();
+  final TextEditingController emailController = TextEditingController();
+
+  Future<void> updateInfo() async {
+    if (profileImage == null) {
+      Fluttertoast.showToast(msg: 'Profile picture is required');
+      return;
+    }
+
+    Map<String, dynamic> userData = {
+      'email': emailController.text.trim(),
+      'fullName': controller.allInfo.value.fullName,
+      'gender': controller.allInfo.value.gender,
+      'birth': DateFormat('yyyy-MM-dd').format(controller.allInfo.value.birth!),
+      'weight': controller.allInfo.value.weight,
+      'heightFt': controller.allInfo.value.heightFt,
+      'heightIn': controller.allInfo.value.heightIn,
+      'address': controller.allInfo.value.address,
+    };
+
+    dio.FormData formData = dio.FormData.fromMap(userData);
+    formData.files.add(
+      MapEntry('image', await dio.MultipartFile.fromFile(profileImage!.path)),
+    );
+
+    final response = await controller.updateUserInfo(formData);
+    if (response != null) {
+      await Hive.box('user').put('info', response.data['data']);
+      Get.offAllNamed('/home');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,8 +80,7 @@ class _FullFromInfoCollectorState extends State<FullFromInfoCollector> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   getBackbutton(context, () {
-                    widget.pageController.animateToPage(
-                      0,
+                    widget.pageController.previousPage(
                       duration: const Duration(milliseconds: 500),
                       curve: Curves.easeIn,
                     );
@@ -122,7 +157,7 @@ class _FullFromInfoCollectorState extends State<FullFromInfoCollector> {
                         const Gap(16),
                         Center(
                           child: Text(
-                            controller.allInfo.value.name ?? '',
+                            controller.allInfo.value.fullName ?? '',
                             style: const TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w600,
@@ -144,8 +179,9 @@ class _FullFromInfoCollectorState extends State<FullFromInfoCollector> {
                         TextFormField(
                           decoration: getTextInputDecoration(
                             context,
-                            hintText: 'Tohid@Gmail.com',
+                            hintText: 'type your email here...',
                           ),
+                          controller: emailController,
                           keyboardType: TextInputType.emailAddress,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -153,6 +189,7 @@ class _FullFromInfoCollectorState extends State<FullFromInfoCollector> {
                             }
                             return null;
                           },
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
                         ),
                         const Gap(12),
                         const Align(
@@ -169,7 +206,7 @@ class _FullFromInfoCollectorState extends State<FullFromInfoCollector> {
                         TextFormField(
                           decoration: getTextInputDecoration(context),
                           controller: TextEditingController(
-                            text: controller.allInfo.value.name,
+                            text: controller.allInfo.value.fullName,
                           ),
                           enabled: false,
                         ),
@@ -209,7 +246,7 @@ class _FullFromInfoCollectorState extends State<FullFromInfoCollector> {
                           controller: TextEditingController(
                             text: DateFormat(
                               'yyyy-MM-dd',
-                            ).format(controller.allInfo.value.dateOfBirth!),
+                            ).format(controller.allInfo.value.birth!),
                           ),
                           enabled: false,
                         ),
@@ -248,7 +285,7 @@ class _FullFromInfoCollectorState extends State<FullFromInfoCollector> {
                           decoration: getTextInputDecoration(context),
                           controller: TextEditingController(
                             text:
-                                '${controller.allInfo.value.height!.toInt()} Feet ${((controller.allInfo.value.height! % controller.allInfo.value.height!.toInt()) * 12).toPrecision(2).toInt()} inch',
+                                '${controller.allInfo.value.heightFt!.toInt()} Feet ${controller.allInfo.value.heightIn!.toInt()} inch',
                           ),
                           enabled: false,
                         ),
@@ -284,24 +321,7 @@ class _FullFromInfoCollectorState extends State<FullFromInfoCollector> {
                 child: ElevatedButton(
                   onPressed: () async {
                     if (formKey.currentState?.validate() == true) {
-                      final Map previousUserInfo = Map.from(
-                        Hive.box('user').get('info', defaultValue: {}),
-                      );
-                      previousUserInfo.addAll({
-                        'name': controller.allInfo.value.name,
-                        'gender': controller.allInfo.value.gender,
-                        'dateOfBirth': DateFormat(
-                          'yyyy-MM-dd',
-                        ).format(controller.allInfo.value.dateOfBirth!),
-                        'weight': controller.allInfo.value.weight,
-                        'height': controller.allInfo.value.height,
-                        'address': controller.allInfo.value.address,
-                        'profileImage': profileImage?.path,
-                      });
-
-                      await Hive.box('user').put('info', previousUserInfo);
-
-                      Get.offAllNamed('/home');
+                      updateInfo();
                     }
                   },
                   child: const Text(

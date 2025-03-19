@@ -48,7 +48,7 @@ class _NameCollectPageState extends State<NameCollectPage> {
                 key: formKey,
                 child: TextFormField(
                   controller: TextEditingController(
-                    text: allInfoController.allInfo.value.name,
+                    text: allInfoController.allInfo.value.fullName,
                   ),
                   onTapOutside: (event) {
                     FocusScope.of(context).unfocus();
@@ -61,7 +61,7 @@ class _NameCollectPageState extends State<NameCollectPage> {
                     return null;
                   },
                   onChanged: (value) {
-                    allInfoController.allInfo.value.name = value;
+                    allInfoController.allInfo.value.fullName = value;
                   },
                   keyboardType: TextInputType.name,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
