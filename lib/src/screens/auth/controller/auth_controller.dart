@@ -73,7 +73,12 @@ class AuthController extends GetxController {
 }
 
 void printResponse(dio.Response response) {
-  log(jsonEncode(response.data), name: 'response_status');
+  log(response.requestOptions.path, name: 'request_path');
+  log(response.requestOptions.method, name: 'request_method');
+  log(
+    const JsonEncoder.withIndent('  ').convert(response.data),
+    name: 'response_status',
+  );
   log(response.statusCode.toString(), name: 'response_body');
 }
 
@@ -85,7 +90,3 @@ void showToastMessageFromResponse(dio.Response response) {
     log(e.toString(), name: 'error_message');
   }
 }
-
-
-
-//{"success":true,"message":"SIGNUP is successful","data":{"accessToken":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImE1ZjdhODlhLTQ0YzUtNDQyMy05ODRjLTZkZjBhZDBlYTljZiIsImlhdCI6MTc0MjM0NTY5MH0.PkUUllmHskZ-2QfDK8opyHAL2YDq0LxTFLP8Oy3WA8o"}}

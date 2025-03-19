@@ -5,6 +5,7 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:o_xbese/src/resources/svg_string.dart';
+import 'package:o_xbese/src/screens/auth/info_collector/controller/controller.dart';
 import 'package:o_xbese/src/screens/blog/blog_list_view.dart';
 import 'package:o_xbese/src/screens/create_workout_plan/create_workout_plan.dart';
 import 'package:o_xbese/src/theme/colors.dart';
@@ -21,6 +22,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final userBox = Hive.box('user');
+  AllInfoController allInfoController = Get.find();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,12 +61,14 @@ class _HomePageState extends State<HomePage> {
                           fontWeight: FontWeight.w400,
                         ),
                       ),
-                      Text(
-                        'My Names',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w300,
-                          color: MyAppColors.mutedGray,
+                      Obx(
+                        () => Text(
+                          allInfoController.allInfo.value.fullName,
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w300,
+                            color: MyAppColors.mutedGray,
+                          ),
                         ),
                       ),
                     ],
@@ -79,7 +84,7 @@ class _HomePageState extends State<HomePage> {
 
             Padding(
               padding: const EdgeInsets.all(15.0),
-              child: pointsOverviewWidget(context),
+              child: pointsOverviewWidget(context, allInfoController),
             ),
             const Gap(20),
             Padding(

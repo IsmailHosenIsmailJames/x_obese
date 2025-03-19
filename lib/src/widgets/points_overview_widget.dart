@@ -2,10 +2,16 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
+import 'package:get/get.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:o_xbese/src/resources/svg_string.dart';
+import 'package:o_xbese/src/screens/auth/info_collector/controller/controller.dart';
 import 'package:o_xbese/src/theme/colors.dart';
 
-Column pointsOverviewWidget(BuildContext context) {
+Column pointsOverviewWidget(
+  BuildContext context,
+  AllInfoController controller,
+) {
   return Column(
     children: [
       Container(
@@ -29,68 +35,121 @@ Column pointsOverviewWidget(BuildContext context) {
                       child: CircleAvatar(
                         radius: 30,
                         backgroundColor: MyAppColors.primary,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            const Text(
-                              '150',
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w700,
+                        child: Obx(
+                          () => Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                controller.selectedPoints.value.toString(),
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w700,
+                                ),
                               ),
-                            ),
-                            Text(
-                              'Calories',
-                              style: TextStyle(
-                                fontSize: 8,
-                                color: MyAppColors.mutedGray,
+                              Text(
+                                controller.selectedCategory.value,
+                                style: TextStyle(
+                                  fontSize: 8,
+                                  color: MyAppColors.mutedGray,
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     ),
-                    PieChart(
-                      PieChartData(
-                        startDegreeOffset: 180,
-                        sectionsSpace: 3,
-                        pieTouchData: PieTouchData(
-                          enabled: true,
-                          longPressDuration: const Duration(milliseconds: 200),
+                    Obx(
+                      () => PieChart(
+                        PieChartData(
+                          startDegreeOffset: 180,
+                          sectionsSpace: 3,
+
+                          pieTouchData: PieTouchData(
+                            touchCallback: (p0, p1) {
+                              final touchedSection =
+                                  p1?.touchedSection?.touchedSection;
+                              if (touchedSection != null) {
+                                controller.selectedPoints.value =
+                                    touchedSection.value.toInt() - 1;
+                                controller.selectedCategory.value =
+                                    touchedSection.title.toString();
+                              }
+                            },
+                            enabled: true,
+                            longPressDuration: const Duration(
+                              milliseconds: 200,
+                            ),
+                          ),
+                          centerSpaceRadius: 40,
+
+                          sections: [
+                            PieChartSectionData(
+                              value:
+                                  (controller.workStatus.value.heartPts
+                                          ?.toDouble() ??
+                                      0.0) +
+                                  1,
+                              color: Colors.yellow,
+                              radius:
+                                  controller.selectedCategory.value ==
+                                          'Heart Points'
+                                      ? 27
+                                      : 20,
+                              title: 'Heart Points',
+                              showTitle: false,
+                            ),
+                            PieChartSectionData(
+                              value:
+                                  (controller.workStatus.value.durationMs
+                                          ?.toDouble() ??
+                                      0.0) +
+                                  1,
+                              color: Colors.green,
+                              radius:
+                                  controller.selectedCategory.value ==
+                                          'Duration'
+                                      ? 27
+                                      : 20,
+                              title: 'Duration',
+                              showTitle: false,
+                            ),
+                            PieChartSectionData(
+                              value:
+                                  (controller.workStatus.value.steps
+                                          ?.toDouble() ??
+                                      0.0) +
+                                  1,
+                              color: Colors.red,
+                              radius:
+                                  controller.selectedCategory.value == 'Steps'
+                                      ? 27
+                                      : 20,
+                              title: 'Steps',
+                              showTitle: false,
+                            ),
+
+                            PieChartSectionData(
+                              value:
+                                  (controller.workStatus.value.calories
+                                          ?.toDouble() ??
+                                      0.0) +
+                                  1,
+                              color: Colors.blue,
+                              title: 'Calories',
+                              radius:
+                                  controller.selectedCategory.value ==
+                                          'Calories'
+                                      ? 27
+                                      : 20,
+                              showTitle: false,
+                            ),
+                          ],
                         ),
-                        centerSpaceRadius: 40,
-                        sections: [
-                          PieChartSectionData(
-                            value: 15,
-                            color: Colors.yellow,
-                            radius: 18,
-                            showTitle: false,
-                          ),
-                          PieChartSectionData(
-                            value: 20,
-                            color: Colors.green,
-                            radius: 18,
-                            showTitle: false,
-                          ),
-                          PieChartSectionData(
-                            value: 40,
-                            color: Colors.red,
-                            radius: 18,
-                            showTitle: false,
-                          ),
 
-                          PieChartSectionData(
-                            value: 25,
-                            color: Colors.blue,
-                            radius: 23,
-                            showTitle: false,
-                          ),
-                        ],
+                        duration: const Duration(milliseconds: 150),
+                        curve: Curves.linear,
                       ),
-
-                      duration: const Duration(milliseconds: 150),
-                      curve: Curves.linear,
                     ),
                   ],
                 ),
@@ -107,11 +166,15 @@ Column pointsOverviewWidget(BuildContext context) {
                       borderRadius: BorderRadius.circular(4),
                     ),
                     padding: const EdgeInsets.all(8),
-                    child: getPointsWidget(
-                      context: context,
-                      svg: stepsIconRed,
-                      title: 'Steps',
-                      points: '3303.0',
+                    child: Obx(
+                      () => getPointsWidget(
+                        context: context,
+                        svg: stepsIconRed,
+                        title: 'Steps',
+                        points:
+                            controller.workStatus.value.steps?.toString() ??
+                            '0',
+                      ),
                     ),
                   ),
                   const Gap(6),
@@ -123,11 +186,15 @@ Column pointsOverviewWidget(BuildContext context) {
                       borderRadius: BorderRadius.circular(4),
                     ),
                     padding: const EdgeInsets.all(8),
-                    child: getPointsWidget(
-                      context: context,
-                      svg: calorieIconBlue,
-                      title: 'Calories',
-                      points: '150.0',
+                    child: Obx(
+                      () => getPointsWidget(
+                        context: context,
+                        svg: calorieIconBlue,
+                        title: 'Calories',
+                        points:
+                            controller.workStatus.value.calories?.toString() ??
+                            '0',
+                      ),
                     ),
                   ),
                 ],
@@ -153,11 +220,14 @@ Column pointsOverviewWidget(BuildContext context) {
                   color: MyAppColors.primary,
                   borderRadius: BorderRadius.circular(4),
                 ),
-                child: getPointsWidget(
-                  context: context,
-                  svg: heartIconSVGYellow,
-                  title: 'Heart Points',
-                  points: '5.0',
+                child: Obx(
+                  () => getPointsWidget(
+                    context: context,
+                    svg: heartIconSVGYellow,
+                    title: 'Heart Points',
+                    points:
+                        controller.workStatus.value.heartPts?.toString() ?? '0',
+                  ),
                 ),
               ),
             ),
@@ -170,11 +240,15 @@ Column pointsOverviewWidget(BuildContext context) {
                   color: MyAppColors.primary,
                   borderRadius: BorderRadius.circular(4),
                 ),
-                child: getPointsWidget(
-                  context: context,
-                  svg: workOutIconSVGGreen,
-                  title: 'Workout Time',
-                  points: '150.0',
+                child: Obx(
+                  () => getPointsWidget(
+                    context: context,
+                    svg: workOutIconSVGGreen,
+                    title: 'Workout Time',
+                    points:
+                        controller.workStatus.value.durationMs?.toString() ??
+                        '0',
+                  ),
                 ),
               ),
             ),
