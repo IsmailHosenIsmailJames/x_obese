@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
@@ -86,8 +85,7 @@ class _LocationCollectorState extends State<LocationCollector> {
                     Align(
                       alignment: Alignment.centerLeft,
                       child: getBackbutton(context, () {
-                        widget.pageController.animateToPage(
-                          3,
+                        widget.pageController.previousPage(
                           duration: const Duration(milliseconds: 500),
                           curve: Curves.easeIn,
                         );

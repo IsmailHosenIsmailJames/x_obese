@@ -3,12 +3,11 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
 class LoginSuccessPage extends StatelessWidget {
-  final bool isSignUp;
-  const LoginSuccessPage({super.key, required this.isSignUp});
+  const LoginSuccessPage({super.key});
 
   autoRoute() async {
-    await Future.delayed(const Duration(seconds: 1));
-    Get.offAllNamed(isSignUp ? '/nameCollectPage' : '/home');
+    await Future.delayed(const Duration(seconds: 2));
+    Get.offAllNamed('/home');
   }
 
   @override

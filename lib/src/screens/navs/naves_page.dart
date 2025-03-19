@@ -1,7 +1,5 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:o_xbese/src/screens/activity/workout_page.dart';
 import 'package:o_xbese/src/screens/home/home_page.dart';

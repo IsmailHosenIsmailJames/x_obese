@@ -208,7 +208,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                             color: Colors.black,
                           ),
                         ),
-                        hintText: '0181736637',
+                        hintText: '01xxxxxxxxx',
                         hintStyle: TextStyle(color: MyAppColors.mutedGray),
                         prefixIcon: SizedBox(
                           width: 11.667,

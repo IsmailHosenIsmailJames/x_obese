@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -8,6 +7,7 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
+import 'package:o_xbese/src/core/common/functions/is_information_fulfilled.dart';
 import 'package:o_xbese/src/screens/auth/controller/auth_controller.dart';
 import 'package:o_xbese/src/screens/auth/info_collector/info_collector.dart';
 import 'package:o_xbese/src/screens/auth/info_collector/model/all_info_model.dart';
@@ -67,19 +67,11 @@ class _OtpPageState extends State<OtpPage> {
             Map<String, dynamic>.from(userDataResponse.data['data']),
           );
           await Hive.box('user').put('info', userData.toJson());
-          if (userData.image == null ||
-              userData.fullName == null ||
-              userData.email == null ||
-              userData.address == null ||
-              userData.birth == null ||
-              userData.gender == null ||
-              userData.heightFt == null ||
-              userData.heightIn == null ||
-              userData.weight == null) {
+          if (isInformationNotFullFilled(userData)) {
             Get.offAll(() => InfoCollector(initialData: userData));
             return;
           } else {
-            Get.offAll(() => LoginSuccessPage(isSignUp: widget.isSignup));
+            Get.offAll(() => const LoginSuccessPage());
             return;
           }
         }
@@ -164,7 +156,7 @@ class _OtpPageState extends State<OtpPage> {
                 defaultPinTheme: PinTheme(
                   height: 56,
                   width: 56,
-                  margin: const EdgeInsets.all(5),
+                  margin: const EdgeInsets.all(3),
                   decoration: BoxDecoration(
                     border: Border.all(
                       color: MyAppColors.transparentGray,

@@ -3,20 +3,16 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
-import 'package:mime/mime.dart';
 import 'package:o_xbese/src/screens/auth/info_collector/controller/controller.dart';
-import 'package:o_xbese/src/screens/auth/info_collector/model/all_info_model.dart';
 import 'package:o_xbese/src/theme/colors.dart';
 import 'package:o_xbese/src/widgets/back_button.dart';
 import 'package:o_xbese/src/widgets/text_input_decoration.dart';
-import 'package:toastification/toastification.dart';
 import 'package:dio/dio.dart' as dio;
 
 class FullFromInfoCollector extends StatefulWidget {
@@ -58,7 +54,7 @@ class _FullFromInfoCollectorState extends State<FullFromInfoCollector> {
 
     final response = await controller.updateUserInfo(formData);
     if (response != null) {
-      await Hive.box('user').put('info', response.data['data']);
+      await Hive.box('user').put('info', jsonEncode(response.data['data']));
       Get.offAllNamed('/home');
     }
   }

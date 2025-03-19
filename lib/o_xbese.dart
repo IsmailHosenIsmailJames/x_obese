@@ -1,10 +1,8 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:o_xbese/src/core/common/functions/is_information_fulfilled.dart';
 import 'package:o_xbese/src/screens/auth/info_collector/info_collector.dart';
 import 'package:o_xbese/src/screens/auth/info_collector/model/all_info_model.dart';
 import 'package:o_xbese/src/screens/auth/login/login_signup_page.dart';
@@ -58,10 +56,9 @@ class OXbese extends StatelessWidget {
       initialRoute:
           Hive.box('user').get('info', defaultValue: null) == null
               ? '/intro'
-              : jsonDecode(
-                    Hive.box('user').get('info', defaultValue: null),
-                  )['fullName'] ==
-                  null
+              : isInformationNotFullFilled(
+                AllInfoModel.fromJson(Hive.box('user').get('info')),
+              )
               ? '/infoCollector'
               : '/home',
       onInit: () async {

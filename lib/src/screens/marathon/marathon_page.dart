@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
@@ -39,7 +38,7 @@ class _MarathonPageState extends State<MarathonPage> {
                 ),
                 const Spacer(),
                 const Text(
-                  "Marathon Program",
+                  'Marathon Program',
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                 ),
                 const Spacer(),
