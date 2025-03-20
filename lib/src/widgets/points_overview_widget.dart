@@ -59,98 +59,7 @@ Column pointsOverviewWidget(
                         ),
                       ),
                     ),
-                    Obx(
-                      () => PieChart(
-                        PieChartData(
-                          startDegreeOffset: 180,
-                          sectionsSpace: 3,
-
-                          pieTouchData: PieTouchData(
-                            touchCallback: (p0, p1) {
-                              final touchedSection =
-                                  p1?.touchedSection?.touchedSection;
-                              if (touchedSection != null) {
-                                controller.selectedPoints.value =
-                                    touchedSection.value.toInt() - 1;
-                                controller.selectedCategory.value =
-                                    touchedSection.title.toString();
-                              }
-                            },
-                            enabled: true,
-                            longPressDuration: const Duration(
-                              milliseconds: 200,
-                            ),
-                          ),
-                          centerSpaceRadius: 40,
-
-                          sections: [
-                            PieChartSectionData(
-                              value:
-                                  (controller.workStatus.value.heartPts
-                                          ?.toDouble() ??
-                                      0.0) +
-                                  1,
-                              color: Colors.yellow,
-                              radius:
-                                  controller.selectedCategory.value ==
-                                          'Heart Points'
-                                      ? 27
-                                      : 20,
-                              title: 'Heart Points',
-                              showTitle: false,
-                            ),
-                            PieChartSectionData(
-                              value:
-                                  (controller.workStatus.value.durationMs
-                                          ?.toDouble() ??
-                                      0.0) +
-                                  1,
-                              color: Colors.green,
-                              radius:
-                                  controller.selectedCategory.value ==
-                                          'Duration'
-                                      ? 27
-                                      : 20,
-                              title: 'Duration',
-                              showTitle: false,
-                            ),
-                            PieChartSectionData(
-                              value:
-                                  (controller.workStatus.value.steps
-                                          ?.toDouble() ??
-                                      0.0) +
-                                  1,
-                              color: Colors.red,
-                              radius:
-                                  controller.selectedCategory.value == 'Steps'
-                                      ? 27
-                                      : 20,
-                              title: 'Steps',
-                              showTitle: false,
-                            ),
-
-                            PieChartSectionData(
-                              value:
-                                  (controller.workStatus.value.calories
-                                          ?.toDouble() ??
-                                      0.0) +
-                                  1,
-                              color: Colors.blue,
-                              title: 'Calories',
-                              radius:
-                                  controller.selectedCategory.value ==
-                                          'Calories'
-                                      ? 27
-                                      : 20,
-                              showTitle: false,
-                            ),
-                          ],
-                        ),
-
-                        duration: const Duration(milliseconds: 150),
-                        curve: Curves.linear,
-                      ),
-                    ),
+                    Obx(() => getPieChart(controller)),
                   ],
                 ),
               ),
@@ -256,6 +165,64 @@ Column pointsOverviewWidget(
         ),
       ),
     ],
+  );
+}
+
+PieChart getPieChart(AllInfoController controller) {
+  return PieChart(
+    PieChartData(
+      startDegreeOffset: 180,
+      sectionsSpace: 3,
+
+      pieTouchData: PieTouchData(
+        touchCallback: (p0, p1) {
+          final touchedSection = p1?.touchedSection?.touchedSection;
+          if (touchedSection != null) {
+            controller.selectedPoints.value = touchedSection.value.toInt() - 1;
+            controller.selectedCategory.value = touchedSection.title.toString();
+          }
+        },
+        enabled: true,
+        longPressDuration: const Duration(milliseconds: 400),
+      ),
+      centerSpaceRadius: 40,
+
+      sections: [
+        PieChartSectionData(
+          value: (controller.workStatus.value.heartPts?.toDouble() ?? 0.0) + 1,
+          color: Colors.yellow,
+          radius: controller.selectedCategory.value == 'Heart Points' ? 27 : 20,
+          title: 'Heart Points',
+          showTitle: false,
+        ),
+        PieChartSectionData(
+          value:
+              (controller.workStatus.value.durationMs?.toDouble() ?? 0.0) + 1,
+          color: Colors.green,
+          radius: controller.selectedCategory.value == 'Duration' ? 27 : 20,
+          title: 'Duration',
+          showTitle: false,
+        ),
+        PieChartSectionData(
+          value: (controller.workStatus.value.steps?.toDouble() ?? 0.0) + 1,
+          color: Colors.red,
+          radius: controller.selectedCategory.value == 'Steps' ? 27 : 20,
+          title: 'Steps',
+          showTitle: false,
+        ),
+
+        PieChartSectionData(
+          value: (controller.workStatus.value.calories?.toDouble() ?? 0.0) + 1,
+          color: Colors.blue,
+          title: 'Calories',
+          radius: controller.selectedCategory.value == 'Calories' ? 27 : 20,
+          showTitle: false,
+        ),
+      ],
+    ),
+
+    duration: const Duration(milliseconds: 300),
+    curve: Curves.linear,
   );
 }
 

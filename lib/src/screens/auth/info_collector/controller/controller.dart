@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:o_xbese/src/apis/apis_url.dart';
 import 'package:o_xbese/src/apis/middleware/jwt_middleware.dart';
 import 'package:o_xbese/src/screens/auth/controller/auth_controller.dart';
@@ -6,11 +7,13 @@ import 'package:o_xbese/src/screens/auth/info_collector/model/all_info_model.dar
 import 'package:dio/dio.dart' as dio;
 import 'package:o_xbese/src/screens/resources/workout/status.dart';
 
-class AllInfoController {
+class AllInfoController extends GetxController {
   RxInt selectedPoints = 0.obs;
   RxString selectedCategory = 'Calories'.obs;
 
   static DioClient dioClient = DioClient(baseAPI);
+  static Box userBox = Hive.box('user');
+
   Rx<AllInfoModel> allInfo = Rx<AllInfoModel>(AllInfoModel());
   Rx<WorkStatusModel> workStatus = Rx<WorkStatusModel>(WorkStatusModel());
 
@@ -38,5 +41,12 @@ class AllInfoController {
     } else {
       workStatus.value = WorkStatusModel();
     }
+  }
+
+  @override
+  void onInit() {
+    allInfo.value = AllInfoModel.fromJson(userBox.get('info'));
+    dataAsync();
+    super.onInit();
   }
 }

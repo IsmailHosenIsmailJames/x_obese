@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:o_xbese/src/apis/apis_url.dart';
 import 'package:o_xbese/src/resources/svg_string.dart';
 import 'package:o_xbese/src/screens/auth/info_collector/controller/controller.dart';
 import 'package:o_xbese/src/screens/blog/blog_list_view.dart';
@@ -43,7 +44,7 @@ class _HomePageState extends State<HomePage> {
                       color: MyAppColors.transparentGray,
                       child: CachedNetworkImage(
                         imageUrl:
-                            'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Pierre-Person.jpg/400px-Pierre-Person.jpg?20170622160125',
+                            '$baseAPI/uploads/photos/${allInfoController.allInfo.value.image}',
                         alignment: Alignment.topCenter,
                         fit: BoxFit.cover,
                       ),

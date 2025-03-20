@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:o_xbese/src/screens/activity/workout_page.dart';
 import 'package:o_xbese/src/screens/auth/info_collector/controller/controller.dart';
-import 'package:o_xbese/src/screens/auth/info_collector/model/all_info_model.dart';
 import 'package:o_xbese/src/screens/home/home_page.dart';
 import 'package:o_xbese/src/resources/svg_string.dart';
 import 'package:o_xbese/src/screens/marathon/marathon_page.dart';
@@ -26,15 +25,6 @@ class _NavesPageState extends State<NavesPage> {
 
   final userBox = Hive.box('user');
   AllInfoController allInfoController = Get.put(AllInfoController());
-
-  @override
-  void initState() {
-    allInfoController.allInfo.value = AllInfoModel.fromJson(
-      userBox.get('info'),
-    );
-    allInfoController.dataAsync();
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
