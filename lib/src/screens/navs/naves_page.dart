@@ -3,7 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:o_xbese/src/screens/activity/workout_page.dart';
-import 'package:o_xbese/src/screens/auth/info_collector/controller/controller.dart';
+import 'package:o_xbese/src/screens/controller/info_collector/controller/controller.dart';
 import 'package:o_xbese/src/screens/home/home_page.dart';
 import 'package:o_xbese/src/resources/svg_string.dart';
 import 'package:o_xbese/src/screens/marathon/marathon_page.dart';

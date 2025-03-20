@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:o_xbese/src/screens/auth/info_collector/controller/controller.dart';
+import 'package:o_xbese/src/screens/controller/info_collector/controller/controller.dart';
 import 'package:o_xbese/src/theme/colors.dart' show MyAppColors;
 import 'package:o_xbese/src/widgets/text_input_decoration.dart';
 

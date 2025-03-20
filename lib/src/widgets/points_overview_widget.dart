@@ -5,7 +5,7 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:o_xbese/src/resources/svg_string.dart';
-import 'package:o_xbese/src/screens/auth/info_collector/controller/controller.dart';
+import 'package:o_xbese/src/screens/controller/info_collector/controller/controller.dart';
 import 'package:o_xbese/src/theme/colors.dart';
 
 Column pointsOverviewWidget(

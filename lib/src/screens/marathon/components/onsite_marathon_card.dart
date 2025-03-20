@@ -2,13 +2,15 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
+import 'package:o_xbese/src/screens/marathon/models/model.dart';
 import 'package:o_xbese/src/theme/colors.dart';
 
 import '../details_marathon/marathon_details_view.dart';
 
 Widget getOnsiteMarathon({
   required BuildContext context,
-  required EdgeInsetsGeometry margin,
+  required MarathonModel marathonData,
+  EdgeInsetsGeometry? margin,
 }) {
   return Container(
     padding: const EdgeInsets.only(left: 17, right: 17, top: 20, bottom: 20),
@@ -67,7 +69,12 @@ Widget getOnsiteMarathon({
           child: ElevatedButton.icon(
             style: ElevatedButton.styleFrom(iconAlignment: IconAlignment.end),
             onPressed: () {
-              Get.to(() => const MarathonDetailsView(isVirtual: false));
+              Get.to(
+                () => MarathonDetailsView(
+                  isVirtual: marathonData.type == 'virtual',
+                  marathonData: marathonData,
+                ),
+              );
             },
             label: const Text('Physical  Challenge'),
             icon: const Icon(Icons.arrow_forward, color: Colors.black),

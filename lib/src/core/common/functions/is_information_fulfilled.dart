@@ -1,4 +1,4 @@
-import 'package:o_xbese/src/screens/auth/info_collector/model/all_info_model.dart';
+import 'package:o_xbese/src/screens/controller/info_collector/model/all_info_model.dart';
 
 bool isInformationNotFullFilled(AllInfoModel userData) {
   return userData.image == null ||

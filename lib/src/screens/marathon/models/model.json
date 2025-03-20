@@ -1,0 +1,42 @@
+{
+    "success": true,
+    "message": "Get marathons successfully!",
+    "data": [
+        {
+            "id": "m-uuid-2",
+            "title": "February 10 km Challenge Run",
+            "description": "A program designed to push your limits, build endurance, and celebrate your strength!",
+            "about": "A program designed to push your limits, build endurance, and celebrate your strength! Whether this program offers personalized training plans, progress tracking, and a vibrant community to keep you motivated every step of the way.",
+            "distanceKm": 10,
+            "location": "Uttara, Dhaka",
+            "startDate": "2025-03-05T00:00:00.000Z",
+            "endDate": "2025-03-05T00:00:00.000Z",
+            "imagePath": "e9c961ab-d837-4d27-8d92-ceb1dfdfd083-1741854397870.png",
+            "type": "onsite",
+            "createdBy": null,
+            "createdAt": "2025-03-13T09:27:25.639Z",
+            "updatedAt": "2025-03-13T09:27:25.639Z"
+        },
+        {
+            "id": "m-uuid-1",
+            "title": "February 5k Challenge Run",
+            "description": "A program designed to push your limits, build endurance, and celebrate your strength!",
+            "about": "A program designed to push your limits, build endurance, and celebrate your strength! Whether this program offers personalized training plans, progress tracking, and a vibrant community to keep you motivated every step of the way.",
+            "distanceKm": 5,
+            "location": null,
+            "startDate": "2025-01-01T00:00:00.000Z",
+            "endDate": "2025-02-01T00:00:00.000Z",
+            "imagePath": "e9c961ab-d837-4d27-8d92-ceb1dfdfd083-1741854397870.png",
+            "type": "virtual",
+            "createdBy": null,
+            "createdAt": "2025-03-13T09:27:25.588Z",
+            "updatedAt": "2025-03-13T09:27:25.588Z"
+        }
+    ],
+    "pagination": {
+        "current_page": 1,
+        "per_page": 20,
+        "total_page": 1,
+        "total_items": 2
+    }
+}

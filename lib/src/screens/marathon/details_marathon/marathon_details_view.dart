@@ -2,11 +2,19 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
+import 'package:intl/intl.dart';
+import 'package:o_xbese/src/apis/apis_url.dart';
+import 'package:o_xbese/src/screens/marathon/models/model.dart';
 import 'package:o_xbese/src/theme/colors.dart';
 
 class MarathonDetailsView extends StatefulWidget {
+  final MarathonModel marathonData;
   final bool isVirtual;
-  const MarathonDetailsView({super.key, required this.isVirtual});
+  const MarathonDetailsView({
+    super.key,
+    required this.isVirtual,
+    required this.marathonData,
+  });
 
   @override
   State<MarathonDetailsView> createState() => _MarathonDetailsViewState();
@@ -26,7 +34,7 @@ class _MarathonDetailsViewState extends State<MarathonDetailsView> {
               width: double.infinity,
               child: CachedNetworkImage(
                 imageUrl:
-                    'https://s3-alpha-sig.figma.com/img/2994/ba6b/3b010d2ea55fb31ad7d5c5228e7d651b?Expires=1742774400&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=m1LpTv2G0rJgDKyOctBmjmETVRAulB3K1Fu6H~uuFadf-oi1dg4lpqT-h5VIoKP7lJOMABosM5PQ2VGEQyuQyl0pojyD3PyVk1uIlWsZ2fgSJnXjNV5CX6v8Qc~lN5glboVIH2zx2NO1isdvcV8jPcW-i3DxK5ap0nktBzEqBECcO4dqoKhbmE0wpf-30SyvfZSHmtap6bfgKH2zTbwE9JrpnKLbCyf-ikLv-cwsJZVJFFTAgkwqCFT69PclxYFMfMgz0o4jxot9RGgtBI7Wy7YrynoS83FuWyPLAPk8Xh7VX79eG~E1xcfXvOp58mrCP4Lk69QpbCiqGv308O01Jg__',
+                    '$baseAPI/uploads/photos/${widget.marathonData.imagePath}',
                 fit: BoxFit.cover,
               ),
             ),
@@ -37,13 +45,13 @@ class _MarathonDetailsViewState extends State<MarathonDetailsView> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    'February 5k Challenge Run',
+                  Text(
+                    widget.marathonData.title ?? '',
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
                   ),
                   const Gap(8),
                   Text(
-                    'A program designed to push your limits, build endurance, and celebrate your strength!',
+                    widget.marathonData.description ?? '',
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w300,
@@ -139,7 +147,7 @@ class _MarathonDetailsViewState extends State<MarathonDetailsView> {
                   ),
                   const Gap(12),
                   Text(
-                    'A program designed to push your limits, build endurance, and celebrate your strength! Whether this program offers personalized training plans, progress tracking, and a vibrant community to keep you motivated every step of the way.',
+                    widget.marathonData.about ?? '',
                     style: TextStyle(
                       fontSize: 13,
                       fontWeight: FontWeight.w300,
@@ -161,7 +169,7 @@ class _MarathonDetailsViewState extends State<MarathonDetailsView> {
                       ),
                       const Gap(10),
                       Text(
-                        'February 21,2025  TO  March 15,2025',
+                        '${DateFormat('yyyy-MM-dd').format(widget.marathonData.startDate!)}  TO  ${DateFormat('yyyy-MM-dd').format(widget.marathonData.endDate!)}',
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w300,

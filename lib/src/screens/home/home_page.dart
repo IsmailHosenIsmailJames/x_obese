@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:o_xbese/src/apis/apis_url.dart';
 import 'package:o_xbese/src/resources/svg_string.dart';
-import 'package:o_xbese/src/screens/auth/info_collector/controller/controller.dart';
+import 'package:o_xbese/src/screens/controller/info_collector/controller/controller.dart';
 import 'package:o_xbese/src/screens/blog/blog_list_view.dart';
 import 'package:o_xbese/src/screens/create_workout_plan/create_workout_plan.dart';
 import 'package:o_xbese/src/theme/colors.dart';
@@ -144,7 +144,7 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                         onPressed: () {
-                          Get.to(() => CreateWorkoutPlan());
+                          Get.to(() => const CreateWorkoutPlan());
                         },
                         child: const Text('Create'),
                       ),
@@ -175,23 +175,20 @@ class _HomePageState extends State<HomePage> {
             ),
 
             SizedBox(
-              height: 210,
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                children: [
-                  getMarathonCard(
-                    context: context,
-                    margin: const EdgeInsets.only(left: 15),
-                  ),
-                  getMarathonCard(
-                    context: context,
-                    margin: const EdgeInsets.only(left: 15),
-                  ),
-                  getMarathonCard(
-                    context: context,
-                    margin: const EdgeInsets.only(left: 15),
-                  ),
-                ],
+              height: 220,
+              child: Obx(
+                () => ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: allInfoController.marathonList.length,
+                  padding: const EdgeInsets.only(right: 15),
+                  itemBuilder: (context, index) {
+                    return getMarathonCard(
+                      context: context,
+                      marathonData: allInfoController.marathonList[index],
+                      margin: const EdgeInsets.only(left: 15),
+                    );
+                  },
+                ),
               ),
             ),
 

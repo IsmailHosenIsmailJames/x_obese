@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
+import 'package:get/get.dart';
+import 'package:o_xbese/src/screens/controller/info_collector/controller/controller.dart';
 import 'package:o_xbese/src/screens/marathon/components/onsite_marathon_card.dart';
 import 'package:o_xbese/src/theme/colors.dart';
 import 'package:o_xbese/src/widgets/back_button.dart';
@@ -17,6 +19,7 @@ class MarathonPage extends StatefulWidget {
 class _MarathonPageState extends State<MarathonPage> {
   int selectedIndex = 0;
   PageController pageController = PageController();
+  AllInfoController allInfoController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -124,33 +127,39 @@ class _MarathonPageState extends State<MarathonPage> {
                 });
               },
               children: [
-                ListView.builder(
-                  padding: const EdgeInsets.only(
-                    top: 15.0,
-                    left: 15,
-                    right: 15,
+                Obx(
+                  () => ListView.builder(
+                    padding: const EdgeInsets.only(
+                      top: 15.0,
+                      left: 15,
+                      right: 15,
+                    ),
+                    itemCount: allInfoController.marathonList.length,
+                    itemBuilder: (context, index) {
+                      return getMarathonCard(
+                        marathonData: allInfoController.marathonList[index],
+                        context: context,
+                        margin: const EdgeInsets.only(top: 20),
+                      );
+                    },
                   ),
-                  itemCount: 10,
-                  itemBuilder: (context, index) {
-                    return getMarathonCard(
-                      context: context,
-                      margin: const EdgeInsets.only(top: 20),
-                    );
-                  },
                 ),
-                ListView.builder(
-                  padding: const EdgeInsets.only(
-                    top: 15.0,
-                    left: 15,
-                    right: 15,
+                Obx(
+                  () => ListView.builder(
+                    padding: const EdgeInsets.only(
+                      top: 15.0,
+                      left: 15,
+                      right: 15,
+                    ),
+                    itemCount: allInfoController.marathonList.length,
+                    itemBuilder: (context, index) {
+                      return getOnsiteMarathon(
+                        context: context,
+                        marathonData: allInfoController.marathonList[index],
+                        margin: const EdgeInsets.only(top: 20),
+                      );
+                    },
                   ),
-                  itemCount: 10,
-                  itemBuilder: (context, index) {
-                    return getOnsiteMarathon(
-                      context: context,
-                      margin: const EdgeInsets.only(top: 20),
-                    );
-                  },
                 ),
               ],
             ),

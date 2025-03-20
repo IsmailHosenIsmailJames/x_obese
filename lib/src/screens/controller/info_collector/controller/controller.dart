@@ -3,8 +3,9 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:o_xbese/src/apis/apis_url.dart';
 import 'package:o_xbese/src/apis/middleware/jwt_middleware.dart';
 import 'package:o_xbese/src/screens/auth/controller/auth_controller.dart';
-import 'package:o_xbese/src/screens/auth/info_collector/model/all_info_model.dart';
+import 'package:o_xbese/src/screens/controller/info_collector/model/all_info_model.dart';
 import 'package:dio/dio.dart' as dio;
+import 'package:o_xbese/src/screens/marathon/models/model.dart';
 import 'package:o_xbese/src/screens/resources/workout/status.dart';
 
 class AllInfoController extends GetxController {
@@ -16,6 +17,7 @@ class AllInfoController extends GetxController {
 
   Rx<AllInfoModel> allInfo = Rx<AllInfoModel>(AllInfoModel());
   Rx<WorkStatusModel> workStatus = Rx<WorkStatusModel>(WorkStatusModel());
+  RxList<MarathonModel> marathonList = RxList<MarathonModel>([]);
 
   Future<dio.Response?> updateUserInfo(dynamic data) async {
     final response = await dioClient.patch(userDataPath, data: data);
@@ -40,6 +42,16 @@ class AllInfoController extends GetxController {
       selectedPoints.value = workStatus.value.calories ?? 0;
     } else {
       workStatus.value = WorkStatusModel();
+    }
+
+    // get marathon programs
+    response = await dioClient.get('/api/marathon/v1/marathon');
+    printResponse(response);
+    if (response.statusCode == 200) {
+      List marathonListData = response.data['data'];
+      for (var marathon in marathonListData) {
+        marathonList.add(MarathonModel.fromMap(marathon));
+      }
     }
   }
 
