@@ -1,19 +1,96 @@
+import 'dart:async';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:o_xbese/src/core/common/functions/calculate_distance.dart';
+import 'package:o_xbese/src/core/common/functions/format_sec_to_time.dart';
 import 'package:o_xbese/src/theme/colors.dart';
 import 'package:o_xbese/src/widgets/back_button.dart';
 
 class LiveActivityPage extends StatefulWidget {
-  const LiveActivityPage({super.key});
+  final String workoutType;
+  final LatLng initialLatLon;
+  const LiveActivityPage({
+    super.key,
+    required this.workoutType,
+    required this.initialLatLon,
+  });
 
   @override
   State<LiveActivityPage> createState() => _LiveActivityPageState();
 }
 
 class _LiveActivityPageState extends State<LiveActivityPage> {
+  bool isPaused = false;
+  final Completer<GoogleMapController> googleMapController =
+      Completer<GoogleMapController>();
+  double distanceEveryPaused = 0;
+  List<LatLng> latLonOfPositions = [];
+  List<DateTime> timeStampsOfRecordTimePosition = [];
+  int workoutDurationSec = 1;
+  late Map<String, Marker> markersSet = {
+    'start': Marker(
+      markerId: const MarkerId('start'),
+      infoWindow: InfoWindow(title: '${widget.workoutType} Starting point'),
+      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
+      position: widget.initialLatLon,
+    ),
+  };
+
+  late StreamSubscription streamSubscription;
+
+  @override
+  void initState() {
+    streamSubscription = Geolocator.getPositionStream(
+      locationSettings: AndroidSettings(
+        accuracy: LocationAccuracy.bestForNavigation,
+      ),
+    ).listen((event) async {
+      if (!isPaused) {
+        timeStampsOfRecordTimePosition.add(DateTime.now());
+        latLonOfPositions.add(LatLng(event.latitude, event.longitude));
+        markersSet['end'] = Marker(
+          markerId: const MarkerId('end'),
+          infoWindow: const InfoWindow(title: 'Your position'),
+          position: LatLng(event.latitude, event.longitude),
+        );
+      } else {
+        if (latLonOfPositions.isNotEmpty) {
+          distanceEveryPaused += LocationUtils.calculateDistanceCovered(
+            latLonOfPositions,
+            5,
+            50,
+            5,
+            timeList: timeStampsOfRecordTimePosition,
+          );
+          latLonOfPositions = [];
+          timeStampsOfRecordTimePosition = [];
+        }
+      }
+    });
+
+    Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (isPaused == false) {
+        workoutDurationSec++;
+        if (!isDispose) setState(() {});
+      }
+    });
+    super.initState();
+  }
+
+  bool isDispose = false;
+  @override
+  void dispose() {
+    streamSubscription.cancel();
+    isDispose = true;
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,11 +123,17 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
             Expanded(
               child: Stack(
                 children: [
-                  const GoogleMap(
+                  GoogleMap(
                     initialCameraPosition: CameraPosition(
-                      target: LatLng(23.772857, 90.366429),
+                      target: widget.initialLatLon,
                       zoom: 17,
                     ),
+                    onMapCreated: (controller) {
+                      googleMapController.complete(controller);
+                    },
+                    polylines: getPolylineFromLatLonList(latLonOfPositions),
+                    zoomControlsEnabled: false,
+                    markers: markersSet.values.toSet(),
                   ),
                   Column(
                     children: [
@@ -60,7 +143,7 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
                         width: double.infinity,
 
                         padding: const EdgeInsets.all(15),
-                        margin: EdgeInsets.only(left: 20, right: 20),
+                        margin: const EdgeInsets.only(left: 20, right: 20),
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(4),
@@ -77,9 +160,20 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
-                                const Text(
-                                  '0.00 ',
-                                  style: TextStyle(
+                                Text(
+                                  ((distanceEveryPaused +
+                                              LocationUtils.calculateDistanceCovered(
+                                                latLonOfPositions,
+                                                5,
+                                                20,
+                                                5,
+                                                timeList:
+                                                    timeStampsOfRecordTimePosition,
+                                              )) /
+                                          1000)
+                                      .toPrecision(2)
+                                      .toString(),
+                                  style: const TextStyle(
                                     fontSize: 24,
                                     fontWeight: FontWeight.w700,
                                   ),
@@ -87,7 +181,7 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
                                 Padding(
                                   padding: const EdgeInsets.only(bottom: 3),
                                   child: Text(
-                                    'km',
+                                    ' km',
                                     style: TextStyle(
                                       fontSize: 16,
                                       color: MyAppColors.second,
@@ -104,7 +198,7 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
                       Container(
                         height: 110,
                         width: double.infinity,
-                        margin: EdgeInsets.only(left: 20, right: 20),
+                        margin: const EdgeInsets.only(left: 20, right: 20),
                         padding: const EdgeInsets.all(8),
                         decoration: BoxDecoration(
                           color: Colors.white,
@@ -144,9 +238,9 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
                                     ),
                                   ),
                                   const Gap(5),
-                                  const Text(
-                                    '07:02/Km',
-                                    style: TextStyle(
+                                  Text(
+                                    '${(((distanceEveryPaused + LocationUtils.calculateDistanceCovered(latLonOfPositions, 5, 20, 5, timeList: timeStampsOfRecordTimePosition)) / 1000) / (workoutDurationSec / (60 * 60))).toPrecision(2)} km/h',
+                                    style: const TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w400,
                                     ),
@@ -192,8 +286,8 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
                                     ),
                                   ),
                                   const Gap(5),
-                                  const Text(
-                                    '00:10:47',
+                                  Text(
+                                    formatSeconds(workoutDurationSec),
                                     style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w400,
@@ -254,10 +348,18 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
                                         MyAppColors.transparentGray,
                                   ),
                                   onPressed: () {
-                                    Get.to(() => const LiveActivityPage());
+                                    log('message');
+                                    setState(() {
+                                      isPaused = !isPaused;
+                                    });
                                   },
                                   icon: SvgPicture.string(
-                                    '''<svg xmlns="http://www.w3.org/2000/svg" width="23" height="20" viewBox="0 0 23 20" fill="none">
+                                    isPaused
+                                        ? '''<svg width="33" height="32" viewBox="0 0 33 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M24.1278 17.7363L11.4923 24.9566C10.159 25.7185 8.5 24.7558 8.5 23.2201V15.9998V8.77953C8.5 7.24389 10.159 6.28115 11.4923 7.04305L24.1278 14.2634C25.4714 15.0311 25.4714 16.9685 24.1278 17.7363Z" fill="#047CEC"/>
+</svg>
+'''
+                                        : '''<svg xmlns="http://www.w3.org/2000/svg" width="23" height="20" viewBox="0 0 23 20" fill="none">
                                 <path fill-rule="evenodd" clip-rule="evenodd" d="M2.83301 0.666748C1.72844 0.666748 0.833008 1.56218 0.833008 2.66675V17.3334C0.833008 18.438 1.72844 19.3334 2.83301 19.3334H6.83301C7.93758 19.3334 8.83301 18.438 8.83301 17.3334V2.66675C8.83301 1.56218 7.93758 0.666748 6.83301 0.666748H2.83301ZM16.1663 0.666748C15.0618 0.666748 14.1663 1.56218 14.1663 2.66675V17.3334C14.1663 18.438 15.0618 19.3334 16.1663 19.3334H20.1663C21.2709 19.3334 22.1663 18.438 22.1663 17.3334V2.66675C22.1663 1.56218 21.2709 0.666748 20.1663 0.666748H16.1663Z" fill="#FFDE1A"/>
                               </svg>
                               ''',
@@ -293,5 +395,17 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
         ),
       ),
     );
+  }
+
+  Set<Polyline> getPolylineFromLatLonList(List<LatLng> latLonList) {
+    Set<Polyline> polyline = {};
+    polyline.add(
+      Polyline(
+        polylineId: const PolylineId('Workout Paths'),
+        points: latLonList,
+      ),
+    );
+
+    return polyline;
   }
 }

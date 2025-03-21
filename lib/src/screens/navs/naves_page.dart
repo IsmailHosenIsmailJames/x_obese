@@ -38,7 +38,7 @@ class _NavesPageState extends State<NavesPage> {
             navsController.changeBottomNav(value);
           },
           children: [
-            const HomePage(),
+            HomePage(pageController: pageController),
             ActivityPage(pageController: pageController),
             MarathonPage(pageController: pageController),
             const SettingsPage(),

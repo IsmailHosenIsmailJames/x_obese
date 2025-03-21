@@ -2,6 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
+import 'package:o_xbese/src/apis/apis_url.dart';
+import 'package:o_xbese/src/core/common/functions/safe_sub_string.dart';
 import 'package:o_xbese/src/screens/marathon/models/model.dart';
 import 'package:o_xbese/src/theme/colors.dart';
 
@@ -13,12 +15,12 @@ Widget getOnsiteMarathon({
   EdgeInsetsGeometry? margin,
 }) {
   return Container(
-    padding: const EdgeInsets.only(left: 17, right: 17, top: 20, bottom: 20),
+    padding: const EdgeInsets.all(10),
     margin: margin,
     decoration: BoxDecoration(
-      image: const DecorationImage(
+      image: DecorationImage(
         image: CachedNetworkImageProvider(
-          'https://s3-alpha-sig.figma.com/img/bb6e/32a3/868ec0310f8d575214bf0847062a62aa?Expires=1742169600&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=KVWQT57YGpV5uAx9ZFmhrtqM18WLvqUbcBpD5UEZ4l98cpVy9MbDIsScJaI~raP6nVYjkEgAKYjL6AfRhsWDmzYHHmR~XMy3f9qcF5nGDAT0038e-KQJ2VxzYtMHscxWuop2KZhcL5DM8lYB6r2elHO8snsBLQmuUxlYHtl~nhQLj-LR~JGtEpdrzDwg35lye4te6~ra83gbKqFLbI2U8zlTlbYXpLPOnw9yz3PpJ7VyRTlQUGgGFpca3LgIIuOSo8NYqgD5EtIQsWAFTyh8Zg0FJWoPv~tUNIRpe2I~M68fMMJwd4D4PAc6MSOa3A-xjUms~AxzciqtidEji-~igw__',
+          '$baseAPI/uploads/photos/${marathonData.imagePath}',
         ),
         fit: BoxFit.cover,
         opacity: 0.5,
@@ -46,18 +48,18 @@ Widget getOnsiteMarathon({
         ),
         const Gap(16),
         Text(
-          'February 10km Challenge Run',
+          marathonData.title ?? '',
           style: TextStyle(
-            fontSize: 18,
+            fontSize: 17,
             fontWeight: FontWeight.w500,
             color: MyAppColors.primary,
           ),
         ),
         const Gap(5),
         Text(
-          'Take on the challenge and achieve greatness, one step at a time',
+          safeSubString(marathonData.description ?? '', 100),
           style: TextStyle(
-            fontSize: 14,
+            fontSize: 13,
             fontWeight: FontWeight.w300,
             color: MyAppColors.primary,
           ),

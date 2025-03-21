@@ -1,10 +1,16 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gap/gap.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:o_xbese/src/screens/activity/live_activity_page.dart';
 import 'package:o_xbese/src/theme/colors.dart';
 import 'package:o_xbese/src/widgets/back_button.dart';
+import 'package:o_xbese/src/widgets/loading_popup.dart';
 
 class ActivityPage extends StatefulWidget {
   final PageController pageController;
@@ -17,6 +23,7 @@ class ActivityPage extends StatefulWidget {
 class _ActivityPageState extends State<ActivityPage> {
   List<String> workOutMode = ['Running', 'Walking', 'Cycling'];
   String selectedMode = 'Running';
+  int requestTime = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -156,8 +163,53 @@ class _ActivityPageState extends State<ActivityPage> {
                         style: IconButton.styleFrom(
                           backgroundColor: MyAppColors.transparentGray,
                         ),
-                        onPressed: () {
-                          Get.to(() => LiveActivityPage());
+                        onPressed: () async {
+                          requestTime++;
+                          showLoadingPopUp(
+                            context,
+                            loadingText: 'Getting your location...',
+                          );
+                          LocationPermission status =
+                              await Geolocator.checkPermission();
+                          log(status.toString());
+                          if (status == LocationPermission.denied) {
+                            if (requestTime > 2) {
+                              Fluttertoast.showToast(
+                                msg: 'Location Permission is Required',
+                              );
+                              await Geolocator.openAppSettings();
+                            }
+                          }
+                          if (status == LocationPermission.deniedForever) {
+                            Fluttertoast.showToast(
+                              msg: 'Location Permission is Required',
+                            );
+                            await Geolocator.openAppSettings();
+                          }
+                          status = await Geolocator.checkPermission();
+                          if (status == LocationPermission.whileInUse ||
+                              status == LocationPermission.always) {
+                            Position position =
+                                await Geolocator.getCurrentPosition();
+                            Navigator.pop(context);
+                            await Get.to(
+                              () => LiveActivityPage(
+                                workoutType: selectedMode,
+                                initialLatLon: LatLng(
+                                  position.latitude,
+                                  position.longitude,
+                                ),
+                              ),
+                            );
+
+                            requestTime = 0;
+                            return;
+                          } else {
+                            Fluttertoast.showToast(
+                              msg: 'Location Permission is Required',
+                            );
+                          }
+                          Navigator.pop(context);
                         },
                         icon: SvgPicture.string(
                           '''<svg width="33" height="32" viewBox="0 0 33 32" fill="none" xmlns="http://www.w3.org/2000/svg">

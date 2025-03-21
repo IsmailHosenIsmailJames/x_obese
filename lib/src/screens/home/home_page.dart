@@ -15,7 +15,8 @@ import 'package:o_xbese/src/screens/marathon/components/virtual_marathon_cards.d
 import 'package:o_xbese/src/widgets/points_overview_widget.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  final PageController pageController;
+  const HomePage({super.key, required this.pageController});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -164,7 +165,13 @@ class _HomePageState extends State<HomePage> {
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                   ),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      widget.pageController.animateToPage(
+                        2,
+                        duration: Duration(milliseconds: 500),
+                        curve: Curves.linear,
+                      );
+                    },
                     child: Text(
                       'See All',
                       style: TextStyle(color: MyAppColors.third),

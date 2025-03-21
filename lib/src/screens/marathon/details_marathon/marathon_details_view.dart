@@ -2,10 +2,12 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:o_xbese/src/apis/apis_url.dart';
 import 'package:o_xbese/src/screens/marathon/models/model.dart';
 import 'package:o_xbese/src/theme/colors.dart';
+import 'package:o_xbese/src/widgets/back_button.dart';
 
 class MarathonDetailsView extends StatefulWidget {
   final MarathonModel marathonData;
@@ -29,14 +31,26 @@ class _MarathonDetailsViewState extends State<MarathonDetailsView> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            SizedBox(
-              height: 194,
-              width: double.infinity,
-              child: CachedNetworkImage(
-                imageUrl:
-                    '$baseAPI/uploads/photos/${widget.marathonData.imagePath}',
-                fit: BoxFit.cover,
-              ),
+            Stack(
+              children: [
+                SizedBox(
+                  height: 194,
+                  width: double.infinity,
+                  child: CachedNetworkImage(
+                    imageUrl:
+                        '$baseAPI/uploads/photos/${widget.marathonData.imagePath}',
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                SafeArea(
+                  child: Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: getBackbutton(context, () {
+                      Get.back();
+                    }),
+                  ),
+                ),
+              ],
             ),
             const Divider(color: Colors.transparent),
             Padding(
@@ -47,7 +61,10 @@ class _MarathonDetailsViewState extends State<MarathonDetailsView> {
                 children: [
                   Text(
                     widget.marathonData.title ?? '',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                   const Gap(8),
                   Text(
@@ -217,7 +234,7 @@ class _MarathonDetailsViewState extends State<MarathonDetailsView> {
                         },
                         label: Text(
                           widget.isVirtual ? 'Join Challenge' : 'Register Now',
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w400,
                           ),
@@ -241,7 +258,7 @@ class _MarathonDetailsViewState extends State<MarathonDetailsView> {
                         ),
                       ),
                     ),
-                  if (isJoined) Gap(24),
+                  if (isJoined) const Gap(24),
                   if (isJoined)
                     SizedBox(
                       width: double.infinity,

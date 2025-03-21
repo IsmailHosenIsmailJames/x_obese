@@ -136,11 +136,16 @@ class _MarathonPageState extends State<MarathonPage> {
                     ),
                     itemCount: allInfoController.marathonList.length,
                     itemBuilder: (context, index) {
-                      return getMarathonCard(
-                        marathonData: allInfoController.marathonList[index],
-                        context: context,
-                        margin: const EdgeInsets.only(top: 20),
-                      );
+                      if (allInfoController.marathonList[index].type ==
+                          'virtual') {
+                        return getMarathonCard(
+                          marathonData: allInfoController.marathonList[index],
+                          context: context,
+                          margin: const EdgeInsets.only(top: 20),
+                        );
+                      } else {
+                        return const SizedBox();
+                      }
                     },
                   ),
                 ),
@@ -153,11 +158,16 @@ class _MarathonPageState extends State<MarathonPage> {
                     ),
                     itemCount: allInfoController.marathonList.length,
                     itemBuilder: (context, index) {
-                      return getOnsiteMarathon(
-                        context: context,
-                        marathonData: allInfoController.marathonList[index],
-                        margin: const EdgeInsets.only(top: 20),
-                      );
+                      if (allInfoController.marathonList[index].type !=
+                          'virtual') {
+                        return getOnsiteMarathon(
+                          context: context,
+                          marathonData: allInfoController.marathonList[index],
+                          margin: const EdgeInsets.only(top: 20),
+                        );
+                      } else {
+                        return const SizedBox();
+                      }
                     },
                   ),
                 ),

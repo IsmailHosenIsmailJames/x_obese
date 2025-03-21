@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:o_xbese/src/apis/apis_url.dart';
@@ -49,6 +51,8 @@ class AllInfoController extends GetxController {
     printResponse(response);
     if (response.statusCode == 200) {
       List marathonListData = response.data['data'];
+      userBox.put('marathonList', jsonEncode(marathonListData));
+      marathonList.clear();
       for (var marathon in marathonListData) {
         marathonList.add(MarathonModel.fromMap(marathon));
       }
@@ -58,6 +62,16 @@ class AllInfoController extends GetxController {
   @override
   void onInit() {
     allInfo.value = AllInfoModel.fromJson(userBox.get('info'));
+    // load Marathon program cache
+    List marathonListData = jsonDecode(
+      userBox.get('marathonList', defaultValue: '[]'),
+    );
+
+    for (var marathon in marathonListData) {
+      marathonList.add(
+        MarathonModel.fromMap(Map<String, dynamic>.from(marathon)),
+      );
+    }
     dataAsync();
     super.onInit();
   }
