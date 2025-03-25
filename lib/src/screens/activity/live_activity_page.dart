@@ -11,6 +11,7 @@ import 'package:o_xbese/src/core/common/functions/calculate_distance.dart';
 import 'package:o_xbese/src/core/common/functions/format_sec_to_time.dart';
 import 'package:o_xbese/src/theme/colors.dart';
 import 'package:o_xbese/src/widgets/back_button.dart';
+import 'package:o_xbese/src/widgets/loading_popup.dart';
 
 class LiveActivityPage extends StatefulWidget {
   final String workoutType;
@@ -31,7 +32,6 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
       Completer<GoogleMapController>();
   double distanceEveryPaused = 0;
   List<LatLng> latLonOfPositions = [];
-  List<DateTime> timeStampsOfRecordTimePosition = [];
   int workoutDurationSec = 1;
   late Map<String, Marker> markersSet = {
     'start': Marker(
@@ -52,24 +52,23 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
       ),
     ).listen((event) async {
       if (!isPaused) {
-        timeStampsOfRecordTimePosition.add(DateTime.now());
         latLonOfPositions.add(LatLng(event.latitude, event.longitude));
         markersSet['end'] = Marker(
           markerId: const MarkerId('end'),
           infoWindow: const InfoWindow(title: 'Your position'),
           position: LatLng(event.latitude, event.longitude),
         );
+        final controller = await googleMapController.future;
+        controller.animateCamera(
+          CameraUpdate.newLatLngZoom(
+            LatLng(event.latitude, event.longitude),
+            16.5,
+          ),
+        );
       } else {
         if (latLonOfPositions.isNotEmpty) {
-          distanceEveryPaused += LocationUtils.calculateDistanceCovered(
-            latLonOfPositions,
-            5,
-            50,
-            5,
-            timeList: timeStampsOfRecordTimePosition,
-          );
+          distanceEveryPaused += calculateDistance(latLonOfPositions);
           latLonOfPositions = [];
-          timeStampsOfRecordTimePosition = [];
         }
       }
     });
@@ -126,8 +125,9 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
                   GoogleMap(
                     initialCameraPosition: CameraPosition(
                       target: widget.initialLatLon,
-                      zoom: 17,
+                      zoom: 16.5,
                     ),
+
                     onMapCreated: (controller) {
                       googleMapController.complete(controller);
                     },
@@ -162,13 +162,8 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
                               children: [
                                 Text(
                                   ((distanceEveryPaused +
-                                              LocationUtils.calculateDistanceCovered(
+                                              calculateDistance(
                                                 latLonOfPositions,
-                                                5,
-                                                20,
-                                                5,
-                                                timeList:
-                                                    timeStampsOfRecordTimePosition,
                                               )) /
                                           1000)
                                       .toPrecision(2)
@@ -239,7 +234,7 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
                                   ),
                                   const Gap(5),
                                   Text(
-                                    '${(((distanceEveryPaused + LocationUtils.calculateDistanceCovered(latLonOfPositions, 5, 20, 5, timeList: timeStampsOfRecordTimePosition)) / 1000) / (workoutDurationSec / (60 * 60))).toPrecision(2)} km/h',
+                                    '${(((distanceEveryPaused + calculateDistance(latLonOfPositions)) / 1000) / (workoutDurationSec / (60 * 60))).toPrecision(2)} km/h',
                                     style: const TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w400,
@@ -288,7 +283,7 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
                                   const Gap(5),
                                   Text(
                                     formatSeconds(workoutDurationSec),
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w400,
                                     ),
@@ -374,11 +369,18 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
                                     backgroundColor:
                                         MyAppColors.transparentGray,
                                   ),
-                                  onPressed: () {},
-                                  icon: SvgPicture.string(
-                                    '''<svg xmlns="http://www.w3.org/2000/svg" width="23" height="28" viewBox="0 0 23 28" fill="none">
-                                <path fill-rule="evenodd" clip-rule="evenodd" d="M7.16683 7.00008C7.16683 4.60685 9.10693 2.66675 11.5002 2.66675C13.8934 2.66675 15.8335 4.60685 15.8335 7.00008V8.66675H7.16683V7.00008ZM5.16683 8.76034V7.00008C5.16683 3.50228 8.00236 0.666748 11.5002 0.666748C14.998 0.666748 17.8335 3.50228 17.8335 7.00008V8.76034C20.301 9.22842 22.1668 11.3964 22.1668 14.0001V22.0001C22.1668 24.9456 19.779 27.3334 16.8335 27.3334H6.16683C3.22131 27.3334 0.833496 24.9456 0.833496 22.0001V14.0001C0.833496 11.3964 2.6993 9.22842 5.16683 8.76034ZM14.1668 18.0001C14.1668 19.4728 12.9729 20.6667 11.5002 20.6667C10.0274 20.6667 8.8335 19.4728 8.8335 18.0001C8.8335 16.5273 10.0274 15.3334 11.5002 15.3334C12.9729 15.3334 14.1668 16.5273 14.1668 18.0001Z" fill="#047CEC"/>
-                              </svg>''',
+                                  onPressed: () async {
+                                    showLoadingPopUp(
+                                      context,
+                                      loadingText: 'Saving...',
+                                    );
+                                    // make a api call
+                                    Navigator.pop(context);
+                                  },
+                                  icon: Icon(
+                                    Icons.stop_rounded,
+                                    size: 36,
+                                    color: MyAppColors.third,
                                   ),
                                 ),
                               ),
@@ -403,6 +405,7 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
       Polyline(
         polylineId: const PolylineId('Workout Paths'),
         points: latLonList,
+        width: 5,
       ),
     );
 

@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -7,6 +8,7 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
+import 'package:o_xbese/src/apis/middleware/jwt_middleware.dart';
 import 'package:o_xbese/src/core/common/functions/is_information_fulfilled.dart';
 import 'package:o_xbese/src/screens/auth/controller/auth_controller.dart';
 import 'package:o_xbese/src/screens/controller/info_collector/info_collector.dart';
@@ -46,16 +48,20 @@ class _OtpPageState extends State<OtpPage> {
     try {
       final response = await authController.verifyOTP(otp, type, id);
       if (response != null) {
-        await Hive.box('user').put('info', {'phone': widget.phone});
+        log('OTP verified', name: 'OTP');
+        await Hive.box('user').put('info', jsonEncode({'phone': widget.phone}));
         final prefs = await SharedPreferences.getInstance();
         await prefs.setString(
           'access_token',
           response.data['data']['accessToken'].toString(),
         );
-        await prefs.setString(
-          'refresh_token',
-          response.data['data']['refreshToken'].toString(),
-        );
+
+        String? refreshToken = refreshTokenExtractor(response);
+        if (refreshToken != null) {
+          await prefs.setString('refresh_token', refreshToken);
+          log('Saved refresh token', name: 'success');
+        }
+
         dio.Response? userDataResponse = await authController.getUserData(
           widget.phone,
         );

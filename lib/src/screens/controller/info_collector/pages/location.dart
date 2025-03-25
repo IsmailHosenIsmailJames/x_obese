@@ -7,7 +7,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:o_xbese/src/core/location_service/location_service.dart';
-import 'package:o_xbese/src/screens/controller/info_collector/controller/controller.dart';
+import 'package:o_xbese/src/screens/controller/info_collector/controller/all_info_controller.dart';
 import 'package:o_xbese/src/theme/colors.dart';
 import 'package:o_xbese/src/widgets/back_button.dart';
 import 'package:o_xbese/src/widgets/text_input_decoration.dart';

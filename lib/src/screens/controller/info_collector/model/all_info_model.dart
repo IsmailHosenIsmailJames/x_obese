@@ -66,7 +66,7 @@ class AllInfoModel {
     image: json['image'],
     gender: json['gender'],
     address: json['address'],
-    birth: DateTime.parse(json['birth']),
+    birth: json['birth'] != null ? DateTime.parse(json['birth']) : null,
     heightFt: json['heightFt'],
     heightIn: json['heightIn'],
     weight: json['weight'],

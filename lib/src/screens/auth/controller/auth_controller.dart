@@ -9,43 +9,13 @@ import 'package:dio/dio.dart' as dio;
 
 class AuthController extends GetxController {
   static DioClient dioClient = DioClient(baseAPI);
+  Rx<String?> refreshToken = Rx(null);
+  Rx<String?> accessToken = Rx(null);
 
   Future<dio.Response?> signup(String phone) async {
-    final response = await dioClient.post(signUpPath, data: {'mobile': phone});
-
-    printResponse(response);
-
-    if (response.statusCode == 201) {
-      showToastMessageFromResponse(response);
-      return response;
-    } else {
-      showToastMessageFromResponse(response);
-      return null;
-    }
-  }
-
-  Future<dio.Response?> login(String phone) async {
-    final response = await dioClient.post(logInPath, data: {'mobile': phone});
-
-    printResponse(response);
-
-    if (response.statusCode == 201) {
-      showToastMessageFromResponse(response);
-      return response;
-    } else {
-      showToastMessageFromResponse(response);
-      return null;
-    }
-  }
-
-  Future<dio.Response?> verifyOTP(String otp, String type, String id) async {
-    final data = {'code': '889327', 'type': type};
-    log(jsonEncode(data), name: 'body');
-    log(id, name: 'id');
-
-    final response = await dioClient.post(
-      '$verifyOTPPath/$id',
-      data: {'code': otp, 'type': type},
+    final response = await dioClient.dio.post(
+      signUpPath,
+      data: {'mobile': phone},
     );
 
     printResponse(response);
@@ -59,8 +29,46 @@ class AuthController extends GetxController {
     }
   }
 
+  Future<dio.Response?> login(String phone) async {
+    final response = await dioClient.dio.post(
+      logInPath,
+      data: {'mobile': phone},
+    );
+
+    printResponse(response);
+
+    if (response.statusCode == 200) {
+      showToastMessageFromResponse(response);
+      return response;
+    } else {
+      showToastMessageFromResponse(response);
+      return null;
+    }
+  }
+
+  Future<dio.Response?> verifyOTP(String otp, String type, String id) async {
+    final data = {'code': '889327', 'type': type};
+    log(jsonEncode(data), name: 'body');
+    log(id, name: 'id');
+
+    final response = await dioClient.dio.post(
+      '$verifyOTPPath/$id',
+      data: {'code': otp, 'type': type},
+    );
+
+    printResponse(response);
+
+    if (response.statusCode == 200) {
+      showToastMessageFromResponse(response);
+      return response;
+    } else {
+      showToastMessageFromResponse(response);
+      return null;
+    }
+  }
+
   Future<dio.Response?> getUserData(String phone) async {
-    final response = await dioClient.get(getUserDataPath);
+    final response = await dioClient.dio.get(getUserDataPath);
     printResponse(response);
     showToastMessageFromResponse(response);
 
@@ -70,16 +78,6 @@ class AuthController extends GetxController {
       return null;
     }
   }
-}
-
-void printResponse(dio.Response response) {
-  log(response.requestOptions.path, name: 'request_path');
-  log(response.requestOptions.method, name: 'request_method');
-  log(
-    const JsonEncoder.withIndent('  ').convert(response.data),
-    name: 'response_status',
-  );
-  log(response.statusCode.toString(), name: 'response_body');
 }
 
 void showToastMessageFromResponse(dio.Response response) {

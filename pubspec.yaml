@@ -41,7 +41,6 @@ dependencies:
   mime: ^2.0.0
   json_serializable: ^6.9.4
 
-
 dev_dependencies:
   flutter_test:
     sdk: flutter

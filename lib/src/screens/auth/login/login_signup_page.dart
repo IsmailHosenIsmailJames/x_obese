@@ -169,7 +169,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                     child: TextFormField(
                       controller: phoneController,
                       onTapOutside: (event) {
-                        FocusScope.of(context).unfocus();
+                        // FocusScope.of(context).unfocus();
                       },
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -251,6 +251,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                                         phoneController.text,
                                       );
                               if (response != null) {
+                                log('OtpPage', name: 'Route');
                                 Get.to(
                                   () => OtpPage(
                                     isSignup:
@@ -258,6 +259,11 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                                     phone: phoneController.text,
                                     response: response,
                                   ),
+                                );
+                              } else {
+                                log(
+                                  'Response found Null',
+                                  name: 'Response null',
                                 );
                               }
                             } catch (e) {

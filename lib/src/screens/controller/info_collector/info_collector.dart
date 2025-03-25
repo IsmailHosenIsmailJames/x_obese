@@ -8,7 +8,7 @@ import 'package:o_xbese/src/screens/controller/info_collector/pages/height_weigt
 import 'package:o_xbese/src/screens/controller/info_collector/pages/location.dart';
 import 'package:o_xbese/src/screens/controller/info_collector/pages/name.dart';
 
-import 'controller/controller.dart';
+import 'controller/all_info_controller.dart';
 
 class InfoCollector extends StatefulWidget {
   final AllInfoModel initialData;

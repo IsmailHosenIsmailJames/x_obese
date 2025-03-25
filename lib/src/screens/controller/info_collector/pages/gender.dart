@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:o_xbese/src/widgets/back_button.dart';
 
 import '../../../../theme/colors.dart';
-import '../controller/controller.dart';
+import '../controller/all_info_controller.dart';
 
 class GenderCollector extends StatefulWidget {
   final PageController pageController;

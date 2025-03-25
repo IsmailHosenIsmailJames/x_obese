@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:o_xbese/src/theme/colors.dart';
 import 'package:o_xbese/src/widgets/back_button.dart';
 
-import '../controller/controller.dart';
+import '../controller/all_info_controller.dart';
 
 class BirthDateCollector extends StatefulWidget {
   final PageController pageController;

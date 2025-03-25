@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:o_xbese/src/apis/apis_url.dart';
 import 'package:o_xbese/src/resources/svg_string.dart';
-import 'package:o_xbese/src/screens/controller/info_collector/controller/controller.dart';
+import 'package:o_xbese/src/screens/controller/info_collector/controller/all_info_controller.dart';
 import 'package:o_xbese/src/screens/blog/blog_list_view.dart';
 import 'package:o_xbese/src/screens/create_workout_plan/create_workout_plan.dart';
 import 'package:o_xbese/src/theme/colors.dart';

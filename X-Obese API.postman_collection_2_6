@@ -15,7 +15,7 @@
 					"name": "user",
 					"item": [
 						{
-							"name": "login by otp",
+							"name": "login to send otp",
 							"request": {
 								"method": "POST",
 								"header": [],
@@ -193,7 +193,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"code\": \"889327\",\r\n    \"type\": \"signup\" // login or signup\r\n}",
+									"raw": "{\r\n    \"code\": \"395037\",\r\n    \"type\": \"login\" // login or signup\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -216,7 +216,7 @@
 									"variable": [
 										{
 											"key": "id",
-											"value": "d9856399-2a4e-4cd2-91be-0351276010b1",
+											"value": "18f4fc5a-764f-4e71-ad92-184516df82e9",
 											"description": "login or sign up response id"
 										}
 									]
@@ -378,7 +378,7 @@
 							]
 						},
 						{
-							"name": "signup by otp",
+							"name": "signup to send otp",
 							"request": {
 								"method": "POST",
 								"header": [],
@@ -571,6 +571,181 @@
 							"response": []
 						}
 					]
+				},
+				{
+					"name": "token",
+					"item": [
+						{
+							"name": "revoke admin token",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/auth/v1/token/admin",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"auth",
+										"v1",
+										"token",
+										"admin"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "200",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{base_url}}/api/auth/v1/token/admin",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"api",
+												"auth",
+												"v1",
+												"token",
+												"admin"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Set-Cookie",
+											"value": "refreshToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAyNzdmNWE0LWU1OWUtNGM4Ni1hYzU5LWQzOGZjODczM2Y5YSIsInR5cGUiOiJyZWZyZXNoIiwiaWF0IjoxNzQyNzk1ODM2LCJleHAiOjE3NDI4ODIyMzZ9.Mdfcnbtxa_WjGqe7zwwWRtnshT7zqG2DOXwwgUExaBk; Path=/; Expires=Tue, 25 Mar 2025 05:57:16 GMT; HttpOnly; SameSite=Lax"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "313"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"139-yB2Ihvja1Jn87pYE2hajS6U/Ums\""
+										},
+										{
+											"key": "Date",
+											"value": "Mon, 24 Mar 2025 05:57:16 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": true,\n    \"message\": \"Token revoke successful\",\n    \"data\": {\n        \"accessToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAyNzdmNWE0LWU1OWUtNGM4Ni1hYzU5LWQzOGZjODczM2Y5YSIsInJvbGUiOiJzdXBlcmFkbWluIiwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTc0Mjc5NTgzNiwiZXhwIjoxNzQyNzk2NzM2fQ.7Awpj5rrYdqDSu2bLN0D4LkV_XyJLnZ9-hGkgdUoNcQ\"\n    }\n}"
+								}
+							]
+						},
+						{
+							"name": "revoke user token",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/auth/v1/token/user",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"auth",
+										"v1",
+										"token",
+										"user"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "200",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{base_url}}/api/auth/v1/token/user",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"api",
+												"auth",
+												"v1",
+												"token",
+												"user"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Set-Cookie",
+											"value": "refreshToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhZjUxZDVjLWQzN2EtNDU1OC05OWY5LTY2ZTgzMDE1OGM5NiIsInR5cGUiOiJyZWZyZXNoIiwiaWF0IjoxNzQyNzk1OTA3LCJleHAiOjE3NDI4ODIzMDd9.RTZQg-ZFq96Pft7uwDArMD6iBPwK8yTCRS_0F2G6fEw; Path=/; Expires=Tue, 25 Mar 2025 05:58:27 GMT; HttpOnly; SameSite=Lax"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "305"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"131-4FmiWS8z6MJ5nXFTC8jsOmXWtr8\""
+										},
+										{
+											"key": "Date",
+											"value": "Mon, 24 Mar 2025 05:58:27 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": true,\n    \"message\": \"Token revoke successful\",\n    \"data\": {\n        \"accessToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhZjUxZDVjLWQzN2EtNDU1OC05OWY5LTY2ZTgzMDE1OGM5NiIsInJvbGUiOiJ1c2VyIiwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTc0Mjc5NTkwNywiZXhwIjoxNzQyNzk2ODA3fQ.EwKWZQ4BbR6Wv-wAPZFOVee1lGEXCIazmzo2hxvxHaw\"\n    }\n}"
+								}
+							]
+						}
+					]
 				}
 			]
 		},
@@ -691,7 +866,13 @@
 										{
 											"key": "image",
 											"type": "file",
-											"src": "/D:/Impala/Doctor Project/UI/doctor.jpg"
+											"src": "/D:/Impala/Doctor Project/UI/doctor.jpg",
+											"disabled": true
+										},
+										{
+											"key": "heightFt",
+											"value": "5",
+											"type": "text"
 										}
 									]
 								},
@@ -706,6 +887,13 @@
 										"v1",
 										"profile",
 										"token"
+									],
+									"query": [
+										{
+											"key": "image",
+											"value": null,
+											"disabled": true
+										}
 									]
 								}
 							},
@@ -2339,13 +2527,8 @@
 								"method": "POST",
 								"header": [],
 								"body": {
-									"mode": "raw",
-									"raw": "{\r\n    \"title\": \"February 5k Challenge Run\",\r\n    \"description\": \"A program designed to push your limits, build endurance, and celebrate your strength!\",\r\n    \"about\": \"A program designed to push your limits, build endurance, and celebrate your strength! Whether this program offers personalized training plans, progress tracking, and a vibrant community to keep you motivated every step of the way.\",\r\n    \"startDate\": \"2025-03-01\",\r\n    \"endDate\": \"2025-03-11\",\r\n    \"type\": \"virtual\",\r\n    \"rewards\": [\r\n        \"gold medel\",\r\n        \"prize money\"\r\n    ]\r\n    // \"imagepath\": \"\" // to upload image, use formdata\r\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
+									"mode": "formdata",
+									"formdata": []
 								},
 								"url": {
 									"raw": "{{base_url}}/api/marathon/v1/marathon",
@@ -2508,7 +2691,7 @@
 									"variable": [
 										{
 											"key": "id",
-											"value": "6eaeedeb-9b82-444c-9a92-bfa1b6f45fd5"
+											"value": "m-uuid-1"
 										}
 									]
 								}
@@ -2534,7 +2717,7 @@
 											"variable": [
 												{
 													"key": "id",
-													"value": "e90df277-9a03-4e56-8d3a-f90c5d1702fe"
+													"value": "m-uuid-1"
 												}
 											]
 										}
@@ -2557,15 +2740,15 @@
 										},
 										{
 											"key": "Content-Length",
-											"value": "699"
+											"value": "1228"
 										},
 										{
 											"key": "ETag",
-											"value": "W/\"2bb-qLbVMLCMfbmqd+L71dHsYrimK20\""
+											"value": "W/\"4cc-Vj3i853FJ0d0YR/3voCZfbmA1Xw\""
 										},
 										{
 											"key": "Date",
-											"value": "Wed, 12 Mar 2025 09:17:04 GMT"
+											"value": "Mon, 24 Mar 2025 06:10:10 GMT"
 										},
 										{
 											"key": "Connection",
@@ -2577,7 +2760,7 @@
 										}
 									],
 									"cookie": [],
-									"body": "{\n    \"success\": true,\n    \"message\": \"Get Marathon details successfully!\",\n    \"data\": {\n        \"id\": \"6eaeedeb-9b82-444c-9a92-bfa1b6f45fd5\",\n        \"title\": \"February 5k Challenge Run\",\n        \"description\": \"A program designed to push your limits, build endurance, and celebrate your strength!\",\n        \"about\": \"A program designed to push your limits, build endurance, and celebrate your strength! Whether this program offers personalized training plans, progress tracking, and a vibrant community to keep you motivated every step of the way.\",\n        \"startDate\": \"2025-03-01T00:00:00.000Z\",\n        \"endDate\": \"2025-03-11T00:00:00.000Z\",\n        \"imagePath\": \"9fa877b2-48c8-40a5-b8b6-3cb7eab6cdef-1741854403493.png\",\n        \"type\": \"virtual\",\n        \"createdBy\": null,\n        \"createdAt\": \"2025-03-13T08:25:58.630Z\",\n        \"updatedAt\": \"2025-03-13T08:26:43.507Z\"\n    },\n    \"totalParticiants\": 0\n}"
+									"body": "{\n    \"success\": true,\n    \"message\": \"Get Marathon details successfully!\",\n    \"data\": {\n        \"id\": \"m-uuid-1\",\n        \"title\": \"February 5k Challenge Run\",\n        \"description\": \"A program designed to push your limits, build endurance, and celebrate your strength!\",\n        \"about\": \"A program designed to push your limits, build endurance, and celebrate your strength! Whether this program offers personalized training plans, progress tracking, and a vibrant community to keep you motivated every step of the way.\",\n        \"distanceKm\": 5,\n        \"location\": null,\n        \"startDate\": \"2025-01-01T00:00:00.000Z\",\n        \"endDate\": \"2025-02-01T00:00:00.000Z\",\n        \"imagePath\": \"e9c961ab-d837-4d27-8d92-ceb1dfdfd083-1741854397870.png\",\n        \"type\": \"virtual\",\n        \"createdBy\": null,\n        \"createdAt\": \"2025-03-13T09:27:25.588Z\",\n        \"updatedAt\": \"2025-03-13T09:27:25.588Z\",\n        \"Rewards\": []\n    },\n    \"totalParticiants\": 4,\n    \"particiants\": [\n        {\n            \"user\": {\n                \"id\": \"user-uuid-4\",\n                \"fullName\": \"Daisy Clark\",\n                \"image\": \"https://www.pngall.com/wp-content/uploads/12/Avatar-Profile-PNG-Images.png\"\n            }\n        },\n        {\n            \"user\": {\n                \"id\": \"user-uuid-3\",\n                \"fullName\": \"Charlie Brown\",\n                \"image\": \"https://www.pngall.com/wp-content/uploads/12/Avatar-Profile-PNG-Images.png\"\n            }\n        },\n        {\n            \"user\": {\n                \"id\": \"user-uuid-2\",\n                \"fullName\": \"Bob Williams\",\n                \"image\": \"https://www.pngall.com/wp-content/uploads/12/Avatar-Profile-PNG-Images.png\"\n            }\n        }\n    ]\n}"
 								}
 							]
 						},

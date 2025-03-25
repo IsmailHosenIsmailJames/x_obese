@@ -12,6 +12,7 @@ class LoginSuccessPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    autoRoute();
     return Scaffold(
       body: Center(
         child: SvgPicture.asset('assets/img/intro/success_screen.svg'),
