@@ -173,7 +173,10 @@ class _ActivityPageState extends State<ActivityPage> {
                               await Geolocator.checkPermission();
                           log(status.toString());
                           if (status == LocationPermission.denied) {
-                            if (requestTime > 2) {
+                            status = await Geolocator.requestPermission();
+
+                            if (status == LocationPermission.denied &&
+                                requestTime > 2) {
                               Fluttertoast.showToast(
                                 msg: 'Location Permission is Required',
                               );

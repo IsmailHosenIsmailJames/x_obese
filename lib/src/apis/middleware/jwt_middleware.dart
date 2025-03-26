@@ -58,7 +58,7 @@ class DioClient {
             return handler.resolve(
               await _retry(
                 error.requestOptions,
-                refreshedTokens['access_token'],
+                refreshedTokens['accessToken'],
               ),
             );
           } else {
@@ -102,14 +102,17 @@ class DioClient {
 
   Future<Map<String, dynamic>?> doRefreshToken(String refreshToken) async {
     try {
-      final response = await dio.get('/api/auth/v1/token/user');
+      final response = await dio.post('/api/auth/v1/token/user');
+      printResponse(response);
       if (response.statusCode == 200) {
-        String? newAccessToken = response.data['access_token'];
+        String? newAccessToken = response.data['accessToken'];
         String? newRefreshToken = refreshTokenExtractor(response);
         if (newAccessToken != null && newRefreshToken != null) {
           await saveTokens(newAccessToken, newRefreshToken);
+          return response.data;
+        } else {
+          return null;
         }
-        return response.data;
       } else {
         return null;
       }
@@ -163,8 +166,8 @@ void printResponse(Response response) {
     name: 'response_body',
   );
   log(response.statusCode.toString(), name: 'response_status');
-  log(
-    const JsonEncoder.withIndent('  ').convert(response.headers.map),
-    name: 'response_headers',
-  );
+  // log(
+  //   const JsonEncoder.withIndent('  ').convert(response.headers.map),
+  //   name: 'response_headers',
+  // );
 }

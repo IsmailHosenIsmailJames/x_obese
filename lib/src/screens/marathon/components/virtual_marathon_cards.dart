@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:o_xbese/src/apis/apis_url.dart';
 import 'package:o_xbese/src/core/common/functions/safe_sub_string.dart';
 import 'package:o_xbese/src/resources/svg_string.dart';
 import 'package:o_xbese/src/screens/marathon/details_marathon/marathon_details_view.dart';
@@ -26,9 +25,7 @@ Widget getMarathonCard({
           marathonData.imagePath == null
               ? null
               : DecorationImage(
-                image: CachedNetworkImageProvider(
-                  '$baseAPI/uploads/photos/${marathonData.imagePath}',
-                ),
+                image: CachedNetworkImageProvider(marathonData.imagePath ?? ''),
                 colorFilter: ColorFilter.mode(
                   Colors.black.withOpacity(0.5),
                   BlendMode.darken,

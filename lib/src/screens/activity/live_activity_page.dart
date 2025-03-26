@@ -3,12 +3,14 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gap/gap.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:o_xbese/src/core/common/functions/calculate_distance.dart';
 import 'package:o_xbese/src/core/common/functions/format_sec_to_time.dart';
+import 'package:o_xbese/src/screens/activity/controller/activity_controller.dart';
 import 'package:o_xbese/src/theme/colors.dart';
 import 'package:o_xbese/src/widgets/back_button.dart';
 import 'package:o_xbese/src/widgets/loading_popup.dart';
@@ -31,7 +33,7 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
   final Completer<GoogleMapController> googleMapController =
       Completer<GoogleMapController>();
   double distanceEveryPaused = 0;
-  List<LatLng> latLonOfPositions = [];
+  List<Position> latLonOfPositions = [];
   int workoutDurationSec = 1;
   late Map<String, Marker> markersSet = {
     'start': Marker(
@@ -47,12 +49,11 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
   @override
   void initState() {
     streamSubscription = Geolocator.getPositionStream(
-      locationSettings: AndroidSettings(
-        accuracy: LocationAccuracy.bestForNavigation,
-      ),
+      locationSettings: AndroidSettings(accuracy: LocationAccuracy.best),
     ).listen((event) async {
+      log(event.accuracy.toString());
       if (!isPaused) {
-        latLonOfPositions.add(LatLng(event.latitude, event.longitude));
+        latLonOfPositions.add(event);
         markersSet['end'] = Marker(
           markerId: const MarkerId('end'),
           infoWindow: const InfoWindow(title: 'Your position'),
@@ -374,8 +375,34 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
                                       context,
                                       loadingText: 'Saving...',
                                     );
+
                                     // make a api call
+                                    final activityController = Get.put(
+                                      ActivityController(),
+                                    );
+                                    final response = await activityController
+                                        .saveActivity({
+                                          'distance':
+                                              calculateDistance(
+                                                latLonOfPositions,
+                                              ) /
+                                              1000,
+                                          'type':
+                                              widget.workoutType.toLowerCase(),
+                                          'duration': workoutDurationSec * 1000,
+                                          // "steps": 1000, // optional
+                                        });
                                     Navigator.pop(context);
+                                    if (response != null) {
+                                      Fluttertoast.showToast(
+                                        msg: 'Saved successfully',
+                                      );
+                                      Get.back();
+                                    } else {
+                                      Fluttertoast.showToast(
+                                        msg: 'Unable to save, try again',
+                                      );
+                                    }
                                   },
                                   icon: Icon(
                                     Icons.stop_rounded,
@@ -399,12 +426,13 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
     );
   }
 
-  Set<Polyline> getPolylineFromLatLonList(List<LatLng> latLonList) {
+  Set<Polyline> getPolylineFromLatLonList(List<Position> latLonList) {
     Set<Polyline> polyline = {};
     polyline.add(
       Polyline(
         polylineId: const PolylineId('Workout Paths'),
-        points: latLonList,
+        points: latLonList.map((e) => LatLng(e.latitude, e.longitude)).toList(),
+        color: MyAppColors.second,
         width: 5,
       ),
     );

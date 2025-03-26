@@ -20,7 +20,7 @@ class AuthController extends GetxController {
 
     printResponse(response);
 
-    if (response.statusCode == 201) {
+    if (response.statusCode == 200 || response.statusCode == 201) {
       showToastMessageFromResponse(response);
       return response;
     } else {
@@ -37,7 +37,7 @@ class AuthController extends GetxController {
 
     printResponse(response);
 
-    if (response.statusCode == 200) {
+    if (response.statusCode == 200 || response.statusCode == 201) {
       showToastMessageFromResponse(response);
       return response;
     } else {
@@ -58,7 +58,7 @@ class AuthController extends GetxController {
 
     printResponse(response);
 
-    if (response.statusCode == 200) {
+    if (response.statusCode == 200 || response.statusCode == 201) {
       showToastMessageFromResponse(response);
       return response;
     } else {
@@ -72,7 +72,7 @@ class AuthController extends GetxController {
     printResponse(response);
     showToastMessageFromResponse(response);
 
-    if (response.statusCode == 200) {
+    if (response.statusCode == 200 || response.statusCode == 201) {
       return response;
     } else {
       return null;

@@ -18,7 +18,9 @@ class AllInfoController extends GetxController {
   static Box userBox = Hive.box('user');
 
   Rx<AllInfoModel> allInfo = Rx<AllInfoModel>(AllInfoModel());
-  Rx<WorkStatusModel> workStatus = Rx<WorkStatusModel>(WorkStatusModel());
+  RxList<WorkStatusModel> workStatus = RxList<WorkStatusModel>([
+    WorkStatusModel(),
+  ]);
   RxList<MarathonModel> marathonList = RxList<MarathonModel>([]);
 
   Future<dio.Response?> updateUserInfo(dynamic data) async {
@@ -33,22 +35,40 @@ class AllInfoController extends GetxController {
 
   Future<void> dataAsync() async {
     // get workout plan
+    log('Try get workout plan', name: 'Try get workout plan');
     try {
       DioClient dioClient = DioClient(baseAPI);
-      dio.Response response = await dioClient.dio.get(getUserWorkStatusPath);
+      dio.Response response = await dioClient.dio.get(
+        '/api/user/v1/workout/plan',
+      );
       printResponse(response);
       if (response.statusCode == 200) {
-        workStatus.value = WorkStatusModel.fromMap(
-          Map<String, dynamic>.from(response.data['data']),
-        );
-        selectedCategory.value = 'Calories';
-        selectedPoints.value = workStatus.value.calories ?? 0;
+        List allPlans = response.data['data'];
+        if (allPlans.isNotEmpty) {
+          allPlans[0] = WorkStatusModel.fromMap(
+            Map<String, dynamic>.from(allPlans[0]),
+          );
+          for (int i = 1; i < allPlans.length; i++) {
+            workStatus.add(
+              WorkStatusModel.fromMap(Map<String, dynamic>.from(allPlans[i])),
+            );
+          }
+          selectedCategory.value = 'Calories';
+          selectedPoints.value = workStatus.value.first.calories ?? 0;
+        }
       } else {
-        workStatus.value = WorkStatusModel();
+        workStatus.value = [WorkStatusModel()];
       }
+    } catch (e) {
+      log(e.toString(), name: 'Error');
+    }
 
+    log('try to get marathon info');
+    try {
       // get marathon programs
-      response = await dioClient.dio.get('/api/marathon/v1/marathon');
+      dio.Response response = await dioClient.dio.get(
+        '/api/marathon/v1/marathon',
+      );
       printResponse(response);
       if (response.statusCode == 200) {
         List marathonListData = response.data['data'];
@@ -59,7 +79,7 @@ class AllInfoController extends GetxController {
         }
       }
     } catch (e) {
-      log(e.toString(), name: 'Error');
+      log(e.toString());
     }
   }
 
@@ -75,10 +95,6 @@ class AllInfoController extends GetxController {
       marathonList.add(
         MarathonModel.fromMap(Map<String, dynamic>.from(marathon)),
       );
-    }
-    String? s = await getRefreshToken();
-    if (s != null) {
-      dioClient.doRefreshToken(s);
     }
     dataAsync();
     super.onInit();
