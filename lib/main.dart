@@ -22,7 +22,7 @@ Future<void> main() async {
     ),
   );
   final authController = Get.put(AuthController());
-  authController.refreshToken.value = await getRefreshToken();
-  authController.accessToken.value = await getAccessToken();
+  authController.refreshToken.value = getRefreshToken();
+  authController.accessToken.value = getAccessToken();
   runApp(const OXbese());
 }

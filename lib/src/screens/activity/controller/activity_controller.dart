@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:dio/dio.dart' as dio;

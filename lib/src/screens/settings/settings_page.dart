@@ -27,11 +27,11 @@ class _SettingsPageState extends State<SettingsPage> {
               (await getRefreshToken())!,
             );
             log(response.toString());
+            print(await getAccessToken());
+            print(await getRefreshToken());
           } on DioException catch (e) {
             printResponse(e.response!);
           }
-          print(await getAccessToken());
-          print(await getRefreshToken());
         },
         child: Text('Do Refresh Tokens'),
       ),

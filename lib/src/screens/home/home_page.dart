@@ -1,9 +1,13 @@
+import 'dart:developer';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:o_xbese/src/core/common/functions/request_and_check_activity_permission.dart';
 import 'package:o_xbese/src/resources/svg_string.dart';
 import 'package:o_xbese/src/screens/controller/info_collector/controller/all_info_controller.dart';
 import 'package:o_xbese/src/screens/blog/blog_list_view.dart';
@@ -12,6 +16,7 @@ import 'package:o_xbese/src/theme/colors.dart';
 import 'package:o_xbese/src/widgets/get_blog_card.dart';
 import 'package:o_xbese/src/screens/marathon/components/virtual_marathon_cards.dart';
 import 'package:o_xbese/src/widgets/points_overview_widget.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class HomePage extends StatefulWidget {
   final PageController pageController;
@@ -24,6 +29,52 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final userBox = Hive.box('user');
   AllInfoController allInfoController = Get.find();
+  @override
+  void initState() {
+    checkActivityPermission();
+    super.initState();
+  }
+
+  Future<void> checkActivityPermission() async {
+    bool status = await checkAndRequestPermission();
+    if (!status) {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text('We need to access you activity.'),
+            content: const Text(
+              'Please grant to access your activity. Without this, app can\'t function properly',
+            ),
+            actions: [
+              ElevatedButton.icon(
+                onPressed: () async {
+                  SystemNavigator.pop();
+                },
+                label: const Text('Quit App'),
+                icon: const Icon(Icons.done, color: Colors.red),
+              ),
+              ElevatedButton.icon(
+                onPressed: () async {
+                  bool status = await checkAndRequestPermission();
+                  if (status) {
+                    Navigator.pop(context);
+                  } else {
+                    await openAppSettings();
+                    Navigator.pop(context);
+                  }
+                },
+                label: const Text('Allow'),
+                icon: const Icon(Icons.done, color: Colors.green),
+              ),
+            ],
+          );
+        },
+      );
+    } else {
+      log('Activity permission granted');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -166,7 +217,7 @@ class _HomePageState extends State<HomePage> {
                     onPressed: () {
                       widget.pageController.animateToPage(
                         2,
-                        duration: Duration(milliseconds: 500),
+                        duration: const Duration(milliseconds: 500),
                         curve: Curves.linear,
                       );
                     },

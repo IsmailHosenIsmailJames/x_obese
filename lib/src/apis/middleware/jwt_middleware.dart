@@ -107,10 +107,11 @@ class DioClient {
       final response = await dio.post('/api/auth/v1/token/user');
       printResponse(response);
       if (response.statusCode == 200) {
-        String? newAccessToken = response.data['accessToken'];
+        String? newAccessToken = response.data['data']['accessToken'];
         String? newRefreshToken = refreshTokenExtractor(response);
-        if (newAccessToken != null && newRefreshToken != null) {
-          await saveTokens(newAccessToken, newRefreshToken);
+        log([newAccessToken, newRefreshToken].toString());
+        if (newAccessToken != null) {
+          await saveTokens(newAccessToken, newRefreshToken ?? refreshToken);
           return response.data;
         } else {
           return null;
@@ -125,6 +126,7 @@ class DioClient {
 }
 
 Future<void> saveTokens(String accessToken, String refreshToken) async {
+  log('Tokens saved', name: 'Tokens Handler');
   final prefs = await Hive.openBox('tokens');
   await prefs.put('access_token', accessToken);
   await prefs.put('refresh_token', refreshToken);
@@ -136,18 +138,19 @@ Future<void> clearTokens() async {
   await prefs.delete('refresh_token');
 }
 
-Future<String?> getAccessToken() async {
-  final prefs = await Hive.openBox('tokens');
+String? getAccessToken() {
+  final prefs = Hive.box('tokens');
   return prefs.get('access_token');
 }
 
-Future<String?> getRefreshToken() async {
-  final prefs = await Hive.openBox('tokens');
+String? getRefreshToken() {
+  final prefs = Hive.box('tokens');
   return prefs.get('refresh_token');
 }
 
 String? refreshTokenExtractor(Response response) {
   final cookies = response.headers['set-cookie'];
+  log(cookies.toString(), name: 'Refresh Token Extractor');
   log(cookies.toString(), name: 'Refresh Token Extractor');
   if (cookies != null && cookies.isNotEmpty) {
     for (final cookie in cookies) {
