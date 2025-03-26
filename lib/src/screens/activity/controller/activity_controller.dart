@@ -21,8 +21,8 @@ class ActivityController extends GetxController {
         Fluttertoast.showToast(msg: message);
         return response;
       }
-    } catch (e) {
-      log(e.toString(), name: 'Error');
+    } on dio.DioException catch (e) {
+      printResponse(e.response!);
     }
     return null;
   }

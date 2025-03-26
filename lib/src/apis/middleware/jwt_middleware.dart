@@ -3,8 +3,8 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:get/get.dart' as getx;
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:o_xbese/src/screens/auth/login/login_signup_page.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class DioClient {
   final Dio dio = Dio();
@@ -47,9 +47,11 @@ class DioClient {
     DioException error,
     ErrorInterceptorHandler handler,
   ) async {
-    if (error.response?.statusCode == 401) {
+    if (error.response?.statusCode == 403 ||
+        error.response?.statusCode == 401) {
       // Access token expired, try to refresh
       final refreshToken = await getRefreshToken();
+      log(refreshToken.toString(), name: 'Here I am');
       if (refreshToken != null) {
         try {
           final refreshedTokens = await doRefreshToken(refreshToken);
@@ -123,25 +125,25 @@ class DioClient {
 }
 
 Future<void> saveTokens(String accessToken, String refreshToken) async {
-  final prefs = await SharedPreferences.getInstance();
-  await prefs.setString('access_token', accessToken);
-  await prefs.setString('refresh_token', refreshToken);
+  final prefs = await Hive.openBox('tokens');
+  await prefs.put('access_token', accessToken);
+  await prefs.put('refresh_token', refreshToken);
 }
 
 Future<void> clearTokens() async {
-  final prefs = await SharedPreferences.getInstance();
-  await prefs.remove('access_token');
-  await prefs.remove('refresh_token');
+  final prefs = await Hive.openBox('tokens');
+  await prefs.delete('access_token');
+  await prefs.delete('refresh_token');
 }
 
 Future<String?> getAccessToken() async {
-  final prefs = await SharedPreferences.getInstance();
-  return prefs.getString('access_token');
+  final prefs = await Hive.openBox('tokens');
+  return prefs.get('access_token');
 }
 
 Future<String?> getRefreshToken() async {
-  final prefs = await SharedPreferences.getInstance();
-  return prefs.getString('refresh_token');
+  final prefs = await Hive.openBox('tokens');
+  return prefs.get('refresh_token');
 }
 
 String? refreshTokenExtractor(Response response) {

@@ -11,6 +11,8 @@ import 'package:o_xbese/src/screens/activity/live_activity_page.dart';
 import 'package:o_xbese/src/theme/colors.dart';
 import 'package:o_xbese/src/widgets/back_button.dart';
 import 'package:o_xbese/src/widgets/loading_popup.dart';
+import 'package:o_xbese/src/core/common/functions/calculate_distance.dart'
+    as workout_calculator;
 
 class ActivityPage extends StatefulWidget {
   final PageController pageController;
@@ -21,8 +23,13 @@ class ActivityPage extends StatefulWidget {
 }
 
 class _ActivityPageState extends State<ActivityPage> {
-  List<String> workOutMode = ['Running', 'Walking', 'Cycling'];
-  String selectedMode = 'Running';
+  List<workout_calculator.ActivityType> workOutMode = [
+    workout_calculator.ActivityType.running,
+    workout_calculator.ActivityType.walking,
+    workout_calculator.ActivityType.cycling,
+  ];
+  workout_calculator.ActivityType selectedMode =
+      workout_calculator.ActivityType.walking;
   int requestTime = 0;
   @override
   Widget build(BuildContext context) {
@@ -77,7 +84,7 @@ class _ActivityPageState extends State<ActivityPage> {
                           selectedMode = workOutMode[index];
                         });
                       },
-                      child: Text(workOutMode[index]),
+                      child: Text(workOutMode[index].toString()),
                     ),
                   );
                 }),

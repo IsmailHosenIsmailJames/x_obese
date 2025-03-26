@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -8,7 +9,9 @@ import 'package:gap/gap.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:o_xbese/src/core/common/functions/calculate_distance.dart';
+import 'package:o_xbese/src/apis/middleware/jwt_middleware.dart';
+import 'package:o_xbese/src/core/common/functions/calculate_distance.dart'
+    as workout_calculator;
 import 'package:o_xbese/src/core/common/functions/format_sec_to_time.dart';
 import 'package:o_xbese/src/screens/activity/controller/activity_controller.dart';
 import 'package:o_xbese/src/theme/colors.dart';
@@ -16,7 +19,7 @@ import 'package:o_xbese/src/widgets/back_button.dart';
 import 'package:o_xbese/src/widgets/loading_popup.dart';
 
 class LiveActivityPage extends StatefulWidget {
-  final String workoutType;
+  final workout_calculator.ActivityType workoutType;
   final LatLng initialLatLon;
   const LiveActivityPage({
     super.key,
@@ -68,7 +71,11 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
         );
       } else {
         if (latLonOfPositions.isNotEmpty) {
-          distanceEveryPaused += calculateDistance(latLonOfPositions);
+          distanceEveryPaused +=
+              workout_calculator.WorkoutCalculator(
+                rawPositions: latLonOfPositions,
+                activityType: widget.workoutType,
+              ).processData().totalDistance;
           latLonOfPositions = [];
         }
       }
@@ -93,6 +100,11 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
 
   @override
   Widget build(BuildContext context) {
+    workout_calculator.WorkoutCalculationResult workoutCalculationResult =
+        workout_calculator.WorkoutCalculator(
+          rawPositions: latLonOfPositions,
+          activityType: widget.workoutType,
+        ).processData();
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -132,7 +144,9 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
                     onMapCreated: (controller) {
                       googleMapController.complete(controller);
                     },
-                    polylines: getPolylineFromLatLonList(latLonOfPositions),
+                    polylines: getPolylineFromLatLonList(
+                      workoutCalculationResult.filteredPath,
+                    ),
                     zoomControlsEnabled: false,
                     markers: markersSet.values.toSet(),
                   ),
@@ -162,11 +176,10 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
                                 Text(
-                                  ((distanceEveryPaused +
-                                              calculateDistance(
-                                                latLonOfPositions,
-                                              )) /
-                                          1000)
+                                  (distanceEveryPaused +
+                                          workoutCalculationResult
+                                                  .totalDistance /
+                                              1000)
                                       .toPrecision(2)
                                       .toString(),
                                   style: const TextStyle(
@@ -235,7 +248,7 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
                                   ),
                                   const Gap(5),
                                   Text(
-                                    '${(((distanceEveryPaused + calculateDistance(latLonOfPositions)) / 1000) / (workoutDurationSec / (60 * 60))).toPrecision(2)} km/h',
+                                    '${(workoutCalculationResult.averageSpeed * 3.6).toPrecision(2)} km/h',
                                     style: const TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w400,
@@ -380,28 +393,33 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
                                     final activityController = Get.put(
                                       ActivityController(),
                                     );
-                                    final response = await activityController
-                                        .saveActivity({
-                                          'distance':
-                                              calculateDistance(
-                                                latLonOfPositions,
-                                              ) /
-                                              1000,
-                                          'type':
-                                              widget.workoutType.toLowerCase(),
-                                          'duration': workoutDurationSec * 1000,
-                                          // "steps": 1000, // optional
-                                        });
-                                    Navigator.pop(context);
-                                    if (response != null) {
-                                      Fluttertoast.showToast(
-                                        msg: 'Saved successfully',
-                                      );
-                                      Get.back();
-                                    } else {
-                                      Fluttertoast.showToast(
-                                        msg: 'Unable to save, try again',
-                                      );
+                                    try {
+                                      final response = await activityController
+                                          .saveActivity({
+                                            'distance':
+                                                (distanceEveryPaused +
+                                                    workoutCalculationResult
+                                                        .totalDistance) /
+                                                1000,
+                                            'type':
+                                                widget.workoutType.toString(),
+                                            'duration':
+                                                workoutDurationSec * 1000,
+                                            // "steps": 1000, // optional
+                                          });
+                                      Navigator.pop(context);
+                                      if (response != null) {
+                                        Fluttertoast.showToast(
+                                          msg: 'Saved successfully',
+                                        );
+                                        Get.back();
+                                      } else {
+                                        Fluttertoast.showToast(
+                                          msg: 'Unable to save, try again',
+                                        );
+                                      }
+                                    } on DioException catch (e) {
+                                      printResponse(e.response!);
                                     }
                                   },
                                   icon: Icon(
@@ -426,12 +444,12 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
     );
   }
 
-  Set<Polyline> getPolylineFromLatLonList(List<Position> latLonList) {
+  Set<Polyline> getPolylineFromLatLonList(List<LatLng> latLonList) {
     Set<Polyline> polyline = {};
     polyline.add(
       Polyline(
         polylineId: const PolylineId('Workout Paths'),
-        points: latLonList.map((e) => LatLng(e.latitude, e.longitude)).toList(),
+        points: latLonList,
         color: MyAppColors.second,
         width: 5,
       ),

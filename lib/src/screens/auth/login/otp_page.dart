@@ -18,7 +18,6 @@ import 'package:o_xbese/src/theme/colors.dart';
 import 'package:o_xbese/src/widgets/loading_popup.dart';
 import 'package:pinput/pinput.dart';
 import 'package:dio/dio.dart' as dio;
-import 'package:shared_preferences/shared_preferences.dart';
 
 class OtpPage extends StatefulWidget {
   final bool isSignup;
@@ -50,15 +49,15 @@ class _OtpPageState extends State<OtpPage> {
       if (response != null) {
         log('OTP verified', name: 'OTP');
         await Hive.box('user').put('info', jsonEncode({'phone': widget.phone}));
-        final prefs = await SharedPreferences.getInstance();
-        await prefs.setString(
+        final tokenBox = await Hive.openBox('tokens');
+        await tokenBox.put(
           'access_token',
           response.data['data']['accessToken'].toString(),
         );
 
         String? refreshToken = refreshTokenExtractor(response);
         if (refreshToken != null) {
-          await prefs.setString('refresh_token', refreshToken);
+          await tokenBox.put('refresh_token', refreshToken);
           log('Saved refresh token', name: 'success');
         }
 

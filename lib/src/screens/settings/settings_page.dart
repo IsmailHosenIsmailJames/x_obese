@@ -1,4 +1,8 @@
+import 'dart:developer';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:o_xbese/src/apis/apis_url.dart';
 import 'package:o_xbese/src/apis/middleware/jwt_middleware.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -17,15 +21,17 @@ class _SettingsPageState extends State<SettingsPage> {
           print(await getAccessToken());
           print(await getRefreshToken());
 
-          // try {
-          //   DioClient dioClient = DioClient(baseAPI);
-          //   final response = await dioClient.dio.get(
-          //     '/api/user/v1/profile/token',
-          //   );
-          //   printResponse(response);
-          // } on DioException catch (e) {
-          //   printResponse(e.response!);
-          // }
+          try {
+            DioClient dioClient = DioClient(baseAPI);
+            final response = await dioClient.doRefreshToken(
+              (await getRefreshToken())!,
+            );
+            log(response.toString());
+          } on DioException catch (e) {
+            printResponse(e.response!);
+          }
+          print(await getAccessToken());
+          print(await getRefreshToken());
         },
         child: Text('Do Refresh Tokens'),
       ),
