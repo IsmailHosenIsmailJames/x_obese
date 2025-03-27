@@ -41,6 +41,8 @@ dependencies:
   json_serializable: ^6.9.4
   awesome_notifications: ^0.10.1
   pedometer: ^4.0.2
+  flutter_foreground_task: ^8.17.0
+  shared_preferences: ^2.5.2
 
 dev_dependencies:
   flutter_test:

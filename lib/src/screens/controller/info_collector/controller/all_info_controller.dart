@@ -13,6 +13,7 @@ import 'package:o_xbese/src/screens/resources/workout/status.dart';
 class AllInfoController extends GetxController {
   RxInt selectedPoints = 0.obs;
   RxString selectedCategory = 'Calories'.obs;
+  RxInt stepsCount = 0.obs;
 
   static DioClient dioClient = DioClient(baseAPI);
   static Box userBox = Hive.box('user');

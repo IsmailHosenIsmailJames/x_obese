@@ -80,10 +80,7 @@ Column pointsOverviewWidget(
                         context: context,
                         svg: stepsIconRed,
                         title: 'Steps',
-                        points:
-                            controller.workStatus.value.first.steps
-                                ?.toString() ??
-                            '0',
+                        points: controller.stepsCount.value.toString(),
                       ),
                     ),
                   ),
