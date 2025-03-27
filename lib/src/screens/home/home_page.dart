@@ -1,8 +1,10 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_activity_recognition/flutter_activity_recognition.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
@@ -31,11 +33,22 @@ class _HomePageState extends State<HomePage> {
   AllInfoController allInfoController = Get.find();
   @override
   void initState() {
-    checkActivityPermission();
+    checkActivityStream();
     super.initState();
   }
 
-  Future<void> checkActivityPermission() async {
+  StreamSubscription<Activity>? activitySubscription;
+
+  Future<void> subscribeActivityStream() async {
+    if (await checkAndRequestPermission()) {
+      activitySubscription = FlutterActivityRecognition.instance.activityStream
+          .listen((event) {
+            log(event.type.toString());
+          });
+    }
+  }
+
+  Future<void> checkActivityStream() async {
     bool status = await checkAndRequestPermission();
     if (!status) {
       showDialog(
@@ -52,16 +65,20 @@ class _HomePageState extends State<HomePage> {
                   SystemNavigator.pop();
                 },
                 label: const Text('Quit App'),
-                icon: const Icon(Icons.done, color: Colors.red),
+                icon: const Icon(Icons.close, color: Colors.red),
               ),
               ElevatedButton.icon(
                 onPressed: () async {
                   bool status = await checkAndRequestPermission();
                   if (status) {
+                    if (activitySubscription == null) {
+                      subscribeActivityStream();
+                    }
                     Navigator.pop(context);
                   } else {
                     await openAppSettings();
                     Navigator.pop(context);
+                    log('message');
                   }
                 },
                 label: const Text('Allow'),
@@ -72,7 +89,9 @@ class _HomePageState extends State<HomePage> {
         },
       );
     } else {
-      log('Activity permission granted');
+      if (activitySubscription == null) {
+        subscribeActivityStream();
+      }
     }
   }
 

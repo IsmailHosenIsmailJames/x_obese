@@ -25,11 +25,11 @@ class DioClient {
     RequestOptions options,
     RequestInterceptorHandler handler,
   ) async {
-    final accessToken = await getAccessToken();
+    final accessToken = getAccessToken();
     if (accessToken != null) {
       options.headers['Authorization'] = 'Bearer $accessToken';
     }
-    String? refreshToken = await getRefreshToken();
+    String? refreshToken = getRefreshToken();
     if (refreshToken != null) {
       options.headers['Cookie'] = 'refreshToken=$refreshToken';
     }
@@ -49,32 +49,23 @@ class DioClient {
   ) async {
     if (error.response?.statusCode == 403 ||
         error.response?.statusCode == 401) {
-      // Access token expired, try to refresh
-      final refreshToken = await getRefreshToken();
-      log(refreshToken.toString(), name: 'Here I am');
+      String? refreshToken = getRefreshToken();
       if (refreshToken != null) {
         try {
           final refreshedTokens = await doRefreshToken(refreshToken);
           if (refreshedTokens != null) {
-            // Retry the original request with the new access token
             return handler.resolve(
-              await _retry(
-                error.requestOptions,
-                refreshedTokens['accessToken'],
-              ),
+              await _retry(error.requestOptions, refreshedTokens),
             );
           } else {
-            // Refresh failed, logout or redirect to login
             await clearTokens();
             getx.Get.offAll(() => const LoginSignupPage());
           }
         } catch (refreshError) {
-          //Refresh token is also invalid. logout or redirect to login.
           await clearTokens();
           getx.Get.offAll(() => const LoginSignupPage());
         }
       } else {
-        // No refresh token, logout or redirect to login
         await clearTokens();
         getx.Get.offAll(() => const LoginSignupPage());
       }
@@ -90,7 +81,7 @@ class DioClient {
       method: requestOptions.method,
       headers: {'Authorization': 'Bearer $accessToken'},
     );
-    String? refreshToken = await getRefreshToken();
+    String? refreshToken = getRefreshToken();
     if (refreshToken != null) {
       dio.options.headers['Cookie'] = 'refreshToken=$refreshToken';
     }
@@ -102,7 +93,7 @@ class DioClient {
     );
   }
 
-  Future<Map<String, dynamic>?> doRefreshToken(String refreshToken) async {
+  Future<String?> doRefreshToken(String refreshToken) async {
     try {
       final response = await dio.post('/api/auth/v1/token/user');
       printResponse(response);
@@ -112,7 +103,7 @@ class DioClient {
         log([newAccessToken, newRefreshToken].toString());
         if (newAccessToken != null) {
           await saveTokens(newAccessToken, newRefreshToken ?? refreshToken);
-          return response.data;
+          return newAccessToken;
         } else {
           return null;
         }
