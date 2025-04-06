@@ -15,7 +15,6 @@ import 'package:o_xbese/src/resources/svg_string.dart';
 import 'package:o_xbese/src/screens/marathon/marathon_page.dart';
 import 'package:o_xbese/src/screens/navs/controller/navs_controller.dart';
 import 'package:o_xbese/src/screens/settings/settings_page.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../theme/colors.dart';
 
@@ -139,27 +138,7 @@ class _NavesPageState extends State<NavesPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: MyAppColors.primary,
-      appBar: AppBar(
-        actions: [
-          IconButton(
-            onPressed: () async {
-              SharedPreferences preferences =
-                  await SharedPreferences.getInstance();
-              int count = preferences.getInt('task') ?? -1;
-              int count1 = preferences.getInt('task1') ?? -1;
-              showDialog(
-                context: context,
-                builder: (context) {
-                  return AlertDialog(
-                    title: Text('Count1: $count, count2: $count1'),
-                  );
-                },
-              );
-            },
-            icon: const Icon(Icons.question_mark),
-          ),
-        ],
-      ),
+
       body: SafeArea(
         child: PageView(
           controller: pageController,

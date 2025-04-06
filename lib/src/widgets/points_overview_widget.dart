@@ -81,6 +81,7 @@ Column pointsOverviewWidget(
                         svg: stepsIconRed,
                         title: 'Steps',
                         points: controller.stepsCount.value.toString(),
+                        target: '6000',
                       ),
                     ),
                   ),
@@ -102,6 +103,13 @@ Column pointsOverviewWidget(
                             controller.workStatus.value.first.calories
                                 ?.toString() ??
                             '0',
+                        target:
+                            (controller
+                                        .getWorkoutPlansList
+                                        .first
+                                        .caloriesGoal ??
+                                    0)
+                                .abs(),
                       ),
                     ),
                   ),
@@ -159,6 +167,11 @@ Column pointsOverviewWidget(
                         controller.workStatus.value.first.durationMs
                             ?.toString() ??
                         '0',
+                    target:
+                        ((controller.getWorkoutPlansList.first.workoutTimeMs ??
+                                    0)
+                                .abs() /
+                            60000),
                   ),
                 ),
               ),
@@ -240,6 +253,7 @@ Widget getPointsWidget({
   required String svg,
   required String title,
   required String points,
+  dynamic target,
 }) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.start,
@@ -259,9 +273,21 @@ Widget getPointsWidget({
               fontWeight: FontWeight.w300,
             ),
           ),
-          Text(
-            points,
-            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+          Row(
+            children: [
+              Text(
+                points,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              if (target != null)
+                Text(
+                  '/$target',
+                  style: TextStyle(fontSize: 13, color: MyAppColors.mutedGray),
+                ),
+            ],
           ),
         ],
       ),

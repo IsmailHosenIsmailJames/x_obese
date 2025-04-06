@@ -220,13 +220,19 @@ class _HomePageState extends State<HomePage> {
             ),
             SizedBox(
               height: 210,
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                children: [
-                  getBlogCard(context),
-                  getBlogCard(context),
-                  getBlogCard(context),
-                ],
+              child: Obx(
+                () => ListView(
+                  scrollDirection: Axis.horizontal,
+                  children: List.generate(
+                    allInfoController.getBlogList.length,
+                    (index) {
+                      return getBlogCard(
+                        context,
+                        allInfoController.getBlogList[index],
+                      );
+                    },
+                  ),
+                ),
               ),
             ),
           ],

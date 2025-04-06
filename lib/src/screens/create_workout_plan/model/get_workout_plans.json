@@ -1,0 +1,19 @@
+[
+    {
+        "id": "92df24f4-1c63-4f51-a5f9-aac129fa1ace",
+        "userId": "a5f7a89a-44c5-4423-984c-6df0ad0ea9cf",
+        "bmi": "17.79",
+        "weightGoal": 6,
+        "goalType": "lose_weight",
+        "workoutTimeMs": null,
+        "workoutDays": "Wednesday,Sunday",
+        "activateReminder": true,
+        "reminderTime": "1970-01-01T00:00:00.000Z",
+        "totalDays": 0,
+        "caloriesGoal": -168,
+        "startDate": "2025-04-06T00:00:00.000Z",
+        "endDate": "2026-04-06T00:00:00.000Z",
+        "createdAt": "2025-04-06T07:33:57.436Z",
+        "updatedAt": "2025-04-06T07:33:57.436Z"
+    }
+]

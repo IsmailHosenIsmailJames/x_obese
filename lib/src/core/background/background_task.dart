@@ -2,7 +2,6 @@
 // ignore_for_file: avoid_dynamic_calls
 
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_foreground_task/flutter_foreground_task.dart';
@@ -21,7 +20,6 @@ class MyTaskHandler extends TaskHandler {
   @override
   Future<void> onStart(DateTime timestamp, TaskStarter starter) async {
     streamSubscription = Pedometer.stepCountStream.listen((event) async {
-      log('Steps count: $event', name: 'Pedometer');
       FlutterForegroundTask.sendDataToMain(event.steps);
       await FlutterForegroundTask.updateService(
         notificationText: 'Tap to return to the app',
@@ -35,7 +33,6 @@ class MyTaskHandler extends TaskHandler {
   Future<void> onRepeatEvent(DateTime timestamp) async {
     await streamSubscription?.cancel();
     streamSubscription = Pedometer.stepCountStream.listen((event) async {
-      log('Steps count: $event', name: 'Pedometer');
       FlutterForegroundTask.sendDataToMain(event.steps);
       await FlutterForegroundTask.updateService(
         notificationText: 'Tap to return to the app',

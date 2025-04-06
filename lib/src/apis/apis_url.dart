@@ -6,3 +6,4 @@ String getUserDataPath = '/api/user/v1/profile/token';
 String userDataPath = '/api/user/v1/profile/token';
 String saveStepsCount = '/api/user/v1/workout/steps';
 String workoutPlanPath = '/api/user/v1/workout/plan';
+String blogPath = '/api/other/v1/blog';

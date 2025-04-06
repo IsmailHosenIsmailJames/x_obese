@@ -3,12 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:o_xbese/src/screens/blog/blog_details_view.dart';
+import 'package:o_xbese/src/screens/blog/model/get_blog_model.dart';
 import 'package:o_xbese/src/theme/colors.dart';
 
-Widget getBlogCard(BuildContext context) {
+Widget getBlogCard(BuildContext context, GetBlogModel blogData) {
   return GestureDetector(
     onTap: () {
-      Get.to(() => const BlogDetailsView());
+      Get.to(() => BlogDetailsView(blogData: blogData));
     },
     child: Container(
       width: 165,
@@ -23,21 +24,22 @@ Widget getBlogCard(BuildContext context) {
 
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(4),
-              image: const DecorationImage(
-                image: CachedNetworkImageProvider(
-                  'https://images.pexels.com/photos/8899546/pexels-photo-8899546.jpeg?auto=compress&cs=tinysrgb&w=600',
-                ),
+              image:
+                  blogData.imagePath == null
+                      ? null
+                      : DecorationImage(
+                        image: CachedNetworkImageProvider(blogData.imagePath!),
 
-                fit: BoxFit.cover,
-              ),
+                        fit: BoxFit.cover,
+                      ),
             ),
           ),
           const Gap(8),
           Text(
-            '5 min Read',
+            '${blogData.readTime} min Read',
             style: TextStyle(fontSize: 12, color: MyAppColors.third),
           ),
-          const Text('10 Easy Home Workouts', style: TextStyle(fontSize: 12)),
+          Text(blogData.title ?? '', style: const TextStyle(fontSize: 12)),
         ],
       ),
     ),

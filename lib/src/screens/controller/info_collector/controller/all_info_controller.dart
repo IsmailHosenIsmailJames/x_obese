@@ -5,8 +5,10 @@ import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:o_xbese/src/apis/apis_url.dart';
 import 'package:o_xbese/src/apis/middleware/jwt_middleware.dart';
+import 'package:o_xbese/src/screens/blog/model/get_blog_model.dart';
 import 'package:o_xbese/src/screens/controller/info_collector/model/all_info_model.dart';
 import 'package:dio/dio.dart' as dio;
+import 'package:o_xbese/src/screens/create_workout_plan/model/get_workout_plans.dart';
 import 'package:o_xbese/src/screens/marathon/models/model.dart';
 import 'package:o_xbese/src/screens/resources/workout/status.dart';
 
@@ -23,6 +25,9 @@ class AllInfoController extends GetxController {
     WorkStatusModel(),
   ]);
   RxList<MarathonModel> marathonList = RxList<MarathonModel>([]);
+  RxList<GetWorkoutPlans> getWorkoutPlansList =
+      (<GetWorkoutPlans>[GetWorkoutPlans()]).obs;
+  RxList<GetBlogModel> getBlogList = RxList<GetBlogModel>([]);
 
   Future<dio.Response?> updateUserInfo(dynamic data) async {
     final response = await dioClient.dio.patch(userDataPath, data: data);
@@ -60,8 +65,11 @@ class AllInfoController extends GetxController {
       } else {
         workStatus.value = [WorkStatusModel()];
       }
-    } catch (e) {
-      log(e.toString(), name: 'Error');
+    } on dio.DioException catch (e) {
+      log(e.message ?? '', name: 'Error');
+      if (e.response != null) {
+        printResponse(e.response!);
+      }
     }
 
     log('try to get marathon info');
@@ -79,8 +87,50 @@ class AllInfoController extends GetxController {
           marathonList.add(MarathonModel.fromMap(marathon));
         }
       }
-    } catch (e) {
-      log(e.toString());
+    } on dio.DioException catch (e) {
+      log(e.message ?? '', name: 'Error');
+      if (e.response != null) {
+        printResponse(e.response!);
+      }
+    }
+    try {
+      // get marathon programs
+      dio.Response response = await dioClient.dio.get(workoutPlanPath);
+      printResponse(response);
+      if (response.statusCode == 200) {
+        List workoutPlans = response.data['data'];
+        getWorkoutPlansList.value = [GetWorkoutPlans()];
+        for (var workoutPlan in workoutPlans) {
+          getWorkoutPlansList.add(GetWorkoutPlans.fromMap(workoutPlan));
+        }
+        getWorkoutPlansList.removeAt(0);
+
+        printResponse(response);
+      }
+    } on dio.DioException catch (e) {
+      log(e.message ?? '', name: 'Error');
+      if (e.response != null) {
+        printResponse(e.response!);
+      }
+    }
+    try {
+      // get marathon programs
+      dio.Response response = await dioClient.dio.get(blogPath);
+      printResponse(response);
+      if (response.statusCode == 200) {
+        List blogList = response.data['data'];
+        getBlogList.value = [GetBlogModel()];
+        for (var blog in blogList) {
+          getBlogList.add(GetBlogModel.fromMap(blog));
+        }
+        getBlogList.removeAt(0);
+        printResponse(response);
+      }
+    } on dio.DioException catch (e) {
+      log(e.message ?? '', name: 'Error');
+      if (e.response != null) {
+        printResponse(e.response!);
+      }
     }
   }
 

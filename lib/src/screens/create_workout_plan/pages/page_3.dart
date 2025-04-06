@@ -341,6 +341,19 @@ class _CreateWorkoutPlanPage3State extends State<CreateWorkoutPlanPage3> {
                         .toLowerCase()
                         .replaceAll(' ', '_');
 
+                    createWorkoutPlanController
+                        .createWorkoutPlanModel
+                        .value
+                        .workoutTime = ((int.parse(
+                                  createWorkoutPlanController
+                                          .createWorkoutPlanModel
+                                          .value
+                                          .workoutTime ??
+                                      '0',
+                                )) *
+                                60000)
+                            .toString();
+
                     log(
                       createWorkoutPlanController.createWorkoutPlanModel.value
                           .toJson(),
