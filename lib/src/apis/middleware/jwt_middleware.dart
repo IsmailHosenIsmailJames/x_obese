@@ -4,7 +4,7 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart' as getx;
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:o_xbese/src/screens/auth/login/login_signup_page.dart';
+import 'package:x_obese/src/screens/auth/login/login_signup_page.dart';
 
 class DioClient {
   final Dio dio = Dio();

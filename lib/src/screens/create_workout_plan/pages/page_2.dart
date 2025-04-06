@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:o_xbese/src/screens/create_workout_plan/controller/create_workout_plan_controller.dart';
-import 'package:o_xbese/src/theme/colors.dart';
-import 'package:o_xbese/src/widgets/back_button.dart';
+import 'package:x_obese/src/screens/create_workout_plan/controller/create_workout_plan_controller.dart';
+import 'package:x_obese/src/theme/colors.dart';
+import 'package:x_obese/src/widgets/back_button.dart';
 import 'package:toastification/toastification.dart';
 
 class CreateWorkoutPlanPage2 extends StatefulWidget {

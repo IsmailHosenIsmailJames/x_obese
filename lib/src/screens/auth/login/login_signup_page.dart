@@ -6,11 +6,11 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
-import 'package:o_xbese/src/screens/auth/controller/auth_controller.dart';
-import 'package:o_xbese/src/screens/auth/login/otp_page.dart';
-import 'package:o_xbese/src/theme/colors.dart';
+import 'package:x_obese/src/screens/auth/controller/auth_controller.dart';
+import 'package:x_obese/src/screens/auth/login/otp_page.dart';
+import 'package:x_obese/src/theme/colors.dart';
 import 'package:dio/dio.dart' as dio;
-import 'package:o_xbese/src/widgets/loading_popup.dart';
+import 'package:x_obese/src/widgets/loading_popup.dart';
 
 class LoginSignupPage extends StatefulWidget {
   const LoginSignupPage({super.key});

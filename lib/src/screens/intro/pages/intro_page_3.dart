@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:o_xbese/src/screens/auth/login/login_signup_page.dart';
-import 'package:o_xbese/src/theme/colors.dart';
+import 'package:x_obese/src/screens/auth/login/login_signup_page.dart';
+import 'package:x_obese/src/theme/colors.dart';
 
 class IntroPage3 extends StatelessWidget {
   final PageController pageController;

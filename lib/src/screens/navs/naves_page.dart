@@ -7,14 +7,14 @@ import 'package:flutter_foreground_task/flutter_foreground_task.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:o_xbese/src/core/background/background_task.dart';
-import 'package:o_xbese/src/screens/activity/workout_page.dart';
-import 'package:o_xbese/src/screens/controller/info_collector/controller/all_info_controller.dart';
-import 'package:o_xbese/src/screens/home/home_page.dart';
-import 'package:o_xbese/src/resources/svg_string.dart';
-import 'package:o_xbese/src/screens/marathon/marathon_page.dart';
-import 'package:o_xbese/src/screens/navs/controller/navs_controller.dart';
-import 'package:o_xbese/src/screens/settings/settings_page.dart';
+import 'package:x_obese/src/core/background/background_task.dart';
+import 'package:x_obese/src/screens/activity/workout_page.dart';
+import 'package:x_obese/src/screens/controller/info_collector/controller/all_info_controller.dart';
+import 'package:x_obese/src/screens/home/home_page.dart';
+import 'package:x_obese/src/resources/svg_string.dart';
+import 'package:x_obese/src/screens/marathon/marathon_page.dart';
+import 'package:x_obese/src/screens/navs/controller/navs_controller.dart';
+import 'package:x_obese/src/screens/settings/settings_page.dart';
 
 import '../../theme/colors.dart';
 

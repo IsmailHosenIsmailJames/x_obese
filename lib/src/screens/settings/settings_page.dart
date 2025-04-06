@@ -2,8 +2,8 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:o_xbese/src/apis/apis_url.dart';
-import 'package:o_xbese/src/apis/middleware/jwt_middleware.dart';
+import 'package:x_obese/src/apis/apis_url.dart';
+import 'package:x_obese/src/apis/middleware/jwt_middleware.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});

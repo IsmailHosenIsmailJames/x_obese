@@ -4,14 +4,14 @@ import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:o_xbese/src/resources/svg_string.dart';
-import 'package:o_xbese/src/screens/controller/info_collector/controller/all_info_controller.dart';
-import 'package:o_xbese/src/screens/blog/blog_list_view.dart';
-import 'package:o_xbese/src/screens/create_workout_plan/create_workout_plan.dart';
-import 'package:o_xbese/src/theme/colors.dart';
-import 'package:o_xbese/src/widgets/get_blog_card.dart';
-import 'package:o_xbese/src/screens/marathon/components/virtual_marathon_cards.dart';
-import 'package:o_xbese/src/widgets/points_overview_widget.dart';
+import 'package:x_obese/src/resources/svg_string.dart';
+import 'package:x_obese/src/screens/controller/info_collector/controller/all_info_controller.dart';
+import 'package:x_obese/src/screens/blog/blog_list_view.dart';
+import 'package:x_obese/src/screens/create_workout_plan/create_workout_plan.dart';
+import 'package:x_obese/src/theme/colors.dart';
+import 'package:x_obese/src/widgets/get_blog_card.dart';
+import 'package:x_obese/src/screens/marathon/components/virtual_marathon_cards.dart';
+import 'package:x_obese/src/widgets/points_overview_widget.dart';
 
 class HomePage extends StatefulWidget {
   final PageController pageController;

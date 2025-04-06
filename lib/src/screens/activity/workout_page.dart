@@ -7,11 +7,11 @@ import 'package:gap/gap.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:o_xbese/src/screens/activity/live_activity_page.dart';
-import 'package:o_xbese/src/theme/colors.dart';
-import 'package:o_xbese/src/widgets/back_button.dart';
-import 'package:o_xbese/src/widgets/loading_popup.dart';
-import 'package:o_xbese/src/core/common/functions/calculate_distance.dart'
+import 'package:x_obese/src/screens/activity/live_activity_page.dart';
+import 'package:x_obese/src/theme/colors.dart';
+import 'package:x_obese/src/widgets/back_button.dart';
+import 'package:x_obese/src/widgets/loading_popup.dart';
+import 'package:x_obese/src/core/common/functions/calculate_distance.dart'
     as workout_calculator;
 
 class ActivityPage extends StatefulWidget {

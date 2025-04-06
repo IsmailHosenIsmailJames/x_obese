@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:o_xbese/src/theme/colors.dart';
+import 'package:x_obese/src/theme/colors.dart';
 
 InputDecoration getTextInputDecoration(
   BuildContext context, {

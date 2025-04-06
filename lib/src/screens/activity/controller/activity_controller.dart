@@ -1,8 +1,8 @@
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:dio/dio.dart' as dio;
-import 'package:o_xbese/src/apis/apis_url.dart';
-import 'package:o_xbese/src/apis/middleware/jwt_middleware.dart';
+import 'package:x_obese/src/apis/apis_url.dart';
+import 'package:x_obese/src/apis/middleware/jwt_middleware.dart';
 
 class ActivityController extends GetxController {
   DioClient dioClient = DioClient(baseAPI);

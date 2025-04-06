@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:o_xbese/src/apis/middleware/jwt_middleware.dart';
-import 'package:o_xbese/src/core/common/functions/is_information_fulfilled.dart';
-import 'package:o_xbese/src/screens/controller/info_collector/info_collector.dart';
-import 'package:o_xbese/src/screens/controller/info_collector/model/all_info_model.dart';
-import 'package:o_xbese/src/screens/auth/login/login_signup_page.dart';
-import 'package:o_xbese/src/screens/intro/intro_page.dart';
-import 'package:o_xbese/src/screens/navs/naves_page.dart';
-import 'package:o_xbese/src/theme/colors.dart';
+import 'package:x_obese/src/apis/middleware/jwt_middleware.dart';
+import 'package:x_obese/src/core/common/functions/is_information_fulfilled.dart';
+import 'package:x_obese/src/screens/controller/info_collector/info_collector.dart';
+import 'package:x_obese/src/screens/controller/info_collector/model/all_info_model.dart';
+import 'package:x_obese/src/screens/auth/login/login_signup_page.dart';
+import 'package:x_obese/src/screens/intro/intro_page.dart';
+import 'package:x_obese/src/screens/navs/naves_page.dart';
+import 'package:x_obese/src/theme/colors.dart';
 
 class OXbese extends StatelessWidget {
   const OXbese({super.key});

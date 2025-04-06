@@ -4,9 +4,9 @@ import 'package:flutter_foreground_task/flutter_foreground_task.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:o_xbese/o_xbese.dart';
-import 'package:o_xbese/src/apis/middleware/jwt_middleware.dart';
-import 'package:o_xbese/src/screens/auth/controller/auth_controller.dart';
+import 'package:x_obese/o_xbese.dart';
+import 'package:x_obese/src/apis/middleware/jwt_middleware.dart';
+import 'package:x_obese/src/screens/auth/controller/auth_controller.dart';
 
 Future<void> main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();

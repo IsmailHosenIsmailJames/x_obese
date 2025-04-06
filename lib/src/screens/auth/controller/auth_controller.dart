@@ -3,8 +3,8 @@ import 'dart:developer';
 
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:o_xbese/src/apis/apis_url.dart';
-import 'package:o_xbese/src/apis/middleware/jwt_middleware.dart';
+import 'package:x_obese/src/apis/apis_url.dart';
+import 'package:x_obese/src/apis/middleware/jwt_middleware.dart';
 import 'package:dio/dio.dart' as dio;
 
 class AuthController extends GetxController {

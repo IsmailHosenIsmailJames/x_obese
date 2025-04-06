@@ -2,9 +2,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:o_xbese/src/core/common/functions/safe_sub_string.dart';
-import 'package:o_xbese/src/screens/marathon/models/model.dart';
-import 'package:o_xbese/src/theme/colors.dart';
+import 'package:x_obese/src/core/common/functions/safe_sub_string.dart';
+import 'package:x_obese/src/screens/marathon/models/model.dart';
+import 'package:x_obese/src/theme/colors.dart';
 
 import '../details_marathon/marathon_details_view.dart';
 

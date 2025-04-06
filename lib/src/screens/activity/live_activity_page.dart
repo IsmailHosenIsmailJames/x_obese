@@ -9,14 +9,14 @@ import 'package:gap/gap.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:o_xbese/src/apis/middleware/jwt_middleware.dart';
-import 'package:o_xbese/src/core/common/functions/calculate_distance.dart'
+import 'package:x_obese/src/apis/middleware/jwt_middleware.dart';
+import 'package:x_obese/src/core/common/functions/calculate_distance.dart'
     as workout_calculator;
-import 'package:o_xbese/src/core/common/functions/format_sec_to_time.dart';
-import 'package:o_xbese/src/screens/activity/controller/activity_controller.dart';
-import 'package:o_xbese/src/theme/colors.dart';
-import 'package:o_xbese/src/widgets/back_button.dart';
-import 'package:o_xbese/src/widgets/loading_popup.dart';
+import 'package:x_obese/src/core/common/functions/format_sec_to_time.dart';
+import 'package:x_obese/src/screens/activity/controller/activity_controller.dart';
+import 'package:x_obese/src/theme/colors.dart';
+import 'package:x_obese/src/widgets/back_button.dart';
+import 'package:x_obese/src/widgets/loading_popup.dart';
 
 class LiveActivityPage extends StatefulWidget {
   final workout_calculator.ActivityType workoutType;
