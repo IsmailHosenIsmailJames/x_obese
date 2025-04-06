@@ -193,8 +193,16 @@ PieChart getPieChart(AllInfoController controller) {
         touchCallback: (p0, p1) {
           final touchedSection = p1?.touchedSection?.touchedSection;
           if (touchedSection != null) {
-            controller.selectedPoints.value = touchedSection.value.toInt() - 1;
-            controller.selectedCategory.value = touchedSection.title.toString();
+            if (touchedSection.title.toString() == 'Steps') {
+              controller.selectedPoints.value = controller.stepsCount.value;
+              controller.selectedCategory.value =
+                  touchedSection.title.toString();
+            } else {
+              controller.selectedPoints.value =
+                  touchedSection.value.toInt() - 1;
+              controller.selectedCategory.value =
+                  touchedSection.title.toString();
+            }
           }
         },
         enabled: true,
@@ -223,8 +231,7 @@ PieChart getPieChart(AllInfoController controller) {
           showTitle: false,
         ),
         PieChartSectionData(
-          value:
-              (controller.workStatus.value.first.steps?.toDouble() ?? 0.0) + 1,
+          value: (controller.stepsCount.toDouble() / 6000),
           color: Colors.red,
           radius: controller.selectedCategory.value == 'Steps' ? 27 : 20,
           title: 'Steps',
