@@ -1,7 +1,13 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:o_xbese/src/screens/create_workout_plan/controller/create_workout_plan_controller.dart';
 import 'package:o_xbese/src/theme/colors.dart';
 import 'package:o_xbese/src/widgets/back_button.dart';
+import 'package:toastification/toastification.dart';
 
 class CreateWorkoutPlanPage2 extends StatefulWidget {
   final PageController pageController;
@@ -12,10 +18,28 @@ class CreateWorkoutPlanPage2 extends StatefulWidget {
 }
 
 class _CreateWorkoutPlanPage2State extends State<CreateWorkoutPlanPage2> {
-  int workoutDuration = 40;
   List<String> selectedWeekDays = [];
   List<String> weekDays = ['Fri', 'Sat', 'Sun', 'Mon', 'Tue', 'Wed', 'Thu'];
+  Map<String, String> mapOfWeekDays = {
+    'Fri': 'Friday',
+    'Sat': 'Saturday',
+    'Sun': 'Sunday',
+    'Mon': 'Monday',
+    'Tue': 'Tuesday',
+    'Wed': 'Wednesday',
+    'Thu': 'Thursday',
+  };
   bool workoutDayReminder = true;
+  final CreateWorkoutPlanController createWorkoutPlanController = Get.find();
+  @override
+  void initState() {
+    createWorkoutPlanController.createWorkoutPlanModel.value.workoutTime =
+        40.toString();
+    super.initState();
+  }
+
+  TimeOfDay reminderTime = const TimeOfDay(hour: 6, minute: 0);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,7 +85,9 @@ class _CreateWorkoutPlanPage2State extends State<CreateWorkoutPlanPage2> {
                       const Gap(5),
                       Align(
                         alignment: Alignment.centerRight,
-                        child: Text('$workoutDuration Min'),
+                        child: Text(
+                          '${createWorkoutPlanController.createWorkoutPlanModel.value.workoutTime} Min',
+                        ),
                       ),
                       const Gap(10),
                       SliderTheme(
@@ -75,10 +101,18 @@ class _CreateWorkoutPlanPage2State extends State<CreateWorkoutPlanPage2> {
                           trackHeight: 12,
                         ),
                         child: Slider(
-                          value: workoutDuration.toDouble(),
+                          value: double.parse(
+                            createWorkoutPlanController
+                                .createWorkoutPlanModel
+                                .value
+                                .workoutTime!,
+                          ),
                           onChanged: (value) {
                             setState(() {
-                              workoutDuration = value.toInt();
+                              createWorkoutPlanController
+                                  .createWorkoutPlanModel
+                                  .value
+                                  .workoutTime = value.toString();
                             });
                           },
                           min: 0,
@@ -180,12 +214,24 @@ class _CreateWorkoutPlanPage2State extends State<CreateWorkoutPlanPage2> {
                             ),
                           ),
                           const Spacer(),
-                          Text(
-                            '6.00 Am',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                              color: MyAppColors.mutedGray,
+                          GestureDetector(
+                            behavior: HitTestBehavior.translucent,
+                            onTap: () async {
+                              reminderTime =
+                                  await showTimePicker(
+                                    context: context,
+                                    initialTime: reminderTime,
+                                  ) ??
+                                  reminderTime;
+                              setState(() {});
+                            },
+                            child: Text(
+                              reminderTime.format(context),
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                                color: MyAppColors.mutedGray,
+                              ),
                             ),
                           ),
                           const Gap(10),
@@ -206,9 +252,53 @@ class _CreateWorkoutPlanPage2State extends State<CreateWorkoutPlanPage2> {
                 height: 50,
                 child: ElevatedButton(
                   onPressed: () {
+                    if (selectedWeekDays.isEmpty) {
+                      toastification.show(
+                        context: context,
+                        title: const Text('Please select at least one day'),
+                        type: ToastificationType.error,
+                        autoCloseDuration: const Duration(seconds: 3),
+                      );
+                      return;
+                    }
+                    String workoutDaysString = '';
+                    for (int i = 0; i < selectedWeekDays.length; i++) {
+                      if (i == selectedWeekDays.length - 1) {
+                        workoutDaysString +=
+                            mapOfWeekDays[selectedWeekDays[i]]!;
+                      } else {
+                        workoutDaysString +=
+                            '${mapOfWeekDays[selectedWeekDays[i]]!},';
+                      }
+                    }
+                    createWorkoutPlanController
+                        .createWorkoutPlanModel
+                        .value
+                        .workoutDays = workoutDaysString;
+
+                    if (workoutDayReminder) {
+                      createWorkoutPlanController
+                          .createWorkoutPlanModel
+                          .value
+                          .activateReminder = true;
+                      createWorkoutPlanController
+                          .createWorkoutPlanModel
+                          .value
+                          .reminderTime = DateFormat('yyyy-MM-dd').format(
+                        DateTime.now().copyWith(
+                          hour: reminderTime.hour,
+                          minute: reminderTime.minute,
+                        ),
+                      );
+                    }
+
                     widget.pageController.nextPage(
                       duration: const Duration(milliseconds: 300),
                       curve: Curves.easeIn,
+                    );
+                    log(
+                      createWorkoutPlanController.createWorkoutPlanModel.value
+                          .toJson(),
                     );
                   },
                   child: const Text('Generate Plan'),

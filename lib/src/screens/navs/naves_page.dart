@@ -2,16 +2,13 @@ import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:background_fetch/background_fetch.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_activity_recognition/flutter_activity_recognition.dart';
-import 'package:flutter_activity_recognition/models/activity.dart';
 import 'package:flutter_foreground_task/flutter_foreground_task.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:o_xbese/src/core/background/background_task.dart';
-import 'package:o_xbese/src/core/common/functions/request_and_check_activity_permission.dart';
 import 'package:o_xbese/src/screens/activity/workout_page.dart';
 import 'package:o_xbese/src/screens/controller/info_collector/controller/all_info_controller.dart';
 import 'package:o_xbese/src/screens/home/home_page.dart';
@@ -19,8 +16,7 @@ import 'package:o_xbese/src/resources/svg_string.dart';
 import 'package:o_xbese/src/screens/marathon/marathon_page.dart';
 import 'package:o_xbese/src/screens/navs/controller/navs_controller.dart';
 import 'package:o_xbese/src/screens/settings/settings_page.dart';
-import 'package:pedometer/pedometer.dart';
-import 'package:permission_handler/permission_handler.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../theme/colors.dart';
 
@@ -119,101 +115,105 @@ class _NavesPageState extends State<NavesPage> {
   // end of foreground service
   @override
   void initState() {
-    checkActivityStream();
     super.initState();
 
     // Add a callback to receive data sent from the TaskHandler.
     FlutterForegroundTask.addTaskDataCallback(_onReceiveTaskData);
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       // Request permissions and initialize the service.
-      _requestPermissions();
+
+      await _requestPermissions();
+      await initPlatformState();
       _initService();
-      _startService();
+      await _startService();
     });
   }
 
   final ValueNotifier<Object?> stepsCountListenable = ValueNotifier(null);
 
-  StreamSubscription<Activity>? activitySubscription;
-
-  Future<void> subscribeActivityStream() async {
-    if (await checkAndRequestPermission()) {
-      activitySubscription = FlutterActivityRecognition.instance.activityStream
-          .listen((event) {
-            log(event.type.toString());
-          });
-    }
-  }
-
-  Stream<StepCount>? _stepCountStream;
-
-  Future<void> initPlatformState() async {
-    _stepCountStream = Pedometer.stepCountStream;
-    _stepCountStream?.listen((event) {
-      log(event.toString());
-    });
-  }
-
-  Future<void> checkActivityStream() async {
-    bool status = await checkAndRequestPermission();
-    if (!status) {
-      showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: const Text('We need to access you activity.'),
-            content: const Text(
-              'Please grant to access your activity. Without this, app can\'t function properly',
-            ),
-            actions: [
-              ElevatedButton.icon(
-                onPressed: () async {
-                  SystemNavigator.pop();
-                },
-                label: const Text('Quit App'),
-                icon: const Icon(Icons.close, color: Colors.red),
-              ),
-              ElevatedButton.icon(
-                onPressed: () async {
-                  bool status = await checkAndRequestPermission();
-                  if (status) {
-                    if (activitySubscription == null) {
-                      subscribeActivityStream();
-                    }
-                    Navigator.pop(context);
-                  } else {
-                    await openAppSettings();
-                    Navigator.pop(context);
-                    log('message');
-                  }
-                },
-                label: const Text('Allow'),
-                icon: const Icon(Icons.done, color: Colors.green),
-              ),
-            ],
-          );
-        },
-      );
-    } else {
-      if (activitySubscription == null) {
-        subscribeActivityStream();
-      }
-      initPlatformState();
-    }
-  }
-
   @override
   void dispose() {
-    activitySubscription?.cancel();
     super.dispose();
+  }
+
+  // background fetch
+  bool _enabled = true;
+  int _status = 0;
+  List<DateTime> _events = [];
+
+  // Platform messages are asynchronous, so we initialize in an async method.
+  Future<void> initPlatformState() async {
+    // Configure BackgroundFetch.
+    int status = await BackgroundFetch.configure(
+      BackgroundFetchConfig(
+        minimumFetchInterval: 15,
+        stopOnTerminate: false,
+        enableHeadless: true,
+        requiresBatteryNotLow: false,
+        requiresCharging: false,
+        requiresStorageNotLow: false,
+        requiresDeviceIdle: false,
+        requiredNetworkType: NetworkType.ANY,
+        startOnBoot: true,
+      ),
+      (String taskId) async {
+        // <-- Event handler
+        // This is the fetch-event callback.
+        print("[BackgroundFetch] Event received $taskId");
+        setState(() {
+          _events.insert(0, new DateTime.now());
+        });
+        SharedPreferences preferences = await SharedPreferences.getInstance();
+        int count = preferences.getInt('task1') ?? 0;
+        await preferences.setInt('task1', count + 1);
+        // IMPORTANT:  You must signal completion of your task or the OS can punish your app
+        // for taking too long in the background.
+        BackgroundFetch.finish(taskId);
+      },
+      (String taskId) async {
+        // <-- Task timeout handler.
+        // This task has exceeded its allowed running-time.  You must stop what you're doing and immediately .finish(taskId)
+        print("[BackgroundFetch] TASK TIMEOUT taskId: $taskId");
+        BackgroundFetch.finish(taskId);
+      },
+    );
+    print('[BackgroundFetch] configure success: $status');
+    setState(() {
+      _status = status;
+    });
+
+    // If the widget was removed from the tree while the asynchronous platform
+    // message was in flight, we want to discard the reply rather than calling
+    // setState to update our non-existent appearance.
+    if (!mounted) return;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: MyAppColors.primary,
-
+      appBar: AppBar(
+        actions: [
+          IconButton(
+            onPressed: () async {
+              SharedPreferences preferences =
+                  await SharedPreferences.getInstance();
+              int count = preferences.getInt('task') ?? -1;
+              int count1 = preferences.getInt('task1') ?? -1;
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: Text('Count1: $count, count2: $count1'),
+                  );
+                },
+              );
+            },
+            icon: const Icon(Icons.question_mark),
+          ),
+        ],
+      ),
       body: SafeArea(
         child: PageView(
           controller: pageController,

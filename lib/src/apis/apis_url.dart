@@ -4,3 +4,5 @@ String logInPath = '/api/auth/v1/users/login';
 String verifyOTPPath = '/api/auth/v1/users/verify-otp';
 String getUserDataPath = '/api/user/v1/profile/token';
 String userDataPath = '/api/user/v1/profile/token';
+String saveStepsCount = '/api/user/v1/workout/steps';
+String workoutPlanPath = '/api/user/v1/workout/plan';

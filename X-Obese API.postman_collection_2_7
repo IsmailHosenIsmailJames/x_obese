@@ -189,11 +189,21 @@
 						{
 							"name": "verify otp",
 							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhZjUxZDVjLWQzN2EtNDU1OC05OWY5LTY2ZTgzMDE1OGM5NiIsInJvbGUiOiJ1c2VyIiwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTc0MzA2NTI5OCwiZXhwIjoxNzQzMDY2MTk4fQ.wkTejaN3ALCz9RSRz73_LQBiQ72tTFnjKgIyMABSq9I",
+											"type": "string"
+										}
+									]
+								},
 								"method": "POST",
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"code\": \"395037\",\r\n    \"type\": \"login\" // login or signup\r\n}",
+									"raw": "{\r\n    \"code\": \"960033\",\r\n    \"type\": \"login\" // login or signup\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -216,7 +226,7 @@
 									"variable": [
 										{
 											"key": "id",
-											"value": "18f4fc5a-764f-4e71-ad92-184516df82e9",
+											"value": "b85d49e7-7e19-4424-a0ce-fe09f81840e5",
 											"description": "login or sign up response id"
 										}
 									]
@@ -568,7 +578,80 @@
 									]
 								}
 							},
-							"response": []
+							"response": [
+								{
+									"name": "200",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"username\": \"jahidul\",\r\n    \"password\": \"42598475\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{base_url}}/api/auth/v1/admins/login",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"api",
+												"auth",
+												"v1",
+												"admins",
+												"login"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Access-Control-Allow-Credentials",
+											"value": "true"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "548"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"224-CAVUgBvJTgn7ed92AmU/ZvSUC2k\""
+										},
+										{
+											"key": "Date",
+											"value": "Wed, 26 Mar 2025 09:03:01 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": true,\n    \"message\": \"Admin is successfully logged in\",\n    \"data\": {\n        \"accessToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAyNzdmNWE0LWU1OWUtNGM4Ni1hYzU5LWQzOGZjODczM2Y5YSIsInJvbGUiOiJzdXBlcmFkbWluIiwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTc0Mjk3OTc4MSwiZXhwIjoxNzQyOTgwNjgxfQ.3hnVN9cvsBTXHYq69bd8Rh1-Pg6Xln6iKeZ8elIHB68\",\n        \"refreshToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAyNzdmNWE0LWU1OWUtNGM4Ni1hYzU5LWQzOGZjODczM2Y5YSIsInR5cGUiOiJyZWZyZXNoIiwiaWF0IjoxNzQyOTc5NzgxLCJleHAiOjE3NDMwNjYxODF9.xGE5ZoWQiuR141fU5jQzjtut5jCZ1b5Y5Gm3aVN--NI\"\n    }\n}"
+								}
+							]
 						}
 					]
 				},
@@ -578,8 +661,17 @@
 						{
 							"name": "revoke admin token",
 							"request": {
-								"method": "GET",
+								"method": "POST",
 								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"refreshToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAyNzdmNWE0LWU1OWUtNGM4Ni1hYzU5LWQzOGZjODczM2Y5YSIsInR5cGUiOiJyZWZyZXNoIiwiaWF0IjoxNzQyOTc5NzgxLCJleHAiOjE3NDMwNjYxODF9.xGE5ZoWQiuR141fU5jQzjtut5jCZ1b5Y5Gm3aVN--NI\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
 								"url": {
 									"raw": "{{base_url}}/api/auth/v1/token/admin",
 									"host": [
@@ -598,8 +690,17 @@
 								{
 									"name": "200",
 									"originalRequest": {
-										"method": "GET",
+										"method": "POST",
 										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"refreshToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAyNzdmNWE0LWU1OWUtNGM4Ni1hYzU5LWQzOGZjODczM2Y5YSIsInR5cGUiOiJyZWZyZXNoIiwiaWF0IjoxNzQyOTc5NzgxLCJleHAiOjE3NDMwNjYxODF9.xGE5ZoWQiuR141fU5jQzjtut5jCZ1b5Y5Gm3aVN--NI\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
 										"url": {
 											"raw": "{{base_url}}/api/auth/v1/token/admin",
 											"host": [
@@ -627,8 +728,8 @@
 											"value": "*"
 										},
 										{
-											"key": "Set-Cookie",
-											"value": "refreshToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAyNzdmNWE0LWU1OWUtNGM4Ni1hYzU5LWQzOGZjODczM2Y5YSIsInR5cGUiOiJyZWZyZXNoIiwiaWF0IjoxNzQyNzk1ODM2LCJleHAiOjE3NDI4ODIyMzZ9.Mdfcnbtxa_WjGqe7zwwWRtnshT7zqG2DOXwwgUExaBk; Path=/; Expires=Tue, 25 Mar 2025 05:57:16 GMT; HttpOnly; SameSite=Lax"
+											"key": "Access-Control-Allow-Credentials",
+											"value": "true"
 										},
 										{
 											"key": "Content-Type",
@@ -640,11 +741,11 @@
 										},
 										{
 											"key": "ETag",
-											"value": "W/\"139-yB2Ihvja1Jn87pYE2hajS6U/Ums\""
+											"value": "W/\"139-Eqq7HEPtX44QceWGPXpTUmz/VfI\""
 										},
 										{
 											"key": "Date",
-											"value": "Mon, 24 Mar 2025 05:57:16 GMT"
+											"value": "Wed, 26 Mar 2025 09:06:12 GMT"
 										},
 										{
 											"key": "Connection",
@@ -656,20 +757,25 @@
 										}
 									],
 									"cookie": [],
-									"body": "{\n    \"success\": true,\n    \"message\": \"Token revoke successful\",\n    \"data\": {\n        \"accessToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAyNzdmNWE0LWU1OWUtNGM4Ni1hYzU5LWQzOGZjODczM2Y5YSIsInJvbGUiOiJzdXBlcmFkbWluIiwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTc0Mjc5NTgzNiwiZXhwIjoxNzQyNzk2NzM2fQ.7Awpj5rrYdqDSu2bLN0D4LkV_XyJLnZ9-hGkgdUoNcQ\"\n    }\n}"
+									"body": "{\n    \"success\": true,\n    \"message\": \"Token revoke successful\",\n    \"data\": {\n        \"accessToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAyNzdmNWE0LWU1OWUtNGM4Ni1hYzU5LWQzOGZjODczM2Y5YSIsInJvbGUiOiJzdXBlcmFkbWluIiwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTc0Mjk3OTk3MiwiZXhwIjoxNzQyOTgwODcyfQ.24-MnLk2L6phy9qXdVKtLtiDXhv9cLhNcFbNcBYOcaM\"\n    }\n}"
 								}
 							]
 						},
 						{
 							"name": "revoke user token",
 							"request": {
-								"method": "GET",
+								"method": "POST",
 								"header": [],
 								"url": {
-									"raw": "{{base_url}}/api/auth/v1/token/user",
+									"raw": "http://116.68.200.97:6053/api/auth/v1/token/user",
+									"protocol": "http",
 									"host": [
-										"{{base_url}}"
+										"116",
+										"68",
+										"200",
+										"97"
 									],
+									"port": "6053",
 									"path": [
 										"api",
 										"auth",
@@ -763,7 +869,7 @@
 									"bearer": [
 										{
 											"key": "token",
-											"value": "{{user_token}}",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhZjUxZDVjLWQzN2EtNDU1OC05OWY5LTY2ZTgzMDE1OGM5NiIsInJvbGUiOiJ1c2VyIiwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTc0Mjg5MzI3OCwiZXhwIjoxNzQyODk0MTc4fQ.eCTiJOIkeXkW_mpDFwJqFMhqmZ9UzDaQ5OGlsYIzvnc",
 											"type": "string"
 										}
 									]
@@ -791,11 +897,15 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "{{base_url}}/api/user/v1/profile",
+											"raw": "https://postman-rest-api-learner.glitch.me//api/user/v1/profile",
+											"protocol": "https",
 											"host": [
-												"{{base_url}}"
+												"postman-rest-api-learner",
+												"glitch",
+												"me"
 											],
 											"path": [
+												"",
 												"api",
 												"user",
 												"v1",
@@ -841,7 +951,7 @@
 										}
 									],
 									"cookie": [],
-									"body": "{\n    \"success\": true,\n    \"message\": \"Get user profile details successfully!\",\n    \"data\": {\n        \"id\": \"6af51d5c-d37a-4558-99f9-66e830158c96\",\n        \"mobile\": \"01785945968\",\n        \"fullName\": null,\n        \"email\": null,\n        \"gender\": null,\n        \"address\": null,\n        \"birth\": null,\n        \"heightFt\": null,\n        \"heightin\": null,\n        \"weight\": null,\n        \"createdAt\": \"2025-03-05T22:01:19.303Z\",\n        \"updateAt\": \"2025-03-05T22:01:19.303Z\"\n    }\n}"
+									"body": "{\n    \"success\": true,\n    \"message\": \"Get user profile details successfully!\",\n    \"data\": {\n        \"id\": \"6af51d5c-d37a-4558-99f9-66e830158c96\",\n        \"mobile\": \"01785945968\",\n        \"fullName\": \"Jahidul Islam\",\n        \"email\": \"jahidul@eamil.com\",\n        \"image\": \"848f107b-c853-4c6b-ac3f-5e220938b4fb-1742357163585.jpg\",\n        \"gender\": \"male\",\n        \"address\": \"Feni\",\n        \"birth\": \"1998-01-27T00:00:00.000Z\",\n        \"heightFt\": 5,\n        \"heightIn\": 10,\n        \"weight\": 67,\n        \"createdAt\": \"2025-03-06T00:00:00.000Z\",\n        \"updateAt\": \"2025-03-19T10:20:38.234Z\",\n        \"imagePath\": \"http://localhost:6053/uploads/photos/848f107b-c853-4c6b-ac3f-5e220938b4fb-1742357163585.jpg\"\n    }\n}"
 								}
 							]
 						},
@@ -853,7 +963,7 @@
 									"bearer": [
 										{
 											"key": "token",
-											"value": "{{user_token}}",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhZjUxZDVjLWQzN2EtNDU1OC05OWY5LTY2ZTgzMDE1OGM5NiIsInJvbGUiOiJ1c2VyIiwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTc0Mjg5MzI3OCwiZXhwIjoxNzQyODk0MTc4fQ.eCTiJOIkeXkW_mpDFwJqFMhqmZ9UzDaQ5OGlsYIzvnc",
 											"type": "string"
 										}
 									]
@@ -866,13 +976,13 @@
 										{
 											"key": "image",
 											"type": "file",
-											"src": "/D:/Impala/Doctor Project/UI/doctor.jpg",
-											"disabled": true
+											"src": "/D:/Impala/Doctor Project/UI/doctor.jpg"
 										},
 										{
 											"key": "heightFt",
 											"value": "5",
-											"type": "text"
+											"type": "text",
+											"disabled": true
 										}
 									]
 								},
@@ -887,13 +997,6 @@
 										"v1",
 										"profile",
 										"token"
-									],
-									"query": [
-										{
-											"key": "image",
-											"value": null,
-											"disabled": true
-										}
 									]
 								}
 							},
@@ -919,11 +1022,15 @@
 											}
 										},
 										"url": {
-											"raw": "{{base_url}}/api/user/v1/profile",
+											"raw": "https://postman-rest-api-learner.glitch.me//api/user/v1/profile",
+											"protocol": "https",
 											"host": [
-												"{{base_url}}"
+												"postman-rest-api-learner",
+												"glitch",
+												"me"
 											],
 											"path": [
+												"",
 												"api",
 												"user",
 												"v1",
@@ -969,7 +1076,7 @@
 										}
 									],
 									"cookie": [],
-									"body": "{\n    \"success\": true,\n    \"message\": \"User profile updated successfully!\",\n    \"data\": {\n        \"id\": \"6af51d5c-d37a-4558-99f9-66e830158c96\",\n        \"mobile\": \"01785945968\",\n        \"fullName\": \"Jahidul Islam\",\n        \"email\": null,\n        \"image\": \"a06e79f2-8283-4e27-a3fc-cb9ed64c50ef-1741239593786.jpg\",\n        \"gender\": null,\n        \"address\": null,\n        \"birth\": null,\n        \"heightFt\": null,\n        \"heightin\": null,\n        \"weight\": null,\n        \"createdAt\": \"2025-03-05T22:01:19.303Z\",\n        \"updateAt\": \"2025-03-06T05:39:53.842Z\"\n    }\n}"
+									"body": "{\n    \"success\": true,\n    \"message\": \"User profile updated successfully!\",\n    \"data\": {\n        \"id\": \"6af51d5c-d37a-4558-99f9-66e830158c96\",\n        \"mobile\": \"01785945968\",\n        \"fullName\": \"Jahidul Islam\",\n        \"email\": \"jahidul@eamil.com\",\n        \"image\": \"8b95952d-a7ed-4436-bfa8-1bc086197f21-1742893521449.jpg\",\n        \"gender\": \"male\",\n        \"address\": \"Feni\",\n        \"birth\": \"1998-01-27T00:00:00.000Z\",\n        \"heightFt\": 5,\n        \"heightIn\": 10,\n        \"weight\": 67,\n        \"createdAt\": \"2025-03-06T00:00:00.000Z\",\n        \"updateAt\": \"2025-03-25T09:05:21.504Z\",\n        \"imagePath\": \"http://localhost:6053/uploads/photos/8b95952d-a7ed-4436-bfa8-1bc086197f21-1742893521449.jpg\"\n    }\n}"
 								}
 							]
 						},
@@ -1079,7 +1186,7 @@
 									"bearer": [
 										{
 											"key": "token",
-											"value": "{{user_token}}",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhZjUxZDVjLWQzN2EtNDU1OC05OWY5LTY2ZTgzMDE1OGM5NiIsInJvbGUiOiJ1c2VyIiwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTc0MzA2NTI5OCwiZXhwIjoxNzQzMDY2MTk4fQ.wkTejaN3ALCz9RSRz73_LQBiQ72tTFnjKgIyMABSq9I",
 											"type": "string"
 										}
 									]
@@ -1091,7 +1198,7 @@
 									"file": {}
 								},
 								"url": {
-									"raw": "{{base_url}}/api/user/v1/workout",
+									"raw": "{{base_url}}/api/user/v1/workout?view=daily",
 									"host": [
 										"{{base_url}}"
 									],
@@ -1105,8 +1212,7 @@
 										{
 											"key": "view",
 											"value": "daily",
-											"description": "daily, monthly, weekly - default: daily",
-											"disabled": true
+											"description": "daily, monthly, weekly - default: daily"
 										}
 									]
 								}
@@ -1196,7 +1302,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"distance\": \"1\", // km\r\n    \"type\": \"walking\", \r\n    \"duration\": \"900000\", // milliseconds --- 15 mins\r\n    \"steps\": 1000 // optional\r\n}",
+									"raw": "{\r\n    \"distance\": \"1\", // km\r\n    \"type\": \"walking\", \r\n    \"duration\": \"900000\", // milliseconds --- 15 mins\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1365,6 +1471,182 @@
 									],
 									"cookie": [],
 									"body": "{\n    \"success\": true,\n    \"message\": \"New user workout added successfully!\",\n    \"data\": {\n        \"id\": \"e8287d0c-b2bb-4bea-a3e1-78a8966e2670\",\n        \"userId\": \"6af51d5c-d37a-4558-99f9-66e830158c96\",\n        \"calories\": \"100\",\n        \"distance\": \"10\",\n        \"heartPts\": \"20.5\",\n        \"steps\": 1000,\n        \"workoutTime\": null,\n        \"type\": \"walking\",\n        \"duration\": \"20.5\",\n        \"createdAt\": \"2025-03-06T06:53:09.311Z\",\n        \"updatedAt\": \"2025-03-06T06:53:09.311Z\"\n    }\n}"
+								}
+							]
+						},
+						{
+							"name": "create steps for user",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhZjUxZDVjLWQzN2EtNDU1OC05OWY5LTY2ZTgzMDE1OGM5NiIsInJvbGUiOiJ1c2VyIiwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTc0MzA2NTI5OCwiZXhwIjoxNzQzMDY2MTk4fQ.wkTejaN3ALCz9RSRz73_LQBiQ72tTFnjKgIyMABSq9I",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"steps\": 1000\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/user/v1/workout/steps",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"user",
+										"v1",
+										"workout",
+										"steps"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "403",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"url": {
+											"raw": "{{base_url}}/api/user/v1/workout/steps",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"api",
+												"user",
+												"v1",
+												"workout",
+												"steps"
+											]
+										}
+									},
+									"status": "Forbidden",
+									"code": 403,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Access-Control-Allow-Credentials",
+											"value": "true"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "77"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"4d-fEiYZ25Vn7jLKgJYej+Q/0fSzEc\""
+										},
+										{
+											"key": "Date",
+											"value": "Thu, 27 Mar 2025 08:47:48 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": false,\n    \"code\": 40301,\n    \"error\": \"Forbidden!\",\n    \"message\": \"Invalid token\"\n}"
+								},
+								{
+									"name": "201",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"steps\": 1000\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{base_url}}/api/user/v1/workout/steps",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"api",
+												"user",
+												"v1",
+												"workout",
+												"steps"
+											]
+										}
+									},
+									"status": "Created",
+									"code": 201,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Access-Control-Allow-Credentials",
+											"value": "true"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "255"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"ff-mDLfaXP2B6oMi94PmLKCM+pwiaQ\""
+										},
+										{
+											"key": "Date",
+											"value": "Thu, 27 Mar 2025 08:49:07 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": true,\n    \"message\": \"New user steps added successfully!\",\n    \"data\": {\n        \"id\": \"bea5a34f-d44c-44b8-83f7-89b0d51b200f\",\n        \"userId\": \"6af51d5c-d37a-4558-99f9-66e830158c96\",\n        \"steps\": 1000,\n        \"createdAt\": \"2025-03-27T08:49:07.450Z\",\n        \"updatedAt\": \"2025-03-27T08:49:07.450Z\"\n    }\n}"
 								}
 							]
 						}
@@ -2507,7 +2789,7 @@
 										}
 									],
 									"cookie": [],
-									"body": "{\n    \"success\": true,\n    \"message\": \"Get user workout plan details successfully!\",\n    \"data\": [\n        {\n            \"id\": \"849445b9-01f2-45dc-b2f0-686bbf971cb6\",\n            \"title\": \"February 5k Challenge Run\",\n            \"description\": \"A program designed to push your limits, build endurance, and celebrate your strength!\",\n            \"about\": \"A program designed to push your limits, build endurance, and celebrate your strength! Whether this program offers personalized training plans, progress tracking, and a vibrant community to keep you motivated every step of the way.\",\n            \"startDate\": \"2025-03-01T00:00:00.000Z\",\n            \"endDate\": \"2025-03-11T00:00:00.000Z\",\n            \"imagePath\": null,\n            \"type\": \"onsite\",\n            \"createdBy\": null,\n            \"createdAt\": \"2025-03-12T09:07:54.152Z\",\n            \"updatedAt\": \"2025-03-12T09:07:54.152Z\"\n        },\n        {\n            \"id\": \"46656746-c4ac-4aef-af78-ec98d3a99450\",\n            \"title\": \"February 5k Challenge Run\",\n            \"description\": \"A program designed to push your limits, build endurance, and celebrate your strength!\",\n            \"about\": \"A program designed to push your limits, build endurance, and celebrate your strength! Whether this program offers personalized training plans, progress tracking, and a vibrant community to keep you motivated every step of the way.\",\n            \"startDate\": \"2025-03-01T00:00:00.000Z\",\n            \"endDate\": \"2025-03-11T00:00:00.000Z\",\n            \"imagePath\": null,\n            \"type\": \"onsite\",\n            \"createdBy\": null,\n            \"createdAt\": \"2025-03-12T09:07:18.497Z\",\n            \"updatedAt\": \"2025-03-12T09:07:18.497Z\"\n        }\n    ],\n    \"pagination\": {\n        \"current_page\": 1,\n        \"per_page\": 20,\n        \"total_page\": 1,\n        \"total_items\": 2\n    }\n}"
+									"body": "{\n    \"success\": true,\n    \"message\": \"Get marathons successfully!\",\n    \"data\": [\n        {\n            \"id\": \"m-uuid-2\",\n            \"title\": \"February 10 km Challenge Run\",\n            \"description\": \"A program designed to push your limits, build endurance, and celebrate your strength!\",\n            \"about\": \"A program designed to push your limits, build endurance, and celebrate your strength! Whether this program offers personalized training plans, progress tracking, and a vibrant community to keep you motivated every step of the way.\",\n            \"distanceKm\": 10,\n            \"location\": \"Uttara, Dhaka\",\n            \"startDate\": \"2025-03-05T00:00:00.000Z\",\n            \"endDate\": \"2025-03-05T00:00:00.000Z\",\n            \"imagePath\": \"http://localhost:6053/uploads/photos/e9c961ab-d837-4d27-8d92-ceb1dfdfd083-1741854397870.png\",\n            \"type\": \"onsite\",\n            \"createdBy\": null,\n            \"createdAt\": \"2025-03-13T09:27:25.639Z\",\n            \"updatedAt\": \"2025-03-13T09:27:25.639Z\"\n        },\n        {\n            \"id\": \"m-uuid-1\",\n            \"title\": \"February 5k Challenge Run\",\n            \"description\": \"A program designed to push your limits, build endurance, and celebrate your strength!\",\n            \"about\": \"A program designed to push your limits, build endurance, and celebrate your strength! Whether this program offers personalized training plans, progress tracking, and a vibrant community to keep you motivated every step of the way.\",\n            \"distanceKm\": 5,\n            \"location\": null,\n            \"startDate\": \"2025-01-01T00:00:00.000Z\",\n            \"endDate\": \"2025-02-01T00:00:00.000Z\",\n            \"imagePath\": \"http://localhost:6053/uploads/photos/e9c961ab-d837-4d27-8d92-ceb1dfdfd083-1741854397870.png\",\n            \"type\": \"virtual\",\n            \"createdBy\": null,\n            \"createdAt\": \"2025-03-13T09:27:25.588Z\",\n            \"updatedAt\": \"2025-03-13T09:27:25.588Z\"\n        }\n    ],\n    \"pagination\": {\n        \"current_page\": 1,\n        \"per_page\": 20,\n        \"total_page\": 1,\n        \"total_items\": 2\n    }\n}"
 								}
 							]
 						},
@@ -2735,20 +3017,24 @@
 											"value": "*"
 										},
 										{
+											"key": "Access-Control-Allow-Credentials",
+											"value": "true"
+										},
+										{
 											"key": "Content-Type",
 											"value": "application/json; charset=utf-8"
 										},
 										{
 											"key": "Content-Length",
-											"value": "1228"
+											"value": "1236"
 										},
 										{
 											"key": "ETag",
-											"value": "W/\"4cc-Vj3i853FJ0d0YR/3voCZfbmA1Xw\""
+											"value": "W/\"4d4-FsCU5BjbZyYvDgVuLNsgQP1Bf9Y\""
 										},
 										{
 											"key": "Date",
-											"value": "Mon, 24 Mar 2025 06:10:10 GMT"
+											"value": "Wed, 26 Mar 2025 04:04:43 GMT"
 										},
 										{
 											"key": "Connection",
@@ -2760,7 +3046,7 @@
 										}
 									],
 									"cookie": [],
-									"body": "{\n    \"success\": true,\n    \"message\": \"Get Marathon details successfully!\",\n    \"data\": {\n        \"id\": \"m-uuid-1\",\n        \"title\": \"February 5k Challenge Run\",\n        \"description\": \"A program designed to push your limits, build endurance, and celebrate your strength!\",\n        \"about\": \"A program designed to push your limits, build endurance, and celebrate your strength! Whether this program offers personalized training plans, progress tracking, and a vibrant community to keep you motivated every step of the way.\",\n        \"distanceKm\": 5,\n        \"location\": null,\n        \"startDate\": \"2025-01-01T00:00:00.000Z\",\n        \"endDate\": \"2025-02-01T00:00:00.000Z\",\n        \"imagePath\": \"e9c961ab-d837-4d27-8d92-ceb1dfdfd083-1741854397870.png\",\n        \"type\": \"virtual\",\n        \"createdBy\": null,\n        \"createdAt\": \"2025-03-13T09:27:25.588Z\",\n        \"updatedAt\": \"2025-03-13T09:27:25.588Z\",\n        \"Rewards\": []\n    },\n    \"totalParticiants\": 4,\n    \"particiants\": [\n        {\n            \"user\": {\n                \"id\": \"user-uuid-4\",\n                \"fullName\": \"Daisy Clark\",\n                \"image\": \"https://www.pngall.com/wp-content/uploads/12/Avatar-Profile-PNG-Images.png\"\n            }\n        },\n        {\n            \"user\": {\n                \"id\": \"user-uuid-3\",\n                \"fullName\": \"Charlie Brown\",\n                \"image\": \"https://www.pngall.com/wp-content/uploads/12/Avatar-Profile-PNG-Images.png\"\n            }\n        },\n        {\n            \"user\": {\n                \"id\": \"user-uuid-2\",\n                \"fullName\": \"Bob Williams\",\n                \"image\": \"https://www.pngall.com/wp-content/uploads/12/Avatar-Profile-PNG-Images.png\"\n            }\n        }\n    ]\n}"
+									"body": "{\n    \"success\": true,\n    \"message\": \"Get Marathon details successfully!\",\n    \"data\": {\n        \"id\": \"m-uuid-1\",\n        \"title\": \"February 5k Challenge Run\",\n        \"description\": \"A program designed to push your limits, build endurance, and celebrate your strength!\",\n        \"about\": \"A program designed to push your limits, build endurance, and celebrate your strength! Whether this program offers personalized training plans, progress tracking, and a vibrant community to keep you motivated every step of the way.\",\n        \"distanceKm\": 5,\n        \"location\": null,\n        \"startDate\": \"2025-01-01T00:00:00.000Z\",\n        \"endDate\": \"2025-02-01T00:00:00.000Z\",\n        \"imagePath\": \"http://localhost:6053/uploads/photos/e9c961ab-d837-4d27-8d92-ceb1dfdfd083-1741854397870.png\",\n        \"type\": \"virtual\",\n        \"createdBy\": null,\n        \"createdAt\": \"2025-03-13T09:27:25.588Z\",\n        \"updatedAt\": \"2025-03-13T09:27:25.588Z\",\n        \"Rewards\": []\n    },\n    \"totalParticiants\": 4,\n    \"particiants\": [\n        {\n            \"id\": \"user-uuid-4\",\n            \"fullName\": \"Daisy Clark\",\n            \"image\": \"doctor3.jpg\",\n            \"imagePath\": \"http://localhost:6053/uploads/photos/doctor3.jpg\"\n        },\n        {\n            \"id\": \"user-uuid-3\",\n            \"fullName\": \"Charlie Brown\",\n            \"image\": \"doctor2.jpg\",\n            \"imagePath\": \"http://localhost:6053/uploads/photos/doctor2.jpg\"\n        },\n        {\n            \"id\": \"user-uuid-2\",\n            \"fullName\": \"Bob Williams\",\n            \"image\": \"doctor.jpg\",\n            \"imagePath\": \"http://localhost:6053/uploads/photos/doctor.jpg\"\n        }\n    ]\n}"
 								}
 							]
 						},
@@ -2971,10 +3257,6 @@
 							]
 						}
 					]
-				},
-				{
-					"name": "workout",
-					"item": []
 				},
 				{
 					"name": "user",
@@ -3952,13 +4234,23 @@
 										}
 									],
 									"cookie": [],
-									"body": "{\n    \"success\": true,\n    \"message\": \"Get blogs successfully!\",\n    \"data\": [\n        {\n            \"id\": \"031cc692-4fa0-49da-b7ea-e8fa8aa0c18d\",\n            \"createdBy\": null,\n            \"title\": \"10 Easy Home Workouts \",\n            \"readTime\": 5,\n            \"description\": \"Stay fit with simple exercises like push-ups, planks, lunges, and jumping jacks, requiring no equipment \",\n            \"details\": \" When an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, \\\\n  Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source.\",\n            \"imagePath\": \"1a3f8c5d-7444-4cf2-829d-fa3cc8907144-1741844384379.png\",\n            \"createdAt\": \"2025-03-13T05:39:44.382Z\",\n            \"updatedAt\": \"2025-03-13T05:39:44.382Z\"\n        }\n    ],\n    \"pagination\": {\n        \"current_page\": 1,\n        \"per_page\": 20,\n        \"total_page\": 1,\n        \"total_items\": 1\n    }\n}"
+									"body": "{\n    \"success\": true,\n    \"message\": \"Get blogs successfully!\",\n    \"data\": [\n        {\n            \"id\": \"720ad5ae-242d-4e55-bd56-6d8c115e1744\",\n            \"createdBy\": null,\n            \"title\": \"10 Easy Home Workouts \",\n            \"readTime\": 5,\n            \"description\": \"Stay fit with simple exercises like push-ups, planks, lunges, and jumping jacks, requiring no equipment \",\n            \"details\": \" When an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, \\\\n  Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source.\",\n            \"imagePath\": \"http://localhost:6053/uploads/photos/7d17e59b-8593-40c6-9254-826a2e82c8fe-1742963419842.png\",\n            \"createdAt\": \"2025-03-26T04:30:19.846Z\",\n            \"updatedAt\": \"2025-03-26T04:30:19.846Z\"\n        }\n    ],\n    \"pagination\": {\n        \"current_page\": 1,\n        \"per_page\": 20,\n        \"total_page\": 1,\n        \"total_items\": 1\n    }\n}"
 								}
 							]
 						},
 						{
 							"name": "create new",
 							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAyNzdmNWE0LWU1OWUtNGM4Ni1hYzU5LWQzOGZjODczM2Y5YSIsInJvbGUiOiJzdXBlcmFkbWluIiwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTc0Mjk2MzM4NywiZXhwIjoxNzQyOTY0Mjg3fQ.91qNGIhJDqee6Eo66rNd3g0bsYrdyHSwv3zsHoMAbH0",
+											"type": "string"
+										}
+									]
+								},
 								"method": "POST",
 								"header": [],
 								"body": {
@@ -4149,7 +4441,7 @@
 										}
 									],
 									"cookie": [],
-									"body": "{\n    \"success\": true,\n    \"message\": \"New blog created successfully!\",\n    \"data\": {\n        \"id\": \"031cc692-4fa0-49da-b7ea-e8fa8aa0c18d\",\n        \"createdBy\": null,\n        \"title\": \"10 Easy Home Workouts \",\n        \"readTime\": 5,\n        \"description\": \"Stay fit with simple exercises like push-ups, planks, lunges, and jumping jacks, requiring no equipment \",\n        \"details\": \" When an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, \\\\n  Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source.\",\n        \"imagePath\": \"1a3f8c5d-7444-4cf2-829d-fa3cc8907144-1741844384379.png\",\n        \"createdAt\": \"2025-03-13T05:39:44.382Z\",\n        \"updatedAt\": \"2025-03-13T05:39:44.382Z\"\n    }\n}"
+									"body": "{\n    \"success\": true,\n    \"message\": \"New blog created successfully!\",\n    \"data\": {\n        \"id\": \"720ad5ae-242d-4e55-bd56-6d8c115e1744\",\n        \"createdBy\": null,\n        \"title\": \"10 Easy Home Workouts \",\n        \"readTime\": 5,\n        \"description\": \"Stay fit with simple exercises like push-ups, planks, lunges, and jumping jacks, requiring no equipment \",\n        \"details\": \" When an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, \\\\n  Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source.\",\n        \"imagePath\": \"http://localhost:6053/uploads/photos/7d17e59b-8593-40c6-9254-826a2e82c8fe-1742963419842.png\",\n        \"createdAt\": \"2025-03-26T04:30:19.846Z\",\n        \"updatedAt\": \"2025-03-26T04:30:19.846Z\"\n    }\n}"
 								}
 							]
 						},
@@ -4532,7 +4824,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "{{admin_token}}",
+									"value": "asdf",
 									"type": "string"
 								}
 							]
@@ -4540,9 +4832,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/api/admin/v1/admin",
+							"raw": "{{server_url}}/api/admin/v1/admin",
 							"host": [
-								"{{base_url}}"
+								"{{server_url}}"
 							],
 							"path": [
 								"api",
@@ -4610,6 +4902,68 @@
 							],
 							"cookie": [],
 							"body": "{\n    \"success\": true,\n    \"message\": \"Get admins successfully!\",\n    \"data\": [\n        {\n            \"name\": \"Jahidul Islam\",\n            \"username\": \"jahidul\",\n            \"id\": \"0277f5a4-e59e-4c86-ac59-d38fc8733f9a\",\n            \"role\": \"superadmin\",\n            \"createdAt\": \"2025-03-13T06:32:11.426Z\",\n            \"updateAt\": \"2025-03-13T06:32:11.426Z\"\n        }\n    ],\n    \"pagination\": {\n        \"current_page\": 1,\n        \"per_page\": 20,\n        \"total_page\": 1,\n        \"total_items\": 1\n    }\n}"
+						},
+						{
+							"name": "get multi",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{server_url}}/api/admin/v1/admin",
+									"host": [
+										"{{server_url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"v1",
+										"admin"
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "77"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"4d-fEiYZ25Vn7jLKgJYej+Q/0fSzEc\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 26 Mar 2025 03:24:53 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": false,\n    \"code\": 40301,\n    \"error\": \"Forbidden!\",\n    \"message\": \"Invalid token\"\n}"
 						}
 					]
 				},
@@ -4902,7 +5256,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "{{admin_token}}",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAyNzdmNWE0LWU1OWUtNGM4Ni1hYzU5LWQzOGZjODczM2Y5YSIsInJvbGUiOiJzdXBlcmFkbWluIiwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTc0MzA1NzQwMywiZXhwIjoxNzQzMDU4MzAzfQ.nzW1hGDQpXYFDbchYcYvHWcxPocSm2zyE17UMqSkmLA",
 									"type": "string"
 								}
 							]
@@ -5220,6 +5574,116 @@
 							"body": "{\n    \"success\": true,\n    \"message\": \"Admin is deleted successfully!\",\n    \"data\": {\n        \"id\": \"b4330baf-1f89-4354-acb9-ecaece27e4d5\",\n        \"name\": \"Ismail james\",\n        \"username\": \"ismail\",\n        \"password\": \"ujJTh2rta8ItSm/1PYQGxq2GQZXtFEq1yHYhtsIztUi66uaVbfNG7IwX9eoQ817jy8UUeX7X3dMUVGTioLq0Ew==\",\n        \"role\": \"admin\",\n        \"createdAt\": \"2025-03-16T06:00:08.752Z\",\n        \"updateAt\": \"2025-03-16T06:02:57.818Z\"\n    }\n}"
 						}
 					]
+				},
+				{
+					"name": "get admin by token",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAyNzdmNWE0LWU1OWUtNGM4Ni1hYzU5LWQzOGZjODczM2Y5YSIsInJvbGUiOiJzdXBlcmFkbWluIiwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTc0MzA1Nzg2OSwiZXhwIjoxNzQzMDU4NzY5fQ.K3GAgCxzA6uyXpwfWS8cOj0dO0hqg_UKWv3ct4Cp-i4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/admin/v1/token/admin",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"v1",
+								"token",
+								"admin"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "200",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/admin/v1/token/admin",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"v1",
+										"token",
+										"admin"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "356"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"164-JILujebNpgLCpjLJZLu38OhS93I\""
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 27 Mar 2025 06:46:27 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"message\": \"Get Admin details successfully!\",\n    \"data\": {\n        \"id\": \"0277f5a4-e59e-4c86-ac59-d38fc8733f9a\",\n        \"name\": \"Jahidul Islam\",\n        \"username\": \"jahidul\",\n        \"password\": \"w0QzkqGWAHqz4YHu8V1swMCAakkEYWf+o1ERtByFaj6x9/ZYEItT6bq/GLW8gh+KEq1RPmgNeeAA6pyiCb6iZw==\",\n        \"role\": \"superadmin\",\n        \"createdAt\": \"2025-03-13T06:32:11.426Z\",\n        \"updateAt\": \"2025-03-13T06:32:11.426Z\"\n    }\n}"
+						}
+					]
 				}
 			]
 		}
@@ -5261,6 +5725,11 @@
 		{
 			"key": "admin_token",
 			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAyNzdmNWE0LWU1OWUtNGM4Ni1hYzU5LWQzOGZjODczM2Y5YSIsImlhdCI6MTc0MjEwMzc5MX0.qynbyg4kHE_nUPqLIXSoO4SJkvHgi644th51eGw4x7o",
+			"type": "default"
+		},
+		{
+			"key": "server_url",
+			"value": "http://116.68.200.97:6053",
 			"type": "default"
 		}
 	]

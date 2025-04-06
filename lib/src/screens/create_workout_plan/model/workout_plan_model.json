@@ -1,0 +1,10 @@
+{
+    "weightGoal": "70",
+    "goalType": "gain_muscle",
+    "activateReminder": false,
+    "reminderTime": "10:00 AM",
+    "workoutTime": "900000", 
+    "workoutDays": "sunday,monday,friday",
+    "startDate": "2025-03-11",
+    "endDate": "2025-03-15"
+}

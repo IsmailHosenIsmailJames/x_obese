@@ -1,7 +1,16 @@
+import 'dart:developer';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:o_xbese/src/apis/apis_url.dart';
+import 'package:o_xbese/src/apis/middleware/jwt_middleware.dart';
+import 'package:o_xbese/src/screens/create_workout_plan/controller/create_workout_plan_controller.dart';
 import 'package:o_xbese/src/theme/colors.dart';
 import 'package:o_xbese/src/widgets/back_button.dart';
+import 'package:toastification/toastification.dart';
 
 class CreateWorkoutPlanPage3 extends StatefulWidget {
   final PageController pageController;
@@ -12,6 +21,10 @@ class CreateWorkoutPlanPage3 extends StatefulWidget {
 }
 
 class _CreateWorkoutPlanPage3State extends State<CreateWorkoutPlanPage3> {
+  final CreateWorkoutPlanController createWorkoutPlanController = Get.find();
+  DateTime startDate = DateTime.now();
+  DateTime endDate = DateTime.now().add(const Duration(days: 365));
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,7 +69,7 @@ class _CreateWorkoutPlanPage3State extends State<CreateWorkoutPlanPage3> {
                       ),
                       const Gap(6),
                       Text(
-                        'Plan To Lose Wight',
+                        'Plan To ${createWorkoutPlanController.createWorkoutPlanModel.value.goalType}',
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w500,
@@ -64,7 +77,7 @@ class _CreateWorkoutPlanPage3State extends State<CreateWorkoutPlanPage3> {
                         ),
                       ),
                       Text(
-                        '24.10.2025 -01.11.26',
+                        '${DateFormat('yyyy-MM-dd').format(startDate)} - ${DateFormat('yyyy-MM-dd').format(endDate)}',
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w600,
@@ -92,7 +105,8 @@ class _CreateWorkoutPlanPage3State extends State<CreateWorkoutPlanPage3> {
                                   ),
                                 ),
                                 Text(
-                                  '24.9',
+                                  createWorkoutPlanController.userBMI.value
+                                      .toString(),
                                   style: TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.w500,
@@ -111,7 +125,11 @@ class _CreateWorkoutPlanPage3State extends State<CreateWorkoutPlanPage3> {
                                   ),
                                 ),
                                 Text(
-                                  'Lose Weight',
+                                  createWorkoutPlanController
+                                          .createWorkoutPlanModel
+                                          .value
+                                          .goalType ??
+                                      '',
                                   style: TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.w500,
@@ -130,7 +148,11 @@ class _CreateWorkoutPlanPage3State extends State<CreateWorkoutPlanPage3> {
                                   ),
                                 ),
                                 Text(
-                                  '70',
+                                  createWorkoutPlanController
+                                          .createWorkoutPlanModel
+                                          .value
+                                          .weightGoal ??
+                                      '',
                                   style: TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.w500,
@@ -167,14 +189,21 @@ class _CreateWorkoutPlanPage3State extends State<CreateWorkoutPlanPage3> {
                                             MainAxisAlignment.start,
                                         children: [
                                           Text(
-                                            '4 ',
+                                            (createWorkoutPlanController
+                                                        .createWorkoutPlanModel
+                                                        .value
+                                                        .workoutDays!
+                                                        .split(',')
+                                                        .length +
+                                                    1)
+                                                .toString(),
                                             style: TextStyle(
                                               fontSize: 16,
                                               fontWeight: FontWeight.w500,
                                               color: MyAppColors.third,
                                             ),
                                           ),
-                                          const Text('Day'),
+                                          const Text(' Day'),
                                         ],
                                       ),
                                       Text(
@@ -195,7 +224,7 @@ class _CreateWorkoutPlanPage3State extends State<CreateWorkoutPlanPage3> {
                                     Row(
                                       children: [
                                         Text(
-                                          '8 ',
+                                          '100 ',
                                           style: TextStyle(
                                             fontSize: 16,
                                             fontWeight: FontWeight.w500,
@@ -206,7 +235,7 @@ class _CreateWorkoutPlanPage3State extends State<CreateWorkoutPlanPage3> {
                                       ],
                                     ),
                                     Text(
-                                      'Toatl',
+                                      'Total',
                                       style: TextStyle(
                                         fontSize: 16,
                                         color: MyAppColors.mutedGray,
@@ -231,7 +260,7 @@ class _CreateWorkoutPlanPage3State extends State<CreateWorkoutPlanPage3> {
                                       Row(
                                         children: [
                                           Text(
-                                            '30 ',
+                                            '${createWorkoutPlanController.createWorkoutPlanModel.value.workoutTime} ',
                                             style: TextStyle(
                                               fontSize: 16,
                                               fontWeight: FontWeight.w500,
@@ -292,11 +321,55 @@ class _CreateWorkoutPlanPage3State extends State<CreateWorkoutPlanPage3> {
                 width: double.infinity,
                 height: 50,
                 child: ElevatedButton(
-                  onPressed: () {
-                    widget.pageController.nextPage(
-                      duration: const Duration(milliseconds: 300),
-                      curve: Curves.easeIn,
+                  onPressed: () async {
+                    createWorkoutPlanController
+                        .createWorkoutPlanModel
+                        .value
+                        .startDate = startDate;
+                    createWorkoutPlanController
+                        .createWorkoutPlanModel
+                        .value
+                        .endDate = endDate;
+
+                    createWorkoutPlanController
+                        .createWorkoutPlanModel
+                        .value
+                        .goalType = createWorkoutPlanController
+                        .createWorkoutPlanModel
+                        .value
+                        .goalType!
+                        .toLowerCase()
+                        .replaceAll(' ', '_');
+
+                    log(
+                      createWorkoutPlanController.createWorkoutPlanModel.value
+                          .toJson(),
                     );
+                    DioClient dioClient = DioClient(baseAPI);
+                    try {
+                      final response = await dioClient.dio.post(
+                        workoutPlanPath,
+                        data:
+                            createWorkoutPlanController
+                                .createWorkoutPlanModel
+                                .value
+                                .toJson(),
+                      );
+                      printResponse(response);
+                      if (response.statusCode == 201 ||
+                          response.statusCode == 200) {
+                        Get.back();
+                        toastification.show(
+                          context: context,
+                          title: Text(response.data['message']),
+                          type: ToastificationType.success,
+                          autoCloseDuration: const Duration(seconds: 3),
+                        );
+                      }
+                    } on DioException catch (e) {
+                      log(e.toString());
+                      printResponse(e.response!);
+                    }
                   },
                   child: const Text('Done'),
                 ),

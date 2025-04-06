@@ -1,14 +1,12 @@
 // The callback function should always be a top-level function.
 // ignore_for_file: avoid_dynamic_calls
 
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter_activity_recognition/flutter_activity_recognition.dart'
-    as activity_recognition;
 import 'package:flutter_foreground_task/flutter_foreground_task.dart';
 import 'package:pedometer/pedometer.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 @pragma('vm:entry-point')
 void startCallback() {
@@ -17,22 +15,33 @@ void startCallback() {
 }
 
 class MyTaskHandler extends TaskHandler {
+  StreamSubscription? streamSubscription;
+
   // Called when the task is started.
   @override
   Future<void> onStart(DateTime timestamp, TaskStarter starter) async {
-    Pedometer.stepCountStream.listen((event) {
+    streamSubscription = Pedometer.stepCountStream.listen((event) async {
       log('Steps count: $event', name: 'Pedometer');
       FlutterForegroundTask.sendDataToMain(event.steps);
+      await FlutterForegroundTask.updateService(
+        notificationText: 'Tap to return to the app',
+        notificationTitle: 'Today\'s Steps Count: ${event.steps}',
+      );
     });
   }
 
   // Called every [ForegroundTaskOptions.interval] milliseconds.
   @override
   Future<void> onRepeatEvent(DateTime timestamp) async {
-    // await FlutterForegroundTask.updateService(
-    //   notificationText: 'Your location is tracking!',
-    // );
-    // FlutterForegroundTask.sendDataToMain(stepCount);
+    await streamSubscription?.cancel();
+    streamSubscription = Pedometer.stepCountStream.listen((event) async {
+      log('Steps count: $event', name: 'Pedometer');
+      FlutterForegroundTask.sendDataToMain(event.steps);
+      await FlutterForegroundTask.updateService(
+        notificationText: 'Tap to return to the app',
+        notificationTitle: 'Today\'s Steps Count: ${event.steps}',
+      );
+    });
   }
 
   // Called when the task is destroyed.

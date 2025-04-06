@@ -1,11 +1,15 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
+import 'package:o_xbese/src/screens/controller/info_collector/controller/all_info_controller.dart';
+import 'package:o_xbese/src/screens/create_workout_plan/controller/create_workout_plan_controller.dart';
 import 'package:o_xbese/src/theme/colors.dart';
 import 'package:o_xbese/src/widgets/back_button.dart';
 import 'package:o_xbese/src/widgets/text_input_decoration.dart';
+import 'package:toastification/toastification.dart';
 
 class CreateWorkoutPlanPage1 extends StatefulWidget {
   final PageController pageController;
@@ -16,7 +20,34 @@ class CreateWorkoutPlanPage1 extends StatefulWidget {
 }
 
 class _CreateWorkoutPlanPage1State extends State<CreateWorkoutPlanPage1> {
-  int selectedWorkoutGoalIndex = 2;
+  final CreateWorkoutPlanController createWorkoutPlanController = Get.find();
+  AllInfoController allInfoController = Get.find();
+
+  // calculate BMI
+
+  double getUserBMI(double weight, double heightFeet, double heightInch) {
+    // convert  feet inch to meter
+    double height = (heightFeet * 12 + heightInch) * 0.0254;
+    // calculate BMI
+    double bmi = weight / (height * height);
+    return bmi;
+  }
+
+  late double userBMI = getUserBMI(
+    (allInfoController.allInfo.value.weight ?? 0).toDouble(),
+    (allInfoController.allInfo.value.heightFt ?? 0).toDouble(),
+    (allInfoController.allInfo.value.heightIn ?? 0).toDouble(),
+  ).toPrecision(2);
+  @override
+  void initState() {
+    createWorkoutPlanController.userBMI.value = userBMI;
+    super.initState();
+  }
+
+  TextEditingController textEditingController = TextEditingController(
+    text: '6',
+  );
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,19 +80,19 @@ class _CreateWorkoutPlanPage1State extends State<CreateWorkoutPlanPage1> {
                       const Gap(10),
                       Column(
                         children: [
-                          const Row(
+                          Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                'Your BMI : 24.9',
-                                style: TextStyle(
+                                'Your BMI : $userBMI',
+                                style: const TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400,
                                 ),
                               ),
                               Text(
-                                'Normal',
-                                style: TextStyle(
+                                getBMICategory(userBMI).name.capitalizeFirst,
+                                style: const TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400,
                                   color: Color(0xff098202),
@@ -128,7 +159,6 @@ class _CreateWorkoutPlanPage1State extends State<CreateWorkoutPlanPage1> {
                         children: [
                           getWorkoutGoalCard(
                             context: context,
-                            index: 0,
                             title: 'Gain Muscle',
                             svg:
                                 '''<svg xmlns="http://www.w3.org/2000/svg" width="61" height="62" viewBox="0 0 61 62" fill="none">
@@ -142,7 +172,6 @@ class _CreateWorkoutPlanPage1State extends State<CreateWorkoutPlanPage1> {
                           ),
                           getWorkoutGoalCard(
                             context: context,
-                            index: 1,
                             title: 'Keep Fit',
                             svg:
                                 '''<svg xmlns="http://www.w3.org/2000/svg" width="83" height="79" viewBox="0 0 83 79" fill="none">
@@ -156,7 +185,6 @@ class _CreateWorkoutPlanPage1State extends State<CreateWorkoutPlanPage1> {
                           ),
                           getWorkoutGoalCard(
                             context: context,
-                            index: 2,
                             title: 'Lose Weight',
                             svg:
                                 '''<svg xmlns="http://www.w3.org/2000/svg" width="61" height="64" viewBox="0 0 61 64" fill="none">
@@ -171,7 +199,11 @@ class _CreateWorkoutPlanPage1State extends State<CreateWorkoutPlanPage1> {
                         ],
                       ),
                       const Gap(32),
-                      if (selectedWorkoutGoalIndex == 2)
+                      if (createWorkoutPlanController
+                              .createWorkoutPlanModel
+                              .value
+                              .goalType ==
+                          'Lose Weight')
                         const Text(
                           'Wight Goal',
                           style: TextStyle(
@@ -179,28 +211,71 @@ class _CreateWorkoutPlanPage1State extends State<CreateWorkoutPlanPage1> {
                             fontWeight: FontWeight.w600,
                           ),
                         ),
-                      if (selectedWorkoutGoalIndex == 2) const Gap(16),
-                      if (selectedWorkoutGoalIndex == 2)
+                      if (createWorkoutPlanController
+                              .createWorkoutPlanModel
+                              .value
+                              .goalType ==
+                          'Lose Weight')
+                        const Gap(16),
+                      if (createWorkoutPlanController
+                              .createWorkoutPlanModel
+                              .value
+                              .goalType ==
+                          'Lose Weight')
                         TextFormField(
+                          controller: textEditingController,
+                          keyboardType: TextInputType.number,
                           decoration: getTextInputDecoration(
                             context,
                             hintText: 'Weight want to lose',
                           ).copyWith(suffixText: ('kg')),
+                          validator: (value) {
+                            if (double.tryParse(value ?? '') != null) {
+                              return null;
+                            } else {
+                              return 'Please enter a valid weight';
+                            }
+                          },
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
                         ),
                     ],
                   ),
                 ),
               ),
-             const Gap(20),
+              const Gap(20),
               SizedBox(
                 width: double.infinity,
                 height: 50,
                 child: ElevatedButton(
                   onPressed: () {
-                    widget.pageController.nextPage(
-                      duration: const Duration(milliseconds: 300),
-                      curve: Curves.easeIn,
-                    );
+                    if (createWorkoutPlanController
+                            .createWorkoutPlanModel
+                            .value
+                            .goalType !=
+                        null) {
+                      if (double.tryParse(textEditingController.text) != null) {
+                        createWorkoutPlanController
+                            .createWorkoutPlanModel
+                            .value
+                            .weightGoal = textEditingController.text;
+                      }
+                      widget.pageController.nextPage(
+                        duration: const Duration(milliseconds: 300),
+                        curve: Curves.easeIn,
+                      );
+                      log(
+                        createWorkoutPlanController.createWorkoutPlanModel.value
+                            .toJson(),
+                        name: 'WorkOutPLan',
+                      );
+                    } else {
+                      toastification.show(
+                        context: context,
+                        title: const Text('Please select workout goal'),
+                        type: ToastificationType.error,
+                        autoCloseDuration: const Duration(seconds: 3),
+                      );
+                    }
                   },
                   child: const Text('NEXT '),
                 ),
@@ -214,7 +289,6 @@ class _CreateWorkoutPlanPage1State extends State<CreateWorkoutPlanPage1> {
 
   GestureDetector getWorkoutGoalCard({
     required BuildContext context,
-    required int index,
     required String title,
     required String svg,
     double? svgHeight,
@@ -224,7 +298,8 @@ class _CreateWorkoutPlanPage1State extends State<CreateWorkoutPlanPage1> {
     return GestureDetector(
       onTap: () {
         setState(() {
-          selectedWorkoutGoalIndex = index;
+          createWorkoutPlanController.createWorkoutPlanModel.value.goalType =
+              title;
         });
       },
       child: Container(
@@ -234,7 +309,11 @@ class _CreateWorkoutPlanPage1State extends State<CreateWorkoutPlanPage1> {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(4),
           color:
-              selectedWorkoutGoalIndex == index
+              createWorkoutPlanController
+                          .createWorkoutPlanModel
+                          .value
+                          .goalType ==
+                      title
                   ? MyAppColors.third
                   : MyAppColors.transparentGray,
         ),
@@ -247,7 +326,11 @@ class _CreateWorkoutPlanPage1State extends State<CreateWorkoutPlanPage1> {
               child: SvgPicture.string(
                 svg,
                 color:
-                    selectedWorkoutGoalIndex == index
+                    createWorkoutPlanController
+                                .createWorkoutPlanModel
+                                .value
+                                .goalType ==
+                            title
                         ? MyAppColors.primary
                         : const Color(0xff8AC6FF),
               ),
@@ -259,7 +342,11 @@ class _CreateWorkoutPlanPage1State extends State<CreateWorkoutPlanPage1> {
                 fontSize: 14,
                 fontWeight: FontWeight.w400,
                 color:
-                    selectedWorkoutGoalIndex == index
+                    createWorkoutPlanController
+                                .createWorkoutPlanModel
+                                .value
+                                .goalType ==
+                            title
                         ? MyAppColors.primary
                         : const Color(0xff8AC6FF),
               ),
@@ -268,5 +355,42 @@ class _CreateWorkoutPlanPage1State extends State<CreateWorkoutPlanPage1> {
         ),
       ),
     );
+  }
+}
+
+/*
+BMI Category
+1. Underweight -> Below 18.5
+2. Healthy Weight -> 18.5 to 24.9
+3. Overweight -> 25.0 to 29.9
+4. Obesity -> 30.0 or greater
+5. Obesity Class I -> 30.0 to 34.9
+6. Obesity Class II -> 35.0 to 39.9
+7. Obesity Class III -> 40.0 or greater
+*/
+
+enum BMICategory {
+  underweight,
+  healthyWeight,
+  overweight,
+  obesity,
+  obesityClassI,
+  obesityClassII,
+  obesityClassIII,
+}
+
+BMICategory getBMICategory(double bmi) {
+  if (bmi < 18.5) {
+    return BMICategory.underweight;
+  } else if (bmi >= 18.5 && bmi < 24.9) {
+    return BMICategory.healthyWeight;
+  } else if (bmi >= 25.0 && bmi < 29.9) {
+    return BMICategory.overweight;
+  } else if (bmi >= 30.0 && bmi < 34.9) {
+    return BMICategory.obesityClassI;
+  } else if (bmi >= 35.0 && bmi < 39.9) {
+    return BMICategory.obesityClassII;
+  } else {
+    return BMICategory.obesityClassIII;
   }
 }

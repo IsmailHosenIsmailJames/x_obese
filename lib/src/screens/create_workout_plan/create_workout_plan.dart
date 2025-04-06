@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:o_xbese/src/screens/create_workout_plan/controller/create_workout_plan_controller.dart';
 import 'package:o_xbese/src/screens/create_workout_plan/pages/page_1.dart';
 import 'package:o_xbese/src/screens/create_workout_plan/pages/page_2.dart';
 import 'package:o_xbese/src/screens/create_workout_plan/pages/page_3.dart';
@@ -12,6 +14,9 @@ class CreateWorkoutPlan extends StatefulWidget {
 
 class _CreateWorkoutPlanState extends State<CreateWorkoutPlan> {
   PageController pageController = PageController();
+  final CreateWorkoutPlanController createWorkoutPlanController = Get.put(
+    CreateWorkoutPlanController(),
+  );
 
   @override
   Widget build(BuildContext context) {
