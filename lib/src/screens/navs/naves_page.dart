@@ -7,6 +7,7 @@ import 'package:flutter_foreground_task/flutter_foreground_task.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:x_obese/src/core/background/background_task.dart';
 import 'package:x_obese/src/screens/activity/workout_page.dart';
 import 'package:x_obese/src/screens/controller/info_collector/controller/all_info_controller.dart';
@@ -33,6 +34,15 @@ class _NavesPageState extends State<NavesPage> {
   AllInfoController allInfoController = Get.put(AllInfoController());
 
   Future<void> _requestPermissions() async {
+    try {
+      PermissionStatus status = await Permission.activityRecognition.status;
+      if (status.isDenied) {
+        status = await Permission.activityRecognition.request();
+      }
+      log(status.toString(), name: 'Permission status');
+    } catch (e) {
+      log(e.toString(), name: 'Permission error');
+    }
     // Android 13+, you need to allow notification permission to display foreground service notification.
     //
     // iOS: If you need notification, ask for permission.

@@ -1,9 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:x_obese/src/apis/apis_url.dart';
+import 'package:x_obese/src/apis/middleware/jwt_middleware.dart';
+import 'package:x_obese/src/screens/marathon/details_marathon/model/full_marathon_data_model.dart';
 import 'package:x_obese/src/screens/marathon/models/model.dart';
 import 'package:x_obese/src/theme/colors.dart';
 import 'package:x_obese/src/widgets/back_button.dart';
@@ -23,6 +28,38 @@ class MarathonDetailsView extends StatefulWidget {
 
 class _MarathonDetailsViewState extends State<MarathonDetailsView> {
   bool isJoined = false;
+
+  FullMarathonDataModel? fullMarathonDataModel;
+
+  @override
+  void initState() {
+    getSingleMarathonData();
+    super.initState();
+  }
+
+  getSingleMarathonData() async {
+    DioClient dioClient = DioClient(baseAPI);
+    try {
+      final response = await dioClient.dio.get(
+        '/api/marathon/v1/marathon/${widget.marathonData.id}',
+      );
+      printResponse(response);
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        setState(() {
+          fullMarathonDataModel = FullMarathonDataModel.fromMap(response.data);
+        });
+      }
+    } on DioException catch (e) {
+      printResponse(e.response!);
+    }
+  }
+
+  List<Alignment> profileAlignmentList = [
+    Alignment.centerRight,
+    Alignment.center,
+    Alignment.centerLeft,
+  ];
+
   @override
   Widget build(BuildContext context) {
     final padding = const EdgeInsets.only(left: 15, right: 15, bottom: 15);
@@ -35,10 +72,13 @@ class _MarathonDetailsViewState extends State<MarathonDetailsView> {
                 SizedBox(
                   height: 194,
                   width: double.infinity,
-                  child: CachedNetworkImage(
-                    imageUrl: widget.marathonData.imagePath ?? '',
-                    fit: BoxFit.cover,
-                  ),
+                  child:
+                      widget.marathonData.imagePath == null
+                          ? null
+                          : CachedNetworkImage(
+                            imageUrl: widget.marathonData.imagePath!,
+                            fit: BoxFit.cover,
+                          ),
                 ),
                 SafeArea(
                   child: Padding(
@@ -79,74 +119,81 @@ class _MarathonDetailsViewState extends State<MarathonDetailsView> {
                       SizedBox(
                         height: 30,
                         width: 70,
-                        child: Stack(
-                          children: [
-                            Align(
-                              alignment: Alignment.centerRight,
-                              child: Container(
-                                height: 30,
-                                width: 30,
+                        child:
+                            fullMarathonDataModel == null ||
+                                    fullMarathonDataModel?.particiants == null
+                                ? Container(
+                                      height: 30,
+                                      width: 70,
+                                      decoration: BoxDecoration(
+                                        color: MyAppColors.third.withValues(
+                                          alpha: 0.2,
+                                        ),
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                    )
+                                    .animate(
+                                      onPlay:
+                                          (controller) => controller.repeat(),
+                                    )
+                                    .shimmer(
+                                      duration: 1200.ms,
+                                      color: const Color.fromARGB(
+                                        255,
+                                        163,
+                                        231,
+                                        255,
+                                      ),
+                                    )
+                                : Stack(
+                                  children: List.generate(
+                                    profileAlignmentList.length,
+                                    (index) {
+                                      if (index >
+                                          (fullMarathonDataModel
+                                                      ?.particiants!
+                                                      .length ??
+                                                  0) -
+                                              1) {
+                                        return Container();
+                                      }
+                                      return Align(
+                                        alignment: profileAlignmentList[index],
+                                        child: Container(
+                                          height: 30,
+                                          width: 30,
 
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    width: 3,
-                                    color: MyAppColors.primary,
-                                  ),
-                                  borderRadius: BorderRadius.circular(15),
-                                  image: const DecorationImage(
-                                    image: CachedNetworkImageProvider(
-                                      'https://s3-alpha-sig.figma.com/img/10e7/e10b/7e6b601608cd9ac2ecb115d218c668e8?Expires=1742774400&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=ZQwi96eUkaU3YatmgfS~2xVH9txm9wBTdjd6NWwW2bLCWz2Vgi9UeixhWQNXKR~441aeC9UhYqcifNl3in3THIsch1DtXfnBK2f9~5v~tn522n1mcF6DZ0NtP7oMWHmlQpadhJJdRpW5y8V8m-KLT~RSwrwlqo3orcN-GDi08CxKNROB3B6PNDAtYapxIKIp6XW6DBA5ECF10pMerCzfVIbGBCjrnOzJFp9ZYajSoZWerLWjXwvjZErDNSmIBX2g-efmKYU0wqfrLxn2Vnn~ls3wINZK61j20I1~s8QwhW3z0itHthj8h3upSiajDajNJ~1Qo3ucwdMm8Me91V2D7w__',
-                                    ),
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                              width: 3,
+                                              color: MyAppColors.primary,
+                                            ),
+                                            borderRadius: BorderRadius.circular(
+                                              15,
+                                            ),
+                                            image:
+                                                fullMarathonDataModel
+                                                            ?.particiants?[index]
+                                                            .imagePath ==
+                                                        null
+                                                    ? null
+                                                    : DecorationImage(
+                                                      image: CachedNetworkImageProvider(
+                                                        fullMarathonDataModel!
+                                                            .particiants![index]
+                                                            .imagePath!,
+                                                      ),
+                                                    ),
+                                          ),
+                                        ),
+                                      );
+                                    },
                                   ),
                                 ),
-                              ),
-                            ),
-                            Align(
-                              alignment: Alignment.center,
-                              child: Container(
-                                height: 30,
-                                width: 30,
-
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    width: 3,
-                                    color: MyAppColors.primary,
-                                  ),
-                                  borderRadius: BorderRadius.circular(15),
-                                  image: const DecorationImage(
-                                    image: CachedNetworkImageProvider(
-                                      'https://s3-alpha-sig.figma.com/img/d88f/c3c2/f75cae66092d790a30fb8a602a9f19c3?Expires=1742774400&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=XF0vYbiJiHFBwhzaUQeeXoT7tMDtr69sBULROrUYp-kIU-Ij6XxZ~~QR2CB5qDzvKWQiPmBlg-UAneGG1M5uYnapLQGgZWgo3seZHWJsc5~1LUgG-tSegY3SXnl55dmM-g0ub4ovvMzfUAlVT0cQFrCipFhiNlyBt-sllOJ7y45BfWahrajs7ub4hDJVNUioYMOdjdf3klsYhjvyhwyi2BAmti3Z4ZTKx5ehMzPv4bvlGlTmU-1Sfw6okCtacj3avuyRFpoIrUj0-KqHobbbrRXpBE4YyiLycUYXWuaFdjnl5M1xc1r3nHZkbc1KU1-BfZY19q~Y8yVxOywyVtMjPQ__',
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Align(
-                              alignment: Alignment.centerLeft,
-                              child: Container(
-                                height: 30,
-                                width: 30,
-
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    width: 3,
-                                    color: MyAppColors.primary,
-                                  ),
-                                  borderRadius: BorderRadius.circular(15),
-                                  image: const DecorationImage(
-                                    image: CachedNetworkImageProvider(
-                                      'https://s3-alpha-sig.figma.com/img/bfa5/0409/11a8acfff43407745e1d6b67f9b75523?Expires=1742774400&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=YE4QJ1kXIUBFaDn43xajUDW99cs6i37zcqn~Cfks3xfVJHt9lXFknjlFaPfFeHQjSm0tsydQB1SJ6KDBcQvzLkgcyCv7nueF8r-K-KGkJcXnZ0xe349fXO4nVNOtwbq5QGkP7DEd0kuQ1-WJGWdU5rx3925Don-cTFvy3DN5WuTjIrEU5iU~WbG5mjD1tg0GT3S7oAnX4StpXIhZyI9h1TLyBnXTdrW8wko6cTo-QGBdIuVLIqcZwbm7SeEH0D8Rl2kJhJ80PQR4POERGkeGp6E3tkBZdeul-96yqhI-abSo~LrZuEzOyNoN6f7qKZJ4sNWdEPMvladsH65VzG1XlQ__',
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
                       ),
                       const Gap(10),
                       Text(
-                        '200+ Participants',
+                        '${fullMarathonDataModel?.totalParticiants} Participants',
                         style: TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.w400,
@@ -199,24 +246,38 @@ class _MarathonDetailsViewState extends State<MarathonDetailsView> {
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                   ),
                   const Gap(13),
-                  Row(
-                    children: [
-                      SvgPicture.string(
-                        '''<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  if ((fullMarathonDataModel?.data?.rewards?.length ?? 0) == 0)
+                    Text(
+                      'Reword list is empty',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w300,
+                        color: MyAppColors.mutedGray,
+                      ),
+                    ),
+                  ...List.generate(
+                    fullMarathonDataModel?.data?.rewards?.length ?? 0,
+                    (index) {
+                      return Row(
+                        children: [
+                          SvgPicture.string(
+                            '''<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
           <path d="M9 20V10C9 8.89543 9.89543 8 11 8H13C14.1046 8 15 8.89543 15 10V20M9 20C9 21.1046 9.89543 22 11 22H13C14.1046 22 15 21.1046 15 20M9 20V14C9 12.8954 8.10457 12 7 12H5C3.89543 12 3 12.8954 3 14V20C3 21.1046 3.89543 22 5 22H7C8.10457 22 9 21.1046 9 20ZM15 20V16C15 14.8954 15.8954 14 17 14H19C20.1046 14 21 14.8954 21 16V20C21 21.1046 20.1046 22 19 22H17C15.8954 22 15 21.1046 15 20Z" stroke="#AEA8A8" stroke-width="1.5"/>
           <path d="M11.5245 1.96353C11.6741 1.50287 12.3259 1.50287 12.4755 1.96353L12.6324 2.4463C12.6993 2.65232 12.8913 2.7918 13.1079 2.7918H13.6155C14.0999 2.7918 14.3013 3.4116 13.9094 3.6963L13.4988 3.99468C13.3235 4.122 13.2502 4.34768 13.3171 4.5537L13.474 5.03647C13.6237 5.49713 13.0964 5.88019 12.7046 5.59549L12.2939 5.29712C12.1186 5.1698 11.8814 5.1698 11.7061 5.29712L11.2954 5.59549C10.9036 5.88019 10.3763 5.49713 10.526 5.03647L10.6829 4.5537C10.7498 4.34768 10.6765 4.122 10.5012 3.99468L10.0906 3.6963C9.69871 3.4116 9.90009 2.7918 10.3845 2.7918H10.8921C11.1087 2.7918 11.3007 2.65232 11.3676 2.4463L11.5245 1.96353Z" fill="#AEA8A8"/>
         </svg>''',
-                      ),
-                      const Gap(10),
-                      Text(
-                        'Medal & Finisher Item',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w300,
-                          color: MyAppColors.mutedGray,
-                        ),
-                      ),
-                    ],
+                          ),
+                          const Gap(10),
+                          Text(
+                            'Medal & Finisher Item',
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w300,
+                              color: MyAppColors.mutedGray,
+                            ),
+                          ),
+                        ],
+                      );
+                    },
                   ),
                   const Gap(24),
                   if (!isJoined)

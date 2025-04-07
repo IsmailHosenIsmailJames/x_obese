@@ -40,7 +40,7 @@ Widget getOnsiteMarathon({
               foregroundColor: Colors.white,
             ),
             onPressed: () {},
-            child: const Text('Uttara'),
+            child: Text(marathonData.location ?? 'Unknown'),
           ),
         ),
         const Gap(16),

@@ -1,0 +1,41 @@
+{
+  "success": true,
+  "message": "Get Marathon details successfully!",
+  "data": {
+    "id": "m-uuid-1",
+    "title": "February 5k Challenge Run",
+    "description": "A program designed to push your limits, build endurance, and celebrate your strength!",
+    "about": "A program designed to push your limits, build endurance, and celebrate your strength! Whether this program offers personalized training plans, progress tracking, and a vibrant community to keep you motivated every step of the way.",
+    "distanceKm": 5,
+    "location": null,
+    "startDate": "2025-01-01T00:00:00.000Z",
+    "endDate": "2025-02-01T00:00:00.000Z",
+    "imagePath": "http://116.68.200.97:6053/uploads/photos/e9c961ab-d837-4d27-8d92-ceb1dfdfd083-1741854397870.png",
+    "type": "virtual",
+    "createdBy": null,
+    "createdAt": "2025-03-13T09:27:25.588Z",
+    "updatedAt": "2025-03-13T09:27:25.588Z",
+    "Rewards": []
+  },
+  "totalParticiants": 4,
+  "particiants": [
+    {
+      "id": "user-uuid-4",
+      "fullName": "Daisy Clark",
+      "image": "doctor3.jpg",
+      "imagePath": "http://116.68.200.97:6053/uploads/photos/doctor3.jpg"
+    },
+    {
+      "id": "user-uuid-3",
+      "fullName": "Charlie Brown",
+      "image": "doctor2.jpg",
+      "imagePath": "http://116.68.200.97:6053/uploads/photos/doctor2.jpg"
+    },
+    {
+      "id": "user-uuid-2",
+      "fullName": "Bob Williams",
+      "image": "doctor.jpg",
+      "imagePath": "http://116.68.200.97:6053/uploads/photos/doctor.jpg"
+    }
+  ]
+}
