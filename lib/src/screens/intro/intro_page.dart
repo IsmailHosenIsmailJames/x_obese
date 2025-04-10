@@ -17,40 +17,42 @@ class _IntroPageState extends State<IntroPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        PageView(
-          controller: pageController,
-          physics: const NeverScrollableScrollPhysics(),
-          children: [
-            IntroPage1(pageController: pageController),
-            IntroPage2(pageController: pageController),
-            IntroPage3(pageController: pageController),
-          ],
-        ),
-        Align(
-          alignment: const Alignment(0.9, 0.2),
-          child: SmoothPageIndicator(
+    return Scaffold(
+      body: Stack(
+        children: [
+          PageView(
             controller: pageController,
-            count: 3,
-
-            axisDirection: Axis.horizontal,
-            effect: ExpandingDotsEffect(
-              activeDotColor: MyAppColors.third,
-              dotHeight: 10,
-              dotWidth: 10,
-              dotColor: MyAppColors.mutedGray,
-            ),
-            onDotClicked: (index) {
-              pageController.animateToPage(
-                index,
-                duration: const Duration(milliseconds: 500),
-                curve: Curves.easeIn,
-              );
-            },
+            physics: const NeverScrollableScrollPhysics(),
+            children: [
+              IntroPage1(pageController: pageController),
+              IntroPage2(pageController: pageController),
+              IntroPage3(pageController: pageController),
+            ],
           ),
-        ),
-      ],
+          Align(
+            alignment: const Alignment(0.9, 0.2),
+            child: SmoothPageIndicator(
+              controller: pageController,
+              count: 3,
+
+              axisDirection: Axis.horizontal,
+              effect: ExpandingDotsEffect(
+                activeDotColor: MyAppColors.third,
+                dotHeight: 10,
+                dotWidth: 10,
+                dotColor: MyAppColors.mutedGray,
+              ),
+              onDotClicked: (index) {
+                pageController.animateToPage(
+                  index,
+                  duration: const Duration(milliseconds: 500),
+                  curve: Curves.easeIn,
+                );
+              },
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

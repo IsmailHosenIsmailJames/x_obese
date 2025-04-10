@@ -11,20 +11,21 @@ class IntroPage3 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: [
-          SizedBox(
-            height: MediaQuery.of(context).size.height - 50,
-            width: double.infinity,
-            child: Image.asset(
-              'assets/img/intro/running.png',
-              fit: BoxFit.cover,
-              alignment: Alignment.topCenter,
-            ),
+    return Stack(
+      children: [
+        SizedBox(
+          height: MediaQuery.of(context).size.height - 50,
+          width: double.infinity,
+          child: Image.asset(
+            'assets/img/intro/running.png',
+            fit: BoxFit.cover,
+            alignment: Alignment.topCenter,
           ),
-          Align(
-            alignment: Alignment.bottomCenter,
+        ),
+        Align(
+          alignment: Alignment.bottomCenter,
+          child: SizedBox(
+            height: 400,
             child: SvgPicture.string('''
             <svg width="375" height="357" viewBox="0 0 375 357" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M361.95 8.14527C283.05 -17.7147 205.2 24.6453 175.49 43.0253C161.02 51.8053 106.76 82.3653 42.44 66.3453C25.48 62.1253 11.31 55.5253 0 48.8053V53.5453C10.63 60.1653 23.73 66.6353 39.32 71.1553C102.98 89.5953 158.36 61.1153 173.15 52.8853C203.53 35.6353 282.93 -3.73474 360.79 25.0853C365.44 26.8053 370.18 28.8153 374.99 31.1353V13.0753C370.56 11.1853 366.2 9.54527 361.93 8.14527H361.95Z" fill="#FFDA00"/>
@@ -32,8 +33,10 @@ class IntroPage3 extends StatelessWidget {
             </svg>
             ''', fit: BoxFit.cover),
           ),
-          Align(
-            alignment: Alignment.bottomCenter,
+        ),
+        Align(
+          alignment: Alignment.bottomCenter,
+          child: SafeArea(
             child: Padding(
               padding: const EdgeInsets.all(23.0),
               child: Column(
@@ -85,8 +88,8 @@ class IntroPage3 extends StatelessWidget {
               ),
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
