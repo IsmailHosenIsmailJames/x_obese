@@ -35,18 +35,18 @@ class WorkStatusModel {
   String toJson() => json.encode(toMap());
 
   factory WorkStatusModel.fromMap(Map<String, dynamic> json) => WorkStatusModel(
-    heartPts: json["heartPts"],
-    calories: json["calories"],
-    distanceKm: json["distanceKm"]?.toDouble(),
-    steps: json["steps"],
-    durationMs: json["durationMs"],
+    heartPts: json['heartPts'],
+    calories: json['calories'],
+    distanceKm: json['distanceKm']?.toDouble(),
+    steps: json['steps'],
+    durationMs: json['durationMs'],
   );
 
   Map<String, dynamic> toMap() => {
-    "heartPts": heartPts,
-    "calories": calories,
-    "distanceKm": distanceKm,
-    "steps": steps,
-    "durationMs": durationMs,
+    'heartPts': heartPts,
+    'calories': calories,
+    'distanceKm': distanceKm,
+    'steps': steps,
+    'durationMs': durationMs,
   };
 }

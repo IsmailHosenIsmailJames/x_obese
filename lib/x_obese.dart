@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:x_obese/src/apis/middleware/jwt_middleware.dart';
 import 'package:x_obese/src/core/common/functions/is_information_fulfilled.dart';
 import 'package:x_obese/src/screens/controller/info_collector/info_collector.dart';
 import 'package:x_obese/src/screens/controller/info_collector/model/all_info_model.dart';
@@ -61,8 +60,6 @@ class XObese extends StatelessWidget {
                 AllInfoModel.fromJson(Hive.box('user').get('info')),
               )
               ? '/infoCollector'
-              : getAccessToken() == null
-              ? '/login'
               : '/home',
       onInit: () async {
         FlutterNativeSplash.remove();

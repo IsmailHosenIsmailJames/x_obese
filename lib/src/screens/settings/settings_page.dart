@@ -31,12 +31,12 @@ class _SettingsPageState extends State<SettingsPage> {
                 printResponse(e.response!);
               }
             },
-            child: Text('/api/marathon/v1/user'),
+            child: const Text('/api/marathon/v1/user'),
           ),
           ElevatedButton(
             onPressed: () async {
-              print(await getAccessToken());
-              print(await getRefreshToken());
+              log((await getAccessToken()) ?? 'Not Found');
+              log((await getRefreshToken()) ?? 'Not Found');
 
               try {
                 DioClient dioClient = DioClient(baseAPI);
@@ -44,13 +44,13 @@ class _SettingsPageState extends State<SettingsPage> {
                   (await getRefreshToken())!,
                 );
                 log(response.toString());
-                print(await getAccessToken());
-                print(await getRefreshToken());
+                log((await getAccessToken()) ?? 'Not Found');
+                log((await getRefreshToken()) ?? 'Not Found');
               } on DioException catch (e) {
                 printResponse(e.response!);
               }
             },
-            child: Text('Do Refresh Tokens'),
+            child: const Text('Do Refresh Tokens'),
           ),
         ],
       ),
