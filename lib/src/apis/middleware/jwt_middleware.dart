@@ -3,7 +3,7 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:get/get.dart' as getx;
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:x_obese/src/screens/auth/login/login_signup_page.dart';
 
 class DioClient {
@@ -25,11 +25,11 @@ class DioClient {
     RequestOptions options,
     RequestInterceptorHandler handler,
   ) async {
-    final accessToken = getAccessToken();
+    final accessToken = await getAccessToken();
     if (accessToken != null) {
       options.headers['Authorization'] = 'Bearer $accessToken';
     }
-    String? refreshToken = getRefreshToken();
+    String? refreshToken = await getRefreshToken();
     if (refreshToken != null) {
       options.headers['Cookie'] = 'refreshToken=$refreshToken';
     }
@@ -49,7 +49,7 @@ class DioClient {
   ) async {
     if (error.response?.statusCode == 403 ||
         error.response?.statusCode == 401) {
-      String? refreshToken = getRefreshToken();
+      String? refreshToken = await getRefreshToken();
       if (refreshToken != null) {
         try {
           final refreshedTokens = await doRefreshToken(refreshToken);
@@ -81,7 +81,7 @@ class DioClient {
       method: requestOptions.method,
       headers: {'Authorization': 'Bearer $accessToken'},
     );
-    String? refreshToken = getRefreshToken();
+    String? refreshToken = await getRefreshToken();
     if (refreshToken != null) {
       dio.options.headers['Cookie'] = 'refreshToken=$refreshToken';
     }
@@ -118,25 +118,25 @@ class DioClient {
 
 Future<void> saveTokens(String accessToken, String refreshToken) async {
   log('Tokens saved', name: 'Tokens Handler');
-  final prefs = await Hive.openBox('tokens');
-  await prefs.put('access_token', accessToken);
-  await prefs.put('refresh_token', refreshToken);
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  await prefs.setString('access_token', accessToken);
+  await prefs.setString('refresh_token', refreshToken);
 }
 
 Future<void> clearTokens() async {
-  final prefs = await Hive.openBox('tokens');
-  await prefs.delete('access_token');
-  await prefs.delete('refresh_token');
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  await prefs.remove('access_token');
+  await prefs.remove('refresh_token');
 }
 
-String? getAccessToken() {
-  final prefs = Hive.box('tokens');
-  return prefs.get('access_token');
+Future<String?> getAccessToken() async {
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  return prefs.getString('access_token');
 }
 
-String? getRefreshToken() {
-  final prefs = Hive.box('tokens');
-  return prefs.get('refresh_token');
+Future<String?> getRefreshToken() async {
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  return prefs.getString('refresh_token');
 }
 
 String? refreshTokenExtractor(Response response) {
