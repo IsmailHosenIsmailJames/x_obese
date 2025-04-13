@@ -4,7 +4,7 @@ import 'package:flutter_foreground_task/flutter_foreground_task.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:x_obese/o_xbese.dart';
+import 'package:x_obese/x_obese.dart';
 import 'package:x_obese/src/apis/middleware/jwt_middleware.dart';
 import 'package:x_obese/src/screens/auth/controller/auth_controller.dart';
 
@@ -28,5 +28,5 @@ Future<void> main() async {
   authController.refreshToken.value = getRefreshToken();
   authController.accessToken.value = getAccessToken();
 
-  runApp(const OXbese());
+  runApp(const XObese());
 }

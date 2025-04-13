@@ -203,7 +203,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"code\": \"960033\",\r\n    \"type\": \"login\" // login or signup\r\n}",
+									"raw": "{\r\n    \"code\": \"941738\",\r\n    \"type\": \"login\" // login or signup\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -226,7 +226,7 @@
 									"variable": [
 										{
 											"key": "id",
-											"value": "b85d49e7-7e19-4424-a0ce-fe09f81840e5",
+											"value": "ff961daf-7290-489c-ac49-ca437c67f851",
 											"description": "login or sign up response id"
 										}
 									]
@@ -767,15 +767,10 @@
 								"method": "POST",
 								"header": [],
 								"url": {
-									"raw": "http://116.68.200.97:6053/api/auth/v1/token/user",
-									"protocol": "http",
+									"raw": "{{base_url}}/api/auth/v1/token/user",
 									"host": [
-										"116",
-										"68",
-										"200",
-										"97"
+										"{{base_url}}"
 									],
-									"port": "6053",
 									"path": [
 										"api",
 										"auth",
@@ -1186,7 +1181,7 @@
 									"bearer": [
 										{
 											"key": "token",
-											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhZjUxZDVjLWQzN2EtNDU1OC05OWY5LTY2ZTgzMDE1OGM5NiIsInJvbGUiOiJ1c2VyIiwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTc0MzA2NTI5OCwiZXhwIjoxNzQzMDY2MTk4fQ.wkTejaN3ALCz9RSRz73_LQBiQ72tTFnjKgIyMABSq9I",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhZjUxZDVjLWQzN2EtNDU1OC05OWY5LTY2ZTgzMDE1OGM5NiIsInJvbGUiOiJ1c2VyIiwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTc0NDAwNzU2NywiZXhwIjoxNzQ0MDA4NDY3fQ.DnAAVx7HJeUkykIl_U7qL9nLOR_wd15ixJwm-PEszNM",
 											"type": "string"
 										}
 									]
@@ -1281,7 +1276,7 @@
 										}
 									],
 									"cookie": [],
-									"body": "{\n    \"success\": true,\n    \"message\": \"Get user workout details successfully!\",\n    \"data\": {\n        \"_sum\": {\n            \"calories\": \"150\",\n            \"distance\": \"12\",\n            \"steps\": 1000,\n            \"duration\": \"41\"\n        },\n        \"_avg\": {\n            \"heartPts\": \"17.083333\"\n        }\n    }\n}"
+									"body": "{\n    \"success\": true,\n    \"message\": \"Get user workout details successfully!\",\n    \"data\": {\n        \"heartPts\": null,\n        \"calories\": null,\n        \"distanceKm\": null,\n        \"durationMs\": null,\n        \"steps\": 1000\n    }\n}"
 								}
 							]
 						},
@@ -1482,7 +1477,7 @@
 									"bearer": [
 										{
 											"key": "token",
-											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhZjUxZDVjLWQzN2EtNDU1OC05OWY5LTY2ZTgzMDE1OGM5NiIsInJvbGUiOiJ1c2VyIiwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTc0MzA2NTI5OCwiZXhwIjoxNzQzMDY2MTk4fQ.wkTejaN3ALCz9RSRz73_LQBiQ72tTFnjKgIyMABSq9I",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhZjUxZDVjLWQzN2EtNDU1OC05OWY5LTY2ZTgzMDE1OGM5NiIsInJvbGUiOiJ1c2VyIiwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTc0NDAwNzU2NywiZXhwIjoxNzQ0MDA4NDY3fQ.DnAAVx7HJeUkykIl_U7qL9nLOR_wd15ixJwm-PEszNM",
 											"type": "string"
 										}
 									]
@@ -1491,7 +1486,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"steps\": 1000\r\n}",
+									"raw": "{\r\n    \"steps\": 1000,\r\n    \"createdAt\": \"2025-04-07\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1583,7 +1578,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n    \"steps\": 1000\r\n}",
+											"raw": "{\r\n    \"steps\": 1000,\r\n    \"createdAt\": \"2025-04-07\"\r\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -1630,11 +1625,11 @@
 										},
 										{
 											"key": "ETag",
-											"value": "W/\"ff-mDLfaXP2B6oMi94PmLKCM+pwiaQ\""
+											"value": "W/\"ff-JufzKtQH2sAeitq4D6dAuVyHoZo\""
 										},
 										{
 											"key": "Date",
-											"value": "Thu, 27 Mar 2025 08:49:07 GMT"
+											"value": "Mon, 07 Apr 2025 06:33:34 GMT"
 										},
 										{
 											"key": "Connection",
@@ -1646,7 +1641,7 @@
 										}
 									],
 									"cookie": [],
-									"body": "{\n    \"success\": true,\n    \"message\": \"New user steps added successfully!\",\n    \"data\": {\n        \"id\": \"bea5a34f-d44c-44b8-83f7-89b0d51b200f\",\n        \"userId\": \"6af51d5c-d37a-4558-99f9-66e830158c96\",\n        \"steps\": 1000,\n        \"createdAt\": \"2025-03-27T08:49:07.450Z\",\n        \"updatedAt\": \"2025-03-27T08:49:07.450Z\"\n    }\n}"
+									"body": "{\n    \"success\": true,\n    \"message\": \"New user steps added successfully!\",\n    \"data\": {\n        \"id\": \"6d98e2c6-73ac-4ab3-977a-af9aface55fc\",\n        \"userId\": \"6af51d5c-d37a-4558-99f9-66e830158c96\",\n        \"steps\": 1000,\n        \"createdAt\": \"2025-04-07T00:00:00.000Z\",\n        \"updatedAt\": \"2025-04-07T06:33:33.372Z\"\n    }\n}"
 								}
 							]
 						}
@@ -2686,6 +2681,16 @@
 						{
 							"name": "get multi",
 							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhZjUxZDVjLWQzN2EtNDU1OC05OWY5LTY2ZTgzMDE1OGM5NiIsInJvbGUiOiJ1c2VyIiwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTc0NDAxNTg3MSwiZXhwIjoxNzQ0MDE2NzcxfQ.3ecGf41-1XCuoe3pyylw5KAQmc5PVW5RF9eZwtjmMjg",
+											"type": "string"
+										}
+									]
+								},
 								"method": "GET",
 								"header": [],
 								"url": {
@@ -2789,7 +2794,93 @@
 										}
 									],
 									"cookie": [],
-									"body": "{\n    \"success\": true,\n    \"message\": \"Get marathons successfully!\",\n    \"data\": [\n        {\n            \"id\": \"m-uuid-2\",\n            \"title\": \"February 10 km Challenge Run\",\n            \"description\": \"A program designed to push your limits, build endurance, and celebrate your strength!\",\n            \"about\": \"A program designed to push your limits, build endurance, and celebrate your strength! Whether this program offers personalized training plans, progress tracking, and a vibrant community to keep you motivated every step of the way.\",\n            \"distanceKm\": 10,\n            \"location\": \"Uttara, Dhaka\",\n            \"startDate\": \"2025-03-05T00:00:00.000Z\",\n            \"endDate\": \"2025-03-05T00:00:00.000Z\",\n            \"imagePath\": \"http://localhost:6053/uploads/photos/e9c961ab-d837-4d27-8d92-ceb1dfdfd083-1741854397870.png\",\n            \"type\": \"onsite\",\n            \"createdBy\": null,\n            \"createdAt\": \"2025-03-13T09:27:25.639Z\",\n            \"updatedAt\": \"2025-03-13T09:27:25.639Z\"\n        },\n        {\n            \"id\": \"m-uuid-1\",\n            \"title\": \"February 5k Challenge Run\",\n            \"description\": \"A program designed to push your limits, build endurance, and celebrate your strength!\",\n            \"about\": \"A program designed to push your limits, build endurance, and celebrate your strength! Whether this program offers personalized training plans, progress tracking, and a vibrant community to keep you motivated every step of the way.\",\n            \"distanceKm\": 5,\n            \"location\": null,\n            \"startDate\": \"2025-01-01T00:00:00.000Z\",\n            \"endDate\": \"2025-02-01T00:00:00.000Z\",\n            \"imagePath\": \"http://localhost:6053/uploads/photos/e9c961ab-d837-4d27-8d92-ceb1dfdfd083-1741854397870.png\",\n            \"type\": \"virtual\",\n            \"createdBy\": null,\n            \"createdAt\": \"2025-03-13T09:27:25.588Z\",\n            \"updatedAt\": \"2025-03-13T09:27:25.588Z\"\n        }\n    ],\n    \"pagination\": {\n        \"current_page\": 1,\n        \"per_page\": 20,\n        \"total_page\": 1,\n        \"total_items\": 2\n    }\n}"
+									"body": "{\n    \"success\": true,\n    \"message\": \"Get marathons successfully!\",\n    \"data\": [\n        {\n            \"id\": \"m-uuid-2\",\n            \"title\": \"February 10 km Challenge Run\",\n            \"description\": \"A program designed to push your limits, build endurance, and celebrate your strength!\",\n            \"about\": \"A program designed to push your limits, build endurance, and celebrate your strength! Whether this program offers personalized training plans, progress tracking, and a vibrant community to keep you motivated every step of the way.\",\n            \"distanceKm\": 10,\n            \"location\": \"Uttara, Dhaka\",\n            \"startDate\": \"2025-03-05T00:00:00.000Z\",\n            \"endDate\": \"2025-03-05T00:00:00.000Z\",\n            \"imagePath\": \"http://localhost:6053/uploads/photos/e9c961ab-d837-4d27-8d92-ceb1dfdfd083-1741854397870.png\",\n            \"type\": \"onsite\",\n            \"createdBy\": null,\n            \"createdAt\": \"2025-03-13T09:27:25.639Z\",\n            \"updatedAt\": \"2025-03-13T09:27:25.639Z\",\n            \"joined\": false\n        },\n        {\n            \"id\": \"m-uuid-1\",\n            \"title\": \"February 5k Challenge Run\",\n            \"description\": \"A program designed to push your limits, build endurance, and celebrate your strength!\",\n            \"about\": \"A program designed to push your limits, build endurance, and celebrate your strength! Whether this program offers personalized training plans, progress tracking, and a vibrant community to keep you motivated every step of the way.\",\n            \"distanceKm\": 5,\n            \"location\": null,\n            \"startDate\": \"2025-01-01T00:00:00.000Z\",\n            \"endDate\": \"2025-02-01T00:00:00.000Z\",\n            \"imagePath\": \"http://localhost:6053/uploads/photos/e9c961ab-d837-4d27-8d92-ceb1dfdfd083-1741854397870.png\",\n            \"type\": \"virtual\",\n            \"createdBy\": null,\n            \"createdAt\": \"2025-03-13T09:27:25.588Z\",\n            \"updatedAt\": \"2025-03-13T09:27:25.588Z\",\n            \"joined\": true\n        }\n    ],\n    \"pagination\": {\n        \"current_page\": 1,\n        \"per_page\": 20,\n        \"total_page\": 1,\n        \"total_items\": 2\n    }\n}"
+								},
+								{
+									"name": "403",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{base_url}}/api/marathon/v1/marathon",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"api",
+												"marathon",
+												"v1",
+												"marathon"
+											],
+											"query": [
+												{
+													"key": "type",
+													"value": "virtual",
+													"description": "virtual, onsite // default: all",
+													"disabled": true
+												},
+												{
+													"key": "search",
+													"value": null,
+													"description": "title search",
+													"disabled": true
+												},
+												{
+													"key": "page",
+													"value": null,
+													"disabled": true
+												},
+												{
+													"key": "size",
+													"value": null,
+													"disabled": true
+												}
+											]
+										}
+									},
+									"status": "Forbidden",
+									"code": 403,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Access-Control-Allow-Credentials",
+											"value": "true"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "77"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"4d-fEiYZ25Vn7jLKgJYej+Q/0fSzEc\""
+										},
+										{
+											"key": "Date",
+											"value": "Mon, 07 Apr 2025 06:55:43 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": false,\n    \"code\": 40301,\n    \"error\": \"Forbidden!\",\n    \"message\": \"Invalid token\"\n}"
 								}
 							]
 						},
@@ -2956,6 +3047,16 @@
 						{
 							"name": "get single",
 							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhZjUxZDVjLWQzN2EtNDU1OC05OWY5LTY2ZTgzMDE1OGM5NiIsInJvbGUiOiJ1c2VyIiwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTc0NDAxNzAwNywiZXhwIjoxNzQ0MDE3OTA3fQ.UXV10cLxiL0gAlRf6L-HHlwqPP5PP9goBHFHLSQIogQ",
+											"type": "string"
+										}
+									]
+								},
 								"method": "GET",
 								"header": [],
 								"url": {
@@ -3046,7 +3147,7 @@
 										}
 									],
 									"cookie": [],
-									"body": "{\n    \"success\": true,\n    \"message\": \"Get Marathon details successfully!\",\n    \"data\": {\n        \"id\": \"m-uuid-1\",\n        \"title\": \"February 5k Challenge Run\",\n        \"description\": \"A program designed to push your limits, build endurance, and celebrate your strength!\",\n        \"about\": \"A program designed to push your limits, build endurance, and celebrate your strength! Whether this program offers personalized training plans, progress tracking, and a vibrant community to keep you motivated every step of the way.\",\n        \"distanceKm\": 5,\n        \"location\": null,\n        \"startDate\": \"2025-01-01T00:00:00.000Z\",\n        \"endDate\": \"2025-02-01T00:00:00.000Z\",\n        \"imagePath\": \"http://localhost:6053/uploads/photos/e9c961ab-d837-4d27-8d92-ceb1dfdfd083-1741854397870.png\",\n        \"type\": \"virtual\",\n        \"createdBy\": null,\n        \"createdAt\": \"2025-03-13T09:27:25.588Z\",\n        \"updatedAt\": \"2025-03-13T09:27:25.588Z\",\n        \"Rewards\": []\n    },\n    \"totalParticiants\": 4,\n    \"particiants\": [\n        {\n            \"id\": \"user-uuid-4\",\n            \"fullName\": \"Daisy Clark\",\n            \"image\": \"doctor3.jpg\",\n            \"imagePath\": \"http://localhost:6053/uploads/photos/doctor3.jpg\"\n        },\n        {\n            \"id\": \"user-uuid-3\",\n            \"fullName\": \"Charlie Brown\",\n            \"image\": \"doctor2.jpg\",\n            \"imagePath\": \"http://localhost:6053/uploads/photos/doctor2.jpg\"\n        },\n        {\n            \"id\": \"user-uuid-2\",\n            \"fullName\": \"Bob Williams\",\n            \"image\": \"doctor.jpg\",\n            \"imagePath\": \"http://localhost:6053/uploads/photos/doctor.jpg\"\n        }\n    ]\n}"
+									"body": "{\n    \"success\": true,\n    \"message\": \"Get Marathon details successfully!\",\n    \"data\": {\n        \"id\": \"m-uuid-1\",\n        \"title\": \"February 5k Challenge Run\",\n        \"description\": \"A program designed to push your limits, build endurance, and celebrate your strength!\",\n        \"about\": \"A program designed to push your limits, build endurance, and celebrate your strength! Whether this program offers personalized training plans, progress tracking, and a vibrant community to keep you motivated every step of the way.\",\n        \"distanceKm\": 5,\n        \"location\": null,\n        \"startDate\": \"2025-01-01T00:00:00.000Z\",\n        \"endDate\": \"2025-02-01T00:00:00.000Z\",\n        \"imagePath\": \"http://localhost:6053/uploads/photos/e9c961ab-d837-4d27-8d92-ceb1dfdfd083-1741854397870.png\",\n        \"type\": \"virtual\",\n        \"createdBy\": null,\n        \"createdAt\": \"2025-03-13T09:27:25.588Z\",\n        \"updatedAt\": \"2025-03-13T09:27:25.588Z\",\n        \"Rewards\": [],\n        \"joined\": true\n    },\n    \"totalParticiants\": 5,\n    \"particiants\": [\n        {\n            \"id\": \"6af51d5c-d37a-4558-99f9-66e830158c96\",\n            \"fullName\": \"Jahidul Islam\",\n            \"image\": \"8b95952d-a7ed-4436-bfa8-1bc086197f21-1742893521449.jpg\",\n            \"imagePath\": \"http://localhost:6053/uploads/photos/8b95952d-a7ed-4436-bfa8-1bc086197f21-1742893521449.jpg\"\n        },\n        {\n            \"id\": \"user-uuid-4\",\n            \"fullName\": \"Daisy Clark\",\n            \"image\": \"doctor3.jpg\",\n            \"imagePath\": \"http://localhost:6053/uploads/photos/doctor3.jpg\"\n        },\n        {\n            \"id\": \"user-uuid-3\",\n            \"fullName\": \"Charlie Brown\",\n            \"image\": \"doctor2.jpg\",\n            \"imagePath\": \"http://localhost:6053/uploads/photos/doctor2.jpg\"\n        }\n    ]\n}"
 								}
 							]
 						},

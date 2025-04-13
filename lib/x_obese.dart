@@ -11,8 +11,8 @@ import 'package:x_obese/src/screens/intro/intro_page.dart';
 import 'package:x_obese/src/screens/navs/naves_page.dart';
 import 'package:x_obese/src/theme/colors.dart';
 
-class OXbese extends StatelessWidget {
-  const OXbese({super.key});
+class XObese extends StatelessWidget {
+  const XObese({super.key});
 
   @override
   Widget build(BuildContext context) {
