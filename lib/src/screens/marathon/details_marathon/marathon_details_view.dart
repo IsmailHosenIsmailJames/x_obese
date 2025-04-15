@@ -29,8 +29,6 @@ class MarathonDetailsView extends StatefulWidget {
 }
 
 class _MarathonDetailsViewState extends State<MarathonDetailsView> {
-  bool isJoined = false;
-
   FullMarathonDataModel? fullMarathonDataModel;
 
   @override
@@ -285,17 +283,58 @@ class _MarathonDetailsViewState extends State<MarathonDetailsView> {
                     },
                   ),
                   const Gap(24),
-                  if (!isJoined)
+                  if (!(fullMarathonDataModel?.data?.joined ?? false))
                     SizedBox(
                       width: double.infinity,
                       height: 48,
                       child: ElevatedButton.icon(
                         iconAlignment: IconAlignment.end,
-                        onPressed: () {
-                          setState(() {
-                            isJoined = true;
-                          });
-                        },
+                        onPressed:
+                            fullMarathonDataModel?.data?.joined == true
+                                ? null
+                                : () {
+                                  if (fullMarathonDataModel == null ||
+                                      (fullMarathonDataModel!.data?.joined ??
+                                          false)) {
+                                    return;
+                                  }
+                                  DioClient dioClient = DioClient(baseAPI);
+                                  dioClient.dio
+                                      .post(
+                                        '/api/marathon/v1/user',
+                                        data: {
+                                          "marathonId":
+                                              fullMarathonDataModel!.data!.id,
+                                        },
+                                      )
+                                      .then((value) {
+                                        printResponse(value);
+                                        if (value.statusCode == 200 ||
+                                            value.statusCode == 201) {
+                                          setState(() {
+                                            fullMarathonDataModel
+                                                ?.data
+                                                ?.joined = true;
+                                          });
+                                          log('Joined Successfully');
+                                          Get.snackbar(
+                                            'Success',
+                                            'You have joined the challenge successfully',
+                                            backgroundColor: Colors.green,
+                                            colorText: Colors.white,
+                                          );
+                                        }
+                                      })
+                                      .onError((error, stackTrace) {
+                                        log(error.toString());
+                                        Get.snackbar(
+                                          'Error',
+                                          error.toString(),
+                                          backgroundColor: Colors.red,
+                                          colorText: Colors.white,
+                                        );
+                                      });
+                                },
                         label: Text(
                           widget.isVirtual ? 'Join Challenge' : 'Register Now',
                           style: const TextStyle(
@@ -307,13 +346,12 @@ class _MarathonDetailsViewState extends State<MarathonDetailsView> {
                       ),
                     ),
 
-                  if (isJoined)
+                  if (fullMarathonDataModel?.data?.joined ?? false)
                     SizedBox(
                       width: double.infinity,
                       height: 48,
                       child: ElevatedButton(
-                        onPressed:
-                            widget.marathonData.joined == true ? null : () {},
+                        onPressed: () {},
                         child: const Text(
                           'Activity Now',
                           style: TextStyle(
@@ -323,8 +361,9 @@ class _MarathonDetailsViewState extends State<MarathonDetailsView> {
                         ),
                       ),
                     ),
-                  if (isJoined) const Gap(24),
-                  if (isJoined)
+                  if (fullMarathonDataModel?.data?.joined ?? false)
+                    const Gap(24),
+                  if (fullMarathonDataModel?.data?.joined ?? false)
                     SizedBox(
                       width: double.infinity,
                       height: 48,

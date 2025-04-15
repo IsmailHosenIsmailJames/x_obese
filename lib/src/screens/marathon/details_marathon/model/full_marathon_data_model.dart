@@ -71,6 +71,7 @@ class Data {
   DateTime? endDate;
   String? imagePath;
   String? type;
+  bool? joined;
   dynamic createdBy;
   DateTime? createdAt;
   DateTime? updatedAt;
@@ -87,6 +88,7 @@ class Data {
     this.endDate,
     this.imagePath,
     this.type,
+    this.joined,
     this.createdBy,
     this.createdAt,
     this.updatedAt,
@@ -104,6 +106,7 @@ class Data {
     DateTime? endDate,
     String? imagePath,
     String? type,
+    bool? joined,
     dynamic createdBy,
     DateTime? createdAt,
     DateTime? updatedAt,
@@ -119,6 +122,7 @@ class Data {
     endDate: endDate ?? this.endDate,
     imagePath: imagePath ?? this.imagePath,
     type: type ?? this.type,
+    joined: joined ?? this.joined,
     createdBy: createdBy ?? this.createdBy,
     createdAt: createdAt ?? this.createdAt,
     updatedAt: updatedAt ?? this.updatedAt,
@@ -141,6 +145,7 @@ class Data {
     endDate: json['endDate'] == null ? null : DateTime.parse(json['endDate']),
     imagePath: json['imagePath'],
     type: json['type'],
+    joined: json['joined'],
     createdBy: json['createdBy'],
     createdAt:
         json['createdAt'] == null ? null : DateTime.parse(json['createdAt']),
@@ -163,6 +168,7 @@ class Data {
     'endDate': endDate?.toIso8601String(),
     'imagePath': imagePath,
     'type': type,
+    'joined': joined,
     'createdBy': createdBy,
     'createdAt': createdAt?.toIso8601String(),
     'updatedAt': updatedAt?.toIso8601String(),
