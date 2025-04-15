@@ -8,6 +8,7 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:x_obese/src/apis/middleware/jwt_middleware.dart';
 import 'package:x_obese/src/core/common/functions/is_information_fulfilled.dart';
 import 'package:x_obese/src/screens/auth/controller/auth_controller.dart';
@@ -49,15 +50,15 @@ class _OtpPageState extends State<OtpPage> {
       if (response != null) {
         log('OTP verified', name: 'OTP');
         await Hive.box('user').put('info', jsonEncode({'phone': widget.phone}));
-        final tokenBox = await Hive.openBox('tokens');
-        await tokenBox.put(
+        final SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setString(
           'access_token',
           response.data['data']['accessToken'].toString(),
         );
 
         String? refreshToken = refreshTokenExtractor(response);
         if (refreshToken != null) {
-          await tokenBox.put('refresh_token', refreshToken);
+          await prefs.setString('refresh_token', refreshToken);
           log('Saved refresh token', name: 'success');
         }
 

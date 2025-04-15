@@ -307,7 +307,8 @@ class _MarathonDetailsViewState extends State<MarathonDetailsView> {
                       width: double.infinity,
                       height: 48,
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed:
+                            widget.marathonData.joined == true ? null : () {},
                         child: const Text(
                           'Activity Now',
                           style: TextStyle(

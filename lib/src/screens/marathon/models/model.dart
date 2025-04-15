@@ -14,6 +14,7 @@ class MarathonModel {
   dynamic createdBy;
   DateTime? createdAt;
   DateTime? updatedAt;
+  bool? joined;
 
   MarathonModel({
     this.id,
@@ -29,6 +30,7 @@ class MarathonModel {
     this.createdBy,
     this.createdAt,
     this.updatedAt,
+    this.joined,
   });
 
   MarathonModel copyWith({
@@ -45,6 +47,7 @@ class MarathonModel {
     dynamic createdBy,
     DateTime? createdAt,
     DateTime? updatedAt,
+    bool? joined,
   }) => MarathonModel(
     id: id ?? this.id,
     title: title ?? this.title,
@@ -59,6 +62,7 @@ class MarathonModel {
     createdBy: createdBy ?? this.createdBy,
     createdAt: createdAt ?? this.createdAt,
     updatedAt: updatedAt ?? this.updatedAt,
+    joined: joined ?? this.joined,
   );
 
   factory MarathonModel.fromJson(String str) =>
@@ -83,6 +87,7 @@ class MarathonModel {
         json['createdAt'] == null ? null : DateTime.parse(json['createdAt']),
     updatedAt:
         json['updatedAt'] == null ? null : DateTime.parse(json['updatedAt']),
+    joined: json['joined'],
   );
 
   Map<String, dynamic> toMap() => {
@@ -99,5 +104,6 @@ class MarathonModel {
     'createdBy': createdBy,
     'createdAt': createdAt?.toIso8601String(),
     'updatedAt': updatedAt?.toIso8601String(),
+    'joined': joined,
   };
 }

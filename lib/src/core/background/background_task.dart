@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
@@ -19,9 +20,20 @@ class MyTaskHandler extends TaskHandler {
   StreamSubscription? streamSubscription;
   SharedPreferences? preferences;
 
+  int? lastCount;
+
   @override
   Future<void> onStart(DateTime timestamp, TaskStarter starter) async {
+    _handlePedometerEvent();
+  }
+
+  void _handlePedometerEvent() {
     streamSubscription = Pedometer.stepCountStream.listen((event) async {
+      if (lastCount == event.steps) {
+        return;
+      }
+
+      lastCount = event.steps;
       String dateString = DateFormat('yyyy-MM-dd').format(DateTime.now());
       String stepsKey = 'stepsCount_$dateString';
       preferences ??= await SharedPreferences.getInstance();
@@ -30,9 +42,17 @@ class MyTaskHandler extends TaskHandler {
       preferences!.setInt(stepsKey, stepsCount);
       Set<String> keysListOfSteps = preferences!.getKeys();
       for (String key in keysListOfSteps) {
-        if (key.split('_').last != dateString) {
+        if (key.startsWith('stepsCount_') == false) {
+          continue;
+        }
+        String keysDate = key.split('_').last;
+        if (keysDate != dateString) {
           // need to backup
           try {
+            log(
+              jsonEncode({'steps': stepsCount, 'createdAt': keysDate}),
+              name: 'Sending',
+            );
             DioClient dioClient = DioClient(baseAPI);
             final response = await dioClient.dio.post(
               '/api/user/v1/workout/steps',
@@ -51,24 +71,17 @@ class MyTaskHandler extends TaskHandler {
           }
         }
       }
-      FlutterForegroundTask.sendDataToMain(event.steps);
+      FlutterForegroundTask.sendDataToMain(stepsCount);
       await FlutterForegroundTask.updateService(
         notificationText: 'Tap to return to the app',
-        notificationTitle: 'Today\'s Steps Count: ${event.steps}',
+        notificationTitle: 'Today\'s Steps Count: $stepsCount',
       );
     });
   }
 
   @override
   Future<void> onRepeatEvent(DateTime timestamp) async {
-    await streamSubscription?.cancel();
-    streamSubscription = Pedometer.stepCountStream.listen((event) async {
-      FlutterForegroundTask.sendDataToMain(event.steps);
-      await FlutterForegroundTask.updateService(
-        notificationText: 'Tap to return to the app',
-        notificationTitle: 'Today\'s Steps Count: ${event.steps}',
-      );
-    });
+    _handlePedometerEvent();
   }
 
   @override

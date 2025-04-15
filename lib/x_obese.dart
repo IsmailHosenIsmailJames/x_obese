@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:x_obese/src/core/common/functions/is_information_fulfilled.dart';
+import 'package:x_obese/src/screens/auth/controller/auth_controller.dart';
 import 'package:x_obese/src/screens/controller/info_collector/info_collector.dart';
 import 'package:x_obese/src/screens/controller/info_collector/model/all_info_model.dart';
 import 'package:x_obese/src/screens/auth/login/login_signup_page.dart';
@@ -11,10 +13,12 @@ import 'package:x_obese/src/screens/navs/naves_page.dart';
 import 'package:x_obese/src/theme/colors.dart';
 
 class XObese extends StatelessWidget {
-  const XObese({super.key});
-
+  final SharedPreferences prefs;
+  const XObese({super.key, required this.prefs});
   @override
   Widget build(BuildContext context) {
+    AuthController authController = Get.put(AuthController());
+
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
 
@@ -60,6 +64,9 @@ class XObese extends StatelessWidget {
                 AllInfoModel.fromJson(Hive.box('user').get('info')),
               )
               ? '/infoCollector'
+              : (authController.refreshToken.value == null &&
+                  authController.accessToken.value == null)
+              ? '/login'
               : '/home',
       onInit: () async {
         FlutterNativeSplash.remove();
