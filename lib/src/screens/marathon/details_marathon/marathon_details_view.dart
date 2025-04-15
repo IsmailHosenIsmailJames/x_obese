@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -258,6 +260,9 @@ class _MarathonDetailsViewState extends State<MarathonDetailsView> {
                   ...List.generate(
                     fullMarathonDataModel?.data?.rewards?.length ?? 0,
                     (index) {
+                      final currentReward =
+                          fullMarathonDataModel?.data?.rewards?[index];
+                      log(currentReward.toString(), name: 'currentReward');
                       return Row(
                         children: [
                           SvgPicture.string(
@@ -268,7 +273,7 @@ class _MarathonDetailsViewState extends State<MarathonDetailsView> {
                           ),
                           const Gap(10),
                           Text(
-                            'Medal & Finisher Item',
+                            currentReward?['text'] ?? '',
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w300,
