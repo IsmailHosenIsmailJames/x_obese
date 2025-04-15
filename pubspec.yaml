@@ -82,11 +82,11 @@ flutter:
 flutter_launcher_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "assets/img/app_logo.jpeg"
+  image_path: "logo/Logo_x_Obese.png"
   min_sdk_android: 21
 
 icons_launcher:
-  image_path: "assets/img/app_logo.jpeg"
+  image_path: "logo/Logo_x_Obese.png"
   platforms:
     android:
       enable: true
@@ -95,11 +95,11 @@ icons_launcher:
 
 flutter_native_splash:
   color: "#ffffff"
-  image: assets/img/splah_view.png
+  image: logo/Logo_x_Obese_small.png
   color_dark: "#ffffff"
-  image_dark: assets/img/splah_view.png
+  image_dark: logo/Logo_x_Obese_small.png
 
   android_12:
-    image: assets/img/splah_view.png
+    image: logo/Logo_x_Obese_small.png
     icon_background_color: "#ffffff"
     icon_background_color_dark: "#ffffff"
