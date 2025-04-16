@@ -203,7 +203,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"code\": \"941738\",\r\n    \"type\": \"login\" // login or signup\r\n}",
+									"raw": "{\r\n    \"code\": \"298494\",\r\n    \"type\": \"login\" // login or signup\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -226,7 +226,7 @@
 									"variable": [
 										{
 											"key": "id",
-											"value": "ff961daf-7290-489c-ac49-ca437c67f851",
+											"value": "6f8c6154-945c-4a03-91c9-bea8f548d074",
 											"description": "login or sign up response id"
 										}
 									]
@@ -1297,7 +1297,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"distance\": \"1\", // km\r\n    \"type\": \"walking\", \r\n    \"duration\": \"900000\", // milliseconds --- 15 mins\r\n}",
+									"raw": "{\r\n    \"distance\": \"1\", // km\r\n    \"type\": \"walking\", \r\n    \"duration\": \"900000\" // milliseconds --- 15 mins\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -2686,7 +2686,7 @@
 									"bearer": [
 										{
 											"key": "token",
-											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhZjUxZDVjLWQzN2EtNDU1OC05OWY5LTY2ZTgzMDE1OGM5NiIsInJvbGUiOiJ1c2VyIiwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTc0NDAxNTg3MSwiZXhwIjoxNzQ0MDE2NzcxfQ.3ecGf41-1XCuoe3pyylw5KAQmc5PVW5RF9eZwtjmMjg",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAyNzdmNWE0LWU1OWUtNGM4Ni1hYzU5LWQzOGZjODczM2Y5YSIsInJvbGUiOiJzdXBlcmFkbWluIiwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTc0NDE5ODgwOCwiZXhwIjoxNzQ0MTk5NzA4fQ.SDhiui42kaqgJ007q22FIEuVtQOSXZm6bdeHHc30xoc",
 											"type": "string"
 										}
 									]
@@ -2694,7 +2694,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{base_url}}/api/marathon/v1/marathon",
+									"raw": "{{base_url}}/api/marathon/v1/marathon?type=virtual",
 									"host": [
 										"{{base_url}}"
 									],
@@ -2708,23 +2708,22 @@
 										{
 											"key": "type",
 											"value": "virtual",
-											"description": "virtual, onsite // default: all",
-											"disabled": true
+											"description": "virtual, onsite // default: all"
 										},
 										{
 											"key": "search",
-											"value": null,
+											"value": "",
 											"description": "title search",
 											"disabled": true
 										},
 										{
 											"key": "page",
-											"value": null,
+											"value": "",
 											"disabled": true
 										},
 										{
 											"key": "size",
-											"value": null,
+											"value": "",
 											"disabled": true
 										}
 									]
@@ -3052,7 +3051,7 @@
 									"bearer": [
 										{
 											"key": "token",
-											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhZjUxZDVjLWQzN2EtNDU1OC05OWY5LTY2ZTgzMDE1OGM5NiIsInJvbGUiOiJ1c2VyIiwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTc0NDAxNzAwNywiZXhwIjoxNzQ0MDE3OTA3fQ.UXV10cLxiL0gAlRf6L-HHlwqPP5PP9goBHFHLSQIogQ",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhZjUxZDVjLWQzN2EtNDU1OC05OWY5LTY2ZTgzMDE1OGM5NiIsInJvbGUiOiJ1c2VyIiwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTc0NDc5ODQyNiwiZXhwIjoxNzQ0Nzk5MzI2fQ.mtvncWjGffwREmPeC8-znqHsPhpE73p4VFtKzbK_qng",
 											"type": "string"
 										}
 									]
@@ -3147,7 +3146,7 @@
 										}
 									],
 									"cookie": [],
-									"body": "{\n    \"success\": true,\n    \"message\": \"Get Marathon details successfully!\",\n    \"data\": {\n        \"id\": \"m-uuid-1\",\n        \"title\": \"February 5k Challenge Run\",\n        \"description\": \"A program designed to push your limits, build endurance, and celebrate your strength!\",\n        \"about\": \"A program designed to push your limits, build endurance, and celebrate your strength! Whether this program offers personalized training plans, progress tracking, and a vibrant community to keep you motivated every step of the way.\",\n        \"distanceKm\": 5,\n        \"location\": null,\n        \"startDate\": \"2025-01-01T00:00:00.000Z\",\n        \"endDate\": \"2025-02-01T00:00:00.000Z\",\n        \"imagePath\": \"http://localhost:6053/uploads/photos/e9c961ab-d837-4d27-8d92-ceb1dfdfd083-1741854397870.png\",\n        \"type\": \"virtual\",\n        \"createdBy\": null,\n        \"createdAt\": \"2025-03-13T09:27:25.588Z\",\n        \"updatedAt\": \"2025-03-13T09:27:25.588Z\",\n        \"Rewards\": [],\n        \"joined\": true\n    },\n    \"totalParticiants\": 5,\n    \"particiants\": [\n        {\n            \"id\": \"6af51d5c-d37a-4558-99f9-66e830158c96\",\n            \"fullName\": \"Jahidul Islam\",\n            \"image\": \"8b95952d-a7ed-4436-bfa8-1bc086197f21-1742893521449.jpg\",\n            \"imagePath\": \"http://localhost:6053/uploads/photos/8b95952d-a7ed-4436-bfa8-1bc086197f21-1742893521449.jpg\"\n        },\n        {\n            \"id\": \"user-uuid-4\",\n            \"fullName\": \"Daisy Clark\",\n            \"image\": \"doctor3.jpg\",\n            \"imagePath\": \"http://localhost:6053/uploads/photos/doctor3.jpg\"\n        },\n        {\n            \"id\": \"user-uuid-3\",\n            \"fullName\": \"Charlie Brown\",\n            \"image\": \"doctor2.jpg\",\n            \"imagePath\": \"http://localhost:6053/uploads/photos/doctor2.jpg\"\n        }\n    ]\n}"
+									"body": "{\n    \"success\": true,\n    \"message\": \"Get Marathon details successfully!\",\n    \"data\": {\n        \"id\": \"m-uuid-1\",\n        \"title\": \"February 5k Challenge Run\",\n        \"description\": \"A program designed to push your limits, build endurance, and celebrate your strength!\",\n        \"about\": \"A program designed to push your limits, build endurance, and celebrate your strength! Whether this program offers personalized training plans, progress tracking, and a vibrant community to keep you motivated every step of the way.\",\n        \"distanceKm\": 5,\n        \"location\": null,\n        \"startDate\": \"2025-01-01T00:00:00.000Z\",\n        \"endDate\": \"2025-05-30T06:00:00.000Z\",\n        \"imagePath\": \"http://localhost:6053/uploads/photos/e9c961ab-d837-4d27-8d92-ceb1dfdfd083-1741854397870.png\",\n        \"type\": \"virtual\",\n        \"createdBy\": null,\n        \"createdAt\": \"2025-03-13T09:27:25.588Z\",\n        \"updatedAt\": \"2025-04-08T08:45:35.352Z\",\n        \"Rewards\": [],\n        \"marathonUserId\": \"m-uuid-1\",\n        \"joined\": true\n    },\n    \"totalParticiants\": 6,\n    \"particiants\": [\n        {\n            \"id\": \"a5f7a89a-44c5-4423-984c-6df0ad0ea9cf\",\n            \"fullName\": \"Ismail \",\n            \"image\": \"fc4c73cf-30ad-4a73-9797-566733bdc169-1742376897597.jpg\",\n            \"imagePath\": \"http://localhost:6053/uploads/photos/fc4c73cf-30ad-4a73-9797-566733bdc169-1742376897597.jpg\"\n        },\n        {\n            \"id\": \"6af51d5c-d37a-4558-99f9-66e830158c96\",\n            \"fullName\": \"Jahidul Islam\",\n            \"image\": \"8b95952d-a7ed-4436-bfa8-1bc086197f21-1742893521449.jpg\",\n            \"imagePath\": \"http://localhost:6053/uploads/photos/8b95952d-a7ed-4436-bfa8-1bc086197f21-1742893521449.jpg\"\n        },\n        {\n            \"id\": \"user-uuid-4\",\n            \"fullName\": \"Daisy Clark\",\n            \"image\": \"doctor3.jpg\",\n            \"imagePath\": \"http://localhost:6053/uploads/photos/doctor3.jpg\"\n        }\n    ]\n}"
 								}
 							]
 						},
@@ -3356,6 +3355,200 @@
 									"body": "{\n    \"success\": true,\n    \"message\": \"Marathon is deleted successfully!\",\n    \"data\": {\n        \"id\": \"e90df277-9a03-4e56-8d3a-f90c5d1702fe\",\n        \"title\": \"February 5k Challenge Run\",\n        \"description\": \"A program designed to push your limits, build endurance, and celebrate your strength!\",\n        \"about\": \"A program designed to push your limits, build endurance, and celebrate your strength! Whether this program offers personalized training plans, progress tracking, and a vibrant community to keep you motivated every step of the way.\",\n        \"startDate\": \"2025-03-01T00:00:00.000Z\",\n        \"endDate\": \"2025-03-11T00:00:00.000Z\",\n        \"imagePath\": null,\n        \"type\": \"onsite\",\n        \"createdBy\": null,\n        \"createdAt\": \"2025-03-12T09:14:22.486Z\",\n        \"updatedAt\": \"2025-03-12T09:14:22.486Z\"\n    }\n}"
 								}
 							]
+						},
+						{
+							"name": "get marathon stats",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/marathon/v1/stats/marathon",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"marathon",
+										"v1",
+										"stats",
+										"marathon"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "200",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{base_url}}/api/marathon/v1/stats/marathon",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"api",
+												"marathon",
+												"v1",
+												"stats",
+												"marathon"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Access-Control-Allow-Credentials",
+											"value": "true"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "105"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"69-SyqS1n4XZJlxnOl2YtpCXXYCPaA\""
+										},
+										{
+											"key": "Date",
+											"value": "Tue, 08 Apr 2025 05:02:26 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": true,\n    \"message\": \"Get Marathon details successfully!\",\n    \"data\": {\n        \"total\": 6,\n        \"onsite\": 0,\n        \"virtual\": 6\n    }\n}"
+								}
+							]
+						},
+						{
+							"name": "delete reward",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAyNzdmNWE0LWU1OWUtNGM4Ni1hYzU5LWQzOGZjODczM2Y5YSIsInJvbGUiOiJzdXBlcmFkbWluIiwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTc0NDEwMzkwMywiZXhwIjoxNzQ0MTA0ODAzfQ.8hxpPFfghda7ufaPaiHy0kOnsA9Q9ONLkqW9iQHA1Kk",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/marathon/v1/marathon/reward/:id",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"marathon",
+										"v1",
+										"marathon",
+										"reward",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "400",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{base_url}}/api/marathon/v1/marathon/reward/:id",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"api",
+												"marathon",
+												"v1",
+												"marathon",
+												"reward",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": ""
+												}
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Access-Control-Allow-Credentials",
+											"value": "true"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "193"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"c1-iEd0fLwbFSnfxRr8b+TVKvpl3yQ\""
+										},
+										{
+											"key": "Date",
+											"value": "Tue, 08 Apr 2025 09:20:38 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": false,\n    \"code\": 40003,\n    \"error\": \"Bad Request\",\n    \"message\": \"An operation failed because it depends on one or more records that were required but not found. Record to delete does not exist.\"\n}"
+								}
+							]
 						}
 					]
 				},
@@ -3368,7 +3561,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{base_url}}/api/marathon/v1/user",
+									"raw": "{{base_url}}/api/marathon/v1/user?marathonId=m-1&size=100&page=2",
 									"host": [
 										"{{base_url}}"
 									],
@@ -3380,22 +3573,22 @@
 									],
 									"query": [
 										{
-											"key": "page",
-											"value": "1",
-											"description": "default: 1",
+											"key": "search",
+											"value": "",
+											"description": "by user name",
 											"disabled": true
+										},
+										{
+											"key": "marathonId",
+											"value": "m-1"
 										},
 										{
 											"key": "size",
-											"value": "20",
-											"description": "default: 20",
-											"disabled": true
+											"value": "100"
 										},
 										{
-											"key": "search",
-											"value": null,
-											"description": "by user name",
-											"disabled": true
+											"key": "page",
+											"value": "2"
 										}
 									]
 								}
@@ -3457,7 +3650,7 @@
 										}
 									],
 									"cookie": [],
-									"body": "{\n    \"success\": true,\n    \"message\": \"Get marathon users successfully!\",\n    \"data\": [\n        {\n            \"id\": \"mu-uuid-1\",\n            \"userId\": \"user-uuid-1\",\n            \"marathonId\": \"m-uuid-1\",\n            \"distanceKm\": \"5\",\n            \"durationMs\": 900000,\n            \"createdAt\": \"2025-03-13T09:27:25.681Z\",\n            \"updatedAt\": \"2025-03-13T09:27:25.681Z\"\n        },\n        {\n            \"id\": \"mu-uuid-2\",\n            \"userId\": \"user-uuid-2\",\n            \"marathonId\": \"m-uuid-1\",\n            \"distanceKm\": \"5\",\n            \"durationMs\": 950000,\n            \"createdAt\": \"2025-03-13T09:27:25.727Z\",\n            \"updatedAt\": \"2025-03-13T09:27:25.727Z\"\n        },\n        {\n            \"id\": \"mu-uuid-3\",\n            \"userId\": \"user-uuid-3\",\n            \"marathonId\": \"m-uuid-1\",\n            \"distanceKm\": \"4.5\",\n            \"durationMs\": 800000,\n            \"createdAt\": \"2025-03-13T09:27:25.754Z\",\n            \"updatedAt\": \"2025-03-13T09:27:25.754Z\"\n        },\n        {\n            \"id\": \"mu-uuid-4\",\n            \"userId\": \"user-uuid-4\",\n            \"marathonId\": \"m-uuid-1\",\n            \"distanceKm\": \"3.5\",\n            \"durationMs\": 700000,\n            \"createdAt\": \"2025-03-13T09:27:25.782Z\",\n            \"updatedAt\": \"2025-03-13T09:27:25.782Z\"\n        }\n    ],\n    \"pagination\": {\n        \"current_page\": 1,\n        \"per_page\": 20,\n        \"total_page\": 1,\n        \"total_items\": 4\n    }\n}"
+									"body": "{\n    \"success\": true,\n    \"message\": \"Get marathon users successfully!\",\n    \"data\": [\n        {\n            \"id\": \"mu-uuid-1\",\n            \"userId\": \"user-uuid-1\",\n            \"marathonId\": \"m-uuid-1\",\n            \"distanceKm\": \"5\",\n            \"durationMs\": 900000,\n            \"createdAt\": \"2025-03-13T09:27:25.681Z\",\n            \"updatedAt\": \"2025-03-13T09:27:25.681Z\",\n            \"user\": {\n                \"fullName\": \"Alice Johnson\",\n                \"imagePath\": \"http://localhost:6053/uploads/photos/\"\n            }\n        },\n        {\n            \"id\": \"mu-uuid-2\",\n            \"userId\": \"user-uuid-2\",\n            \"marathonId\": \"m-uuid-1\",\n            \"distanceKm\": \"5\",\n            \"durationMs\": 950000,\n            \"createdAt\": \"2025-03-13T09:27:25.727Z\",\n            \"updatedAt\": \"2025-03-13T09:27:25.727Z\",\n            \"user\": {\n                \"fullName\": \"Bob Williams\",\n                \"imagePath\": \"http://localhost:6053/uploads/photos/doctor.jpg\"\n            }\n        },\n        {\n            \"id\": \"mu-uuid-3\",\n            \"userId\": \"user-uuid-3\",\n            \"marathonId\": \"m-uuid-1\",\n            \"distanceKm\": \"4.5\",\n            \"durationMs\": 800000,\n            \"createdAt\": \"2025-03-13T09:27:25.754Z\",\n            \"updatedAt\": \"2025-03-13T09:27:25.754Z\",\n            \"user\": {\n                \"fullName\": \"Charlie Brown\",\n                \"imagePath\": \"http://localhost:6053/uploads/photos/doctor2.jpg\"\n            }\n        },\n        {\n            \"id\": \"mu-uuid-4\",\n            \"userId\": \"user-uuid-4\",\n            \"marathonId\": \"m-uuid-1\",\n            \"distanceKm\": \"3.5\",\n            \"durationMs\": 700000,\n            \"createdAt\": \"2025-03-13T09:27:25.782Z\",\n            \"updatedAt\": \"2025-03-13T09:27:25.782Z\",\n            \"user\": {\n                \"fullName\": \"Daisy Clark\",\n                \"imagePath\": \"http://localhost:6053/uploads/photos/doctor3.jpg\"\n            }\n        },\n        {\n            \"id\": \"mu-uuid-5\",\n            \"userId\": \"6af51d5c-d37a-4558-99f9-66e830158c96\",\n            \"marathonId\": \"m-uuid-1\",\n            \"distanceKm\": \"0\",\n            \"durationMs\": 0,\n            \"createdAt\": \"2025-04-07T13:15:09.000Z\",\n            \"updatedAt\": \"2025-04-07T13:15:11.000Z\",\n            \"user\": {\n                \"fullName\": \"Jahidul Islam\",\n                \"imagePath\": \"http://localhost:6053/uploads/photos/8b95952d-a7ed-4436-bfa8-1bc086197f21-1742893521449.jpg\"\n            }\n        }\n    ],\n    \"pagination\": {\n        \"current_page\": 1,\n        \"per_page\": 20,\n        \"total_page\": 1,\n        \"total_items\": 5\n    }\n}"
 								}
 							]
 						},
@@ -3634,7 +3827,7 @@
 									"bearer": [
 										{
 											"key": "token",
-											"value": "{{user_token}}",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhZjUxZDVjLWQzN2EtNDU1OC05OWY5LTY2ZTgzMDE1OGM5NiIsInJvbGUiOiJ1c2VyIiwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTc0NDc5ODQyNiwiZXhwIjoxNzQ0Nzk5MzI2fQ.mtvncWjGffwREmPeC8-znqHsPhpE73p4VFtKzbK_qng",
 											"type": "string"
 										}
 									]
@@ -3656,7 +3849,7 @@
 									"variable": [
 										{
 											"key": "id",
-											"value": "37903a87-9bed-46e1-85ce-9184ec039095"
+											"value": "mu-uuid-5"
 										}
 									]
 								}
@@ -4203,6 +4396,115 @@
 									"body": "{\n    \"success\": true,\n    \"message\": \"Marathon user is deleted successfully!\",\n    \"data\": {\n        \"id\": \"37903a87-9bed-46e1-85ce-9184ec039095\",\n        \"userId\": \"6af51d5c-d37a-4558-99f9-66e830158c96\",\n        \"marathonId\": \"6eaeedeb-9b82-444c-9a92-bfa1b6f45fd5\",\n        \"distanceKm\": \"1\",\n        \"durationMs\": 900000,\n        \"createdAt\": \"2025-03-13T08:29:23.297Z\",\n        \"updatedAt\": \"2025-03-13T08:34:52.263Z\"\n    }\n}"
 								}
 							]
+						},
+						{
+							"name": "get user leaderboard position",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhZjUxZDVjLWQzN2EtNDU1OC05OWY5LTY2ZTgzMDE1OGM5NiIsInJvbGUiOiJ1c2VyIiwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTc0NDc5ODQyNiwiZXhwIjoxNzQ0Nzk5MzI2fQ.mtvncWjGffwREmPeC8-znqHsPhpE73p4VFtKzbK_qng",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/marathon/v1/user/:id/leaderboard",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"marathon",
+										"v1",
+										"user",
+										":id",
+										"leaderboard"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "mu-uuid-5"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "200",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{base_url}}/api/marathon/v1/user/:id/leaderboard",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"api",
+												"marathon",
+												"v1",
+												"user",
+												":id",
+												"leaderboard"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "mu-uuid-5"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Access-Control-Allow-Credentials",
+											"value": "true"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "294"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"126-6n7vAx/OQvn2Bdp+avy8npI9RXE\""
+										},
+										{
+											"key": "Date",
+											"value": "Wed, 16 Apr 2025 10:28:02 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": true,\n    \"message\": \"Get Marathon user details successfully!\",\n    \"data\": {\n        \"user\": {\n            \"id\": \"mu-uuid-5\",\n            \"userId\": \"6af51d5c-d37a-4558-99f9-66e830158c96\",\n            \"marathonId\": \"m-uuid-1\",\n            \"distanceKm\": \"0\",\n            \"durationMs\": 0,\n            \"createdAt\": \"2025-04-07T13:15:09.000Z\",\n            \"updatedAt\": \"2025-04-07T13:15:11.000Z\"\n        },\n        \"rank\": 5\n    }\n}"
+								}
+							]
 						}
 					]
 				}
@@ -4335,7 +4637,7 @@
 										}
 									],
 									"cookie": [],
-									"body": "{\n    \"success\": true,\n    \"message\": \"Get blogs successfully!\",\n    \"data\": [\n        {\n            \"id\": \"720ad5ae-242d-4e55-bd56-6d8c115e1744\",\n            \"createdBy\": null,\n            \"title\": \"10 Easy Home Workouts \",\n            \"readTime\": 5,\n            \"description\": \"Stay fit with simple exercises like push-ups, planks, lunges, and jumping jacks, requiring no equipment \",\n            \"details\": \" When an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, \\\\n  Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source.\",\n            \"imagePath\": \"http://localhost:6053/uploads/photos/7d17e59b-8593-40c6-9254-826a2e82c8fe-1742963419842.png\",\n            \"createdAt\": \"2025-03-26T04:30:19.846Z\",\n            \"updatedAt\": \"2025-03-26T04:30:19.846Z\"\n        }\n    ],\n    \"pagination\": {\n        \"current_page\": 1,\n        \"per_page\": 20,\n        \"total_page\": 1,\n        \"total_items\": 1\n    }\n}"
+									"body": "{\n    \"success\": true,\n    \"message\": \"Get blogs successfully!\",\n    \"data\": [\n        {\n            \"id\": \"816fad20-34b0-4570-9b5c-46cde64d0640\",\n            \"createdBy\": \"0277f5a4-e59e-4c86-ac59-d38fc8733f9a\",\n            \"title\": \"Title 1\",\n            \"readTime\": 5,\n            \"description\": \"asdf\",\n            \"details\": \"asdf\",\n            \"imagePath\": \"http://localhost:6053/uploads/photos/ac7bb095-17bb-47b1-9d52-b0d8ca44ed11-1744258082936.jpg\",\n            \"createdAt\": \"2025-04-10T04:08:02.946Z\",\n            \"updatedAt\": \"2025-04-10T04:08:02.946Z\",\n            \"admin\": {\n                \"name\": \"Jahidul Islam\"\n            }\n        },\n        {\n            \"id\": \"720ad5ae-242d-4e55-bd56-6d8c115e1744\",\n            \"createdBy\": null,\n            \"title\": \"10 Easy Home Workouts \",\n            \"readTime\": 5,\n            \"description\": \"Stay fit with simple exercises like push-ups, planks, lunges, and jumping jacks, requiring no equipment \",\n            \"details\": \" When an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, \\\\n  Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source.\",\n            \"imagePath\": \"http://localhost:6053/uploads/photos/7d17e59b-8593-40c6-9254-826a2e82c8fe-1742963419842.png\",\n            \"createdAt\": \"2025-03-26T04:30:19.846Z\",\n            \"updatedAt\": \"2025-03-26T04:30:19.846Z\",\n            \"admin\": null\n        }\n    ],\n    \"pagination\": {\n        \"current_page\": 1,\n        \"per_page\": 20,\n        \"total_page\": 1,\n        \"total_items\": 2\n    }\n}"
 								}
 							]
 						},
@@ -5469,7 +5771,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"password\": \"123456\"\r\n}",
+							"raw": "{\r\n    \"username\": \"jahidul123\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -5491,7 +5793,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "b4330baf-1f89-4354-acb9-ecaece27e4d5"
+									"value": "0277f5a4-e59e-4c86-ac59-d38fc8733f9a"
 								}
 							]
 						}
@@ -5684,7 +5986,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAyNzdmNWE0LWU1OWUtNGM4Ni1hYzU5LWQzOGZjODczM2Y5YSIsInJvbGUiOiJzdXBlcmFkbWluIiwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTc0MzA1Nzg2OSwiZXhwIjoxNzQzMDU4NzY5fQ.K3GAgCxzA6uyXpwfWS8cOj0dO0hqg_UKWv3ct4Cp-i4",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAyNzdmNWE0LWU1OWUtNGM4Ni1hYzU5LWQzOGZjODczM2Y5YSIsInJvbGUiOiJzdXBlcmFkbWluIiwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTc0NDI4MDM5OCwiZXhwIjoxNzQ0MjgxMjk4fQ.eyrBHiVv41oXRglpTBjeUaHgzRQIf-uUcWnVvA2FaJ4",
 									"type": "string"
 								}
 							]
