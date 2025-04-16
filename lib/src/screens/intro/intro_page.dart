@@ -45,7 +45,7 @@ class _IntroPageState extends State<IntroPage> {
               onDotClicked: (index) {
                 pageController.animateToPage(
                   index,
-                  duration: const Duration(milliseconds: 500),
+                  duration: const Duration(milliseconds: 200),
                   curve: Curves.easeIn,
                 );
               },

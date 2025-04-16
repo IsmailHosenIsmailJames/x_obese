@@ -11,7 +11,7 @@ import 'package:intl/intl.dart';
 import 'package:x_obese/src/apis/apis_url.dart';
 import 'package:x_obese/src/apis/middleware/jwt_middleware.dart';
 import 'package:x_obese/src/screens/marathon/details_marathon/model/full_marathon_data_model.dart';
-import 'package:x_obese/src/screens/marathon/models/model.dart';
+import 'package:x_obese/src/screens/marathon/models/marathon_model.dart';
 import 'package:x_obese/src/theme/colors.dart';
 import 'package:x_obese/src/widgets/back_button.dart';
 
@@ -283,7 +283,8 @@ class _MarathonDetailsViewState extends State<MarathonDetailsView> {
                     },
                   ),
                   const Gap(24),
-                  if (!(fullMarathonDataModel?.data?.joined ?? false))
+                  if (!(fullMarathonDataModel?.data?.joined ?? false) ||
+                      !widget.isVirtual)
                     SizedBox(
                       width: double.infinity,
                       height: 48,
@@ -346,7 +347,8 @@ class _MarathonDetailsViewState extends State<MarathonDetailsView> {
                       ),
                     ),
 
-                  if (fullMarathonDataModel?.data?.joined ?? false)
+                  if ((fullMarathonDataModel?.data?.joined ?? false) &&
+                      widget.isVirtual)
                     SizedBox(
                       width: double.infinity,
                       height: 48,
@@ -363,7 +365,8 @@ class _MarathonDetailsViewState extends State<MarathonDetailsView> {
                     ),
                   if (fullMarathonDataModel?.data?.joined ?? false)
                     const Gap(24),
-                  if (fullMarathonDataModel?.data?.joined ?? false)
+                  if ((fullMarathonDataModel?.data?.joined ?? false) &&
+                      widget.isVirtual)
                     SizedBox(
                       width: double.infinity,
                       height: 48,

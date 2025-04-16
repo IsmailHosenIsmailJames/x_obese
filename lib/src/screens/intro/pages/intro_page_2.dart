@@ -73,7 +73,7 @@ class IntroPage2 extends StatelessWidget {
                       onPressed: () {
                         pageController.animateToPage(
                           2,
-                          duration: const Duration(milliseconds: 500),
+                          duration: const Duration(milliseconds: 200),
                           curve: Curves.easeIn,
                         );
                       },

@@ -1,0 +1,13 @@
+{
+    "id": "17421099-325e-485d-9009-48ca8664e5c0",
+    "userId": "a5f7a89a-44c5-4423-984c-6df0ad0ea9cf",
+    "marathonId": "8a70656d-5f4e-4574-acff-0020fc7d7650",
+    "distanceKm": "0",
+    "durationMs": 0,
+    "createdAt": "2025-04-15T05:19:57.722Z",
+    "updatedAt": "2025-04-15T05:19:57.722Z",
+    "user": {
+        "fullName": "Ismail ",
+        "imagePath": "http://116.68.200.97:6053/uploads/photos/fc4c73cf-30ad-4a73-9797-566733bdc169-1742376897597.jpg"
+    }
+}
