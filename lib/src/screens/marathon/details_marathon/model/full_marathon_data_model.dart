@@ -72,6 +72,7 @@ class Data {
   String? imagePath;
   String? type;
   bool? joined;
+  String? marathonUserId;
   dynamic createdBy;
   DateTime? createdAt;
   DateTime? updatedAt;
@@ -89,6 +90,7 @@ class Data {
     this.imagePath,
     this.type,
     this.joined,
+    this.marathonUserId,
     this.createdBy,
     this.createdAt,
     this.updatedAt,
@@ -107,6 +109,7 @@ class Data {
     String? imagePath,
     String? type,
     bool? joined,
+    String? marathonUserId,
     dynamic createdBy,
     DateTime? createdAt,
     DateTime? updatedAt,
@@ -123,6 +126,7 @@ class Data {
     imagePath: imagePath ?? this.imagePath,
     type: type ?? this.type,
     joined: joined ?? this.joined,
+    marathonUserId: marathonUserId ?? this.marathonUserId,
     createdBy: createdBy ?? this.createdBy,
     createdAt: createdAt ?? this.createdAt,
     updatedAt: updatedAt ?? this.updatedAt,
@@ -146,6 +150,7 @@ class Data {
     imagePath: json['imagePath'],
     type: json['type'],
     joined: json['joined'],
+    marathonUserId: json['marathonUserId'],
     createdBy: json['createdBy'],
     createdAt:
         json['createdAt'] == null ? null : DateTime.parse(json['createdAt']),
@@ -169,6 +174,7 @@ class Data {
     'imagePath': imagePath,
     'type': type,
     'joined': joined,
+    'marathonUserId': marathonUserId,
     'createdBy': createdBy,
     'createdAt': createdAt?.toIso8601String(),
     'updatedAt': updatedAt?.toIso8601String(),

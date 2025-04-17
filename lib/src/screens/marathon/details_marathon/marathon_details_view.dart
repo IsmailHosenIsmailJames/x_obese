@@ -10,6 +10,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:x_obese/src/apis/apis_url.dart';
 import 'package:x_obese/src/apis/middleware/jwt_middleware.dart';
+import 'package:x_obese/src/screens/controller/info_collector/controller/all_info_controller.dart';
 import 'package:x_obese/src/screens/marathon/details_marathon/model/full_marathon_data_model.dart';
 import 'package:x_obese/src/screens/marathon/models/marathon_model.dart';
 import 'package:x_obese/src/theme/colors.dart';
@@ -59,6 +60,8 @@ class _MarathonDetailsViewState extends State<MarathonDetailsView> {
     Alignment.center,
     Alignment.centerLeft,
   ];
+
+  AllInfoController allInfoController = Get.find<AllInfoController>();
 
   @override
   Widget build(BuildContext context) {
@@ -353,7 +356,19 @@ class _MarathonDetailsViewState extends State<MarathonDetailsView> {
                       width: double.infinity,
                       height: 48,
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () async {
+                          try {
+                            DioClient dioClient = DioClient(baseAPI);
+                            final response = await dioClient.dio.get(
+                              '/api/marathon/v1/user/${fullMarathonDataModel?.data?.marathonUserId}',
+                            );
+                            printResponse(response);
+                          } on DioException catch (e) {
+                            if (e.response != null) {
+                              printResponse(e.response!);
+                            }
+                          }
+                        },
                         child: const Text(
                           'Activity Now',
                           style: TextStyle(
