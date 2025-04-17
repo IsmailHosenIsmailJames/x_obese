@@ -230,7 +230,7 @@ PieChart getPieChart(AllInfoController controller) {
           showTitle: false,
         ),
         PieChartSectionData(
-          value: (controller.stepsCount.toDouble() / 6000),
+          value: ((controller.stepsCount.toDouble() / 6000) + 1),
           color: Colors.red,
           radius: controller.selectedCategory.value == 'Steps' ? 27 : 20,
           title: 'Steps',

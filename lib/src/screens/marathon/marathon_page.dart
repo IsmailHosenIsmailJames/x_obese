@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -8,6 +10,7 @@ import 'package:x_obese/src/apis/apis_url.dart';
 import 'package:x_obese/src/apis/middleware/jwt_middleware.dart';
 import 'package:x_obese/src/screens/controller/info_collector/controller/all_info_controller.dart';
 import 'package:x_obese/src/screens/marathon/components/onsite_marathon_card.dart';
+import 'package:x_obese/src/screens/marathon/models/marathon_model.dart';
 import 'package:x_obese/src/screens/marathon/models/marathon_user_model.dart';
 import 'package:x_obese/src/screens/marathon/show_search_result/show_search_result.dart';
 import 'package:x_obese/src/theme/colors.dart';
@@ -22,10 +25,73 @@ class MarathonPage extends StatefulWidget {
   State<MarathonPage> createState() => _MarathonPageState();
 }
 
+// load more marathon data
+
 class _MarathonPageState extends State<MarathonPage> {
   int selectedIndex = 0;
   PageController pageController = PageController();
   AllInfoController allInfoController = Get.find();
+
+  ScrollController scrollControllerVirtual = ScrollController();
+  ScrollController scrollControllerOnsite = ScrollController();
+
+  int nextPageNumber = 2;
+  bool isLoading = false;
+
+  Future<void> getMoreMarathonData() async {
+    setState(() {
+      isLoading = true;
+    });
+    DioClient dioClient = DioClient(baseAPI);
+    log('try to get more marathon info -> $nextPageNumber');
+    try {
+      // get marathon programs
+      final response = await dioClient.dio.get(
+        '/api/marathon/v1/marathon?page=$nextPageNumber&size=10',
+      );
+      printResponse(response);
+      if (response.statusCode == 200) {
+        List marathonListData = response.data['data'];
+        if (marathonListData.isEmpty) {
+          setState(() {
+            isLoading = false;
+          });
+          return;
+        }
+        nextPageNumber++;
+
+        for (var marathon in marathonListData) {
+          allInfoController.marathonList.add(MarathonModel.fromMap(marathon));
+        }
+      }
+    } on DioException catch (e) {
+      log(e.message ?? '', name: 'Error');
+      if (e.response != null) {
+        printResponse(e.response!);
+      }
+    }
+    setState(() {
+      isLoading = false;
+    });
+  }
+
+  @override
+  void initState() {
+    log('Marathon page init state');
+    scrollControllerOnsite.addListener(() {
+      if (scrollControllerOnsite.position.pixels ==
+          scrollControllerOnsite.position.maxScrollExtent) {
+        getMoreMarathonData();
+      }
+    });
+    scrollControllerVirtual.addListener(() {
+      if (scrollControllerVirtual.position.pixels ==
+          scrollControllerVirtual.position.maxScrollExtent) {
+        getMoreMarathonData();
+      }
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,96 +121,7 @@ class _MarathonPageState extends State<MarathonPage> {
                   onPressed: () {
                     TextEditingController textEditingController =
                         TextEditingController();
-                    showDialog(
-                      context: context,
-                      builder: (context) {
-                        return Dialog(
-                          insetPadding: const EdgeInsets.all(10),
-
-                          child: Padding(
-                            padding: EdgeInsets.all(20),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                TextFormField(
-                                  controller: textEditingController,
-                                  autofocus: true,
-                                  keyboardType: TextInputType.webSearch,
-                                  decoration: InputDecoration(
-                                    hintText: 'Search',
-                                    prefixIcon: const Icon(Icons.search),
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(100),
-                                      borderSide: BorderSide(
-                                        color: MyAppColors.mutedGray,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Gap(20),
-                                SizedBox(
-                                  width: double.infinity,
-                                  child: ElevatedButton.icon(
-                                    onPressed: () async {
-                                      try {
-                                        String searchText =
-                                            textEditingController.text;
-                                        DioClient dioClient = DioClient(
-                                          baseAPI,
-                                        );
-                                        final response = await dioClient.dio.get(
-                                          '/api/marathon/v1/user?search=$searchText',
-                                        );
-                                        Navigator.pop(context);
-                                        printResponse(response);
-                                        List searchResult =
-                                            response.data['data'];
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder:
-                                                (context) => ShowSearchResult(
-                                                  marathonUserList:
-                                                      searchResult
-                                                          .map(
-                                                            (e) =>
-                                                                MarathonUserModel.fromMap(
-                                                                  Map<
-                                                                    String,
-                                                                    dynamic
-                                                                  >.from(e),
-                                                                ),
-                                                          )
-                                                          .toList(),
-                                                ),
-                                          ),
-                                        );
-                                      } on DioException catch (e) {
-                                        toastification.show(
-                                          context: context,
-                                          title:
-                                              e.response?.data['message'] ??
-                                              'Something went wrong',
-                                          type: ToastificationType.error,
-                                        );
-                                      }
-                                    },
-                                    label: const Text('Search'),
-                                    icon: SvgPicture.string(
-                                      '''<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                    <path d="M22 22L20 20M2 11.5C2 6.25329 6.25329 2 11.5 2C16.7467 2 21 6.25329 21 11.5C21 16.7467 16.7467 21 11.5 21C6.25329 21 2 16.7467 2 11.5Z" stroke="#28303F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>''',
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
-                      },
-                    );
+                    searchWidgetPopup(context, textEditingController);
                   },
                   icon: SvgPicture.string(
                     '''<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -230,6 +207,7 @@ class _MarathonPageState extends State<MarathonPage> {
               children: [
                 Obx(
                   () => ListView.builder(
+                    controller: scrollControllerVirtual,
                     padding: const EdgeInsets.only(
                       top: 15.0,
                       left: 15,
@@ -252,6 +230,7 @@ class _MarathonPageState extends State<MarathonPage> {
                 ),
                 Obx(
                   () => ListView.builder(
+                    controller: scrollControllerOnsite,
                     padding: const EdgeInsets.only(
                       top: 15.0,
                       left: 15,
@@ -275,8 +254,99 @@ class _MarathonPageState extends State<MarathonPage> {
               ],
             ),
           ),
+          if (isLoading)
+            LinearProgressIndicator(
+              color: MyAppColors.third,
+              backgroundColor: MyAppColors.primary,
+            ),
         ],
       ),
+    );
+  }
+
+  Future<dynamic> searchWidgetPopup(
+    BuildContext context,
+    TextEditingController textEditingController,
+  ) {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return Dialog(
+          insetPadding: const EdgeInsets.all(10),
+
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextFormField(
+                  controller: textEditingController,
+                  autofocus: true,
+                  keyboardType: TextInputType.webSearch,
+                  decoration: InputDecoration(
+                    hintText: 'Search',
+                    prefixIcon: const Icon(Icons.search),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(100),
+                      borderSide: BorderSide(color: MyAppColors.mutedGray),
+                    ),
+                  ),
+                ),
+                const Gap(20),
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton.icon(
+                    onPressed: () async {
+                      try {
+                        String searchText = textEditingController.text;
+                        DioClient dioClient = DioClient(baseAPI);
+                        final response = await dioClient.dio.get(
+                          '/api/marathon/v1/user?search=$searchText',
+                        );
+                        Navigator.pop(context);
+                        printResponse(response);
+                        List searchResult = response.data['data'];
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder:
+                                (context) => ShowSearchResult(
+                                  marathonUserList:
+                                      searchResult
+                                          .map(
+                                            (e) => MarathonUserModel.fromMap(
+                                              Map<String, dynamic>.from(e),
+                                            ),
+                                          )
+                                          .toList(),
+                                ),
+                          ),
+                        );
+                      } on DioException catch (e) {
+                        toastification.show(
+                          context: context,
+                          title:
+                              e.response?.data['message'] ??
+                              'Something went wrong',
+                          type: ToastificationType.error,
+                        );
+                      }
+                    },
+                    label: const Text('Search'),
+                    icon: SvgPicture.string(
+                      '''<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <path d="M22 22L20 20M2 11.5C2 6.25329 6.25329 2 11.5 2C16.7467 2 21 6.25329 21 11.5C21 16.7467 16.7467 21 11.5 21C6.25329 21 2 16.7467 2 11.5Z" stroke="#28303F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>''',
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }

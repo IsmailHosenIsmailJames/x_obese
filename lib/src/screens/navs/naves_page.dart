@@ -154,6 +154,8 @@ class _NavesPageState extends State<NavesPage> {
       bottomNavigationBar: GetX<NavsController>(
         builder:
             (controller) => BottomNavigationBar(
+              backgroundColor: Colors.white,
+
               onTap: (value) {
                 controller.changeBottomNav(value);
                 pageController.animateToPage(
