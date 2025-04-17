@@ -147,7 +147,7 @@ class _NavesPageState extends State<NavesPage> {
             HomePage(pageController: pageController),
             ActivityPage(pageController: pageController),
             MarathonPage(pageController: pageController),
-            const SettingsPage(),
+            SettingsPage(pageController: pageController),
           ],
         ),
       ),
