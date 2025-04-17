@@ -118,7 +118,7 @@ class AllInfoController extends GetxController {
       dio.Response response = await dioClient.dio.get(blogPath);
       printResponse(response);
       if (response.statusCode == 200) {
-        List blogList = response.data['data'];
+        List blogList = response.data['data'] ?? [];
         getBlogList.value = [GetBlogModel()];
         for (var blog in blogList) {
           getBlogList.add(GetBlogModel.fromMap(blog));

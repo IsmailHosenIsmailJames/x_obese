@@ -17,6 +17,8 @@ import 'package:x_obese/src/theme/colors.dart';
 import 'package:x_obese/src/widgets/back_button.dart';
 import 'package:x_obese/src/screens/marathon/components/virtual_marathon_cards.dart';
 
+int nextPageNumber = 2;
+
 class MarathonPage extends StatefulWidget {
   final PageController pageController;
   const MarathonPage({super.key, required this.pageController});
@@ -27,6 +29,37 @@ class MarathonPage extends StatefulWidget {
 
 // load more marathon data
 
+bool isLoading = false;
+Future<void> getMoreMarathonData() async {
+  AllInfoController allInfoController = Get.find();
+
+  DioClient dioClient = DioClient(baseAPI);
+  log('try to get more marathon info -> $nextPageNumber');
+  try {
+    // get marathon programs
+    final response = await dioClient.dio.get(
+      '/api/marathon/v1/marathon?page=$nextPageNumber&size=10',
+    );
+    printResponse(response);
+    if (response.statusCode == 200) {
+      List marathonListData = response.data['data'];
+      if (marathonListData.isEmpty) {
+        return;
+      }
+      nextPageNumber++;
+
+      for (var marathon in marathonListData) {
+        allInfoController.marathonList.add(MarathonModel.fromMap(marathon));
+      }
+    }
+  } on DioException catch (e) {
+    log(e.message ?? '', name: 'Error');
+    if (e.response != null) {
+      printResponse(e.response!);
+    }
+  }
+}
+
 class _MarathonPageState extends State<MarathonPage> {
   int selectedIndex = 0;
   PageController pageController = PageController();
@@ -35,59 +68,31 @@ class _MarathonPageState extends State<MarathonPage> {
   ScrollController scrollControllerVirtual = ScrollController();
   ScrollController scrollControllerOnsite = ScrollController();
 
-  int nextPageNumber = 2;
-  bool isLoading = false;
-
-  Future<void> getMoreMarathonData() async {
-    setState(() {
-      isLoading = true;
-    });
-    DioClient dioClient = DioClient(baseAPI);
-    log('try to get more marathon info -> $nextPageNumber');
-    try {
-      // get marathon programs
-      final response = await dioClient.dio.get(
-        '/api/marathon/v1/marathon?page=$nextPageNumber&size=10',
-      );
-      printResponse(response);
-      if (response.statusCode == 200) {
-        List marathonListData = response.data['data'];
-        if (marathonListData.isEmpty) {
-          setState(() {
-            isLoading = false;
-          });
-          return;
-        }
-        nextPageNumber++;
-
-        for (var marathon in marathonListData) {
-          allInfoController.marathonList.add(MarathonModel.fromMap(marathon));
-        }
-      }
-    } on DioException catch (e) {
-      log(e.message ?? '', name: 'Error');
-      if (e.response != null) {
-        printResponse(e.response!);
-      }
-    }
-    setState(() {
-      isLoading = false;
-    });
-  }
-
   @override
   void initState() {
     log('Marathon page init state');
-    scrollControllerOnsite.addListener(() {
+    scrollControllerOnsite.addListener(() async {
       if (scrollControllerOnsite.position.pixels ==
           scrollControllerOnsite.position.maxScrollExtent) {
-        getMoreMarathonData();
+        setState(() {
+          isLoading = false;
+        });
+        await getMoreMarathonData();
+        setState(() {
+          isLoading = false;
+        });
       }
     });
-    scrollControllerVirtual.addListener(() {
+    scrollControllerVirtual.addListener(() async {
       if (scrollControllerVirtual.position.pixels ==
           scrollControllerVirtual.position.maxScrollExtent) {
-        getMoreMarathonData();
+        setState(() {
+          isLoading = false;
+        });
+        await getMoreMarathonData();
+        setState(() {
+          isLoading = false;
+        });
       }
     });
     super.initState();

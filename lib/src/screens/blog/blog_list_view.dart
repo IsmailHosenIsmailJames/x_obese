@@ -1,7 +1,13 @@
+import 'dart:developer';
+
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
+import 'package:x_obese/src/apis/apis_url.dart';
+import 'package:x_obese/src/apis/middleware/jwt_middleware.dart';
+import 'package:x_obese/src/screens/blog/model/get_blog_model.dart';
 import 'package:x_obese/src/screens/controller/info_collector/controller/all_info_controller.dart';
 import 'package:x_obese/src/theme/colors.dart';
 import 'package:x_obese/src/widgets/back_button.dart';
@@ -13,8 +19,53 @@ class BlogListView extends StatefulWidget {
   State<BlogListView> createState() => _BlogListViewState();
 }
 
+// load more blog data
+int nextBlogPageCount = 2;
+Future<void> getMoreBlogData() async {
+  log('try to get more blogs -> $nextBlogPageCount');
+  AllInfoController allInfoController = Get.find();
+  DioClient dioClient = DioClient(baseAPI);
+  try {
+    final response = await dioClient.dio.get(
+      '/api/other/v1/blog?page=$nextBlogPageCount&size=10',
+    );
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      List allBlogs = response.data['data'] ?? [];
+      if (allBlogs.isNotEmpty) {
+        for (int i = 0; i < allBlogs.length; i++) {
+          allInfoController.getBlogList.add(
+            GetBlogModel.fromMap(Map<String, dynamic>.from(allBlogs[i])),
+          );
+        }
+        nextBlogPageCount++;
+      }
+    }
+  } on DioException catch (e) {
+    if (e.response != null) printResponse(e.response!);
+  }
+}
+
 class _BlogListViewState extends State<BlogListView> {
   AllInfoController allInfoController = Get.find();
+  ScrollController scrollController = ScrollController();
+  bool isLoading = false;
+  @override
+  void initState() {
+    scrollController.addListener(() async {
+      if (scrollController.position.pixels ==
+          scrollController.position.maxScrollExtent) {
+        setState(() {
+          isLoading = true;
+        });
+        await getMoreBlogData();
+        setState(() {
+          isLoading = false;
+        });
+      }
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,6 +88,7 @@ class _BlogListViewState extends State<BlogListView> {
           Expanded(
             child: ListView.builder(
               itemCount: allInfoController.getBlogList.length,
+              controller: scrollController,
               itemBuilder:
                   (context, index) => Padding(
                     padding: const EdgeInsets.all(20.0),
@@ -106,6 +158,7 @@ class _BlogListViewState extends State<BlogListView> {
                   ),
             ),
           ),
+          if (isLoading) const LinearProgressIndicator(),
         ],
       ),
     );

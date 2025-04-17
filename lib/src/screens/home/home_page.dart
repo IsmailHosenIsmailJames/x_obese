@@ -8,6 +8,7 @@ import 'package:x_obese/src/resources/svg_string.dart';
 import 'package:x_obese/src/screens/controller/info_collector/controller/all_info_controller.dart';
 import 'package:x_obese/src/screens/blog/blog_list_view.dart';
 import 'package:x_obese/src/screens/create_workout_plan/create_workout_plan.dart';
+import 'package:x_obese/src/screens/marathon/marathon_page.dart';
 import 'package:x_obese/src/theme/colors.dart';
 import 'package:x_obese/src/widgets/get_blog_card.dart';
 import 'package:x_obese/src/screens/marathon/components/virtual_marathon_cards.dart';
@@ -24,6 +25,38 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final userBox = Hive.box('user');
   AllInfoController allInfoController = Get.find();
+  ScrollController scrollControllerMarathon = ScrollController();
+  ScrollController scrollControllerBlog = ScrollController();
+  bool isBlogLoading = false;
+  bool isMarathonLoading = false;
+  @override
+  void initState() {
+    scrollControllerMarathon.addListener(() async {
+      if (scrollControllerMarathon.position.pixels ==
+          scrollControllerMarathon.position.maxScrollExtent) {
+        setState(() {
+          isMarathonLoading = true;
+        });
+        await getMoreMarathonData();
+        setState(() {
+          isMarathonLoading = false;
+        });
+      }
+    });
+    scrollControllerBlog.addListener(() async {
+      if (scrollControllerBlog.position.pixels ==
+          scrollControllerBlog.position.maxScrollExtent) {
+        setState(() {
+          isBlogLoading = true;
+        });
+        await getMoreBlogData();
+        setState(() {
+          isBlogLoading = false;
+        });
+      }
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -182,17 +215,25 @@ class _HomePageState extends State<HomePage> {
             SizedBox(
               height: 220,
               child: Obx(
-                () => ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: allInfoController.marathonList.length,
-                  padding: const EdgeInsets.only(right: 15),
-                  itemBuilder: (context, index) {
-                    return getMarathonCard(
-                      context: context,
-                      marathonData: allInfoController.marathonList[index],
-                      margin: const EdgeInsets.only(left: 15),
-                    );
-                  },
+                () => Row(
+                  children: [
+                    Expanded(
+                      child: ListView.builder(
+                        controller: scrollControllerMarathon,
+                        scrollDirection: Axis.horizontal,
+                        itemCount: allInfoController.marathonList.length,
+                        padding: const EdgeInsets.only(right: 15),
+                        itemBuilder: (context, index) {
+                          return getMarathonCard(
+                            context: context,
+                            marathonData: allInfoController.marathonList[index],
+                            margin: const EdgeInsets.only(left: 15),
+                          );
+                        },
+                      ),
+                    ),
+                    if (isMarathonLoading) const CircularProgressIndicator(),
+                  ],
                 ),
               ),
             ),
@@ -221,17 +262,26 @@ class _HomePageState extends State<HomePage> {
             SizedBox(
               height: 210,
               child: Obx(
-                () => ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: List.generate(
-                    allInfoController.getBlogList.length,
-                    (index) {
-                      return getBlogCard(
-                        context,
-                        allInfoController.getBlogList[index],
-                      );
-                    },
-                  ),
+                () => Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: ListView(
+                        scrollDirection: Axis.horizontal,
+                        controller: scrollControllerBlog,
+                        children: List.generate(
+                          allInfoController.getBlogList.length,
+                          (index) {
+                            return getBlogCard(
+                              context,
+                              allInfoController.getBlogList[index],
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
