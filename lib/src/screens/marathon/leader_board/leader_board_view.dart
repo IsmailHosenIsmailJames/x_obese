@@ -116,7 +116,7 @@ class _LeaderBoardViewState extends State<LeaderBoardView> {
                           ],
                         ),
                       ),
-                    if (widget.leaderboardUsers.length > 0)
+                    if (widget.leaderboardUsers.isNotEmpty)
                       SizedBox(
                         child: Column(
                           children: [
@@ -253,11 +253,11 @@ class _LeaderBoardViewState extends State<LeaderBoardView> {
                       LeaderboardUserModel user =
                           widget.leaderboardUsers[index + 3];
                       return Padding(
-                        padding: EdgeInsets.only(top: 12, bottom: 12),
+                        padding: const EdgeInsets.only(top: 12, bottom: 12),
                         child: Row(
                           children: [
                             Text('${index + 4}'.padLeft(2, '0')),
-                            Gap(20),
+                            const Gap(20),
                             ClipRRect(
                               borderRadius: BorderRadius.circular(100),
                               child: CircleAvatar(
@@ -270,14 +270,14 @@ class _LeaderBoardViewState extends State<LeaderBoardView> {
                                 ),
                               ),
                             ),
-                            Gap(12),
+                            const Gap(12),
                             Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(user.name),
                                 Text(
-                                  "${user.distance} km",
+                                  '${user.distance} km',
                                   style: TextStyle(
                                     fontSize: 12,
                                     color: MyAppColors.mutedGray,
@@ -285,7 +285,7 @@ class _LeaderBoardViewState extends State<LeaderBoardView> {
                                 ),
                               ],
                             ),
-                            Spacer(),
+                            const Spacer(),
                             if (user.isIncreasingRank != null)
                               SvgPicture.string(
                                 user.isIncreasingRank == true

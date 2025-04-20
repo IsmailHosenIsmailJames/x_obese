@@ -307,7 +307,7 @@ class _MarathonDetailsViewState extends State<MarathonDetailsView> {
                                       .post(
                                         '/api/marathon/v1/user',
                                         data: {
-                                          "marathonId":
+                                          'marathonId':
                                               fullMarathonDataModel!.data!.id,
                                         },
                                       )
