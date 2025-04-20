@@ -10,9 +10,11 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:x_obese/src/apis/apis_url.dart';
 import 'package:x_obese/src/apis/middleware/jwt_middleware.dart';
+import 'package:x_obese/src/screens/activity/workout_page.dart';
 import 'package:x_obese/src/screens/controller/info_collector/controller/all_info_controller.dart';
 import 'package:x_obese/src/screens/marathon/details_marathon/model/full_marathon_data_model.dart';
 import 'package:x_obese/src/screens/marathon/models/marathon_model.dart';
+import 'package:x_obese/src/screens/marathon/models/marathon_user_model.dart';
 import 'package:x_obese/src/theme/colors.dart';
 import 'package:x_obese/src/widgets/back_button.dart';
 
@@ -362,7 +364,17 @@ class _MarathonDetailsViewState extends State<MarathonDetailsView> {
                             final response = await dioClient.dio.get(
                               '/api/marathon/v1/user/${fullMarathonDataModel?.data?.marathonUserId}',
                             );
-                            printResponse(response);
+                            final MarathonUserModel marathonUserModel =
+                                MarathonUserModel.fromMap(
+                                  response.data['data'],
+                                );
+
+                            Get.to(
+                              () => ActivityPage(
+                                marathonData: fullMarathonDataModel,
+                                marathonUserModel: marathonUserModel,
+                              ),
+                            );
                           } on DioException catch (e) {
                             if (e.response != null) {
                               printResponse(e.response!);

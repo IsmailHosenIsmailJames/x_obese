@@ -14,17 +14,24 @@ import 'package:x_obese/src/core/common/functions/calculate_distance.dart'
     as workout_calculator;
 import 'package:x_obese/src/core/common/functions/format_sec_to_time.dart';
 import 'package:x_obese/src/screens/activity/controller/activity_controller.dart';
+import 'package:x_obese/src/screens/marathon/details_marathon/model/full_marathon_data_model.dart';
+import 'package:x_obese/src/screens/marathon/models/marathon_user_model.dart';
 import 'package:x_obese/src/theme/colors.dart';
 import 'package:x_obese/src/widgets/back_button.dart';
 import 'package:x_obese/src/widgets/loading_popup.dart';
+import 'package:dio/dio.dart' as dio;
 
 class LiveActivityPage extends StatefulWidget {
   final workout_calculator.ActivityType workoutType;
+  final MarathonUserModel? marathonUserModel;
+  final FullMarathonDataModel? marathonData;
   final LatLng initialLatLon;
   const LiveActivityPage({
     super.key,
     required this.workoutType,
     required this.initialLatLon,
+    this.marathonUserModel,
+    this.marathonData,
   });
 
   @override
@@ -384,43 +391,10 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
                                         MyAppColors.transparentGray,
                                   ),
                                   onPressed: () async {
-                                    showLoadingPopUp(
+                                    await saveWorkout(
                                       context,
-                                      loadingText: 'Saving...',
+                                      workoutCalculationResult,
                                     );
-
-                                    // make a api call
-                                    final activityController = Get.put(
-                                      ActivityController(),
-                                    );
-                                    try {
-                                      final response = await activityController
-                                          .saveActivity({
-                                            'distance':
-                                                (distanceEveryPaused +
-                                                    workoutCalculationResult
-                                                        .totalDistance) /
-                                                1000,
-                                            'type':
-                                                widget.workoutType.toString(),
-                                            'duration':
-                                                workoutDurationSec * 1000,
-                                            // "steps": 1000, // optional
-                                          });
-                                      Navigator.pop(context);
-                                      if (response != null) {
-                                        Fluttertoast.showToast(
-                                          msg: 'Saved successfully',
-                                        );
-                                        Get.back();
-                                      } else {
-                                        Fluttertoast.showToast(
-                                          msg: 'Unable to save, try again',
-                                        );
-                                      }
-                                    } on DioException catch (e) {
-                                      printResponse(e.response!);
-                                    }
                                   },
                                   icon: Icon(
                                     Icons.stop_rounded,
@@ -442,6 +416,52 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
         ),
       ),
     );
+  }
+
+  Future<void> saveWorkout(
+    BuildContext context,
+    workout_calculator.WorkoutCalculationResult workoutCalculationResult,
+  ) async {
+    showLoadingPopUp(context, loadingText: 'Saving...');
+
+    // make a api call
+    final activityController = Get.put(ActivityController());
+    try {
+      dio.Response? response;
+
+      if (widget.marathonUserModel != null) {
+        var res = await activityController.saveMarathonUserActivity({
+          'distanceKm':
+              ((distanceEveryPaused + workoutCalculationResult.totalDistance) /
+                      1000)
+                  .toString(),
+          'durationMs': workoutDurationSec * 1000,
+        }, widget.marathonData!.data!.marathonUserId!);
+        if (res != null) response = res;
+      } else {
+        var res = await activityController.saveActivity({
+          'distance':
+              (distanceEveryPaused + workoutCalculationResult.totalDistance) /
+              1000,
+          'type': widget.workoutType.toString(),
+          'duration': workoutDurationSec * 1000,
+          // "steps": 1000, // optional
+        });
+        if (res != null) response = res;
+      }
+      if (response?.statusCode == 200 || response?.statusCode == 201) {
+        Navigator.pop(context);
+      }
+      if (response?.statusCode == 200 || response?.statusCode == 201) {
+        Fluttertoast.showToast(msg: 'Saved successfully');
+        Get.back();
+      } else {
+        Navigator.pop(context);
+        Fluttertoast.showToast(msg: 'Unable to save, try again');
+      }
+    } on DioException catch (e) {
+      printResponse(e.response!);
+    }
   }
 
   Set<Polyline> getPolylineFromLatLonList(List<LatLng> latLonList) {

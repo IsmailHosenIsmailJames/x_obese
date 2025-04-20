@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:x_obese/src/apis/apis_url.dart';
 import 'package:x_obese/src/apis/middleware/jwt_middleware.dart';
 import 'package:x_obese/src/screens/marathon/leader_board/leader_board_view.dart';
@@ -55,6 +56,14 @@ class _SettingsPageState extends State<SettingsPage> {
               }
             },
             child: const Text('Do Refresh Tokens'),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              final SharedPreferences prefs =
+                  await SharedPreferences.getInstance();
+              log(prefs.getString('access_token').toString());
+            },
+            child: Text('Get access token'),
           ),
           ElevatedButton(
             onPressed: () {

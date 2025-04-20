@@ -8,6 +8,8 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:x_obese/src/screens/activity/live_activity_page.dart';
+import 'package:x_obese/src/screens/marathon/details_marathon/model/full_marathon_data_model.dart';
+import 'package:x_obese/src/screens/marathon/models/marathon_user_model.dart';
 import 'package:x_obese/src/theme/colors.dart';
 import 'package:x_obese/src/widgets/back_button.dart';
 import 'package:x_obese/src/widgets/loading_popup.dart';
@@ -15,8 +17,16 @@ import 'package:x_obese/src/core/common/functions/calculate_distance.dart'
     as workout_calculator;
 
 class ActivityPage extends StatefulWidget {
-  final PageController pageController;
-  const ActivityPage({super.key, required this.pageController});
+  final MarathonUserModel? marathonUserModel;
+  final FullMarathonDataModel? marathonData;
+
+  final PageController? pageController;
+  const ActivityPage({
+    super.key,
+    this.pageController,
+    this.marathonUserModel,
+    this.marathonData,
+  });
 
   @override
   State<ActivityPage> createState() => _ActivityPageState();
@@ -32,6 +42,17 @@ class _ActivityPageState extends State<ActivityPage> {
       workout_calculator.ActivityType.walking;
   int requestTime = 0;
   @override
+  void initState() {
+    // for (var element in workOutMode) {
+    //   log("${element.name} == ${widget.marathonData?.type?.toLowerCase()}");
+    //   if (element.name == widget.marathonData?.type?.toLowerCase()) {
+    //     selectedMode = element;
+    //   }
+    // }
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xffFAFAFA),
@@ -45,10 +66,14 @@ class _ActivityPageState extends State<ActivityPage> {
               Row(
                 children: [
                   getBackbutton(context, () {
-                    widget.pageController.previousPage(
-                      duration: const Duration(milliseconds: 300),
-                      curve: Curves.easeIn,
-                    );
+                    if (widget.pageController != null) {
+                      widget.pageController!.previousPage(
+                        duration: const Duration(milliseconds: 300),
+                        curve: Curves.easeIn,
+                      );
+                    } else {
+                      Get.back();
+                    }
                   }),
                   const Gap(55),
                   const Text(
@@ -111,9 +136,11 @@ class _ActivityPageState extends State<ActivityPage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        const Text(
-                          '0.00 ',
-                          style: TextStyle(
+                        Text(
+                          widget.marathonData != null
+                              ? '${(widget.marathonData!.data?.distanceKm ?? 0) - double.parse(widget.marathonUserModel?.distanceKm ?? '0')} '
+                              : '0.00 ',
+                          style: const TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.w700,
                           ),
@@ -209,6 +236,8 @@ class _ActivityPageState extends State<ActivityPage> {
                                   position.latitude,
                                   position.longitude,
                                 ),
+                                marathonData: widget.marathonData,
+                                marathonUserModel: widget.marathonUserModel,
                               ),
                             );
 

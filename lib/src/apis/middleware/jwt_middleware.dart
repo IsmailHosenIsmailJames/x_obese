@@ -162,6 +162,10 @@ void printResponse(Response response) {
     name: 'response_body',
   );
   log(response.statusCode.toString(), name: 'response_status');
+  log(
+    const JsonEncoder.withIndent('  ').convert(response.requestOptions.data),
+    name: 'Request_body',
+  );
   // log(
   //   const JsonEncoder.withIndent('  ').convert(response.headers.map),
   //   name: 'response_headers',

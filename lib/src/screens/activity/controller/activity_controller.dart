@@ -24,4 +24,25 @@ class ActivityController extends GetxController {
     }
     return null;
   }
+
+  Future<dio.Response?> saveMarathonUserActivity(
+    Map data,
+    String userID,
+  ) async {
+    try {
+      final dio.Response response = await dioClient.dio.patch(
+        '/api/marathon/v1/user/$userID',
+        data: data,
+      );
+      printResponse(response);
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final message = response.data['message'] ?? '';
+        Fluttertoast.showToast(msg: message);
+        return response;
+      }
+    } on dio.DioException catch (e) {
+      printResponse(e.response!);
+    }
+    return null;
+  }
 }
