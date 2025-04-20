@@ -79,7 +79,7 @@ class _BlogDetailsViewState extends State<BlogDetailsView> {
                       ),
                       const Divider(color: Colors.transparent),
                       Text(
-                        widget.blogData.description ?? '',
+                        widget.blogData.details ?? '',
                         style: const TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w400,
