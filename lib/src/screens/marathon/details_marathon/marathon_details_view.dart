@@ -5,14 +5,17 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:intl/intl.dart';
 import 'package:x_obese/src/apis/apis_url.dart';
 import 'package:x_obese/src/apis/middleware/jwt_middleware.dart';
 import 'package:x_obese/src/screens/activity/workout_page.dart';
 import 'package:x_obese/src/screens/controller/info_collector/controller/all_info_controller.dart';
 import 'package:x_obese/src/screens/marathon/details_marathon/model/full_marathon_data_model.dart';
+import 'package:x_obese/src/screens/marathon/leader_board/leader_board_view.dart';
 import 'package:x_obese/src/screens/marathon/models/marathon_model.dart';
 import 'package:x_obese/src/screens/marathon/models/marathon_user_model.dart';
 import 'package:x_obese/src/theme/colors.dart';
@@ -402,7 +405,52 @@ class _MarathonDetailsViewState extends State<MarathonDetailsView> {
                           backgroundColor: MyAppColors.third,
                           foregroundColor: MyAppColors.primary,
                         ),
-                        onPressed: () {},
+                        onPressed: () async {
+                          try {
+                            DioClient dioClient = DioClient(baseAPI);
+                            final response = await dioClient.dio.get(
+                              '/api/marathon/v1/user?marathonId=${fullMarathonDataModel?.data?.id}&size=1000&page=1',
+                            );
+                            printResponse(response);
+                            if ((response.statusCode == 200 ||
+                                    response.statusCode == 201) &&
+                                response.data['success']) {
+                              List data = response.data['data'];
+                              List<MarathonUserModel> marathonUserList = [];
+                              for (Map user in data) {
+                                marathonUserList.add(
+                                  MarathonUserModel.fromMap(
+                                    Map<String, dynamic>.from(user),
+                                  ),
+                                );
+                              }
+                              Get.to(
+                                () => LeaderBoardView(
+                                  title:
+                                      fullMarathonDataModel?.data?.title ?? '',
+                                  leaderboardUsers: marathonUserList,
+                                  marathonData: fullMarathonDataModel!,
+                                ),
+                              );
+                            } else {
+                              Fluttertoast.showToast(
+                                msg: response.data['message'] ?? '',
+                              );
+                            }
+                          } on DioException catch (e) {
+                            log(e.message ?? 'No Message');
+                            if (e.response != null) {
+                              Fluttertoast.showToast(
+                                msg: e.response!.data['message'] ?? '',
+                              );
+                              printResponse(e.response!);
+                            } else {
+                              Fluttertoast.showToast(
+                                msg: 'Something went wrong',
+                              );
+                            }
+                          }
+                        },
                         child: const Text(
                           'View Leaderboard',
                           style: TextStyle(
