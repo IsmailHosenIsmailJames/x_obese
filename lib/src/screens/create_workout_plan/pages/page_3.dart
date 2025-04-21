@@ -10,7 +10,6 @@ import 'package:x_obese/src/apis/middleware/jwt_middleware.dart';
 import 'package:x_obese/src/screens/controller/info_collector/controller/all_info_controller.dart';
 import 'package:x_obese/src/screens/controller/info_collector/model/all_info_model.dart';
 import 'package:x_obese/src/screens/create_workout_plan/controller/create_workout_plan_controller.dart';
-import 'package:x_obese/src/screens/create_workout_plan/model/create_workout_plan_model.dart';
 import 'package:x_obese/src/theme/colors.dart';
 import 'package:x_obese/src/widgets/back_button.dart';
 import 'package:toastification/toastification.dart';
@@ -241,7 +240,7 @@ Widget workoutPlanOverview({
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                 ),
                 Text(
-                  goalType ?? '',
+                  goalType,
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
@@ -257,7 +256,7 @@ Widget workoutPlanOverview({
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                 ),
                 Text(
-                  weightGoal ?? '',
+                  weightGoal,
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
@@ -289,7 +288,7 @@ Widget workoutPlanOverview({
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Text(
-                            (workoutDays!.split(',').length + 1).toString(),
+                            (workoutDays.split(',').length + 1).toString(),
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w500,
@@ -352,7 +351,7 @@ Widget workoutPlanOverview({
                       Row(
                         children: [
                           Text(
-                            '${workoutTime} ',
+                            '$workoutTime ',
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w500,

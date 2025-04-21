@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:x_obese/src/screens/controller/info_collector/controller/all_info_controller.dart';
 import 'package:x_obese/src/screens/create_workout_plan/create_workout_plan.dart';
@@ -45,7 +46,12 @@ class _WorkoutPlanOverviewScreenState extends State<WorkoutPlanOverviewScreen> {
             ),
             Expanded(
               child: ListView(
-                padding: const EdgeInsets.all(15),
+                padding: const EdgeInsets.only(
+                  top: 15,
+                  bottom: 15,
+                  left: 15,
+                  right: 15,
+                ),
                 children: [
                   workoutPlanOverview(
                     allInfoUser: allInfoController.allInfo.value,
@@ -71,10 +77,86 @@ class _WorkoutPlanOverviewScreenState extends State<WorkoutPlanOverviewScreen> {
                             ?.toString() ??
                         '0',
                   ),
-                  TableCalendar(
-                    firstDay: DateTime.utc(2010, 10, 16),
-                    lastDay: DateTime.utc(2030, 3, 14),
-                    focusedDay: DateTime.now(),
+                  const Gap(20),
+                  const Padding(
+                    padding: EdgeInsets.all(10),
+                    child: Text('Calendar', style: TextStyle(fontSize: 16)),
+                  ),
+                  const Gap(10),
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: MyAppColors.primary,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+
+                    child: TableCalendar(
+                      calendarBuilders: CalendarBuilders(
+                        selectedBuilder: (context, day, focusedDay) {
+                          return Stack(
+                            children: [
+                              Center(
+                                child: Text(
+                                  day.day.toString(),
+                                  style: TextStyle(
+                                    color:
+                                        day.month != focusedDay.month
+                                            ? const Color(0xffD9D9D9)
+                                            : MyAppColors.third,
+                                  ),
+                                ),
+                              ),
+                              Align(
+                                alignment: Alignment.bottomCenter,
+                                child: SizedBox(
+                                  height: 6,
+                                  width: 6,
+                                  child: CircleAvatar(
+                                    backgroundColor: MyAppColors.second,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                      ),
+                      selectedDayPredicate: (day) {
+                        List<String> weekdays =
+                            widget.getWorkoutPlansList.first.workoutDays?.split(
+                              ',',
+                            ) ??
+                            [];
+                        return weekdays.contains(
+                          DateFormat(DateFormat.WEEKDAY).format(day),
+                        );
+                      },
+                      calendarStyle: CalendarStyle(
+                        todayDecoration: BoxDecoration(
+                          color: MyAppColors.third,
+                          shape: BoxShape.circle,
+                        ),
+                        selectedDecoration: BoxDecoration(
+                          color: MyAppColors.third,
+                          shape: BoxShape.circle,
+                        ),
+                        defaultTextStyle: TextStyle(color: MyAppColors.third),
+                        weekendTextStyle: TextStyle(color: MyAppColors.third),
+                        outsideTextStyle: const TextStyle(
+                          color: Color(0xffD9D9D9),
+                        ),
+                      ),
+
+                      firstDay: DateTime.utc(2010, 10, 16),
+                      lastDay: DateTime.utc(2030, 3, 14),
+                      focusedDay: DateTime.now(),
+                      headerVisible: false,
+                      daysOfWeekHeight: 30,
+                      daysOfWeekStyle: const DaysOfWeekStyle(
+                        weekdayStyle: TextStyle(color: Color(0xffD9D9D9)),
+                        weekendStyle: TextStyle(color: Color(0xffD9D9D9)),
+                      ),
+                      weekendDays: [DateTime.friday, DateTime.saturday],
+                    ),
                   ),
                   const Gap(30),
                   SizedBox(

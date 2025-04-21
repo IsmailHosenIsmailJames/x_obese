@@ -63,16 +63,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    List<String> weekdays = [
-      'Sunday',
-      'Monday',
-      'Tuesday',
-      'Wednesday',
-      'Thursday',
-      'Friday',
-      'Saturday',
-    ];
-
     return Scaffold(
       backgroundColor: MyAppColors.primary,
       body: SingleChildScrollView(
@@ -449,3 +439,13 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
+
+List<String> weekdays = [
+  'Sunday',
+  'Monday',
+  'Tuesday',
+  'Wednesday',
+  'Thursday',
+  'Friday',
+  'Saturday',
+];
