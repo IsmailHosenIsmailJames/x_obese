@@ -158,11 +158,7 @@ class _NavesPageState extends State<NavesPage> {
 
               onTap: (value) {
                 controller.changeBottomNav(value);
-                pageController.animateToPage(
-                  value,
-                  duration: const Duration(milliseconds: 300),
-                  curve: Curves.linear,
-                );
+                pageController.jumpToPage(value);
               },
 
               currentIndex: controller.bottomNavIndex.value,

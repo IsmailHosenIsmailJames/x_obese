@@ -112,7 +112,7 @@ class _CreateWorkoutPlanPage2State extends State<CreateWorkoutPlanPage2> {
                               createWorkoutPlanController
                                   .createWorkoutPlanModel
                                   .value
-                                  .workoutTime = value.toString();
+                                  .workoutTime = value.round().toString();
                             });
                           },
                           min: 0,
