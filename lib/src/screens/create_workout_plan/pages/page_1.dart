@@ -19,19 +19,19 @@ class CreateWorkoutPlanPage1 extends StatefulWidget {
   State<CreateWorkoutPlanPage1> createState() => _CreateWorkoutPlanPage1State();
 }
 
+double getUserBMI(double weight, double heightFeet, double heightInch) {
+  // convert  feet inch to meter
+  double height = (heightFeet * 12 + heightInch) * 0.0254;
+  // calculate BMI
+  double bmi = weight / (height * height);
+  return bmi;
+}
+
 class _CreateWorkoutPlanPage1State extends State<CreateWorkoutPlanPage1> {
   final CreateWorkoutPlanController createWorkoutPlanController = Get.find();
   AllInfoController allInfoController = Get.find();
 
   // calculate BMI
-
-  double getUserBMI(double weight, double heightFeet, double heightInch) {
-    // convert  feet inch to meter
-    double height = (heightFeet * 12 + heightInch) * 0.0254;
-    // calculate BMI
-    double bmi = weight / (height * height);
-    return bmi;
-  }
 
   late double userBMI = getUserBMI(
     (allInfoController.allInfo.value.weight ?? 0).toDouble(),

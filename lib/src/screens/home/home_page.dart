@@ -11,6 +11,7 @@ import 'package:x_obese/src/screens/blog/blog_list_view.dart';
 import 'package:x_obese/src/screens/create_workout_plan/create_workout_plan.dart';
 import 'package:x_obese/src/screens/marathon/marathon_page.dart';
 import 'package:x_obese/src/screens/settings/personal_details_view.dart';
+import 'package:x_obese/src/screens/workout_plan_overview/workout_plan_overview_screen.dart';
 import 'package:x_obese/src/theme/colors.dart';
 import 'package:x_obese/src/widgets/get_blog_card.dart';
 import 'package:x_obese/src/screens/marathon/components/virtual_marathon_cards.dart';
@@ -199,122 +200,147 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             if (allInfoController.getWorkoutPlansList.isNotEmpty)
-              Padding(
-                padding: const EdgeInsets.only(left: 15, right: 15),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
+              GestureDetector(
+                onTap: () {
+                  Get.to(
+                    () => WorkoutPlanOverviewScreen(
+                      getWorkoutPlansList:
+                          allInfoController.getWorkoutPlansList,
+                    ),
+                  );
+                },
+                child: Obx(
+                  () => Padding(
+                    padding: const EdgeInsets.only(left: 15, right: 15),
+                    child: Column(
                       children: [
-                        const Text(
-                          'Workout Plan',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                          ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            const Text(
+                              'Workout Plan',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            const Gap(10),
+                            Text(
+                              '1/3 Weeks',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                                color: MyAppColors.third,
+                              ),
+                            ),
+                            const Spacer(),
+                            arrowIcon,
+                          ],
                         ),
                         const Gap(10),
-                        Text(
-                          '1/3 Weeks',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                            color: MyAppColors.third,
+                        Container(
+                          height: 100,
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: MyAppColors.transparentGray,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: List.generate(weekdays.length, (
+                                  index,
+                                ) {
+                                  String day = DateFormat(
+                                    DateFormat.WEEKDAY,
+                                  ).format(DateTime.now());
+                                  bool isSelected =
+                                      weekdays.indexOf(day) == index;
+
+                                  return Container(
+                                    width: 32,
+                                    height: 44,
+                                    padding: const EdgeInsets.all(2),
+                                    decoration: BoxDecoration(
+                                      color:
+                                          isSelected ? MyAppColors.third : null,
+                                      borderRadius: BorderRadius.circular(4),
+                                    ),
+                                    child: FittedBox(
+                                      child: Column(
+                                        children: [
+                                          Text(
+                                            weekdays[index]
+                                                .substring(0, 3)
+                                                .capitalizeFirst,
+                                            style: TextStyle(
+                                              color:
+                                                  isSelected
+                                                      ? Colors.white
+                                                      : null,
+                                            ),
+                                          ),
+                                          Text(
+                                            (index + 1).toString(),
+                                            style: TextStyle(
+                                              color:
+                                                  isSelected
+                                                      ? Colors.white
+                                                      : null,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                }),
+                              ),
+                              Divider(
+                                color: MyAppColors.third.withValues(alpha: 0.2),
+                                thickness: 1,
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: List.generate(weekdays.length, (
+                                  index,
+                                ) {
+                                  List<String> weekdaysOfWorkout =
+                                      allInfoController
+                                          .getWorkoutPlansList
+                                          .value
+                                          .first
+                                          .workoutDays
+                                          ?.split(',') ??
+                                      [];
+                                  bool isSelected = weekdaysOfWorkout.contains(
+                                    weekdays[index],
+                                  );
+                                  return SizedBox(
+                                    width: 32,
+
+                                    child:
+                                        isSelected
+                                            ? Center(
+                                              child: CircleAvatar(
+                                                radius: 3,
+                                                backgroundColor:
+                                                    MyAppColors.second,
+                                              ),
+                                            )
+                                            : null,
+                                  );
+                                }),
+                              ),
+                            ],
                           ),
                         ),
-                        const Spacer(),
-                        arrowIcon,
                       ],
                     ),
-                    const Gap(10),
-                    Container(
-                      height: 100,
-                      padding: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        color: MyAppColors.transparentGray,
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: List.generate(weekdays.length, (index) {
-                              String day = DateFormat(
-                                DateFormat.WEEKDAY,
-                              ).format(DateTime.now());
-                              bool isSelected = weekdays.indexOf(day) == index;
-
-                              return Container(
-                                width: 32,
-                                height: 44,
-                                padding: const EdgeInsets.all(2),
-                                decoration: BoxDecoration(
-                                  color: isSelected ? MyAppColors.third : null,
-                                  borderRadius: BorderRadius.circular(4),
-                                ),
-                                child: FittedBox(
-                                  child: Column(
-                                    children: [
-                                      Text(
-                                        weekdays[index]
-                                            .substring(0, 3)
-                                            .capitalizeFirst,
-                                        style: TextStyle(
-                                          color:
-                                              isSelected ? Colors.white : null,
-                                        ),
-                                      ),
-                                      Text(
-                                        (index + 1).toString(),
-                                        style: TextStyle(
-                                          color:
-                                              isSelected ? Colors.white : null,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              );
-                            }),
-                          ),
-                          Divider(
-                            color: MyAppColors.third.withValues(alpha: 0.2),
-                            thickness: 1,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: List.generate(weekdays.length, (index) {
-                              List<String> weekdaysOfWorkout =
-                                  allInfoController
-                                      .getWorkoutPlansList
-                                      .value
-                                      .first
-                                      .workoutDays
-                                      ?.split(',') ??
-                                  [];
-                              bool isSelected = weekdaysOfWorkout.contains(
-                                weekdays[index],
-                              );
-                              return SizedBox(
-                                width: 32,
-
-                                child:
-                                    isSelected
-                                        ? Center(
-                                          child: CircleAvatar(
-                                            radius: 3,
-                                            backgroundColor: MyAppColors.second,
-                                          ),
-                                        )
-                                        : null,
-                              );
-                            }),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
               ),
 
