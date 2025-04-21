@@ -9,6 +9,7 @@ import 'package:x_obese/src/screens/controller/info_collector/controller/all_inf
 import 'package:x_obese/src/screens/blog/blog_list_view.dart';
 import 'package:x_obese/src/screens/create_workout_plan/create_workout_plan.dart';
 import 'package:x_obese/src/screens/marathon/marathon_page.dart';
+import 'package:x_obese/src/screens/settings/personal_details_view.dart';
 import 'package:x_obese/src/theme/colors.dart';
 import 'package:x_obese/src/widgets/get_blog_card.dart';
 import 'package:x_obese/src/screens/marathon/components/virtual_marathon_cards.dart';
@@ -60,6 +61,16 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    List<String> weekdays = [
+      'Sunday',
+      'Monday',
+      'Tuesday',
+      'Wednesday',
+      'Thursday',
+      'Friday',
+      'Saturday',
+    ];
+
     return Scaffold(
       backgroundColor: MyAppColors.primary,
       body: SingleChildScrollView(
@@ -120,28 +131,80 @@ class _HomePageState extends State<HomePage> {
               child: pointsOverviewWidget(context, allInfoController),
             ),
             const Gap(20),
-            Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: SizedBox(
-                height: 80,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(100),
-                      child: Container(
-                        height: 40,
-                        width: 40,
-                        color: MyAppColors.transparentGray,
-                        padding: const EdgeInsets.all(8),
-                        child: SvgPicture.string(workoutPlanIconSvgBlue),
+            if (allInfoController.getWorkoutPlansList.isEmpty)
+              Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: SizedBox(
+                  height: 80,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(100),
+                        child: Container(
+                          height: 40,
+                          width: 40,
+                          color: MyAppColors.transparentGray,
+                          padding: const EdgeInsets.all(8),
+                          child: SvgPicture.string(workoutPlanIconSvgBlue),
+                        ),
                       ),
-                    ),
-                    const Gap(12),
-                    Column(
+                      const Gap(12),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'Workout Plan',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          const Gap(4),
+                          SizedBox(
+                            width: 180,
+                            child: Text(
+                              'Create Your Workout plan',
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w300,
+                                color: MyAppColors.mutedGray,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const Spacer(),
+                      SizedBox(
+                        width: 85,
+                        height: 32,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            padding: EdgeInsets.zero,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(100),
+                            ),
+                          ),
+                          onPressed: () {
+                            Get.to(() => const CreateWorkoutPlan());
+                          },
+                          child: const Text('Create'),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            if (allInfoController.getWorkoutPlansList.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.only(left: 15, right: 15),
+                child: Column(
+                  children: [
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         const Text(
                           'Workout Plan',
@@ -150,41 +213,116 @@ class _HomePageState extends State<HomePage> {
                             fontWeight: FontWeight.w500,
                           ),
                         ),
-                        const Gap(4),
-                        SizedBox(
-                          width: 180,
-                          child: Text(
-                            'Create Your Workout plan',
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w300,
-                              color: MyAppColors.mutedGray,
-                            ),
+                        const Gap(10),
+                        Text(
+                          '1/3 Weeks',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: MyAppColors.third,
                           ),
                         ),
+                        const Spacer(),
+                        arrowIcon,
                       ],
                     ),
-                    const Spacer(),
-                    SizedBox(
-                      width: 85,
-                      height: 32,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          padding: EdgeInsets.zero,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(100),
+                    const Gap(10),
+                    Container(
+                      height: 100,
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: MyAppColors.transparentGray,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: List.generate(weekdays.length, (index) {
+                              List<String> weekdaysOfWorkout =
+                                  allInfoController
+                                      .getWorkoutPlansList
+                                      .value
+                                      .first
+                                      .workoutDays
+                                      ?.split(',') ??
+                                  [];
+                              bool isSelected = weekdaysOfWorkout.contains(
+                                weekdays[index],
+                              );
+
+                              return Container(
+                                width: 32,
+                                height: 44,
+                                padding: const EdgeInsets.all(2),
+                                decoration: BoxDecoration(
+                                  color: isSelected ? MyAppColors.third : null,
+                                  borderRadius: BorderRadius.circular(4),
+                                ),
+                                child: FittedBox(
+                                  child: Column(
+                                    children: [
+                                      Text(
+                                        weekdays[index]
+                                            .substring(0, 3)
+                                            .capitalizeFirst,
+                                        style: TextStyle(
+                                          color:
+                                              isSelected ? Colors.white : null,
+                                        ),
+                                      ),
+                                      Text(
+                                        (index + 1).toString(),
+                                        style: TextStyle(
+                                          color:
+                                              isSelected ? Colors.white : null,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            }),
                           ),
-                        ),
-                        onPressed: () {
-                          Get.to(() => const CreateWorkoutPlan());
-                        },
-                        child: const Text('Create'),
+                          Divider(
+                            color: MyAppColors.third.withValues(alpha: 0.2),
+                            thickness: 1,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: List.generate(weekdays.length, (index) {
+                              List<String> weekdaysOfWorkout =
+                                  allInfoController
+                                      .getWorkoutPlansList
+                                      .value
+                                      .first
+                                      .workoutDays
+                                      ?.split(',') ??
+                                  [];
+                              bool isSelected = weekdaysOfWorkout.contains(
+                                weekdays[index],
+                              );
+                              return SizedBox(
+                                width: 32,
+
+                                child:
+                                    isSelected
+                                        ? Center(
+                                          child: CircleAvatar(
+                                            radius: 3,
+                                            backgroundColor: MyAppColors.second,
+                                          ),
+                                        )
+                                        : null,
+                              );
+                            }),
+                          ),
+                        ],
                       ),
                     ),
                   ],
                 ),
               ),
-            ),
 
             Padding(
               padding: const EdgeInsets.all(15.0),
