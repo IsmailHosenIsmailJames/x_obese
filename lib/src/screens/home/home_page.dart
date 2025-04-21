@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:intl/intl.dart';
 import 'package:x_obese/src/resources/svg_string.dart';
 import 'package:x_obese/src/screens/controller/info_collector/controller/all_info_controller.dart';
 import 'package:x_obese/src/screens/blog/blog_list_view.dart';
@@ -239,17 +240,10 @@ class _HomePageState extends State<HomePage> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: List.generate(weekdays.length, (index) {
-                              List<String> weekdaysOfWorkout =
-                                  allInfoController
-                                      .getWorkoutPlansList
-                                      .value
-                                      .first
-                                      .workoutDays
-                                      ?.split(',') ??
-                                  [];
-                              bool isSelected = weekdaysOfWorkout.contains(
-                                weekdays[index],
-                              );
+                              String day = DateFormat(
+                                DateFormat.WEEKDAY,
+                              ).format(DateTime.now());
+                              bool isSelected = weekdays.indexOf(day) == index;
 
                               return Container(
                                 width: 32,
