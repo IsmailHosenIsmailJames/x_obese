@@ -33,8 +33,21 @@ class _CreateWorkoutPlanPage2State extends State<CreateWorkoutPlanPage2> {
   final CreateWorkoutPlanController createWorkoutPlanController = Get.find();
   @override
   void initState() {
-    createWorkoutPlanController.createWorkoutPlanModel.value.workoutTime =
-        40.toString();
+    log(
+      createWorkoutPlanController.createWorkoutPlanModel.value.workoutTime ??
+          'Not Found',
+    );
+    createWorkoutPlanController.createWorkoutPlanModel.value.workoutTime = '40';
+
+    if (createWorkoutPlanController.createWorkoutPlanModel.value.workoutDays !=
+        null) {
+      String days =
+          createWorkoutPlanController.createWorkoutPlanModel.value.workoutDays!;
+      for (String day in days.split(',')) {
+        selectedWeekDays.add(day.substring(0, 3));
+        log(selectedWeekDays.toString());
+      }
+    }
     super.initState();
   }
 

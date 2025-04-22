@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
@@ -5,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:x_obese/src/screens/controller/info_collector/controller/all_info_controller.dart';
 import 'package:x_obese/src/screens/create_workout_plan/create_workout_plan.dart';
+import 'package:x_obese/src/screens/create_workout_plan/model/create_workout_plan_model.dart';
 import 'package:x_obese/src/screens/create_workout_plan/model/get_workout_plans.dart';
 import 'package:x_obese/src/screens/create_workout_plan/pages/page_3.dart';
 import 'package:x_obese/src/theme/colors.dart';
@@ -26,6 +29,7 @@ class _WorkoutPlanOverviewScreenState extends State<WorkoutPlanOverviewScreen> {
   AllInfoController allInfoController = Get.find();
   @override
   Widget build(BuildContext context) {
+    log(widget.getWorkoutPlansList.first.workoutTimeMs.toString());
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -169,7 +173,7 @@ class _WorkoutPlanOverviewScreenState extends State<WorkoutPlanOverviewScreen> {
                               backgroundColor: MyAppColors.transparentGray,
                             ),
                             onPressed: () {
-                              Get.to(() => const CreateWorkoutPlan());
+                              Get.off(() => const CreateWorkoutPlan());
                             },
                             child: Text(
                               'Create Plan',
@@ -184,7 +188,35 @@ class _WorkoutPlanOverviewScreenState extends State<WorkoutPlanOverviewScreen> {
                         const Gap(25),
                         Expanded(
                           child: ElevatedButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              GetWorkoutPlans getWorkoutPlans =
+                                  widget.getWorkoutPlansList.first;
+                              CreateWorkoutPlanModel createWorkoutPlanModel =
+                                  CreateWorkoutPlanModel(
+                                    weightGoal:
+                                        getWorkoutPlans.weightGoal.toString(),
+                                    goalType: getWorkoutPlans.goalType!
+                                        .replaceAll('_', ' '),
+                                    endDate: getWorkoutPlans.endDate,
+                                    startDate: getWorkoutPlans.startDate,
+                                    activateReminder:
+                                        getWorkoutPlans.activateReminder,
+                                    reminderTime:
+                                        getWorkoutPlans.reminderTime != null
+                                            ? TimeOfDay.fromDateTime(
+                                              getWorkoutPlans.reminderTime!,
+                                            ).format(context)
+                                            : null,
+                                    workoutDays: getWorkoutPlans.workoutDays,
+                                    workoutTime: getWorkoutPlans.workoutTimeMs,
+                                  );
+                              Get.off(
+                                () => CreateWorkoutPlan(
+                                  createWorkoutPlanModel:
+                                      createWorkoutPlanModel,
+                                ),
+                              );
+                            },
                             child: const Text(
                               'Adjust Plan',
                               style: TextStyle(

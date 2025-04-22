@@ -150,7 +150,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   ),
                 ),
                 onPressed: () {
-                  Get.to(() => NotificationSettingsView());
+                  Get.to(() => const NotificationSettingsView());
                 },
 
                 child: Row(
@@ -181,7 +181,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   ),
                 ),
                 onPressed: () {
-                  Get.to(() => AboutView());
+                  Get.to(() => const AboutView());
                 },
 
                 child: Row(

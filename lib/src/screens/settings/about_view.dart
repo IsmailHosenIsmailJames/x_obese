@@ -42,7 +42,7 @@ class AboutView extends StatelessWidget {
                     ),
                   ),
                   onPressed: () {
-                    Get.to(() => AboutView());
+                    Get.to(() => const AboutView());
                   },
 
                   child: Row(
@@ -74,7 +74,7 @@ class AboutView extends StatelessWidget {
                     ),
                   ),
                   onPressed: () {
-                    Get.to(() => AboutView());
+                    Get.to(() => const AboutView());
                   },
 
                   child: Row(
