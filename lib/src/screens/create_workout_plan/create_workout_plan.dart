@@ -8,8 +8,9 @@ import 'package:x_obese/src/screens/create_workout_plan/pages/page_3.dart';
 
 class CreateWorkoutPlan extends StatefulWidget {
   final CreateWorkoutPlanModel? createWorkoutPlanModel;
+  final String? id;
 
-  const CreateWorkoutPlan({super.key, this.createWorkoutPlanModel});
+  const CreateWorkoutPlan({super.key, this.createWorkoutPlanModel, this.id});
 
   @override
   State<CreateWorkoutPlan> createState() => _CreateWorkoutPlanState();
@@ -39,7 +40,11 @@ class _CreateWorkoutPlanState extends State<CreateWorkoutPlan> {
         children: [
           CreateWorkoutPlanPage1(pageController: pageController),
           CreateWorkoutPlanPage2(pageController: pageController),
-          CreateWorkoutPlanPage3(pageController: pageController),
+          CreateWorkoutPlanPage3(
+            pageController: pageController,
+            update: widget.createWorkoutPlanModel != null,
+            id: widget.id,
+          ),
         ],
       ),
     );

@@ -44,8 +44,10 @@ class _CreateWorkoutPlanPage1State extends State<CreateWorkoutPlanPage1> {
     super.initState();
   }
 
-  TextEditingController textEditingController = TextEditingController(
-    text: '6',
+  late TextEditingController textEditingController = TextEditingController(
+    text:
+        createWorkoutPlanController.createWorkoutPlanModel.value.weightGoal ??
+        '6',
   );
 
   @override

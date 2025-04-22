@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
@@ -29,7 +27,6 @@ class _WorkoutPlanOverviewScreenState extends State<WorkoutPlanOverviewScreen> {
   AllInfoController allInfoController = Get.find();
   @override
   Widget build(BuildContext context) {
-    log(widget.getWorkoutPlansList.first.workoutTimeMs.toString());
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -58,6 +55,7 @@ class _WorkoutPlanOverviewScreenState extends State<WorkoutPlanOverviewScreen> {
                 ),
                 children: [
                   workoutPlanOverview(
+                    context: context,
                     allInfoUser: allInfoController.allInfo.value,
                     userBMI: widget.getWorkoutPlansList.first.bmi ?? '',
                     startDate:
@@ -208,12 +206,18 @@ class _WorkoutPlanOverviewScreenState extends State<WorkoutPlanOverviewScreen> {
                                             ).format(context)
                                             : null,
                                     workoutDays: getWorkoutPlans.workoutDays,
-                                    workoutTime: getWorkoutPlans.workoutTimeMs,
+                                    workoutTime:
+                                        (((getWorkoutPlans.workoutTimeMs ?? 0) /
+                                                    1000)
+                                                as double)
+                                            .toString(),
                                   );
+
                               Get.off(
                                 () => CreateWorkoutPlan(
                                   createWorkoutPlanModel:
                                       createWorkoutPlanModel,
+                                  id: getWorkoutPlans.id,
                                 ),
                               );
                             },
