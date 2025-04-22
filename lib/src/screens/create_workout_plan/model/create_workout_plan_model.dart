@@ -5,7 +5,7 @@ class CreateWorkoutPlanModel {
   String? goalType;
   bool? activateReminder;
   String? reminderTime;
-  String? workoutTime;
+  String? workoutTimeMs;
   String? workoutDays;
   DateTime? startDate;
   DateTime? endDate;
@@ -15,7 +15,7 @@ class CreateWorkoutPlanModel {
     this.goalType,
     this.activateReminder,
     this.reminderTime,
-    this.workoutTime,
+    this.workoutTimeMs,
     this.workoutDays,
     this.startDate,
     this.endDate,
@@ -26,7 +26,7 @@ class CreateWorkoutPlanModel {
     String? goalType,
     bool? activateReminder,
     String? reminderTime,
-    String? workoutTime,
+    String? workoutTimeMs,
     String? workoutDays,
     DateTime? startDate,
     DateTime? endDate,
@@ -35,7 +35,7 @@ class CreateWorkoutPlanModel {
     goalType: goalType ?? this.goalType,
     activateReminder: activateReminder ?? this.activateReminder,
     reminderTime: reminderTime ?? this.reminderTime,
-    workoutTime: workoutTime ?? this.workoutTime,
+    workoutTimeMs: workoutTimeMs ?? this.workoutTimeMs,
     workoutDays: workoutDays ?? this.workoutDays,
     startDate: startDate ?? this.startDate,
     endDate: endDate ?? this.endDate,
@@ -53,7 +53,7 @@ class CreateWorkoutPlanModel {
     goalType: json['goalType'],
     activateReminder: json['activateReminder'],
     reminderTime: json['reminderTime'],
-    workoutTime: json['workoutTime'],
+    workoutTimeMs: json['workoutTimeMs'],
     workoutDays: json['workoutDays'],
     startDate:
         json['startDate'] == null ? null : DateTime.parse(json['startDate']),
@@ -65,7 +65,7 @@ class CreateWorkoutPlanModel {
     'goalType': goalType,
     'activateReminder': activateReminder,
     'reminderTime': reminderTime,
-    'workoutTime': workoutTime,
+    'workoutTimeMs': workoutTimeMs,
     'workoutDays': workoutDays,
     'startDate':
         startDate != null

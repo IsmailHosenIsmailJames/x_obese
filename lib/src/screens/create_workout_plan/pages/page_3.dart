@@ -115,7 +115,7 @@ class _CreateWorkoutPlanPage3State extends State<CreateWorkoutPlanPage3> {
                           createWorkoutPlanController
                               .createWorkoutPlanModel
                               .value
-                              .workoutTime ??
+                              .workoutTimeMs ??
                           '',
                       context: context,
                       controller:
@@ -153,12 +153,12 @@ class _CreateWorkoutPlanPage3State extends State<CreateWorkoutPlanPage3> {
         .toLowerCase()
         .replaceAll(' ', '_');
 
-    createWorkoutPlanController.createWorkoutPlanModel.value.workoutTime =
+    createWorkoutPlanController.createWorkoutPlanModel.value.workoutTimeMs =
         ((int.parse(
                   createWorkoutPlanController
                           .createWorkoutPlanModel
                           .value
-                          .workoutTime ??
+                          .workoutTimeMs ??
                       '0',
                 )) *
                 60000)

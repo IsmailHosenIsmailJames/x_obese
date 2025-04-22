@@ -206,7 +206,7 @@ class _WorkoutPlanOverviewScreenState extends State<WorkoutPlanOverviewScreen> {
                                             ).format(context)
                                             : null,
                                     workoutDays: getWorkoutPlans.workoutDays,
-                                    workoutTime:
+                                    workoutTimeMs:
                                         (((getWorkoutPlans.workoutTimeMs ?? 0) /
                                                     1000)
                                                 as double)

@@ -34,10 +34,11 @@ class _CreateWorkoutPlanPage2State extends State<CreateWorkoutPlanPage2> {
   @override
   void initState() {
     log(
-      createWorkoutPlanController.createWorkoutPlanModel.value.workoutTime ??
+      createWorkoutPlanController.createWorkoutPlanModel.value.workoutTimeMs ??
           'Not Found',
     );
-    createWorkoutPlanController.createWorkoutPlanModel.value.workoutTime = '40';
+    createWorkoutPlanController.createWorkoutPlanModel.value.workoutTimeMs =
+        '40';
 
     if (createWorkoutPlanController.createWorkoutPlanModel.value.workoutDays !=
         null) {
@@ -99,7 +100,7 @@ class _CreateWorkoutPlanPage2State extends State<CreateWorkoutPlanPage2> {
                       Align(
                         alignment: Alignment.centerRight,
                         child: Text(
-                          '${createWorkoutPlanController.createWorkoutPlanModel.value.workoutTime} Min',
+                          '${createWorkoutPlanController.createWorkoutPlanModel.value.workoutTimeMs} Min',
                         ),
                       ),
                       const Gap(10),
@@ -118,14 +119,14 @@ class _CreateWorkoutPlanPage2State extends State<CreateWorkoutPlanPage2> {
                             createWorkoutPlanController
                                 .createWorkoutPlanModel
                                 .value
-                                .workoutTime!,
+                                .workoutTimeMs!,
                           ),
                           onChanged: (value) {
                             setState(() {
                               createWorkoutPlanController
                                   .createWorkoutPlanModel
                                   .value
-                                  .workoutTime = value.round().toString();
+                                  .workoutTimeMs = value.round().toString();
                             });
                           },
                           min: 0,
