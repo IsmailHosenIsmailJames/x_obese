@@ -37,7 +37,7 @@ class _GenderCollectorState extends State<GenderCollector> {
             children: [
               Align(
                 alignment: Alignment.centerLeft,
-                child: getBackbutton(context, () {
+                child: getBackButton(context, () {
                   widget.pageController.animateToPage(
                     0,
                     duration: const Duration(milliseconds: 500),

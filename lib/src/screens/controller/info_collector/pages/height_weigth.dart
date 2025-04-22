@@ -44,7 +44,7 @@ class _HeightWeigthCollectorState extends State<HeightWeigthCollector> {
             children: [
               Align(
                 alignment: Alignment.centerLeft,
-                child: getBackbutton(context, () {
+                child: getBackButton(context, () {
                   widget.pageController.animateToPage(
                     2,
                     duration: const Duration(milliseconds: 500),

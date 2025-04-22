@@ -60,7 +60,7 @@ class _BirthDateCollectorState extends State<BirthDateCollector> {
             children: [
               Align(
                 alignment: Alignment.centerLeft,
-                child: getBackbutton(context, () {
+                child: getBackButton(context, () {
                   widget.pageController.animateToPage(
                     1,
                     duration: const Duration(milliseconds: 500),

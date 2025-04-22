@@ -63,7 +63,7 @@ class _LeaderBoardViewState extends State<LeaderBoardView> {
                 children: [
                   Row(
                     children: [
-                      getBackbutton(context, () {
+                      getBackButton(context, () {
                         Get.back();
                       }),
                       const Spacer(),

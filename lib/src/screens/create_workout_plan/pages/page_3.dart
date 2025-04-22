@@ -39,7 +39,7 @@ class _CreateWorkoutPlanPage3State extends State<CreateWorkoutPlanPage3> {
             children: [
               Row(
                 children: [
-                  getBackbutton(context, () {
+                  getBackButton(context, () {
                     widget.pageController.previousPage(
                       duration: const Duration(milliseconds: 300),
                       curve: Curves.easeIn,

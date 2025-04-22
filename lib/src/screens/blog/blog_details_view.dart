@@ -94,7 +94,7 @@ class _BlogDetailsViewState extends State<BlogDetailsView> {
           SafeArea(
             child: Padding(
               padding: const EdgeInsets.all(15.0),
-              child: getBackbutton(context, () {
+              child: getBackButton(context, () {
                 Get.back();
               }),
             ),

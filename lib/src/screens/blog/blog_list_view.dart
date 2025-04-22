@@ -74,7 +74,7 @@ class _BlogListViewState extends State<BlogListView> {
           SafeArea(
             child: Row(
               children: [
-                getBackbutton(context, () {
+                getBackButton(context, () {
                   Get.back();
                 }),
                 const Gap(55),

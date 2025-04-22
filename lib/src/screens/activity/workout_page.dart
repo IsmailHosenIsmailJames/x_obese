@@ -65,7 +65,7 @@ class _ActivityPageState extends State<ActivityPage> {
             children: [
               Row(
                 children: [
-                  getBackbutton(context, () {
+                  getBackButton(context, () {
                     if (widget.pageController != null) {
                       widget.pageController!.previousPage(
                         duration: const Duration(milliseconds: 300),

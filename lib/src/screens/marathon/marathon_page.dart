@@ -108,7 +108,7 @@ class _MarathonPageState extends State<MarathonPage> {
             padding: const EdgeInsets.only(top: 15.0, left: 15, right: 15),
             child: Row(
               children: [
-                getBackbutton(
+                getBackButton(
                   context,
                   () => widget.pageController.animateToPage(
                     0,

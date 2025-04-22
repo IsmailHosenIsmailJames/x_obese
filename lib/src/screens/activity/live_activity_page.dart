@@ -127,7 +127,7 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
               ),
               child: Row(
                 children: [
-                  getBackbutton(context, () {
+                  getBackButton(context, () {
                     Get.back();
                   }),
                   const Gap(70),

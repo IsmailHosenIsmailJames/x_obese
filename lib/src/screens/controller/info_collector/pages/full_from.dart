@@ -75,7 +75,7 @@ class _FullFromInfoCollectorState extends State<FullFromInfoCollector> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  getBackbutton(context, () {
+                  getBackButton(context, () {
                     widget.pageController.previousPage(
                       duration: const Duration(milliseconds: 500),
                       curve: Curves.easeIn,

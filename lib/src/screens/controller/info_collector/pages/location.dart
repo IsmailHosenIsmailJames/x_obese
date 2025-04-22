@@ -84,7 +84,7 @@ class _LocationCollectorState extends State<LocationCollector> {
                   children: [
                     Align(
                       alignment: Alignment.centerLeft,
-                      child: getBackbutton(context, () {
+                      child: getBackButton(context, () {
                         widget.pageController.previousPage(
                           duration: const Duration(milliseconds: 500),
                           curve: Curves.easeIn,

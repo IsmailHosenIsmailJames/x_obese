@@ -19,7 +19,7 @@ class AboutView extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  getBackbutton(context, () {
+                  getBackButton(context, () {
                     Get.back();
                   }),
                   const Gap(80),

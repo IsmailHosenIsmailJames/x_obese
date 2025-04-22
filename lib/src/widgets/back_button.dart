@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-Widget getBackbutton(BuildContext context, Function() onPressed) {
+Widget getBackButton(BuildContext context, Function() onPressed) {
   return SizedBox(
     height: 50,
     width: 50,

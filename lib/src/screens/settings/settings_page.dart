@@ -29,7 +29,7 @@ class _SettingsPageState extends State<SettingsPage> {
           children: [
             Row(
               children: [
-                getBackbutton(context, () {
+                getBackButton(context, () {
                   widget.pageController.animateToPage(
                     0,
                     duration: const Duration(milliseconds: 300),

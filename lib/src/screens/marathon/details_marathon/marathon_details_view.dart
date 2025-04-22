@@ -90,7 +90,7 @@ class _MarathonDetailsViewState extends State<MarathonDetailsView> {
                 SafeArea(
                   child: Padding(
                     padding: const EdgeInsets.all(15.0),
-                    child: getBackbutton(context, () {
+                    child: getBackButton(context, () {
                       Get.back();
                     }),
                   ),

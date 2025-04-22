@@ -34,13 +34,13 @@ class _WorkoutPlanOverviewScreenState extends State<WorkoutPlanOverviewScreen> {
               padding: const EdgeInsets.only(top: 15.0, left: 15, right: 15),
               child: Row(
                 children: [
-                  getBackbutton(context, () => Get.back()),
-                  const Spacer(),
+                  getBackButton(context, () => Get.back()),
+                  const Spacer(flex: 4),
                   const Text(
-                    'Marathon Program',
+                    'Plan Overview',
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                   ),
-                  const Spacer(),
+                  const Spacer(flex: 6),
                 ],
               ),
             ),
@@ -48,7 +48,7 @@ class _WorkoutPlanOverviewScreenState extends State<WorkoutPlanOverviewScreen> {
               child: ListView(
                 padding: const EdgeInsets.only(
                   top: 15,
-                  bottom: 15,
+                  bottom: 50,
                   left: 15,
                   right: 15,
                 ),
