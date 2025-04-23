@@ -326,7 +326,7 @@ class _CreateWorkoutPlanPage2State extends State<CreateWorkoutPlanPage2> {
                               });
                             },
                             child: Text(
-                              DateFormat('yyyy-MM-dd').format(
+                              DateFormat.yMMMMd().format(
                                 createWorkoutPlanController
                                         .createWorkoutPlanModel
                                         .value
@@ -387,7 +387,7 @@ class _CreateWorkoutPlanPage2State extends State<CreateWorkoutPlanPage2> {
                               });
                             },
                             child: Text(
-                              DateFormat('yyyy-MM-dd').format(
+                              DateFormat.yMMMMd().format(
                                 createWorkoutPlanController
                                         .createWorkoutPlanModel
                                         .value

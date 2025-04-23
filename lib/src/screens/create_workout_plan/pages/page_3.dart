@@ -239,7 +239,7 @@ Widget workoutPlanOverview({
         ),
       ),
       Text(
-        "${DateFormat('yyyy-MM-dd').format(startDate)} - ${DateFormat('yyyy-MM-dd').format(endDate)}",
+        '${DateFormat.yMMMMd().format(startDate)} - ${DateFormat.yMMMMd().format(endDate)}',
         style: TextStyle(
           fontSize: 14,
           fontWeight: FontWeight.w600,

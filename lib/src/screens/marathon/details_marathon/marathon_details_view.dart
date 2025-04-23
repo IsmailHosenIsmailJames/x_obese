@@ -239,7 +239,7 @@ class _MarathonDetailsViewState extends State<MarathonDetailsView> {
                       ),
                       const Gap(10),
                       Text(
-                        '${DateFormat('yyyy-MM-dd').format(widget.marathonData.startDate!)}  TO  ${DateFormat('yyyy-MM-dd').format(widget.marathonData.endDate!)}',
+                        '${DateFormat.yMMMMd().format(widget.marathonData.startDate!)}  TO  ${DateFormat.yMMMMd().format(widget.marathonData.endDate!)}',
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w300,
