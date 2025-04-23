@@ -114,12 +114,13 @@ class _CreateWorkoutPlanPage2State extends State<CreateWorkoutPlanPage2> {
                           trackHeight: 12,
                         ),
                         child: Slider(
-                          value: double.parse(
-                            createWorkoutPlanController
-                                .createWorkoutPlanModel
-                                .value
-                                .workoutTimeMs!,
-                          ),
+                          value:
+                              int.parse(
+                                createWorkoutPlanController
+                                    .createWorkoutPlanModel
+                                    .value
+                                    .workoutTimeMs!,
+                              ).toDouble(),
                           onChanged: (value) {
                             setState(() {
                               createWorkoutPlanController

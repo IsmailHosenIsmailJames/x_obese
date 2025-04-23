@@ -75,9 +75,16 @@ class _WorkoutPlanOverviewScreenState extends State<WorkoutPlanOverviewScreen> {
                     workoutDays:
                         widget.getWorkoutPlansList.first.workoutDays ?? '',
                     workoutTime:
-                        widget.getWorkoutPlansList.first.workoutTimeMs
-                            ?.toString() ??
-                        '0',
+                        (int.parse(
+                                  widget
+                                          .getWorkoutPlansList
+                                          .first
+                                          .workoutTimeMs ??
+                                      '0',
+                                ) /
+                                60000)
+                            .toInt()
+                            .toString(),
                   ),
                   const Gap(20),
                   const Padding(
@@ -207,9 +214,13 @@ class _WorkoutPlanOverviewScreenState extends State<WorkoutPlanOverviewScreen> {
                                             : null,
                                     workoutDays: getWorkoutPlans.workoutDays,
                                     workoutTimeMs:
-                                        (((getWorkoutPlans.workoutTimeMs ?? 0) /
-                                                    1000)
-                                                as double)
+                                        ((int.parse(
+                                                  getWorkoutPlans
+                                                          .workoutTimeMs ??
+                                                      '0',
+                                                ) /
+                                                60000))
+                                            .toInt()
                                             .toString(),
                                   );
 

@@ -6,7 +6,7 @@ class GetWorkoutPlans {
   String? bmi;
   int? weightGoal;
   String? goalType;
-  dynamic workoutTimeMs;
+  String? workoutTimeMs;
   String? workoutDays;
   bool? activateReminder;
   DateTime? reminderTime;
