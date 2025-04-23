@@ -110,11 +110,7 @@ class _MarathonPageState extends State<MarathonPage> {
               children: [
                 getBackButton(
                   context,
-                  () => widget.pageController.animateToPage(
-                    0,
-                    duration: const Duration(milliseconds: 500),
-                    curve: Curves.linear,
-                  ),
+                  () => widget.pageController.jumpToPage(0),
                 ),
                 const Spacer(),
                 const Text(
@@ -165,11 +161,7 @@ class _MarathonPageState extends State<MarathonPage> {
                       shadowColor: Colors.transparent,
                     ),
                     onPressed: () {
-                      pageController.animateToPage(
-                        0,
-                        duration: const Duration(milliseconds: 500),
-                        curve: Curves.linear,
-                      );
+                      pageController.jumpToPage(0);
                     },
                     child: const Text(' Virtual Marathon '),
                   ),
@@ -188,11 +180,7 @@ class _MarathonPageState extends State<MarathonPage> {
                       shadowColor: Colors.transparent,
                     ),
                     onPressed: () {
-                      pageController.animateToPage(
-                        1,
-                        duration: const Duration(milliseconds: 500),
-                        curve: Curves.linear,
-                      );
+                      pageController.jumpToPage(1);
                     },
                     child: const Text(' Onsite marathon '),
                   ),

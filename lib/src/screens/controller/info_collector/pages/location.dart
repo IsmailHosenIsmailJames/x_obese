@@ -183,11 +183,7 @@ class _LocationCollectorState extends State<LocationCollector> {
                   onPressed: () {
                     if (controller.allInfo.value.address != null &&
                         controller.allInfo.value.address!.isNotEmpty) {
-                      widget.pageController.animateToPage(
-                        5,
-                        duration: const Duration(milliseconds: 500),
-                        curve: Curves.easeIn,
-                      );
+                      widget.pageController.jumpToPage(5);
                     }
                   },
                   child: const Text(

@@ -99,11 +99,13 @@ class AllInfoController extends GetxController {
       printResponse(response);
       if (response.statusCode == 200) {
         List workoutPlans = response.data['data'];
-        getWorkoutPlansList.value = [GetWorkoutPlans()];
-        for (var workoutPlan in workoutPlans) {
-          getWorkoutPlansList.add(GetWorkoutPlans.fromMap(workoutPlan));
+        if (workoutPlans.isNotEmpty) {
+          getWorkoutPlansList.value = [GetWorkoutPlans()];
+          for (var workoutPlan in workoutPlans) {
+            getWorkoutPlansList.add(GetWorkoutPlans.fromMap(workoutPlan));
+          }
+          getWorkoutPlansList.removeAt(0);
         }
-        getWorkoutPlansList.removeAt(0);
 
         printResponse(response);
       }

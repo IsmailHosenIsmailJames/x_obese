@@ -71,6 +71,7 @@ class _MarathonDetailsViewState extends State<MarathonDetailsView> {
   Widget build(BuildContext context) {
     final padding = const EdgeInsets.only(left: 15, right: 15, bottom: 15);
     return Scaffold(
+      backgroundColor: MyAppColors.primary,
       body: SingleChildScrollView(
         child: Column(
           children: [

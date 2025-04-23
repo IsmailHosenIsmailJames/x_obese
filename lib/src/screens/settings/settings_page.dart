@@ -30,11 +30,7 @@ class _SettingsPageState extends State<SettingsPage> {
             Row(
               children: [
                 getBackButton(context, () {
-                  widget.pageController.animateToPage(
-                    0,
-                    duration: const Duration(milliseconds: 300),
-                    curve: Curves.easeIn,
-                  );
+                  widget.pageController.jumpToPage(0);
                 }),
                 const Gap(55),
                 const Text(

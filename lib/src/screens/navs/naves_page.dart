@@ -101,7 +101,7 @@ class _NavesPageState extends State<NavesPage> {
         notificationButtons: [
           const NotificationButton(id: 'btn_hello', text: 'hello'),
         ],
-        notificationInitialRoute: '/second',
+        notificationInitialRoute: '/home',
         callback: startCallback,
       );
     }

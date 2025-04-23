@@ -167,9 +167,9 @@ Column pointsOverviewWidget(
                             ?.toString() ??
                         '0',
                     target:
-                        ((controller.getWorkoutPlansList.first.workoutTimeMs ??
-                                    0)
-                                .abs() /
+                        (int.parse(
+                              '${(controller.getWorkoutPlansList.first.workoutTimeMs ?? 0)}',
+                            ).abs() /
                             60000),
                   ),
                 ),
