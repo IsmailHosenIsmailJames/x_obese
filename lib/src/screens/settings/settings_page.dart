@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:x_obese/src/screens/controller/info_collector/controller/all_info_controller.dart';
+import 'package:x_obese/src/screens/controller/info_collector/info_collector.dart';
 import 'package:x_obese/src/screens/settings/about_view.dart';
 import 'package:x_obese/src/screens/settings/notification_settings_view.dart';
 import 'package:x_obese/src/screens/settings/personal_details_view.dart';
@@ -49,7 +50,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 child:
                     (allInfoController.allInfo.value.image != null)
                         ? CachedNetworkImage(
-                          imageUrl: allInfoController.allInfo.value.image,
+                          imageUrl: allInfoController.allInfo.value.image!,
                           fit: BoxFit.cover,
                         )
                         : const Icon(Icons.person_outline, size: 20),
@@ -63,7 +64,13 @@ class _SettingsPageState extends State<SettingsPage> {
                 Text(allInfoController.allInfo.value.fullName ?? ''),
 
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Get.to(
+                      () => InfoCollector(
+                        initialData: allInfoController.allInfo.value,
+                      ),
+                    );
+                  },
                   icon: SvgPicture.string(
                     '''<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M1 17H17M10.5861 3.05486C10.5861 3.05486 10.5861 4.50786 12.0391 5.96086C13.4921 7.41386 14.9451 7.41386 14.9451 7.41386M4.83967 14.3227L7.89097 13.8868C8.33111 13.824 8.73898 13.62 9.05337 13.3056L16.3981 5.96085C17.2006 5.15838 17.2006 3.85732 16.3981 3.05485L14.9451 1.60185C14.1427 0.799383 12.8416 0.799382 12.0391 1.60185L4.69437 8.94663C4.37998 9.26102 4.17604 9.66889 4.11317 10.109L3.67727 13.1603C3.5804 13.8384 4.1616 14.4196 4.83967 14.3227Z" stroke="#527AFF" stroke-linecap="round"/>

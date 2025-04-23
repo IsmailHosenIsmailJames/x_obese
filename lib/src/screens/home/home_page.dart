@@ -78,11 +78,15 @@ class _HomePageState extends State<HomePage> {
                       height: 40,
                       width: 40,
                       color: MyAppColors.transparentGray,
-                      child: CachedNetworkImage(
-                        imageUrl: allInfoController.allInfo.value.image,
-                        alignment: Alignment.topCenter,
-                        fit: BoxFit.cover,
-                      ),
+                      child:
+                          allInfoController.allInfo.value.image == null
+                              ? const Icon(Icons.person, size: 18)
+                              : CachedNetworkImage(
+                                imageUrl:
+                                    allInfoController.allInfo.value.image!,
+                                alignment: Alignment.topCenter,
+                                fit: BoxFit.cover,
+                              ),
                     ),
                   ),
                   const Gap(8),
@@ -99,7 +103,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                       Obx(
                         () => Text(
-                          allInfoController.allInfo.value.fullName,
+                          allInfoController.allInfo.value.fullName ?? '',
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w300,

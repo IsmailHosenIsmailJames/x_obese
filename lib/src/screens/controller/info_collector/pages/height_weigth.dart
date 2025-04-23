@@ -47,7 +47,7 @@ class _HeightWeigthCollectorState extends State<HeightWeigthCollector> {
                 child: getBackButton(context, () {
                   widget.pageController.animateToPage(
                     2,
-                    duration: const Duration(milliseconds: 500),
+                    duration: const Duration(milliseconds: 300),
                     curve: Curves.easeIn,
                   );
                 }),
@@ -185,10 +185,9 @@ class _HeightWeigthCollectorState extends State<HeightWeigthCollector> {
                       controller.allInfo.value.heightFt = fit;
                       controller.allInfo.value.heightIn = inch;
                       controller.allInfo.value.weight = weight;
-                      widget.pageController.animateToPage(
-                        4,
-                        duration: const Duration(milliseconds: 500),
-                        curve: Curves.easeIn,
+                      widget.pageController.nextPage(
+                        duration: const Duration(milliseconds: 300),
+                        curve: Curves.linear,
                       );
                     }
                   },

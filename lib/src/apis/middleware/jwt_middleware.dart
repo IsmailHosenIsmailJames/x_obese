@@ -47,8 +47,7 @@ class DioClient {
     DioException error,
     ErrorInterceptorHandler handler,
   ) async {
-    if (error.response?.statusCode == 403 ||
-        error.response?.statusCode == 401) {
+    if (error.response?.statusCode == 403) {
       String? refreshToken = await getRefreshToken();
       if (refreshToken != null) {
         try {
@@ -162,10 +161,14 @@ void printResponse(Response response) {
     name: 'response_body',
   );
   log(response.statusCode.toString(), name: 'response_status');
-  log(
-    const JsonEncoder.withIndent('  ').convert(response.requestOptions.data),
-    name: 'Request_body',
-  );
+  try {
+    log(
+      const JsonEncoder.withIndent('  ').convert(response.requestOptions.data),
+      name: 'Request_body',
+    );
+  } catch (e) {
+    log(e.toString());
+  }
   // log(
   //   const JsonEncoder.withIndent('  ').convert(response.headers.map),
   //   name: 'response_headers',

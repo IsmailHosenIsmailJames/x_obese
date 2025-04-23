@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gap/gap.dart';
@@ -28,14 +29,11 @@ class _FullFromInfoCollectorState extends State<FullFromInfoCollector> {
   File? profileImage;
   final ImagePicker imagePicker = ImagePicker();
   final formKey = GlobalKey<FormState>();
-  final TextEditingController emailController = TextEditingController();
+  late final TextEditingController emailController = TextEditingController(
+    text: controller.allInfo.value.email,
+  );
 
   Future<void> updateInfo() async {
-    if (profileImage == null) {
-      Fluttertoast.showToast(msg: 'Profile picture is required');
-      return;
-    }
-
     Map<String, dynamic> userData = {
       'email': emailController.text.trim(),
       'fullName': controller.allInfo.value.fullName,
@@ -46,16 +44,19 @@ class _FullFromInfoCollectorState extends State<FullFromInfoCollector> {
       'heightIn': controller.allInfo.value.heightIn,
       'address': controller.allInfo.value.address,
     };
+    if (profileImage != null) {
+      userData.addAll({
+        'image': await dio.MultipartFile.fromFile(profileImage!.path),
+      });
+    }
 
     dio.FormData formData = dio.FormData.fromMap(userData);
-    formData.files.add(
-      MapEntry('image', await dio.MultipartFile.fromFile(profileImage!.path)),
-    );
 
     final response = await controller.updateUserInfo(formData);
     if (response != null) {
       await Hive.box('user').put('info', jsonEncode(response.data['data']));
       Get.offAllNamed('/home');
+      Fluttertoast.showToast(msg: 'Account information saved successful');
     }
   }
 
@@ -77,7 +78,7 @@ class _FullFromInfoCollectorState extends State<FullFromInfoCollector> {
                 children: [
                   getBackButton(context, () {
                     widget.pageController.previousPage(
-                      duration: const Duration(milliseconds: 500),
+                      duration: const Duration(milliseconds: 300),
                       curve: Curves.easeIn,
                     );
                   }),
@@ -101,31 +102,7 @@ class _FullFromInfoCollectorState extends State<FullFromInfoCollector> {
                           width: 120,
                           child: Stack(
                             children: [
-                              Center(
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(100),
-                                  child: Container(
-                                    height: 100,
-                                    width: 100,
-                                    decoration: BoxDecoration(
-                                      color: MyAppColors.transparentGray,
-                                    ),
-                                    child:
-                                        profileImage == null
-                                            ? Center(
-                                              child: Icon(
-                                                Icons.person,
-                                                size: 40,
-                                                color: MyAppColors.mutedGray,
-                                              ),
-                                            )
-                                            : Image.file(
-                                              profileImage!,
-                                              fit: BoxFit.cover,
-                                            ),
-                                  ),
-                                ),
-                              ),
+                              getProfilePictureSection(),
                               Align(
                                 alignment: Alignment.bottomRight,
                                 child: IconButton(
@@ -134,7 +111,10 @@ class _FullFromInfoCollectorState extends State<FullFromInfoCollector> {
                                   ),
                                   onPressed: () async {
                                     final pickedFile = await imagePicker
-                                        .pickImage(source: ImageSource.camera);
+                                        .pickImage(
+                                          source: ImageSource.gallery,
+                                          imageQuality: 50,
+                                        );
 
                                     setState(() {
                                       if (pickedFile != null) {
@@ -328,6 +308,34 @@ class _FullFromInfoCollectorState extends State<FullFromInfoCollector> {
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  Center getProfilePictureSection() {
+    return Center(
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(100),
+        child: Container(
+          height: 100,
+          width: 100,
+          decoration: BoxDecoration(color: MyAppColors.transparentGray),
+          child:
+              profileImage == null
+                  ? controller.allInfo.value.image == null
+                      ? Center(
+                        child: Icon(
+                          Icons.person,
+                          size: 40,
+                          color: MyAppColors.mutedGray,
+                        ),
+                      )
+                      : CachedNetworkImage(
+                        imageUrl: controller.allInfo.value.image!,
+                        fit: BoxFit.cover,
+                      )
+                  : Image.file(profileImage!, fit: BoxFit.cover),
         ),
       ),
     );

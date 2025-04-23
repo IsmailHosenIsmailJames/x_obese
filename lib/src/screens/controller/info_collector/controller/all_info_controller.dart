@@ -29,7 +29,7 @@ class AllInfoController extends GetxController {
       (<GetWorkoutPlans>[GetWorkoutPlans()]).obs;
   RxList<GetBlogModel> getBlogList = RxList<GetBlogModel>([]);
 
-  Future<dio.Response?> updateUserInfo(dynamic data) async {
+  Future<dio.Response?> updateUserInfo(dio.FormData data) async {
     final response = await dioClient.dio.patch(userDataPath, data: data);
     printResponse(response);
     if (response.statusCode == 200) {

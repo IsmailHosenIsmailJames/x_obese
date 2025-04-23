@@ -86,7 +86,7 @@ class _LocationCollectorState extends State<LocationCollector> {
                       alignment: Alignment.centerLeft,
                       child: getBackButton(context, () {
                         widget.pageController.previousPage(
-                          duration: const Duration(milliseconds: 500),
+                          duration: const Duration(milliseconds: 300),
                           curve: Curves.easeIn,
                         );
                       }),
@@ -183,7 +183,11 @@ class _LocationCollectorState extends State<LocationCollector> {
                   onPressed: () {
                     if (controller.allInfo.value.address != null &&
                         controller.allInfo.value.address!.isNotEmpty) {
-                      widget.pageController.jumpToPage(5);
+                      widget.pageController.animateToPage(
+                        5,
+                        duration: const Duration(milliseconds: 300),
+                        curve: Curves.linear,
+                      );
                     }
                   },
                   child: const Text(

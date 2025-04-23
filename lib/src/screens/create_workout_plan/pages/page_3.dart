@@ -191,6 +191,7 @@ class _CreateWorkoutPlanPage3State extends State<CreateWorkoutPlanPage3> {
           type: ToastificationType.success,
           autoCloseDuration: const Duration(seconds: 3),
         );
+        allInfoController.dataAsync();
       }
     } on DioException catch (e) {
       log(e.toString());

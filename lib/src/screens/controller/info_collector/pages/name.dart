@@ -80,7 +80,7 @@ class _NameCollectPageState extends State<NameCollectPage> {
                     if (formKey.currentState?.validate() == true) {
                       widget.pageController.animateToPage(
                         1,
-                        duration: const Duration(milliseconds: 500),
+                        duration: const Duration(milliseconds: 300),
                         curve: Curves.easeIn,
                       );
                     }

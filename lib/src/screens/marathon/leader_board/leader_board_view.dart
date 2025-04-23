@@ -336,7 +336,7 @@ class _LeaderBoardViewState extends State<LeaderBoardView> {
                                   width: 40,
                                   child: CachedNetworkImage(
                                     imageUrl:
-                                        allInfoController.allInfo.value.image,
+                                        allInfoController.allInfo.value.image!,
                                     fit: BoxFit.cover,
                                   ),
                                 ),

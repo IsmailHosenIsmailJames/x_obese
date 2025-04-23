@@ -3,11 +3,11 @@ import 'dart:convert';
 class AllInfoModel {
   String? id;
   String? mobile;
-  dynamic fullName;
-  dynamic email;
-  dynamic image;
-  dynamic gender;
-  dynamic address;
+  String? fullName;
+  String? email;
+  String? image;
+  String? gender;
+  String? address;
   DateTime? birth;
   int? heightFt;
   int? heightIn;
@@ -30,11 +30,11 @@ class AllInfoModel {
   AllInfoModel copyWith({
     String? id,
     String? mobile,
-    dynamic fullName,
-    dynamic email,
-    dynamic image,
-    dynamic gender,
-    dynamic address,
+    String? fullName,
+    String? email,
+    String? image,
+    String? gender,
+    String? address,
     DateTime? birth,
     int? heightFt,
     int? heightIn,

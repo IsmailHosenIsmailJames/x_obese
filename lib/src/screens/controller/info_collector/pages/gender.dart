@@ -40,7 +40,7 @@ class _GenderCollectorState extends State<GenderCollector> {
                 child: getBackButton(context, () {
                   widget.pageController.animateToPage(
                     0,
-                    duration: const Duration(milliseconds: 500),
+                    duration: const Duration(milliseconds: 300),
                     curve: Curves.easeIn,
                   );
                 }),
@@ -120,7 +120,7 @@ class _GenderCollectorState extends State<GenderCollector> {
                   onPressed: () {
                     widget.pageController.animateToPage(
                       2,
-                      duration: const Duration(milliseconds: 500),
+                      duration: const Duration(milliseconds: 300),
                       curve: Curves.easeIn,
                     );
                   },

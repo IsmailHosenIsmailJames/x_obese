@@ -63,7 +63,7 @@ class _BirthDateCollectorState extends State<BirthDateCollector> {
                 child: getBackButton(context, () {
                   widget.pageController.animateToPage(
                     1,
-                    duration: const Duration(milliseconds: 500),
+                    duration: const Duration(milliseconds: 300),
                     curve: Curves.easeIn,
                   );
                 }),
@@ -197,7 +197,7 @@ class _BirthDateCollectorState extends State<BirthDateCollector> {
                       setState(() {});
                       widget.pageController.animateToPage(
                         3,
-                        duration: const Duration(milliseconds: 500),
+                        duration: const Duration(milliseconds: 300),
                         curve: Curves.easeIn,
                       );
                     } else {
