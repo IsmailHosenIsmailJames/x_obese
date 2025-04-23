@@ -38,9 +38,10 @@ class _CreateWorkoutPlanPage3State extends State<CreateWorkoutPlanPage3> {
   void initState() {
     DateTime startDate = DateTime.now();
     DateTime endDate = DateTime.now().add(const Duration(days: 365));
-    createWorkoutPlanController.createWorkoutPlanModel.value.startDate =
+    createWorkoutPlanController.createWorkoutPlanModel.value.startDate ??=
         startDate;
-    createWorkoutPlanController.createWorkoutPlanModel.value.endDate = endDate;
+    createWorkoutPlanController.createWorkoutPlanModel.value.endDate ??=
+        endDate;
     super.initState();
   }
 
@@ -75,10 +76,10 @@ class _CreateWorkoutPlanPage3State extends State<CreateWorkoutPlanPage3> {
                 ],
               ),
               const Gap(22),
-              Obx(
-                () => Expanded(
-                  child: SingleChildScrollView(
-                    child: workoutPlanOverview(
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Obx(
+                    () => workoutPlanOverview(
                       allInfoUser: allInfoController.allInfo.value,
                       startDate:
                           createWorkoutPlanController
@@ -213,6 +214,7 @@ Widget workoutPlanOverview({
   required String workoutTime,
   Rx<CreateWorkoutPlanModel>? controller,
 }) {
+  log(startDate.toString());
   return Column(
     mainAxisAlignment: MainAxisAlignment.start,
     crossAxisAlignment: CrossAxisAlignment.start,
@@ -236,58 +238,15 @@ Widget workoutPlanOverview({
           color: MyAppColors.third,
         ),
       ),
-      Row(
-        children: [
-          GestureDetector(
-            onTap: () async {
-              if (controller == null) return;
-              DateTime? date = await showDatePicker(
-                context: context,
-                firstDate: DateTime.now(),
-                lastDate: DateTime.now().add(const Duration(days: 1000)),
-              );
-
-              controller.value = controller.value.copyWith(startDate: date);
-            },
-            child: Text(
-              DateFormat('yyyy-MM-dd').format(startDate),
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w600,
-                color: MyAppColors.mutedGray,
-              ),
-            ),
-          ),
-          Text(
-            ' - ',
-            style: TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w600,
-              color: MyAppColors.mutedGray,
-            ),
-          ),
-          GestureDetector(
-            onTap: () async {
-              if (controller == null) return;
-              DateTime? date = await showDatePicker(
-                context: context,
-                firstDate: DateTime.now(),
-                lastDate: DateTime.now().add(const Duration(days: 1000)),
-              );
-
-              controller.value = controller.value.copyWith(endDate: date);
-            },
-            child: Text(
-              DateFormat('yyyy-MM-dd').format(endDate),
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w600,
-                color: MyAppColors.mutedGray,
-              ),
-            ),
-          ),
-        ],
+      Text(
+        "${DateFormat('yyyy-MM-dd').format(startDate)} - ${DateFormat('yyyy-MM-dd').format(endDate)}",
+        style: TextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.w600,
+          color: MyAppColors.mutedGray,
+        ),
       ),
+
       const Gap(24),
       Container(
         height: 140,

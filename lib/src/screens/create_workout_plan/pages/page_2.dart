@@ -37,7 +37,7 @@ class _CreateWorkoutPlanPage2State extends State<CreateWorkoutPlanPage2> {
       createWorkoutPlanController.createWorkoutPlanModel.value.workoutTimeMs ??
           'Not Found',
     );
-    createWorkoutPlanController.createWorkoutPlanModel.value.workoutTimeMs =
+    createWorkoutPlanController.createWorkoutPlanModel.value.workoutTimeMs ??=
         '40';
 
     if (createWorkoutPlanController.createWorkoutPlanModel.value.workoutDays !=
@@ -46,7 +46,6 @@ class _CreateWorkoutPlanPage2State extends State<CreateWorkoutPlanPage2> {
           createWorkoutPlanController.createWorkoutPlanModel.value.workoutDays!;
       for (String day in days.split(',')) {
         selectedWeekDays.add(day.substring(0, 3));
-        log(selectedWeekDays.toString());
       }
     }
     super.initState();
@@ -172,6 +171,32 @@ class _CreateWorkoutPlanPage2State extends State<CreateWorkoutPlanPage2> {
                                 } else {
                                   selectedWeekDays.add(weekDays[index]);
                                 }
+                                String workoutDaysString = '';
+                                for (
+                                  int i = 0;
+                                  i < selectedWeekDays.length;
+                                  i++
+                                ) {
+                                  if (i == selectedWeekDays.length - 1) {
+                                    workoutDaysString +=
+                                        mapOfWeekDays[selectedWeekDays[i]]!;
+                                  } else {
+                                    workoutDaysString +=
+                                        '${mapOfWeekDays[selectedWeekDays[i]]!},';
+                                  }
+                                }
+                                createWorkoutPlanController
+                                    .createWorkoutPlanModel
+                                    .value
+                                    .workoutDays = workoutDaysString.substring(
+                                  0,
+                                  workoutDaysString.length - 1,
+                                );
+                                setState(() {
+                                  log(
+                                    'Set -> ${createWorkoutPlanController.createWorkoutPlanModel.value.workoutDays}',
+                                  );
+                                });
                               });
                             },
                             child: CircleAvatar(
@@ -241,6 +266,136 @@ class _CreateWorkoutPlanPage2State extends State<CreateWorkoutPlanPage2> {
                             },
                             child: Text(
                               reminderTime.format(context),
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                                color: MyAppColors.mutedGray,
+                              ),
+                            ),
+                          ),
+                          const Gap(10),
+                          Icon(
+                            Icons.arrow_forward_ios_rounded,
+                            color: MyAppColors.mutedGray,
+                            size: 16,
+                          ),
+                        ],
+                      ),
+                      const Gap(33),
+                      Row(
+                        children: [
+                          const Text(
+                            'Start Date',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          const Spacer(),
+                          GestureDetector(
+                            behavior: HitTestBehavior.translucent,
+                            onTap: () async {
+                              DateTime? start = await showDatePicker(
+                                context: context,
+
+                                firstDate: DateTime.now(),
+                                lastDate: DateTime.now().add(
+                                  const Duration(days: 365),
+                                ),
+                                initialDate:
+                                    createWorkoutPlanController
+                                        .createWorkoutPlanModel
+                                        .value
+                                        .startDate ??
+                                    DateTime.now(),
+                              );
+                              setState(() {
+                                if (start != null) {
+                                  createWorkoutPlanController
+                                      .createWorkoutPlanModel
+                                      .value
+                                      .startDate = start;
+                                }
+                                log(
+                                  createWorkoutPlanController
+                                      .createWorkoutPlanModel
+                                      .value
+                                      .startDate
+                                      .toString(),
+                                );
+                              });
+                            },
+                            child: Text(
+                              DateFormat('yyyy-MM-dd').format(
+                                createWorkoutPlanController
+                                        .createWorkoutPlanModel
+                                        .value
+                                        .startDate ??
+                                    DateTime.now(),
+                              ),
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                                color: MyAppColors.mutedGray,
+                              ),
+                            ),
+                          ),
+                          const Gap(10),
+                          Icon(
+                            Icons.arrow_forward_ios_rounded,
+                            color: MyAppColors.mutedGray,
+                            size: 16,
+                          ),
+                        ],
+                      ),
+                      const Gap(33),
+                      Row(
+                        children: [
+                          const Text(
+                            'End Date',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          const Spacer(),
+                          GestureDetector(
+                            behavior: HitTestBehavior.translucent,
+                            onTap: () async {
+                              DateTime? end = await showDatePicker(
+                                context: context,
+                                firstDate: DateTime.now(),
+                                lastDate: DateTime.now().add(
+                                  const Duration(days: 365),
+                                ),
+                                initialDate:
+                                    createWorkoutPlanController
+                                        .createWorkoutPlanModel
+                                        .value
+                                        .endDate ??
+                                    DateTime.now().add(
+                                      const Duration(days: 365),
+                                    ),
+                              );
+                              setState(() {
+                                if (end != null) {
+                                  createWorkoutPlanController
+                                      .createWorkoutPlanModel
+                                      .value
+                                      .endDate = end;
+                                }
+                              });
+                            },
+                            child: Text(
+                              DateFormat('yyyy-MM-dd').format(
+                                createWorkoutPlanController
+                                        .createWorkoutPlanModel
+                                        .value
+                                        .endDate ??
+                                    DateTime.now().add(
+                                      const Duration(days: 365),
+                                    ),
+                              ),
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,
