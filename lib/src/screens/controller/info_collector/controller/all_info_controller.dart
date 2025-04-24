@@ -30,11 +30,17 @@ class AllInfoController extends GetxController {
   RxList<GetBlogModel> getBlogList = RxList<GetBlogModel>([]);
 
   Future<dio.Response?> updateUserInfo(dio.FormData data) async {
-    final response = await dioClient.dio.patch(userDataPath, data: data);
-    printResponse(response);
-    if (response.statusCode == 200) {
-      return response;
-    } else {
+    try {
+      final response = await dioClient.dio.patch(userDataPath, data: data);
+      printResponse(response);
+      if (response.statusCode == 200) {
+        return response;
+      } else {
+        return null;
+      }
+    } on dio.DioException catch (e) {
+      print(e.message);
+      if (e.response != null) printResponse(e.response!);
       return null;
     }
   }

@@ -47,7 +47,7 @@ class DioClient {
     DioException error,
     ErrorInterceptorHandler handler,
   ) async {
-    if (error.response?.statusCode == 403) {
+    if (error.response?.statusCode == 401) {
       String? refreshToken = await getRefreshToken();
       if (refreshToken != null) {
         try {
@@ -106,12 +106,15 @@ class DioClient {
         } else {
           return null;
         }
-      } else {
+      } else if (response.statusCode == 403) {
+        await clearTokens();
+        getx.Get.offAll(() => const LoginSignupPage());
         return null;
       }
     } catch (e) {
       return null;
     }
+    return null;
   }
 }
 
