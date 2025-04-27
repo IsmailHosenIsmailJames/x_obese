@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -433,10 +434,52 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
     );
   }
 
+  Future<bool> checkConnectivity() async {
+    final List<ConnectivityResult> connectivityResult =
+        await (Connectivity().checkConnectivity());
+
+    if (connectivityResult.contains(ConnectivityResult.mobile)) {
+      return true;
+    } else if (connectivityResult.contains(ConnectivityResult.wifi)) {
+      return true;
+    } else if (connectivityResult.contains(ConnectivityResult.ethernet)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   Future<void> saveWorkout(
     BuildContext context,
     workout_calculator.WorkoutCalculationResult workoutCalculationResult,
   ) async {
+    if (await checkConnectivity() == false) {
+      showDialog(
+        context: context,
+        builder:
+            (context) => AlertDialog(
+              insetPadding: const EdgeInsets.all(10),
+              title: const Text('No internet Connection!'),
+              content: const Text(
+                'To save the data to the server, we required internet connection. Please check your internet connection.',
+              ),
+              actions: [
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: MyAppColors.third,
+                    foregroundColor: MyAppColors.primary,
+                  ),
+                  onPressed: () {
+                    Navigator.pop(context);
+                    saveWorkout(context, workoutCalculationResult);
+                  },
+                  child: const Text('Try Again'),
+                ),
+              ],
+            ),
+      );
+      return;
+    }
     showLoadingPopUp(context, loadingText: 'Saving...');
 
     // make a api call
