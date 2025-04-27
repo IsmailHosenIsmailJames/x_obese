@@ -8,6 +8,7 @@ import 'package:gap/gap.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
 import 'package:x_obese/src/apis/middleware/jwt_middleware.dart';
 import 'package:x_obese/src/core/common/functions/calculate_distance.dart'
     as workout_calculator;
@@ -49,6 +50,8 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
 
   @override
   void initState() {
+    WakelockPlus.enable();
+
     streamSubscription = Geolocator.getPositionStream(
       locationSettings: AndroidSettings(accuracy: LocationAccuracy.high),
     ).listen((event) async {
@@ -87,6 +90,7 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
   void dispose() {
     streamSubscription.cancel();
     isDispose = true;
+    WakelockPlus.disable();
     super.dispose();
   }
 
