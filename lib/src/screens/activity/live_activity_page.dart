@@ -1,7 +1,10 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_foreground_task/flutter_foreground_task.dart';
+import 'package:flutter_foreground_task/models/service_request_result.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gap/gap.dart';
@@ -9,6 +12,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:x_obese/src/apis/middleware/jwt_middleware.dart';
+import 'package:x_obese/src/core/background/live_activity_background_task.dart';
 import 'package:x_obese/src/core/common/functions/calculate_distance.dart'
     as workout_calculator;
 import 'package:x_obese/src/core/common/functions/format_sec_to_time.dart';
@@ -24,13 +28,15 @@ class LiveActivityPage extends StatefulWidget {
   final workout_calculator.ActivityType workoutType;
   final MarathonUserModel? marathonUserModel;
   final FullMarathonDataModel? marathonData;
-  final Position initialLatLon;
+  final Position initialPosition;
+  final int? workoutDurationSec;
   const LiveActivityPage({
     super.key,
     required this.workoutType,
-    required this.initialLatLon,
+    required this.initialPosition,
     this.marathonUserModel,
     this.marathonData,
+    this.workoutDurationSec,
   });
 
   @override
@@ -42,33 +48,85 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
   final Completer<GoogleMapController> googleMapController =
       Completer<GoogleMapController>();
   double distanceEveryPaused = 0;
-  late List<Position> latLonOfPositions = [widget.initialLatLon];
-  int workoutDurationSec = 1;
+  late List<Position> listOfPositions = [widget.initialPosition];
+  late int workoutDurationSec = widget.workoutDurationSec ?? 1;
 
   late StreamSubscription streamSubscription;
 
+  void _initService() {
+    FlutterForegroundTask.init(
+      androidNotificationOptions: AndroidNotificationOptions(
+        channelId: 'foreground_service',
+        channelName: 'Foreground Service Notification',
+        channelDescription:
+            'This notification appears when the foreground service is running.',
+        onlyAlertOnce: true,
+      ),
+      iosNotificationOptions: const IOSNotificationOptions(
+        showNotification: false,
+        playSound: false,
+      ),
+      foregroundTaskOptions: ForegroundTaskOptions(
+        eventAction: ForegroundTaskEventAction.repeat(1000),
+        autoRunOnBoot: true,
+        autoRunOnMyPackageReplaced: true,
+        allowWakeLock: true,
+        allowWifiLock: true,
+      ),
+    );
+  }
+
+  Future<ServiceRequestResult> _startService() async {
+    if (await FlutterForegroundTask.isRunningService) {
+      return FlutterForegroundTask.restartService();
+    } else {
+      return FlutterForegroundTask.startService(
+        serviceId: 256,
+        notificationTitle: 'Foreground Service is running',
+        notificationText: 'Tap to return to the app',
+        notificationIcon: null,
+        notificationInitialRoute: '/live_activity',
+        callback: startCallbackLiveActivityBackgroundTask,
+      );
+    }
+  }
+
+  void _onReceiveTaskData(dynamic data) async {
+    List<String> positionsListRaw = List<String>.from(data);
+    List<Position> positionListModel =
+        positionsListRaw.map((e) => Position.fromMap(jsonDecode(e))).toList();
+    positionListModel.insert(0, widget.initialPosition);
+    listOfPositions = positionListModel;
+    setState(() {});
+    final controller = await googleMapController.future;
+    controller.animateCamera(
+      CameraUpdate.newLatLngZoom(
+        LatLng(listOfPositions.last.latitude, listOfPositions.last.longitude),
+        16.5,
+      ),
+    );
+  }
+
   @override
   void initState() {
+    FlutterForegroundTask.addTaskDataCallback(_onReceiveTaskData);
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      _initService();
+      await _startService();
+    });
+
     streamSubscription = Geolocator.getPositionStream(
       locationSettings: AndroidSettings(accuracy: LocationAccuracy.high),
     ).listen((event) async {
-      if (!isPaused) {
-        latLonOfPositions.add(event);
-        final controller = await googleMapController.future;
-        controller.animateCamera(
-          CameraUpdate.newLatLngZoom(
-            LatLng(event.latitude, event.longitude),
-            16.5,
-          ),
-        );
-      } else {
-        if (latLonOfPositions.isNotEmpty) {
+      if (isPaused) {
+        // TODO
+        if (listOfPositions.isNotEmpty) {
           distanceEveryPaused +=
               workout_calculator.WorkoutCalculator(
-                rawPositions: latLonOfPositions,
+                rawPositions: listOfPositions,
                 activityType: widget.workoutType,
               ).processData().totalDistance;
-          latLonOfPositions = [];
+          listOfPositions = [];
         }
       }
     });
@@ -94,7 +152,7 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
   Widget build(BuildContext context) {
     workout_calculator.WorkoutCalculationResult workoutCalculationResult =
         workout_calculator.WorkoutCalculator(
-          rawPositions: latLonOfPositions,
+          rawPositions: listOfPositions,
           activityType: widget.workoutType,
         ).processData();
     return Scaffold(
@@ -130,8 +188,8 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
                   GoogleMap(
                     initialCameraPosition: CameraPosition(
                       target: LatLng(
-                        widget.initialLatLon.latitude,
-                        widget.initialLatLon.longitude,
+                        widget.initialPosition.latitude,
+                        widget.initialPosition.longitude,
                       ),
                       zoom: 16.5,
                     ),
@@ -153,8 +211,8 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
                           BitmapDescriptor.hueBlue,
                         ),
                         position: LatLng(
-                          latLonOfPositions.first.latitude,
-                          latLonOfPositions.first.longitude,
+                          listOfPositions.first.latitude,
+                          listOfPositions.first.longitude,
                         ),
                       ),
                       Marker(
@@ -163,8 +221,8 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
                           title: '${widget.workoutType} Starting point',
                         ),
                         position: LatLng(
-                          latLonOfPositions.last.latitude,
-                          latLonOfPositions.last.longitude,
+                          listOfPositions.last.latitude,
+                          listOfPositions.last.longitude,
                         ),
                       ),
                     },
@@ -267,7 +325,7 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
                                   ),
                                   const Gap(5),
                                   Text(
-                                    '${((latLonOfPositions.last.speed == 0.0 ? workoutCalculationResult.averageSpeed : latLonOfPositions.last.speed) * 3.6).toPrecision(2)} km/h',
+                                    '${((listOfPositions.last.speed == 0.0 ? workoutCalculationResult.averageSpeed : listOfPositions.last.speed) * 3.6).toPrecision(2)} km/h',
                                     style: const TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w400,

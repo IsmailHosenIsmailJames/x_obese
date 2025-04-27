@@ -8,7 +8,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:x_obese/src/core/background/background_task.dart';
+import 'package:x_obese/src/core/background/steps_background_task.dart';
 import 'package:x_obese/src/screens/activity/workout_page.dart';
 import 'package:x_obese/src/screens/controller/info_collector/controller/all_info_controller.dart';
 import 'package:x_obese/src/screens/home/home_page.dart';
@@ -98,11 +98,8 @@ class _NavesPageState extends State<NavesPage> {
         notificationTitle: 'Foreground Service is running',
         notificationText: 'Tap to return to the app',
         notificationIcon: null,
-        notificationButtons: [
-          const NotificationButton(id: 'btn_hello', text: 'hello'),
-        ],
         notificationInitialRoute: '/home',
-        callback: startCallback,
+        callback: startCallbackStepsBackgroundTask,
       );
     }
   }

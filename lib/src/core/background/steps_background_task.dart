@@ -12,11 +12,11 @@ import 'package:x_obese/src/apis/apis_url.dart';
 import 'package:x_obese/src/apis/middleware/jwt_middleware.dart';
 
 @pragma('vm:entry-point')
-void startCallback() {
-  FlutterForegroundTask.setTaskHandler(MyTaskHandler());
+void startCallbackStepsBackgroundTask() {
+  FlutterForegroundTask.setTaskHandler(StepsBackgroundTask());
 }
 
-class MyTaskHandler extends TaskHandler {
+class StepsBackgroundTask extends TaskHandler {
   StreamSubscription? streamSubscription;
   SharedPreferences? preferences;
 

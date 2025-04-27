@@ -289,7 +289,7 @@ class _ActivityPageState extends State<ActivityPage> {
       await Get.to(
         () => LiveActivityPage(
           workoutType: selectedMode,
-          initialLatLon: position,
+          initialPosition: position,
           marathonData: widget.marathonData,
           marathonUserModel: widget.marathonUserModel,
         ),
