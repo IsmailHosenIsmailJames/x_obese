@@ -1,17 +1,30 @@
 import 'dart:developer';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:x_obese/src/apis/apis_url.dart';
+import 'package:x_obese/src/apis/middleware/jwt_middleware.dart';
+import 'package:x_obese/src/screens/controller/info_collector/controller/all_info_controller.dart';
 import 'package:x_obese/src/screens/create_workout_plan/controller/create_workout_plan_controller.dart';
+import 'package:x_obese/src/screens/create_workout_plan/model/get_workout_plans.dart';
 import 'package:x_obese/src/theme/colors.dart';
 import 'package:x_obese/src/widgets/back_button.dart';
 import 'package:toastification/toastification.dart';
 
 class CreateWorkoutPlanPage2 extends StatefulWidget {
   final PageController pageController;
-  const CreateWorkoutPlanPage2({super.key, required this.pageController});
+  final bool update;
+  final String? id;
+  const CreateWorkoutPlanPage2({
+    super.key,
+    required this.pageController,
+    required this.update,
+    this.id,
+  });
 
   @override
   State<CreateWorkoutPlanPage2> createState() => _CreateWorkoutPlanPage2State();
@@ -52,6 +65,8 @@ class _CreateWorkoutPlanPage2State extends State<CreateWorkoutPlanPage2> {
   }
 
   TimeOfDay reminderTime = const TimeOfDay(hour: 6, minute: 0);
+
+  AllInfoController allInfoController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -421,7 +436,7 @@ class _CreateWorkoutPlanPage2State extends State<CreateWorkoutPlanPage2> {
                 width: double.infinity,
                 height: 50,
                 child: ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
                     if (selectedWeekDays.isEmpty) {
                       toastification.show(
                         context: context,
@@ -462,10 +477,7 @@ class _CreateWorkoutPlanPage2State extends State<CreateWorkoutPlanPage2> {
                       );
                     }
 
-                    widget.pageController.nextPage(
-                      duration: const Duration(milliseconds: 300),
-                      curve: Curves.easeIn,
-                    );
+                    await saveToAPI(context);
                     log(
                       createWorkoutPlanController.createWorkoutPlanModel.value
                           .toJson(),
@@ -479,5 +491,71 @@ class _CreateWorkoutPlanPage2State extends State<CreateWorkoutPlanPage2> {
         ),
       ),
     );
+  }
+
+  Future<void> saveToAPI(BuildContext context) async {
+    createWorkoutPlanController
+        .createWorkoutPlanModel
+        .value
+        .goalType = createWorkoutPlanController
+        .createWorkoutPlanModel
+        .value
+        .goalType!
+        .toLowerCase()
+        .replaceAll(' ', '_');
+
+    createWorkoutPlanController.createWorkoutPlanModel.value.workoutTimeMs =
+        ((int.parse(
+                  createWorkoutPlanController
+                          .createWorkoutPlanModel
+                          .value
+                          .workoutTimeMs ??
+                      '0',
+                )) *
+                60000)
+            .toString();
+
+    log(createWorkoutPlanController.createWorkoutPlanModel.value.toJson());
+    DioClient dioClient = DioClient(baseAPI);
+    try {
+      final response =
+          widget.update == true
+              ? await dioClient.dio.patch(
+                '/api/user/v1/workout/plan/${widget.id}',
+                data:
+                    createWorkoutPlanController.createWorkoutPlanModel.value
+                        .toMap(),
+              )
+              : await dioClient.dio.post(
+                workoutPlanPath,
+                data:
+                    createWorkoutPlanController.createWorkoutPlanModel.value
+                        .toMap(),
+              );
+      printResponse(response);
+      if (response.statusCode == 201 || response.statusCode == 200) {
+        final GetWorkoutPlans generatedWorkoutPlan = GetWorkoutPlans.fromMap(
+          response.data,
+        );
+        createWorkoutPlanController.workOutPlan.value = generatedWorkoutPlan;
+        widget.pageController.nextPage(
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeIn,
+        );
+        toastification.show(
+          context: context,
+          title: Text(response.data['message']),
+          type: ToastificationType.success,
+          autoCloseDuration: const Duration(seconds: 3),
+        );
+        allInfoController.dataAsync();
+      }
+    } on DioException catch (e) {
+      log(e.toString());
+      if (e.response != null) {
+        printResponse(e.response!);
+        Fluttertoast.showToast(msg: e.response?.data['message']);
+      }
+    }
   }
 }

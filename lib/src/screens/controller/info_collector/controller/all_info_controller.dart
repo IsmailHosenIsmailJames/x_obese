@@ -26,7 +26,7 @@ class AllInfoController extends GetxController {
   ]);
   RxList<MarathonModel> marathonList = RxList<MarathonModel>([]);
   RxList<GetWorkoutPlans> getWorkoutPlansList =
-      (<GetWorkoutPlans>[GetWorkoutPlans()]).obs;
+      (<GetWorkoutPlans>[GetWorkoutPlans(id: 'init')]).obs;
   RxList<GetBlogModel> getBlogList = RxList<GetBlogModel>([]);
 
   Future<dio.Response?> updateUserInfo(dio.FormData data) async {
@@ -106,7 +106,7 @@ class AllInfoController extends GetxController {
       if (response.statusCode == 200) {
         List workoutPlans = response.data['data'];
         if (workoutPlans.isNotEmpty) {
-          getWorkoutPlansList.value = [GetWorkoutPlans()];
+          getWorkoutPlansList.value = [GetWorkoutPlans(id: 'init')];
           for (var workoutPlan in workoutPlans) {
             getWorkoutPlansList.add(GetWorkoutPlans.fromMap(workoutPlan));
           }

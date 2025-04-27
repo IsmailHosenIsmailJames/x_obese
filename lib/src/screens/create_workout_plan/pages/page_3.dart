@@ -1,20 +1,16 @@
 import 'dart:developer';
 
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:x_obese/src/apis/apis_url.dart';
-import 'package:x_obese/src/apis/middleware/jwt_middleware.dart';
 import 'package:x_obese/src/screens/controller/info_collector/controller/all_info_controller.dart';
 import 'package:x_obese/src/screens/controller/info_collector/model/all_info_model.dart';
 import 'package:x_obese/src/screens/create_workout_plan/controller/create_workout_plan_controller.dart';
 import 'package:x_obese/src/screens/create_workout_plan/model/create_workout_plan_model.dart';
 import 'package:x_obese/src/theme/colors.dart';
 import 'package:x_obese/src/widgets/back_button.dart';
-import 'package:toastification/toastification.dart';
 
 class CreateWorkoutPlanPage3 extends StatefulWidget {
   final PageController pageController;
@@ -83,41 +79,58 @@ class _CreateWorkoutPlanPage3State extends State<CreateWorkoutPlanPage3> {
                       allInfoUser: allInfoController.allInfo.value,
                       startDate:
                           createWorkoutPlanController
-                              .createWorkoutPlanModel
+                              .workOutPlan
                               .value
-                              .startDate ??
+                              ?.startDate ??
                           DateTime.now(),
                       endDate:
                           createWorkoutPlanController
-                              .createWorkoutPlanModel
+                              .workOutPlan
                               .value
-                              .endDate ??
+                              ?.endDate ??
                           DateTime.now(),
-                      userBMI: createWorkoutPlanController.userBMI.toString(),
+                      userBMI:
+                          createWorkoutPlanController.workOutPlan.value?.bmi ??
+                          '',
                       goalType:
                           createWorkoutPlanController
-                              .createWorkoutPlanModel
+                              .workOutPlan
                               .value
-                              .goalType ??
+                              ?.goalType ??
                           '',
                       weightGoal:
-                          createWorkoutPlanController
-                              .createWorkoutPlanModel
-                              .value
-                              .weightGoal ??
-                          '',
+                          (createWorkoutPlanController
+                                      .workOutPlan
+                                      .value
+                                      ?.weightGoal ??
+                                  '')
+                              .toString(),
                       workoutDays:
                           createWorkoutPlanController
-                              .createWorkoutPlanModel
+                              .workOutPlan
                               .value
-                              .workoutDays ??
+                              ?.workoutDays ??
                           '',
                       workoutTime:
                           createWorkoutPlanController
-                              .createWorkoutPlanModel
+                              .workOutPlan
                               .value
-                              .workoutTimeMs ??
+                              ?.workoutTimeMs ??
                           '',
+                      calorieBairn:
+                          (createWorkoutPlanController
+                                      .workOutPlan
+                                      .value
+                                      ?.caloriesGoal ??
+                                  '0')
+                              .toString(),
+                      daysTotal:
+                          (createWorkoutPlanController
+                                      .workOutPlan
+                                      .value
+                                      ?.caloriesGoal ??
+                                  '0')
+                              .toString(),
                       context: context,
                       controller:
                           createWorkoutPlanController.createWorkoutPlanModel,
@@ -130,8 +143,8 @@ class _CreateWorkoutPlanPage3State extends State<CreateWorkoutPlanPage3> {
                 width: double.infinity,
                 height: 50,
                 child: ElevatedButton(
-                  onPressed: () async {
-                    await saveToAPI(context);
+                  onPressed: () {
+                    Get.back();
                   },
                   child: const Text('Done'),
                 ),
@@ -141,65 +154,6 @@ class _CreateWorkoutPlanPage3State extends State<CreateWorkoutPlanPage3> {
         ),
       ),
     );
-  }
-
-  Future<void> saveToAPI(BuildContext context) async {
-    createWorkoutPlanController
-        .createWorkoutPlanModel
-        .value
-        .goalType = createWorkoutPlanController
-        .createWorkoutPlanModel
-        .value
-        .goalType!
-        .toLowerCase()
-        .replaceAll(' ', '_');
-
-    createWorkoutPlanController.createWorkoutPlanModel.value.workoutTimeMs =
-        ((int.parse(
-                  createWorkoutPlanController
-                          .createWorkoutPlanModel
-                          .value
-                          .workoutTimeMs ??
-                      '0',
-                )) *
-                60000)
-            .toString();
-
-    log(createWorkoutPlanController.createWorkoutPlanModel.value.toJson());
-    DioClient dioClient = DioClient(baseAPI);
-    try {
-      final response =
-          widget.update == true
-              ? await dioClient.dio.patch(
-                '/api/user/v1/workout/plan/${widget.id}',
-                data:
-                    createWorkoutPlanController.createWorkoutPlanModel.value
-                        .toMap(),
-              )
-              : await dioClient.dio.post(
-                workoutPlanPath,
-                data:
-                    createWorkoutPlanController.createWorkoutPlanModel.value
-                        .toMap(),
-              );
-      printResponse(response);
-      if (response.statusCode == 201 || response.statusCode == 200) {
-        Get.back();
-        toastification.show(
-          context: context,
-          title: Text(response.data['message']),
-          type: ToastificationType.success,
-          autoCloseDuration: const Duration(seconds: 3),
-        );
-        allInfoController.dataAsync();
-      }
-    } on DioException catch (e) {
-      log(e.toString());
-      if (e.response != null) {
-        printResponse(e.response!);
-        Fluttertoast.showToast(msg: e.response?.data['message']);
-      }
-    }
   }
 }
 
@@ -213,6 +167,8 @@ Widget workoutPlanOverview({
   required String weightGoal,
   required String workoutDays,
   required String workoutTime,
+  required String calorieBairn,
+  required String daysTotal,
   Rx<CreateWorkoutPlanModel>? controller,
 }) {
   log(startDate.toString());
@@ -355,7 +311,7 @@ Widget workoutPlanOverview({
                     Row(
                       children: [
                         Text(
-                          '100 ',
+                          '$daysTotal ',
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w500,
@@ -418,7 +374,7 @@ Widget workoutPlanOverview({
                     Row(
                       children: [
                         Text(
-                          '300 ',
+                          '$calorieBairn ',
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w500,

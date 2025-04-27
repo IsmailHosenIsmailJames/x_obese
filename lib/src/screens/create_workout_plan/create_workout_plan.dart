@@ -39,7 +39,11 @@ class _CreateWorkoutPlanState extends State<CreateWorkoutPlan> {
         physics: const NeverScrollableScrollPhysics(),
         children: [
           CreateWorkoutPlanPage1(pageController: pageController),
-          CreateWorkoutPlanPage2(pageController: pageController),
+          CreateWorkoutPlanPage2(
+            pageController: pageController,
+            update: widget.createWorkoutPlanModel != null,
+            id: widget.id,
+          ),
           CreateWorkoutPlanPage3(
             pageController: pageController,
             update: widget.createWorkoutPlanModel != null,

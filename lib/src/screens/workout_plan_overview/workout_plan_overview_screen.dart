@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
@@ -27,6 +29,7 @@ class _WorkoutPlanOverviewScreenState extends State<WorkoutPlanOverviewScreen> {
   AllInfoController allInfoController = Get.find();
   @override
   Widget build(BuildContext context) {
+    log(widget.getWorkoutPlansList.first.toJson());
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -84,6 +87,12 @@ class _WorkoutPlanOverviewScreenState extends State<WorkoutPlanOverviewScreen> {
                                 ) /
                                 60000)
                             .toInt()
+                            .toString(),
+                    daysTotal:
+                        (widget.getWorkoutPlansList.first.totalDays ?? '')
+                            .toString(),
+                    calorieBairn:
+                        (widget.getWorkoutPlansList.first.caloriesGoal ?? '')
                             .toString(),
                   ),
                   const Gap(20),
