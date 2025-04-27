@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +24,7 @@ class LiveActivityPage extends StatefulWidget {
   final workout_calculator.ActivityType workoutType;
   final MarathonUserModel? marathonUserModel;
   final FullMarathonDataModel? marathonData;
-  final LatLng initialLatLon;
+  final Position initialLatLon;
   const LiveActivityPage({
     super.key,
     required this.workoutType,
@@ -43,16 +42,8 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
   final Completer<GoogleMapController> googleMapController =
       Completer<GoogleMapController>();
   double distanceEveryPaused = 0;
-  List<Position> latLonOfPositions = [];
+  late List<Position> latLonOfPositions = [widget.initialLatLon];
   int workoutDurationSec = 1;
-  late Map<String, Marker> markersSet = {
-    'start': Marker(
-      markerId: const MarkerId('start'),
-      infoWindow: InfoWindow(title: '${widget.workoutType} Starting point'),
-      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
-      position: widget.initialLatLon,
-    ),
-  };
 
   late StreamSubscription streamSubscription;
 
@@ -61,14 +52,8 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
     streamSubscription = Geolocator.getPositionStream(
       locationSettings: AndroidSettings(accuracy: LocationAccuracy.high),
     ).listen((event) async {
-      log(event.accuracy.toString());
       if (!isPaused) {
         latLonOfPositions.add(event);
-        markersSet['end'] = Marker(
-          markerId: const MarkerId('end'),
-          infoWindow: const InfoWindow(title: 'Your position'),
-          position: LatLng(event.latitude, event.longitude),
-        );
         final controller = await googleMapController.future;
         controller.animateCamera(
           CameraUpdate.newLatLngZoom(
@@ -144,7 +129,10 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
                 children: [
                   GoogleMap(
                     initialCameraPosition: CameraPosition(
-                      target: widget.initialLatLon,
+                      target: LatLng(
+                        widget.initialLatLon.latitude,
+                        widget.initialLatLon.longitude,
+                      ),
                       zoom: 16.5,
                     ),
 
@@ -155,7 +143,31 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
                       workoutCalculationResult.filteredPath,
                     ),
                     zoomControlsEnabled: false,
-                    markers: markersSet.values.toSet(),
+                    markers: {
+                      Marker(
+                        markerId: const MarkerId('start'),
+                        infoWindow: InfoWindow(
+                          title: '${widget.workoutType} Starting point',
+                        ),
+                        icon: BitmapDescriptor.defaultMarkerWithHue(
+                          BitmapDescriptor.hueBlue,
+                        ),
+                        position: LatLng(
+                          latLonOfPositions.first.latitude,
+                          latLonOfPositions.first.longitude,
+                        ),
+                      ),
+                      Marker(
+                        markerId: const MarkerId('start'),
+                        infoWindow: InfoWindow(
+                          title: '${widget.workoutType} Starting point',
+                        ),
+                        position: LatLng(
+                          latLonOfPositions.last.latitude,
+                          latLonOfPositions.last.longitude,
+                        ),
+                      ),
+                    },
                   ),
                   Column(
                     children: [
@@ -255,7 +267,7 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
                                   ),
                                   const Gap(5),
                                   Text(
-                                    '${(workoutCalculationResult.averageSpeed * 3.6).toPrecision(2)} km/h',
+                                    '${((latLonOfPositions.last.speed == 0.0 ? workoutCalculationResult.averageSpeed : latLonOfPositions.last.speed) * 3.6).toPrecision(2)} km/h',
                                     style: const TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w400,
@@ -364,7 +376,6 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
                                         MyAppColors.transparentGray,
                                   ),
                                   onPressed: () {
-                                    log('message');
                                     setState(() {
                                       isPaused = !isPaused;
                                     });

@@ -6,7 +6,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gap/gap.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:x_obese/src/screens/activity/live_activity_page.dart';
 import 'package:x_obese/src/screens/marathon/details_marathon/model/full_marathon_data_model.dart';
 import 'package:x_obese/src/screens/marathon/models/marathon_user_model.dart';
@@ -290,7 +289,7 @@ class _ActivityPageState extends State<ActivityPage> {
       await Get.to(
         () => LiveActivityPage(
           workoutType: selectedMode,
-          initialLatLon: LatLng(position.latitude, position.longitude),
+          initialLatLon: position,
           marathonData: widget.marathonData,
           marathonUserModel: widget.marathonUserModel,
         ),
