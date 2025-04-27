@@ -59,7 +59,7 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
   @override
   void initState() {
     streamSubscription = Geolocator.getPositionStream(
-      locationSettings: AndroidSettings(accuracy: LocationAccuracy.best),
+      locationSettings: AndroidSettings(accuracy: LocationAccuracy.high),
     ).listen((event) async {
       log(event.accuracy.toString());
       if (!isPaused) {

@@ -198,57 +198,7 @@ class _ActivityPageState extends State<ActivityPage> {
                           backgroundColor: MyAppColors.transparentGray,
                         ),
                         onPressed: () async {
-                          requestTime++;
-                          showLoadingPopUp(
-                            context,
-                            loadingText: 'Getting your location...',
-                          );
-                          LocationPermission status =
-                              await Geolocator.checkPermission();
-                          log(status.toString());
-                          if (status == LocationPermission.denied) {
-                            status = await Geolocator.requestPermission();
-
-                            if (status == LocationPermission.denied &&
-                                requestTime > 2) {
-                              Fluttertoast.showToast(
-                                msg: 'Location Permission is Required',
-                              );
-                              await Geolocator.openAppSettings();
-                            }
-                          }
-                          if (status == LocationPermission.deniedForever) {
-                            Fluttertoast.showToast(
-                              msg: 'Location Permission is Required',
-                            );
-                            await Geolocator.openAppSettings();
-                          }
-                          status = await Geolocator.checkPermission();
-                          if (status == LocationPermission.whileInUse ||
-                              status == LocationPermission.always) {
-                            Position position =
-                                await Geolocator.getCurrentPosition();
-                            Navigator.pop(context);
-                            await Get.to(
-                              () => LiveActivityPage(
-                                workoutType: selectedMode,
-                                initialLatLon: LatLng(
-                                  position.latitude,
-                                  position.longitude,
-                                ),
-                                marathonData: widget.marathonData,
-                                marathonUserModel: widget.marathonUserModel,
-                              ),
-                            );
-
-                            requestTime = 0;
-                            return;
-                          } else {
-                            Fluttertoast.showToast(
-                              msg: 'Location Permission is Required',
-                            );
-                          }
-                          Navigator.pop(context);
+                          getLocationAndStartActivity();
                         },
                         icon: SvgPicture.string(
                           '''<svg width="33" height="32" viewBox="0 0 33 32" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -281,5 +231,76 @@ class _ActivityPageState extends State<ActivityPage> {
         ),
       ),
     );
+  }
+
+  getLocationAndStartActivity() async {
+    requestTime++;
+    showLoadingPopUp(context, loadingText: 'Getting your location...');
+    LocationPermission status = await Geolocator.checkPermission();
+    log(status.toString());
+    if (status == LocationPermission.denied) {
+      status = await Geolocator.requestPermission();
+
+      if (status == LocationPermission.denied && requestTime > 2) {
+        Fluttertoast.showToast(msg: 'Location Permission is Required');
+        await Geolocator.openLocationSettings();
+      }
+    }
+    if (status == LocationPermission.deniedForever) {
+      Fluttertoast.showToast(msg: 'Location Permission is Required');
+      await Geolocator.openLocationSettings();
+    }
+    status = await Geolocator.checkPermission();
+    if (status == LocationPermission.whileInUse ||
+        status == LocationPermission.always) {
+      Position position = await Geolocator.getCurrentPosition(
+        locationSettings: AndroidSettings(accuracy: LocationAccuracy.high),
+      );
+      if (position.accuracy > 50) {
+        Navigator.pop(context);
+        showDialog(
+          context: context,
+          builder:
+              (context) => AlertDialog(
+                insetPadding: const EdgeInsets.all(10),
+                title: const Text('The GPS signal is week!'),
+                content: Text(
+                  'We need to have better GPS signal. Go open sky for get best GPS signal. Found noise around ${position.accuracy.toPrecision(2)} meter',
+                ),
+                actions: [
+                  ElevatedButton.icon(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: MyAppColors.third,
+                    ),
+                    onPressed: () {
+                      Navigator.pop(context);
+                      getLocationAndStartActivity();
+                    },
+                    label: const Text(
+                      'Try Again',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ],
+              ),
+        );
+        return;
+      }
+      Navigator.pop(context);
+      await Get.to(
+        () => LiveActivityPage(
+          workoutType: selectedMode,
+          initialLatLon: LatLng(position.latitude, position.longitude),
+          marathonData: widget.marathonData,
+          marathonUserModel: widget.marathonUserModel,
+        ),
+      );
+
+      requestTime = 0;
+      return;
+    } else {
+      Fluttertoast.showToast(msg: 'Location Permission is Required');
+    }
+    Navigator.pop(context);
   }
 }
