@@ -9,6 +9,7 @@ import 'package:x_obese/src/resources/svg_string.dart';
 import 'package:x_obese/src/screens/controller/info_collector/controller/all_info_controller.dart';
 import 'package:x_obese/src/screens/blog/blog_list_view.dart';
 import 'package:x_obese/src/screens/create_workout_plan/create_workout_plan.dart';
+import 'package:x_obese/src/screens/create_workout_plan/model/get_workout_plans.dart';
 import 'package:x_obese/src/screens/marathon/marathon_page.dart';
 import 'package:x_obese/src/screens/settings/personal_details_view.dart';
 import 'package:x_obese/src/screens/workout_plan_overview/workout_plan_overview_screen.dart';
@@ -197,6 +198,8 @@ class _HomePageState extends State<HomePage> {
                 );
               } else if (allInfoController.getWorkoutPlansList.isNotEmpty &&
                   allInfoController.getWorkoutPlansList.first.id != null) {
+                GetWorkoutPlans first =
+                    allInfoController.getWorkoutPlansList.first;
                 return GestureDetector(
                   onTap: () {
                     Get.to(
@@ -223,14 +226,16 @@ class _HomePageState extends State<HomePage> {
                                 ),
                               ),
                               const Gap(10),
-                              Text(
-                                '1/3 Weeks',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500,
-                                  color: MyAppColors.third,
+                              if (first.startDate != null &&
+                                  first.endDate != null)
+                                Text(
+                                  '${getWeekStatus(first)} Weeks',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                    color: MyAppColors.third,
+                                  ),
                                 ),
-                              ),
                               const Spacer(),
                               arrowIcon,
                             ],
@@ -446,6 +451,15 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
     );
+  }
+
+  String getWeekStatus(GetWorkoutPlans plan) {
+    DateTime start = plan.startDate!;
+    DateTime end = plan.endDate!;
+    int totalDays = start.difference(end).inDays.abs();
+    int currentDays = start.difference(DateTime.now()).inDays.abs() + 1;
+    if (totalDays < currentDays) currentDays = totalDays;
+    return '${(currentDays / 7).ceil()}/${(totalDays / 7).ceil()}';
   }
 }
 
