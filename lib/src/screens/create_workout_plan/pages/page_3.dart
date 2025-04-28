@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:x_obese/src/apis/apis_url.dart';
 import 'package:x_obese/src/screens/controller/info_collector/controller/all_info_controller.dart';
 import 'package:x_obese/src/screens/controller/info_collector/model/all_info_model.dart';
 import 'package:x_obese/src/screens/create_workout_plan/controller/create_workout_plan_controller.dart';
@@ -32,22 +31,12 @@ class _CreateWorkoutPlanPage3State extends State<CreateWorkoutPlanPage3> {
   AllInfoController allInfoController = Get.find();
   @override
   void initState() {
-    DateTime startDate = DateTime.now();
-    DateTime endDate = DateTime.now().add(const Duration(days: 365));
-    createWorkoutPlanController.createWorkoutPlanModel.value.startDate ??=
-        startDate;
-    createWorkoutPlanController.createWorkoutPlanModel.value.endDate ??=
-        endDate;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    log(
-      widget.update == true
-          ? '/api/user/v1/workout/plan/${widget.id}'
-          : workoutPlanPath,
-    );
+    log(createWorkoutPlanController.workOutPlan.value?.toJson() ?? "Empty");
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -59,10 +48,7 @@ class _CreateWorkoutPlanPage3State extends State<CreateWorkoutPlanPage3> {
               Row(
                 children: [
                   getBackButton(context, () {
-                    widget.pageController.previousPage(
-                      duration: const Duration(milliseconds: 300),
-                      curve: Curves.easeIn,
-                    );
+                    Get.back();
                   }),
                   const Gap(55),
                   const Text(
@@ -111,12 +97,12 @@ class _CreateWorkoutPlanPage3State extends State<CreateWorkoutPlanPage3> {
                               .value
                               ?.workoutDays ??
                           '',
-                      workoutTime:
+                      workoutTimeMs:
                           createWorkoutPlanController
                               .workOutPlan
                               .value
                               ?.workoutTimeMs ??
-                          '',
+                          '0',
                       calorieBairn:
                           (createWorkoutPlanController
                                       .workOutPlan
@@ -166,7 +152,7 @@ Widget workoutPlanOverview({
   required String goalType,
   required String weightGoal,
   required String workoutDays,
-  required String workoutTime,
+  required String workoutTimeMs,
   required String calorieBairn,
   required String daysTotal,
   Rx<CreateWorkoutPlanModel>? controller,
@@ -346,7 +332,7 @@ Widget workoutPlanOverview({
                       Row(
                         children: [
                           Text(
-                            '$workoutTime ',
+                            '${(int.parse(workoutTimeMs) / 60000).toInt()} ',
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w500,

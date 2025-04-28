@@ -10,6 +10,7 @@ import 'package:x_obese/src/apis/apis_url.dart';
 import 'package:x_obese/src/apis/middleware/jwt_middleware.dart';
 import 'package:x_obese/src/screens/controller/info_collector/controller/all_info_controller.dart';
 import 'package:x_obese/src/screens/create_workout_plan/controller/create_workout_plan_controller.dart';
+import 'package:x_obese/src/screens/create_workout_plan/model/create_workout_plan_model.dart';
 import 'package:x_obese/src/screens/create_workout_plan/model/get_workout_plans.dart';
 import 'package:x_obese/src/theme/colors.dart';
 import 'package:x_obese/src/widgets/back_button.dart';
@@ -50,6 +51,12 @@ class _CreateWorkoutPlanPage2State extends State<CreateWorkoutPlanPage2> {
       createWorkoutPlanController.createWorkoutPlanModel.value.workoutTimeMs ??
           'Not Found',
     );
+    createWorkoutPlanController.createWorkoutPlanModel.value.startDate ??=
+        DateTime.now();
+    createWorkoutPlanController
+        .createWorkoutPlanModel
+        .value
+        .endDate ??= DateTime.now().add(const Duration(days: 365));
     createWorkoutPlanController.createWorkoutPlanModel.value.workoutTimeMs ??=
         '40';
 
@@ -206,7 +213,7 @@ class _CreateWorkoutPlanPage2State extends State<CreateWorkoutPlanPage2> {
                                     .value
                                     .workoutDays = workoutDaysString.substring(
                                   0,
-                                  workoutDaysString.length - 1,
+                                  workoutDaysString.length,
                                 );
                                 setState(() {
                                   log(
@@ -494,48 +501,34 @@ class _CreateWorkoutPlanPage2State extends State<CreateWorkoutPlanPage2> {
   }
 
   Future<void> saveToAPI(BuildContext context) async {
-    createWorkoutPlanController
-        .createWorkoutPlanModel
-        .value
-        .goalType = createWorkoutPlanController
-        .createWorkoutPlanModel
-        .value
-        .goalType!
+    CreateWorkoutPlanModel createWorkoutPlanModel =
+        createWorkoutPlanController.createWorkoutPlanModel.value.copyWith();
+    createWorkoutPlanModel.goalType = createWorkoutPlanModel.goalType!
         .toLowerCase()
         .replaceAll(' ', '_');
 
-    createWorkoutPlanController.createWorkoutPlanModel.value.workoutTimeMs =
-        ((int.parse(
-                  createWorkoutPlanController
-                          .createWorkoutPlanModel
-                          .value
-                          .workoutTimeMs ??
-                      '0',
-                )) *
-                60000)
+    createWorkoutPlanModel.workoutTimeMs =
+        ((int.parse(createWorkoutPlanModel.workoutTimeMs ?? '0')) * 60000)
             .toString();
 
-    log(createWorkoutPlanController.createWorkoutPlanModel.value.toJson());
+    log(createWorkoutPlanModel.toJson(), name: 'Save Workout Plan Data');
     DioClient dioClient = DioClient(baseAPI);
     try {
+      log(createWorkoutPlanModel.toJson(), name: 'Save Workout Plan');
       final response =
           widget.update == true
               ? await dioClient.dio.patch(
                 '/api/user/v1/workout/plan/${widget.id}',
-                data:
-                    createWorkoutPlanController.createWorkoutPlanModel.value
-                        .toMap(),
+                data: createWorkoutPlanModel.toMap(),
               )
               : await dioClient.dio.post(
                 workoutPlanPath,
-                data:
-                    createWorkoutPlanController.createWorkoutPlanModel.value
-                        .toMap(),
+                data: createWorkoutPlanModel.toMap(),
               );
       printResponse(response);
       if (response.statusCode == 201 || response.statusCode == 200) {
         final GetWorkoutPlans generatedWorkoutPlan = GetWorkoutPlans.fromMap(
-          response.data,
+          response.data['data'],
         );
         createWorkoutPlanController.workOutPlan.value = generatedWorkoutPlan;
         widget.pageController.nextPage(

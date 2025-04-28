@@ -77,17 +77,9 @@ class _WorkoutPlanOverviewScreenState extends State<WorkoutPlanOverviewScreen> {
                         '0',
                     workoutDays:
                         widget.getWorkoutPlansList.first.workoutDays ?? '',
-                    workoutTime:
-                        (int.parse(
-                                  widget
-                                          .getWorkoutPlansList
-                                          .first
-                                          .workoutTimeMs ??
-                                      '0',
-                                ) /
-                                60000)
-                            .toInt()
-                            .toString(),
+                    workoutTimeMs:
+                        widget.getWorkoutPlansList.first.workoutTimeMs ?? '0',
+
                     daysTotal:
                         (widget.getWorkoutPlansList.first.totalDays ?? '')
                             .toString(),
