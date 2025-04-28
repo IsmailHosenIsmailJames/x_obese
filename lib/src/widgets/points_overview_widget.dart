@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -182,6 +184,21 @@ Column pointsOverviewWidget(
 }
 
 PieChart getPieChart(AllInfoController controller) {
+  double targetCalBran =
+      controller.getWorkoutPlansList.value.first.caloriesGoal
+          ?.toDouble()
+          .abs() ??
+      1.0;
+  if (!(targetCalBran > 0)) targetCalBran = 1;
+
+  double targetWorkout =
+      (controller.getWorkoutPlansList.value.first.weightGoal ?? 0).toDouble();
+  if (!(targetWorkout > 0)) targetWorkout = 1;
+
+  double targetHartPoints = 50;
+  log(controller.getWorkoutPlansList.value.first.toJson());
+
+  log(targetCalBran.toString());
   return PieChart(
     PieChartData(
       startDegreeOffset: 180,
@@ -191,14 +208,33 @@ PieChart getPieChart(AllInfoController controller) {
         touchCallback: (p0, p1) {
           final touchedSection = p1?.touchedSection?.touchedSection;
           if (touchedSection != null) {
+            log(touchedSection.title.toString());
             if (touchedSection.title.toString() == 'Steps') {
               controller.selectedPoints.value =
                   controller.stepsCount.value.toDouble();
               controller.selectedCategory.value =
                   touchedSection.title.toString();
-            } else {
+            } else if (touchedSection.title.toString() == 'Heart Points') {
+              controller.selectedPoints.value = double.parse(
+                controller.workStatus.value.heartPts ?? '0',
+              ).toPrecision(2);
+              controller.selectedCategory.value =
+                  touchedSection.title.toString();
+            } else if (touchedSection.title.toString() == 'Calories') {
+              controller.selectedPoints.value = double.parse(
+                controller.workStatus.value.calories ?? '0',
+              ).toPrecision(2);
+              controller.selectedCategory.value =
+                  touchedSection.title.toString();
+            } else if (touchedSection.title.toString() == 'Duration') {
               controller.selectedPoints.value =
-                  touchedSection.value.toInt() - 1;
+                  (controller.workStatus.value.durationMs ?? 0).toPrecision(2);
+              controller.selectedCategory.value =
+                  touchedSection.title.toString();
+            } else {
+              controller.selectedPoints.value = touchedSection.value
+                  .toDouble()
+                  .toPrecision(2);
               controller.selectedCategory.value =
                   touchedSection.title.toString();
             }
@@ -212,7 +248,9 @@ PieChart getPieChart(AllInfoController controller) {
       sections: [
         PieChartSectionData(
           value:
-              double.parse(controller.workStatus.value.heartPts ?? '0.0') + 1,
+              (double.parse(controller.workStatus.value.heartPts ?? '0.0') +
+                  1) /
+              targetHartPoints,
           color: Colors.yellow,
           radius: controller.selectedCategory.value == 'Heart Points' ? 27 : 20,
           title: 'Heart Points',
@@ -220,14 +258,16 @@ PieChart getPieChart(AllInfoController controller) {
         ),
         PieChartSectionData(
           value:
-              (controller.workStatus.value.durationMs?.toDouble() ?? 0.0) + 1,
+              ((controller.workStatus.value.durationMs?.toDouble() ?? 1) +
+                  0.01) /
+              targetWorkout,
           color: Colors.green,
           radius: controller.selectedCategory.value == 'Duration' ? 27 : 20,
           title: 'Duration',
           showTitle: false,
         ),
         PieChartSectionData(
-          value: ((controller.stepsCount.toDouble() / 6000) + 1),
+          value: ((controller.stepsCount.toDouble() / 6000) + 0.1),
           color: Colors.red,
           radius: controller.selectedCategory.value == 'Steps' ? 27 : 20,
           title: 'Steps',
@@ -236,7 +276,9 @@ PieChart getPieChart(AllInfoController controller) {
 
         PieChartSectionData(
           value:
-              double.parse(controller.workStatus.value.calories ?? '0.0') + 1,
+              (double.parse(controller.workStatus.value.calories ?? '0.0') +
+                  1) /
+              (targetCalBran),
           color: Colors.blue,
           title: 'Calories',
           radius: controller.selectedCategory.value == 'Calories' ? 27 : 20,
