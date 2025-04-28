@@ -99,8 +99,7 @@ Column pointsOverviewWidget(
                         svg: calorieIconBlue,
                         title: 'Calories',
                         points:
-                            controller.workStatus.value.first.calories
-                                ?.toString() ??
+                            controller.workStatus.value.calories?.toString() ??
                             '0',
                         target:
                             (controller
@@ -140,10 +139,9 @@ Column pointsOverviewWidget(
                     context: context,
                     svg: heartIconSVGYellow,
                     title: 'Heart Points',
-                    points:
-                        controller.workStatus.value.first.heartPts
-                            ?.toString() ??
-                        '0',
+                    points: double.parse(
+                      controller.workStatus.value.heartPts ?? '0',
+                    ).toStringAsFixed(2),
                   ),
                 ),
               ),
@@ -163,8 +161,9 @@ Column pointsOverviewWidget(
                     svg: workOutIconSVGGreen,
                     title: 'Workout Time',
                     points:
-                        controller.workStatus.value.first.durationMs
-                            ?.toString() ??
+                        controller.workStatus.value.durationMs?.toStringAsFixed(
+                          2,
+                        ) ??
                         '0',
                     target:
                         (int.parse(
@@ -193,7 +192,8 @@ PieChart getPieChart(AllInfoController controller) {
           final touchedSection = p1?.touchedSection?.touchedSection;
           if (touchedSection != null) {
             if (touchedSection.title.toString() == 'Steps') {
-              controller.selectedPoints.value = controller.stepsCount.value;
+              controller.selectedPoints.value =
+                  controller.stepsCount.value.toDouble();
               controller.selectedCategory.value =
                   touchedSection.title.toString();
             } else {
@@ -212,8 +212,7 @@ PieChart getPieChart(AllInfoController controller) {
       sections: [
         PieChartSectionData(
           value:
-              (controller.workStatus.value.first.heartPts?.toDouble() ?? 0.0) +
-              1,
+              double.parse(controller.workStatus.value.heartPts ?? '0.0') + 1,
           color: Colors.yellow,
           radius: controller.selectedCategory.value == 'Heart Points' ? 27 : 20,
           title: 'Heart Points',
@@ -221,9 +220,7 @@ PieChart getPieChart(AllInfoController controller) {
         ),
         PieChartSectionData(
           value:
-              (controller.workStatus.value.first.durationMs?.toDouble() ??
-                  0.0) +
-              1,
+              (controller.workStatus.value.durationMs?.toDouble() ?? 0.0) + 1,
           color: Colors.green,
           radius: controller.selectedCategory.value == 'Duration' ? 27 : 20,
           title: 'Duration',
@@ -239,8 +236,7 @@ PieChart getPieChart(AllInfoController controller) {
 
         PieChartSectionData(
           value:
-              (controller.workStatus.value.first.calories?.toDouble() ?? 0.0) +
-              1,
+              double.parse(controller.workStatus.value.calories ?? '0.0') + 1,
           color: Colors.blue,
           title: 'Calories',
           radius: controller.selectedCategory.value == 'Calories' ? 27 : 20,

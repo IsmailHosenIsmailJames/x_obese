@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:dio/dio.dart' as dio;
@@ -9,6 +12,7 @@ class ActivityController extends GetxController {
 
   Future<dio.Response?> saveActivity(Map data) async {
     try {
+      log(jsonEncode(data), name: 'saveActivity_Data_send');
       final dio.Response response = await dioClient.dio.post(
         '/api/user/v1/workout',
         data: data,

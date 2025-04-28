@@ -15,6 +15,7 @@ import 'package:x_obese/src/core/common/functions/calculate_distance.dart'
     as workout_calculator;
 import 'package:x_obese/src/core/common/functions/format_sec_to_time.dart';
 import 'package:x_obese/src/screens/activity/controller/activity_controller.dart';
+import 'package:x_obese/src/screens/controller/info_collector/controller/all_info_controller.dart';
 import 'package:x_obese/src/screens/marathon/details_marathon/model/full_marathon_data_model.dart';
 import 'package:x_obese/src/screens/marathon/models/marathon_user_model.dart';
 import 'package:x_obese/src/theme/colors.dart';
@@ -94,6 +95,8 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
     WakelockPlus.disable();
     super.dispose();
   }
+
+  AllInfoController allInfoController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -496,17 +499,20 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
           'durationMs': workoutDurationSec * 1000,
         }, widget.marathonData!.data!.marathonUserId!);
         if (res != null) response = res;
-      } else {
-        var res = await activityController.saveActivity({
-          'distance':
-              (distanceEveryPaused + workoutCalculationResult.totalDistance) /
-              1000,
-          'type': widget.workoutType.toString(),
-          'duration': workoutDurationSec * 1000,
-          // "steps": 1000, // optional
-        });
-        if (res != null) response = res;
       }
+      var res = await activityController.saveActivity({
+        'distanceKm':
+            (distanceEveryPaused + workoutCalculationResult.totalDistance) /
+            1000,
+        'type': widget.workoutType.toString(),
+        'durationMs': workoutDurationSec * 1000,
+        // "steps": 1000, // optional
+      });
+
+      allInfoController.dataAsync();
+
+      if (res != null) response = res;
+
       if (response?.statusCode == 200 || response?.statusCode == 201) {
         Navigator.pop(context);
       }

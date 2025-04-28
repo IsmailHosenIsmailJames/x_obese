@@ -13,7 +13,7 @@ import 'package:x_obese/src/screens/marathon/models/marathon_model.dart';
 import 'package:x_obese/src/screens/resources/workout/status.dart';
 
 class AllInfoController extends GetxController {
-  RxInt selectedPoints = 0.obs;
+  RxDouble selectedPoints = 0.0.obs;
   RxString selectedCategory = 'Calories'.obs;
   RxInt stepsCount = 0.obs;
 
@@ -21,9 +21,7 @@ class AllInfoController extends GetxController {
   static Box userBox = Hive.box('user');
 
   Rx<AllInfoModel> allInfo = Rx<AllInfoModel>(AllInfoModel());
-  RxList<WorkStatusModel> workStatus = RxList<WorkStatusModel>([
-    WorkStatusModel(),
-  ]);
+  Rx<WorkStatusModel> workStatus = Rx<WorkStatusModel>(WorkStatusModel());
   RxList<MarathonModel> marathonList = RxList<MarathonModel>([]);
   RxList<GetWorkoutPlans> getWorkoutPlansList =
       (<GetWorkoutPlans>[GetWorkoutPlans(id: 'init')]).obs;
@@ -39,7 +37,7 @@ class AllInfoController extends GetxController {
         return null;
       }
     } on dio.DioException catch (e) {
-      print(e.message);
+      log(e.message.toString());
       if (e.response != null) printResponse(e.response!);
       return null;
     }
@@ -51,25 +49,23 @@ class AllInfoController extends GetxController {
     try {
       DioClient dioClient = DioClient(baseAPI);
       dio.Response response = await dioClient.dio.get(
-        '/api/user/v1/workout/plan',
+        '$getUserWorkoutStatus?view=daily',
       );
       printResponse(response);
       if (response.statusCode == 200) {
-        List allPlans = response.data['data'];
-        if (allPlans.isNotEmpty) {
-          allPlans[0] = WorkStatusModel.fromMap(
-            Map<String, dynamic>.from(allPlans[0]),
+        Map? status = response.data['data'];
+        if (status != null) {
+          final statusModel = WorkStatusModel.fromMap(
+            Map<String, dynamic>.from(status),
           );
-          for (int i = 1; i < allPlans.length; i++) {
-            workStatus.add(
-              WorkStatusModel.fromMap(Map<String, dynamic>.from(allPlans[i])),
-            );
-          }
+
+          workStatus.value = statusModel.copyWith(
+            durationMs: (statusModel.durationMs ?? 0) / 60000,
+          );
+
           selectedCategory.value = 'Calories';
-          selectedPoints.value = workStatus.value.first.calories ?? 0;
+          selectedPoints.value = double.parse(workStatus.value.calories ?? '0');
         }
-      } else {
-        workStatus.value = [WorkStatusModel()];
       }
     } on dio.DioException catch (e) {
       log(e.message ?? '', name: 'Error');
@@ -84,7 +80,6 @@ class AllInfoController extends GetxController {
       dio.Response response = await dioClient.dio.get(
         '/api/marathon/v1/marathon',
       );
-      printResponse(response);
       if (response.statusCode == 200) {
         List marathonListData = response.data['data'];
         userBox.put('marathonList', jsonEncode(marathonListData));
@@ -100,7 +95,6 @@ class AllInfoController extends GetxController {
       }
     }
     try {
-      // get marathon programs
       dio.Response response = await dioClient.dio.get(workoutPlanPath);
       printResponse(response);
       if (response.statusCode == 200) {
@@ -122,9 +116,7 @@ class AllInfoController extends GetxController {
       }
     }
     try {
-      // get marathon programs
       dio.Response response = await dioClient.dio.get(blogPath);
-      printResponse(response);
       if (response.statusCode == 200) {
         List blogList = response.data['data'] ?? [];
         getBlogList.value = [GetBlogModel()];
@@ -132,7 +124,6 @@ class AllInfoController extends GetxController {
           getBlogList.add(GetBlogModel.fromMap(blog));
         }
         getBlogList.removeAt(0);
-        printResponse(response);
       }
     } on dio.DioException catch (e) {
       log(e.message ?? '', name: 'Error');

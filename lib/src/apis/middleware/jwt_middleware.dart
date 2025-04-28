@@ -95,6 +95,7 @@ class DioClient {
   Future<String?> doRefreshToken(String refreshToken) async {
     try {
       final response = await dio.post('/api/auth/v1/token/user');
+      log('/api/auth/v1/token/user');
       printResponse(response);
       if (response.statusCode == 200) {
         String? newAccessToken = response.data['data']['accessToken'];
@@ -164,6 +165,7 @@ void printResponse(Response response) {
     name: 'response_body',
   );
   log(response.statusCode.toString(), name: 'response_status');
+
   try {
     log(
       const JsonEncoder.withIndent('  ').convert(response.requestOptions.data),
