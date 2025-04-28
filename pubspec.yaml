@@ -2,7 +2,7 @@ name: x_obese
 description: "A new fitness app for obese"
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 1.0.3+4
+version: 1.0.4+5
 
 environment:
   sdk: ^3.7.0
