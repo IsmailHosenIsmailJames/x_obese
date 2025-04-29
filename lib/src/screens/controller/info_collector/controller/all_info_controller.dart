@@ -82,7 +82,10 @@ class AllInfoController extends GetxController {
       );
       if (response.statusCode == 200) {
         List marathonListData = response.data['data'];
-        userBox.put('marathonList', jsonEncode(marathonListData));
+        userBox.put(
+          'marathonList',
+          const JsonEncoder.withIndent(' ').convert(marathonListData),
+        );
         marathonList.clear();
         for (var marathon in marathonListData) {
           marathonList.add(MarathonModel.fromMap(marathon));
@@ -98,6 +101,10 @@ class AllInfoController extends GetxController {
       dio.Response response = await dioClient.dio.get(workoutPlanPath);
       printResponse(response);
       if (response.statusCode == 200) {
+        log(
+          const JsonEncoder.withIndent('   ').convert(response.data),
+          name: 'dioClient.dio.get(workoutPlanPath)',
+        );
         List workoutPlans = response.data['data'];
         if (workoutPlans.isNotEmpty) {
           getWorkoutPlansList.value = [GetWorkoutPlans(id: 'init')];

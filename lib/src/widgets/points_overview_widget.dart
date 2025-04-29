@@ -196,9 +196,7 @@ PieChart getPieChart(AllInfoController controller) {
   if (!(targetWorkout > 0)) targetWorkout = 1;
 
   double targetHartPoints = 50;
-  log(controller.getWorkoutPlansList.value.first.toJson());
 
-  log(targetCalBran.toString());
   return PieChart(
     PieChartData(
       startDegreeOffset: 180,

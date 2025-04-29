@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
@@ -29,7 +27,6 @@ class _WorkoutPlanOverviewScreenState extends State<WorkoutPlanOverviewScreen> {
   AllInfoController allInfoController = Get.find();
   @override
   Widget build(BuildContext context) {
-    log(widget.getWorkoutPlansList.first.toJson());
     return Scaffold(
       body: SafeArea(
         child: Column(

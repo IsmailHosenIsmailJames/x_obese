@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_foreground_task/flutter_foreground_task.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -34,16 +35,6 @@ class _NavesPageState extends State<NavesPage> {
   AllInfoController allInfoController = Get.put(AllInfoController());
 
   Future<void> _requestPermissions() async {
-    try {
-      PermissionStatus status = await Permission.activityRecognition.status;
-      if (status.isDenied) {
-        status = await Permission.activityRecognition.request();
-      }
-      log(status.toString(), name: 'Permission status');
-    } catch (e) {
-      log(e.toString(), name: 'Permission error');
-    }
-
     final NotificationPermission notificationPermission =
         await FlutterForegroundTask.checkNotificationPermission();
     if (notificationPermission != NotificationPermission.granted) {
@@ -63,6 +54,20 @@ class _NavesPageState extends State<NavesPage> {
       if (!await FlutterForegroundTask.canScheduleExactAlarms) {
         await FlutterForegroundTask.openAlarmsAndRemindersSettings();
       }
+    }
+    try {
+      bool status = await Permission.activityRecognition.isGranted;
+      if (!status) {
+        PermissionStatus requestStatus =
+            await Permission.activityRecognition.request();
+        if (!requestStatus.isGranted) {
+          Fluttertoast.showToast(msg: 'Please allow access Physical activity');
+          await openAppSettings();
+        }
+      }
+      log(status.toString(), name: 'Permission status');
+    } catch (e) {
+      log(e.toString(), name: 'Permission error');
     }
   }
 
