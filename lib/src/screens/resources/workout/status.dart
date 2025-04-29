@@ -38,7 +38,7 @@ class WorkStatusModel {
     heartPts: json['heartPts'],
     calories: json['calories'],
     distanceKm: json['distanceKm'],
-    durationMs: (json['durationMs']).toDouble(),
+    durationMs: (json['durationMs'])?.toDouble(),
     steps: json['steps'],
   );
 

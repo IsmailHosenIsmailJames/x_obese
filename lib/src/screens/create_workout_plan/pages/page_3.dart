@@ -36,7 +36,6 @@ class _CreateWorkoutPlanPage3State extends State<CreateWorkoutPlanPage3> {
 
   @override
   Widget build(BuildContext context) {
-    log(createWorkoutPlanController.workOutPlan.value?.toJson() ?? "Empty");
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -105,16 +104,16 @@ class _CreateWorkoutPlanPage3State extends State<CreateWorkoutPlanPage3> {
                           '0',
                       calorieBairn:
                           (createWorkoutPlanController
-                                      .workOutPlan
-                                      .value
-                                      ?.caloriesGoal ??
-                                  '0')
-                              .toString(),
+                                  .workOutPlan
+                                  .value
+                                  ?.caloriesGoal ??
+                              0),
+
                       daysTotal:
                           (createWorkoutPlanController
                                       .workOutPlan
                                       .value
-                                      ?.caloriesGoal ??
+                                      ?.totalDays ??
                                   '0')
                               .toString(),
                       context: context,
@@ -153,7 +152,7 @@ Widget workoutPlanOverview({
   required String weightGoal,
   required String workoutDays,
   required String workoutTimeMs,
-  required String calorieBairn,
+  required int calorieBairn,
   required String daysTotal,
   Rx<CreateWorkoutPlanModel>? controller,
 }) {
@@ -230,22 +229,24 @@ Widget workoutPlanOverview({
                 ),
               ],
             ),
-            Row(
-              children: [
-                const Text(
-                  'Wight: ',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-                ),
-                Text(
-                  weightGoal,
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                    color: MyAppColors.third,
+            if (double.tryParse(weightGoal) != null &&
+                double.tryParse(weightGoal)! > 0)
+              Row(
+                children: [
+                  const Text(
+                    'Wight: ',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                   ),
-                ),
-              ],
-            ),
+                  Text(
+                    weightGoal,
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                      color: MyAppColors.third,
+                    ),
+                  ),
+                ],
+              ),
           ],
         ),
       ),
@@ -359,8 +360,9 @@ Widget workoutPlanOverview({
                   children: [
                     Row(
                       children: [
+                        Text('${calorieBairn < 0 ? 'Lose' : 'Gain'} '),
                         Text(
-                          '$calorieBairn ',
+                          '${calorieBairn.abs()} ',
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w500,

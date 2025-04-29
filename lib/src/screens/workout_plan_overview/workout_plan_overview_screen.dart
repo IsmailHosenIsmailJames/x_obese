@@ -81,8 +81,7 @@ class _WorkoutPlanOverviewScreenState extends State<WorkoutPlanOverviewScreen> {
                         (widget.getWorkoutPlansList.first.totalDays ?? '')
                             .toString(),
                     calorieBairn:
-                        (widget.getWorkoutPlansList.first.caloriesGoal ?? '')
-                            .toString(),
+                        widget.getWorkoutPlansList.first.caloriesGoal ?? 0,
                   ),
                   const Gap(20),
                   const Padding(

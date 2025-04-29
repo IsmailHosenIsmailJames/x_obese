@@ -258,7 +258,12 @@ class _CreateWorkoutPlanPage1State extends State<CreateWorkoutPlanPage1> {
                             .value
                             .goalType !=
                         null) {
-                      if (double.tryParse(textEditingController.text) != null) {
+                      if (double.tryParse(textEditingController.text) != null &&
+                          createWorkoutPlanController
+                                  .createWorkoutPlanModel
+                                  .value
+                                  .goalType ==
+                              'Lose Weight'.toLowerCase()) {
                         createWorkoutPlanController
                             .createWorkoutPlanModel
                             .value

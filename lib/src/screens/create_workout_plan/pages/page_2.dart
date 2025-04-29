@@ -472,6 +472,7 @@ class _CreateWorkoutPlanPage2State extends State<CreateWorkoutPlanPage2> {
                             '${mapOfWeekDays[selectedWeekDays[i]]!},';
                       }
                     }
+
                     createWorkoutPlanController
                         .createWorkoutPlanModel
                         .value
