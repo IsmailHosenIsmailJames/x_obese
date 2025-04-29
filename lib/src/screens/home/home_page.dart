@@ -73,46 +73,58 @@ class _HomePageState extends State<HomePage> {
               padding: const EdgeInsets.all(15.0),
               child: Row(
                 children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(100),
-                    child: Container(
-                      height: 40,
-                      width: 40,
-                      color: MyAppColors.transparentGray,
-                      child:
-                          allInfoController.allInfo.value.image == null
-                              ? const Icon(Icons.person, size: 18)
-                              : CachedNetworkImage(
-                                imageUrl:
-                                    allInfoController.allInfo.value.image!,
-                                alignment: Alignment.topCenter,
-                                fit: BoxFit.cover,
-                              ),
-                    ),
-                  ),
-                  const Gap(8),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'Hello 👋',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                      Obx(
-                        () => Text(
-                          allInfoController.allInfo.value.fullName ?? '',
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w300,
-                            color: MyAppColors.mutedGray,
+                  GestureDetector(
+                    onTap: () {
+                      widget.pageController.jumpToPage(3);
+                    },
+                    child: Row(
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(100),
+                          child: Container(
+                            height: 40,
+                            width: 40,
+                            color: MyAppColors.transparentGray,
+                            child:
+                                allInfoController.allInfo.value.image == null
+                                    ? const Icon(Icons.person, size: 18)
+                                    : CachedNetworkImage(
+                                      imageUrl:
+                                          allInfoController
+                                              .allInfo
+                                              .value
+                                              .image!,
+                                      alignment: Alignment.topCenter,
+                                      fit: BoxFit.cover,
+                                    ),
                           ),
                         ),
-                      ),
-                    ],
+                        const Gap(8),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'Hello 👋',
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                            Obx(
+                              () => Text(
+                                allInfoController.allInfo.value.fullName ?? '',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w300,
+                                  color: MyAppColors.mutedGray,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                   const Spacer(),
                   IconButton(

@@ -270,7 +270,7 @@ Widget workoutPlanOverview({
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Text(
-                            (workoutDays.split(',').length + 1).toString(),
+                            (workoutDays.split(',').length).toString(),
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w500,

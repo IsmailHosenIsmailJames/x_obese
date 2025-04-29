@@ -13,37 +13,55 @@ class AuthController extends GetxController {
   Rx<String?> accessToken = Rx(null);
 
   Future<dio.Response?> signup(String phone) async {
-    final response = await dioClient.dio.post(
-      signUpPath,
-      data: {'mobile': phone},
-    );
+    try {
+      final response = await dioClient.dio.post(
+        signUpPath,
+        data: {'mobile': phone},
+      );
 
-    printResponse(response);
+      printResponse(response);
 
-    if (response.statusCode == 200 || response.statusCode == 201) {
-      showToastMessageFromResponse(response);
-      return response;
-    } else {
-      showToastMessageFromResponse(response);
-      return null;
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        showToastMessageFromResponse(response);
+        return response;
+      } else {
+        showToastMessageFromResponse(response);
+        return null;
+      }
+    } on dio.DioException catch (e) {
+      log(e.message ?? 'No Message');
+      if (e.response != null) {
+        showToastMessageFromResponse(e.response!);
+        printResponse(e.response!);
+      }
     }
+    return null;
   }
 
   Future<dio.Response?> login(String phone) async {
-    final response = await dioClient.dio.post(
-      logInPath,
-      data: {'mobile': phone},
-    );
+    try {
+      final response = await dioClient.dio.post(
+        logInPath,
+        data: {'mobile': phone},
+      );
 
-    printResponse(response);
+      printResponse(response);
 
-    if (response.statusCode == 200 || response.statusCode == 201) {
-      showToastMessageFromResponse(response);
-      return response;
-    } else {
-      showToastMessageFromResponse(response);
-      return null;
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        showToastMessageFromResponse(response);
+        return response;
+      } else {
+        showToastMessageFromResponse(response);
+        return null;
+      }
+    } on dio.DioException catch (e) {
+      log(e.message ?? 'No Message');
+      if (e.response != null) {
+        showToastMessageFromResponse(e.response!);
+        printResponse(e.response!);
+      }
     }
+    return null;
   }
 
   Future<dio.Response?> verifyOTP(String otp, String type, String id) async {

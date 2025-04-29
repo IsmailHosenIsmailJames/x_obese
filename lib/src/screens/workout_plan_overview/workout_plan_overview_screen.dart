@@ -127,11 +127,16 @@ class _WorkoutPlanOverviewScreenState extends State<WorkoutPlanOverviewScreen> {
                         },
                       ),
                       selectedDayPredicate: (day) {
+                        final first = widget.getWorkoutPlansList.first;
                         List<String> weekdays =
-                            widget.getWorkoutPlansList.first.workoutDays?.split(
-                              ',',
-                            ) ??
-                            [];
+                            first.workoutDays?.split(',') ?? [];
+                        if (!(first.startDate != null &&
+                                first.endDate != null &&
+                                day.isAfter(first.startDate!) &&
+                                day.isBefore(first.endDate!)) &&
+                            !isSameDay(first.endDate, day)) {
+                          return false;
+                        }
                         return weekdays.contains(
                           DateFormat(DateFormat.WEEKDAY).format(day),
                         );

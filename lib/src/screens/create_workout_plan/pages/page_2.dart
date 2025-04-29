@@ -296,20 +296,24 @@ class _CreateWorkoutPlanPage2State extends State<CreateWorkoutPlanPage2> {
                                   reminderTime;
                               setState(() {});
                             },
-                            child: Text(
-                              reminderTime.format(context),
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                                color: MyAppColors.mutedGray,
-                              ),
+                            child: Row(
+                              children: [
+                                Text(
+                                  reminderTime.format(context),
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                    color: MyAppColors.mutedGray,
+                                  ),
+                                ),
+                                const Gap(10),
+                                Icon(
+                                  Icons.arrow_forward_ios_rounded,
+                                  color: MyAppColors.mutedGray,
+                                  size: 16,
+                                ),
+                              ],
                             ),
-                          ),
-                          const Gap(10),
-                          Icon(
-                            Icons.arrow_forward_ios_rounded,
-                            color: MyAppColors.mutedGray,
-                            size: 16,
                           ),
                         ],
                       ),
@@ -487,6 +491,25 @@ class _CreateWorkoutPlanPage2State extends State<CreateWorkoutPlanPage2> {
                         minute: reminderTime.minute,
                       ),
                     );
+
+                    if (createWorkoutPlanController
+                            .createWorkoutPlanModel
+                            .value
+                            .startDate!
+                            .millisecondsSinceEpoch >
+                        createWorkoutPlanController
+                            .createWorkoutPlanModel
+                            .value
+                            .endDate!
+                            .millisecondsSinceEpoch) {
+                      toastification.show(
+                        context: context,
+                        title: const Text('Start and End date not valid'),
+                        type: ToastificationType.error,
+                        autoCloseDuration: const Duration(seconds: 3),
+                      );
+                      return;
+                    }
 
                     await saveToAPI(context);
                     log(
