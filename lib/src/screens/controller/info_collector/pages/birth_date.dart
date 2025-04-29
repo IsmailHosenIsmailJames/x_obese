@@ -39,7 +39,7 @@ class _BirthDateCollectorState extends State<BirthDateCollector> {
   void initState() {
     if (controller.allInfo.value.birth != null) {
       DateTime birthDate = controller.allInfo.value.birth!;
-      month = birthDate.month;
+      month = birthDate.month - 1;
       day = birthDate.day;
       year = birthDate.year;
     }

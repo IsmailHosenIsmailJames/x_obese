@@ -7,10 +7,10 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:x_obese/src/apis/middleware/jwt_middleware.dart';
 import 'package:x_obese/src/core/common/functions/is_information_fulfilled.dart';
+import 'package:x_obese/src/screens/activity/live_activity_page.dart';
 import 'package:x_obese/src/screens/auth/controller/auth_controller.dart';
 import 'package:x_obese/src/screens/controller/info_collector/info_collector.dart';
 import 'package:x_obese/src/screens/controller/info_collector/model/all_info_model.dart';
@@ -40,7 +40,7 @@ class _OtpPageState extends State<OtpPage> {
   Future<void> checkOTP(String otp) async {
     String id = widget.response.data['data']?['id'] ?? '';
     String type = widget.isSignup ? 'signup' : 'login';
-    if (!(await InternetConnection().hasInternetAccess)) {
+    if (!(await checkConnectivity())) {
       Fluttertoast.showToast(msg: 'Check Internet Connection!');
       return;
     }
@@ -60,6 +60,8 @@ class _OtpPageState extends State<OtpPage> {
         if (refreshToken != null) {
           await prefs.setString('refresh_token', refreshToken);
           log('Saved refresh token', name: 'success');
+        } else {
+          Fluttertoast.showToast(msg: 'Refresh token not found');
         }
 
         dio.Response? userDataResponse = await authController.getUserData(

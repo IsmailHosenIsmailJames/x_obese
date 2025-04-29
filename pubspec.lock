@@ -760,14 +760,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.2.1+1"
-  internet_connection_checker_plus:
-    dependency: "direct main"
-    description:
-      name: internet_connection_checker_plus
-      sha256: eb3a6f03e7b1641589f580993d29aee0b3c4920fc618f7556de359fedb87b02e
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.7.1"
   intl:
     dependency: "direct main"
     description:

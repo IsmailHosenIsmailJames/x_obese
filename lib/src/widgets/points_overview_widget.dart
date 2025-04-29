@@ -244,12 +244,10 @@ PieChart getPieChart(AllInfoController controller) {
         longPressDuration: const Duration(milliseconds: 400),
       ),
       centerSpaceRadius: 40,
-
       sections: [
         PieChartSectionData(
           value:
-              (double.parse(controller.workStatus.value.heartPts ?? '0.0') +
-                  1) /
+              double.parse(controller.workStatus.value.heartPts ?? '0.0') /
               targetHartPoints,
           color: Colors.yellow,
           radius: controller.selectedCategory.value == 'Heart Points' ? 27 : 20,
@@ -258,8 +256,7 @@ PieChart getPieChart(AllInfoController controller) {
         ),
         PieChartSectionData(
           value:
-              (((controller.workStatus.value.durationMs?.toDouble() ?? 1) +
-                  0.01)) /
+              (controller.workStatus.value.durationMs?.toDouble() ?? 1) /
               targetWorkout,
           color: Colors.green,
           radius: controller.selectedCategory.value == 'Duration' ? 27 : 20,
@@ -267,7 +264,7 @@ PieChart getPieChart(AllInfoController controller) {
           showTitle: false,
         ),
         PieChartSectionData(
-          value: ((controller.stepsCount.toDouble() / 6000) + 0.1),
+          value: controller.stepsCount.toDouble() / 6000,
           color: Colors.red,
           radius: controller.selectedCategory.value == 'Steps' ? 27 : 20,
           title: 'Steps',
@@ -276,9 +273,8 @@ PieChart getPieChart(AllInfoController controller) {
 
         PieChartSectionData(
           value:
-              (double.parse(controller.workStatus.value.calories ?? '0.0') +
-                  1) /
-              (targetCalBran),
+              double.parse(controller.workStatus.value.calories ?? '0.0') /
+              targetCalBran,
           color: Colors.blue,
           title: 'Calories',
           radius: controller.selectedCategory.value == 'Calories' ? 27 : 20,

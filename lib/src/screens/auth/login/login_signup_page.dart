@@ -5,7 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
+import 'package:x_obese/src/screens/activity/live_activity_page.dart';
 import 'package:x_obese/src/screens/auth/controller/auth_controller.dart';
 import 'package:x_obese/src/screens/auth/login/otp_page.dart';
 import 'package:x_obese/src/theme/colors.dart';
@@ -238,8 +238,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                       child: ElevatedButton(
                         onPressed: () async {
                           if (formKey.currentState?.validate() == true) {
-                            if (!(await InternetConnection()
-                                .hasInternetAccess)) {
+                            if (!(await checkConnectivity())) {
                               Fluttertoast.showToast(
                                 msg: 'Check Internet Connection!',
                               );

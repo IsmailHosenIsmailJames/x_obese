@@ -437,21 +437,6 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
     );
   }
 
-  Future<bool> checkConnectivity() async {
-    final List<ConnectivityResult> connectivityResult =
-        await (Connectivity().checkConnectivity());
-
-    if (connectivityResult.contains(ConnectivityResult.mobile)) {
-      return true;
-    } else if (connectivityResult.contains(ConnectivityResult.wifi)) {
-      return true;
-    } else if (connectivityResult.contains(ConnectivityResult.ethernet)) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
   Future<void> saveWorkout(
     BuildContext context,
     workout_calculator.WorkoutCalculationResult workoutCalculationResult,
@@ -540,5 +525,20 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
     );
 
     return polyline;
+  }
+}
+
+Future<bool> checkConnectivity() async {
+  final List<ConnectivityResult> connectivityResult =
+      await (Connectivity().checkConnectivity());
+
+  if (connectivityResult.contains(ConnectivityResult.mobile)) {
+    return true;
+  } else if (connectivityResult.contains(ConnectivityResult.wifi)) {
+    return true;
+  } else if (connectivityResult.contains(ConnectivityResult.ethernet)) {
+    return true;
+  } else {
+    return false;
   }
 }

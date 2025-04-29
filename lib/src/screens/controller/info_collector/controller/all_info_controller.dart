@@ -29,6 +29,7 @@ class AllInfoController extends GetxController {
 
   Future<dio.Response?> updateUserInfo(dio.FormData data) async {
     try {
+      DioClient dioClient = DioClient(baseAPI);
       final response = await dioClient.dio.patch(userDataPath, data: data);
       printResponse(response);
       if (response.statusCode == 200) {
@@ -49,7 +50,7 @@ class AllInfoController extends GetxController {
     try {
       DioClient dioClient = DioClient(baseAPI);
       dio.Response response = await dioClient.dio.get(
-        '$getUserWorkoutStatus?view=daily',
+        '$getUserWorkoutStatus?view=weekly',
       );
       printResponse(response);
       if (response.statusCode == 200) {

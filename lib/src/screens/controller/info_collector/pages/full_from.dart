@@ -10,6 +10,7 @@ import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:x_obese/src/apis/middleware/jwt_middleware.dart';
 import 'package:x_obese/src/screens/controller/info_collector/controller/all_info_controller.dart';
 import 'package:x_obese/src/theme/colors.dart';
 import 'package:x_obese/src/widgets/back_button.dart';
@@ -44,15 +45,25 @@ class _FullFromInfoCollectorState extends State<FullFromInfoCollector> {
       'heightIn': controller.allInfo.value.heightIn,
       'address': controller.allInfo.value.address,
     };
-    if (profileImage != null) {
-      userData.addAll({
-        'image': await dio.MultipartFile.fromFile(profileImage!.path),
-      });
-    }
 
     dio.FormData formData = dio.FormData.fromMap(userData);
 
     final response = await controller.updateUserInfo(formData);
+    try {
+      if (profileImage != null) {
+        userData.clear();
+        userData.addAll({
+          'image': await dio.MultipartFile.fromFile(profileImage!.path),
+        });
+        await controller.updateUserInfo(dio.FormData.fromMap(userData));
+      }
+    } on dio.DioException catch (e) {
+      log(e.message ?? '');
+      if (e.response != null) {
+        printResponse(e.response!);
+        Fluttertoast.showToast(msg: 'Unable to save profile image');
+      }
+    }
     if (response != null) {
       await Hive.box('user').put('info', jsonEncode(response.data['data']));
       Get.offAllNamed('/home');

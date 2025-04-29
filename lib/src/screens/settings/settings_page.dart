@@ -61,6 +61,13 @@ class _SettingsPageState extends State<SettingsPage> {
                             ? CachedNetworkImage(
                               imageUrl: allInfoController.allInfo.value.image!,
                               fit: BoxFit.cover,
+                              errorWidget: (context, url, error) {
+                                return Icon(
+                                  Icons.broken_image,
+                                  color: MyAppColors.mutedGray,
+                                  size: 18,
+                                );
+                              },
                             )
                             : const Icon(Icons.person_outline, size: 20),
                   ),
