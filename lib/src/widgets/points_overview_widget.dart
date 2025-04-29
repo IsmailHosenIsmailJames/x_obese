@@ -191,8 +191,10 @@ PieChart getPieChart(AllInfoController controller) {
       1.0;
   if (!(targetCalBran > 0)) targetCalBran = 1;
 
-  double targetWorkout =
-      (controller.getWorkoutPlansList.value.first.weightGoal ?? 0).toDouble();
+  double targetWorkout = double.parse(
+    controller.getWorkoutPlansList.value.first.workoutTimeMs ?? '0',
+  );
+  targetWorkout /= 60000;
   if (!(targetWorkout > 0)) targetWorkout = 1;
 
   double targetHartPoints = 50;
@@ -256,8 +258,8 @@ PieChart getPieChart(AllInfoController controller) {
         ),
         PieChartSectionData(
           value:
-              ((controller.workStatus.value.durationMs?.toDouble() ?? 1) +
-                  0.01) /
+              (((controller.workStatus.value.durationMs?.toDouble() ?? 1) +
+                  0.01)) /
               targetWorkout,
           color: Colors.green,
           radius: controller.selectedCategory.value == 'Duration' ? 27 : 20,
