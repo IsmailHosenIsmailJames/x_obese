@@ -118,7 +118,10 @@ class _WorkoutPlanOverviewScreenState extends State<WorkoutPlanOverviewScreen> {
                                   height: 6,
                                   width: 6,
                                   child: CircleAvatar(
-                                    backgroundColor: MyAppColors.second,
+                                    backgroundColor:
+                                        isSameDay(day, focusedDay) == false
+                                            ? MyAppColors.second
+                                            : MyAppColors.third,
                                   ),
                                 ),
                               ),
@@ -134,7 +137,8 @@ class _WorkoutPlanOverviewScreenState extends State<WorkoutPlanOverviewScreen> {
                                 first.endDate != null &&
                                 day.isAfter(first.startDate!) &&
                                 day.isBefore(first.endDate!)) &&
-                            !isSameDay(first.endDate, day)) {
+                            !(isSameDay(first.endDate, day) ||
+                                isSameDay(first.startDate, day))) {
                           return false;
                         }
                         return weekdays.contains(
