@@ -211,8 +211,6 @@ class _HomePageState extends State<HomePage> {
                 );
               } else if (allInfoController.getWorkoutPlansList.isNotEmpty &&
                   allInfoController.getWorkoutPlansList.first.id != null) {
-                GetWorkoutPlans first =
-                    allInfoController.getWorkoutPlansList.first;
                 return GestureDetector(
                   onTap: () {
                     Get.to(
@@ -239,10 +237,20 @@ class _HomePageState extends State<HomePage> {
                                 ),
                               ),
                               const Gap(10),
-                              if (first.startDate != null &&
-                                  first.endDate != null)
+                              if (allInfoController
+                                          .getWorkoutPlansList
+                                          .value
+                                          .first
+                                          .startDate !=
+                                      null &&
+                                  allInfoController
+                                          .getWorkoutPlansList
+                                          .value
+                                          .first
+                                          .endDate !=
+                                      null)
                                 Text(
-                                  '${getWeekStatus(first)} Weeks',
+                                  '${getWeekStatus(allInfoController.getWorkoutPlansList.value.first)} Weeks',
                                   style: TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.w500,
@@ -344,7 +352,10 @@ class _HomePageState extends State<HomePage> {
                                     );
 
                                     bool isSelected = haveWorkoutDay(
-                                      first,
+                                      allInfoController
+                                          .getWorkoutPlansList
+                                          .value
+                                          .first,
                                       thisDay,
                                     );
                                     return SizedBox(
