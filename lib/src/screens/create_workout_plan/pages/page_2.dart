@@ -43,7 +43,6 @@ class _CreateWorkoutPlanPage2State extends State<CreateWorkoutPlanPage2> {
     'Wed': 'Wednesday',
     'Thu': 'Thursday',
   };
-  bool workoutDayReminder = true;
   final CreateWorkoutPlanController createWorkoutPlanController = Get.find();
   @override
   void initState() {
@@ -51,6 +50,8 @@ class _CreateWorkoutPlanPage2State extends State<CreateWorkoutPlanPage2> {
       createWorkoutPlanController.createWorkoutPlanModel.value.workoutTimeMs ??
           'Not Found',
     );
+    createWorkoutPlanController.createWorkoutPlanModel.value.activateReminder =
+        true;
     createWorkoutPlanController.createWorkoutPlanModel.value.startDate ??=
         DateTime.now();
     createWorkoutPlanController
@@ -254,10 +255,18 @@ class _CreateWorkoutPlanPage2State extends State<CreateWorkoutPlanPage2> {
                             ),
                           ),
                           Switch(
-                            value: workoutDayReminder,
+                            value:
+                                createWorkoutPlanController
+                                    .createWorkoutPlanModel
+                                    .value
+                                    .activateReminder ??
+                                false,
                             onChanged: (value) {
                               setState(() {
-                                workoutDayReminder = !workoutDayReminder;
+                                createWorkoutPlanController
+                                    .createWorkoutPlanModel
+                                    .value
+                                    .activateReminder = value;
                               });
                             },
                             activeTrackColor: MyAppColors.third,
@@ -468,21 +477,15 @@ class _CreateWorkoutPlanPage2State extends State<CreateWorkoutPlanPage2> {
                         .value
                         .workoutDays = workoutDaysString;
 
-                    if (workoutDayReminder) {
-                      createWorkoutPlanController
-                          .createWorkoutPlanModel
-                          .value
-                          .activateReminder = true;
-                      createWorkoutPlanController
-                          .createWorkoutPlanModel
-                          .value
-                          .reminderTime = DateFormat('yyyy-MM-dd').format(
-                        DateTime.now().copyWith(
-                          hour: reminderTime.hour,
-                          minute: reminderTime.minute,
-                        ),
-                      );
-                    }
+                    createWorkoutPlanController
+                        .createWorkoutPlanModel
+                        .value
+                        .reminderTime = DateFormat('yyyy-MM-dd').format(
+                      DateTime.now().copyWith(
+                        hour: reminderTime.hour,
+                        minute: reminderTime.minute,
+                      ),
+                    );
 
                     await saveToAPI(context);
                     log(
