@@ -113,7 +113,7 @@ class TermsAndConditions extends StatelessWidget {
 <p>We reserve the right, at our sole discretion, to modify or replace these Terms at any time. If a revision is material we will provide at least 30 days notice prior to any new terms taking effect. What constitutes a material change will be determined at our sole discretion.</p>
 <p>By continuing to access or use our Service after any revisions become effective, you agree to be bound by the revised terms. If you do not agree to the new terms, you are no longer authorized to use the Service.</p>
 
-<h2>9. Contact Us</h2>
+<h2>13. Contact Us</h2>
 <p>If you have any questions about this Privacy Policy, please contact us:</p>
 <p>By email: info@impalaintech.com</p>
 <p>By mail: partnership@impalaintech.com</p>
