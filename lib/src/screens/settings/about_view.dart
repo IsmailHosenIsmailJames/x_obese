@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:x_obese/src/screens/controller/info_collector/controller/all_info_controller.dart';
 import 'package:x_obese/src/screens/settings/personal_details_view.dart';
+import 'package:x_obese/src/screens/settings/privacy_policy.dart';
+import 'package:x_obese/src/screens/settings/terms_and_conditions.dart';
 import 'package:x_obese/src/widgets/back_button.dart';
 
 class AboutView extends StatelessWidget {
@@ -10,7 +11,6 @@ class AboutView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    AllInfoController allInfoController = Get.find();
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -42,7 +42,7 @@ class AboutView extends StatelessWidget {
                     ),
                   ),
                   onPressed: () {
-                    Get.to(() => const AboutView());
+                    Get.to(() => const TermsAndConditions());
                   },
 
                   child: Row(
@@ -74,7 +74,7 @@ class AboutView extends StatelessWidget {
                     ),
                   ),
                   onPressed: () {
-                    Get.to(() => const AboutView());
+                    Get.to(() => const PrivacyPolicy());
                   },
 
                   child: Row(
