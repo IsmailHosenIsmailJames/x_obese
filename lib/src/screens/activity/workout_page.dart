@@ -174,20 +174,20 @@ class _ActivityPageState extends State<ActivityPage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    SizedBox(
+                    const SizedBox(
                       width: 60,
                       height: 60,
-                      child: IconButton(
-                        style: IconButton.styleFrom(
-                          backgroundColor: MyAppColors.transparentGray,
-                        ),
-                        onPressed: () {},
-                        icon: SvgPicture.string(
-                          '''<svg xmlns="http://www.w3.org/2000/svg" width="35" height="34" viewBox="0 0 35 34" fill="none">
-                      <path fill-rule="evenodd" clip-rule="evenodd" d="M17.5002 33.6666C26.7049 33.6666 34.1668 26.2047 34.1668 16.9999C34.1668 7.79517 26.7049 0.333252 17.5002 0.333252C8.29542 0.333252 0.833496 7.79517 0.833496 16.9999C0.833496 26.2047 8.29542 33.6666 17.5002 33.6666ZM22.2688 10.4096L11.8182 13.8932C10.5053 14.3308 10.5053 16.188 11.8182 16.6256L15.6773 17.912C16.1073 18.0553 16.4447 18.3928 16.5881 18.8228L17.8744 22.6819C18.3121 23.9948 20.1693 23.9948 20.6069 22.6819L24.0904 12.2313C24.4657 11.1055 23.3946 10.0344 22.2688 10.4096Z" fill="#047CEC"/>
-                    </svg>''',
-                        ),
-                      ),
+                      //   child: IconButton(
+                      //     style: IconButton.styleFrom(
+                      //       backgroundColor: MyAppColors.transparentGray,
+                      //     ),
+                      //     onPressed: () {},
+                      //     icon: SvgPicture.string(
+                      //       '''<svg xmlns="http://www.w3.org/2000/svg" width="35" height="34" viewBox="0 0 35 34" fill="none">
+                      //   <path fill-rule="evenodd" clip-rule="evenodd" d="M17.5002 33.6666C26.7049 33.6666 34.1668 26.2047 34.1668 16.9999C34.1668 7.79517 26.7049 0.333252 17.5002 0.333252C8.29542 0.333252 0.833496 7.79517 0.833496 16.9999C0.833496 26.2047 8.29542 33.6666 17.5002 33.6666ZM22.2688 10.4096L11.8182 13.8932C10.5053 14.3308 10.5053 16.188 11.8182 16.6256L15.6773 17.912C16.1073 18.0553 16.4447 18.3928 16.5881 18.8228L17.8744 22.6819C18.3121 23.9948 20.1693 23.9948 20.6069 22.6819L24.0904 12.2313C24.4657 11.1055 23.3946 10.0344 22.2688 10.4096Z" fill="#047CEC"/>
+                      // </svg>''',
+                      //     ),
+                      //   ),
                     ),
                     SizedBox(
                       width: 60,
@@ -207,20 +207,20 @@ class _ActivityPageState extends State<ActivityPage> {
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 60,
                       height: 60,
-                      child: IconButton(
-                        style: IconButton.styleFrom(
-                          backgroundColor: MyAppColors.transparentGray,
-                        ),
-                        onPressed: () {},
-                        icon: SvgPicture.string(
-                          '''<svg xmlns="http://www.w3.org/2000/svg" width="23" height="28" viewBox="0 0 23 28" fill="none">
-  <path fill-rule="evenodd" clip-rule="evenodd" d="M7.16683 7.00008C7.16683 4.60685 9.10693 2.66675 11.5002 2.66675C13.8934 2.66675 15.8335 4.60685 15.8335 7.00008V8.66675H7.16683V7.00008ZM5.16683 8.76034V7.00008C5.16683 3.50228 8.00236 0.666748 11.5002 0.666748C14.998 0.666748 17.8335 3.50228 17.8335 7.00008V8.76034C20.301 9.22842 22.1668 11.3964 22.1668 14.0001V22.0001C22.1668 24.9456 19.779 27.3334 16.8335 27.3334H6.16683C3.22131 27.3334 0.833496 24.9456 0.833496 22.0001V14.0001C0.833496 11.3964 2.6993 9.22842 5.16683 8.76034ZM14.1668 18.0001C14.1668 19.4728 12.9729 20.6667 11.5002 20.6667C10.0274 20.6667 8.8335 19.4728 8.8335 18.0001C8.8335 16.5273 10.0274 15.3334 11.5002 15.3334C12.9729 15.3334 14.1668 16.5273 14.1668 18.0001Z" fill="#047CEC"/>
-</svg>''',
-                        ),
-                      ),
+                      //                       child: IconButton(
+                      //                         style: IconButton.styleFrom(
+                      //                           backgroundColor: MyAppColors.transparentGray,
+                      //                         ),
+                      //                         onPressed: () {},
+                      //                         icon: SvgPicture.string(
+                      //                           '''<svg xmlns="http://www.w3.org/2000/svg" width="23" height="28" viewBox="0 0 23 28" fill="none">
+                      //   <path fill-rule="evenodd" clip-rule="evenodd" d="M7.16683 7.00008C7.16683 4.60685 9.10693 2.66675 11.5002 2.66675C13.8934 2.66675 15.8335 4.60685 15.8335 7.00008V8.66675H7.16683V7.00008ZM5.16683 8.76034V7.00008C5.16683 3.50228 8.00236 0.666748 11.5002 0.666748C14.998 0.666748 17.8335 3.50228 17.8335 7.00008V8.76034C20.301 9.22842 22.1668 11.3964 22.1668 14.0001V22.0001C22.1668 24.9456 19.779 27.3334 16.8335 27.3334H6.16683C3.22131 27.3334 0.833496 24.9456 0.833496 22.0001V14.0001C0.833496 11.3964 2.6993 9.22842 5.16683 8.76034ZM14.1668 18.0001C14.1668 19.4728 12.9729 20.6667 11.5002 20.6667C10.0274 20.6667 8.8335 19.4728 8.8335 18.0001C8.8335 16.5273 10.0274 15.3334 11.5002 15.3334C12.9729 15.3334 14.1668 16.5273 14.1668 18.0001Z" fill="#047CEC"/>
+                      // </svg>''',
+                      //                         ),
+                      //                       ),
                     ),
                   ],
                 ),

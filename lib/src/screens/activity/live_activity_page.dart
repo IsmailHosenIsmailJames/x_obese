@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -15,6 +16,7 @@ import 'package:x_obese/src/core/common/functions/calculate_distance.dart'
     as workout_calculator;
 import 'package:x_obese/src/core/common/functions/format_sec_to_time.dart';
 import 'package:x_obese/src/screens/activity/controller/activity_controller.dart';
+import 'package:x_obese/src/screens/activity/controller/lock_controller.dart';
 import 'package:x_obese/src/screens/controller/info_collector/controller/all_info_controller.dart';
 import 'package:x_obese/src/screens/marathon/details_marathon/model/full_marathon_data_model.dart';
 import 'package:x_obese/src/screens/marathon/models/marathon_user_model.dart';
@@ -49,7 +51,6 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
   int workoutDurationSec = 1;
 
   late StreamSubscription streamSubscription;
-
   @override
   void initState() {
     WakelockPlus.enable();
@@ -97,6 +98,8 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
   }
 
   AllInfoController allInfoController = Get.find();
+
+  LockController lockController = Get.put(LockController());
 
   @override
   Widget build(BuildContext context) {
@@ -345,86 +348,146 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
                       ),
                       const Spacer(),
 
-                      Padding(
-                        padding: const EdgeInsets.all(20.0),
-                        child: Container(
-                          height: 80,
-                          width: double.infinity,
+                      GetX<LockController>(
+                        builder:
+                            (controller) => Padding(
+                              padding: const EdgeInsets.all(20.0),
+                              child: Container(
+                                height: 80,
+                                width: MediaQuery.of(context).size.width * 0.9,
 
-                          padding: const EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(100),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              SizedBox(
-                                width: 60,
-                                height: 60,
-                                child: IconButton(
-                                  style: IconButton.styleFrom(
-                                    backgroundColor:
-                                        MyAppColors.transparentGray,
-                                  ),
-                                  onPressed: () {},
-                                  icon: SvgPicture.string(
-                                    '''<svg xmlns="http://www.w3.org/2000/svg" width="27" height="29" viewBox="0 0 27 29" fill="none">
-                              <path fill-rule="evenodd" clip-rule="evenodd" d="M17.4081 9.95593C18.5825 8.55089 20.1665 6.34482 20.1665 4.66675C20.1665 2.00008 18.3756 0.666748 16.1665 0.666748C13.9574 0.666748 12.1665 2.00008 12.1665 4.9456C12.1665 6.75874 13.6822 8.76013 14.8475 10.031C15.5549 10.8023 16.7369 10.7589 17.4081 9.95593ZM16.1665 6.00008C16.9029 6.00008 17.4998 5.40313 17.4998 4.66675C17.4998 3.93037 16.9029 3.33341 16.1665 3.33341C15.4301 3.33341 14.8332 3.93037 14.8332 4.66675C14.8332 5.40313 15.4301 6.00008 16.1665 6.00008ZM5.49984 27.3334C8.1665 27.3334 10.8332 22.2789 10.8332 19.3334C10.8332 16.3879 8.44536 14.0001 5.49984 14.0001C2.55432 14.0001 0.166504 16.3879 0.166504 19.3334C0.166504 22.2789 2.83317 27.3334 5.49984 27.3334ZM5.49984 21.3334C6.60441 21.3334 7.49984 20.438 7.49984 19.3334C7.49984 18.2288 6.60441 17.3334 5.49984 17.3334C4.39527 17.3334 3.49984 18.2288 3.49984 19.3334C3.49984 20.438 4.39527 21.3334 5.49984 21.3334ZM17.1665 12.6667C17.1665 12.1145 16.7188 11.6667 16.1665 11.6667C15.6142 11.6667 15.1665 12.1145 15.1665 12.6667V15.3334C15.1665 18.0948 17.4051 20.3334 20.1665 20.3334H21.4998C23.1567 20.3334 24.4998 21.6766 24.4998 23.3334C24.4998 24.9903 23.1567 26.3334 21.4998 26.3334H10.8332C10.2809 26.3334 9.83317 26.7811 9.83317 27.3334C9.83317 27.8857 10.2809 28.3334 10.8332 28.3334H21.4998C24.2613 28.3334 26.4998 26.0948 26.4998 23.3334C26.4998 20.572 24.2613 18.3334 21.4998 18.3334H20.1665C18.5097 18.3334 17.1665 16.9903 17.1665 15.3334V12.6667Z" fill="#047CEC"/>
-                            </svg>''',
-                                  ),
+                                padding: const EdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(100),
                                 ),
-                              ),
-                              SizedBox(
-                                width: 60,
-                                height: 60,
-                                child: IconButton(
-                                  style: IconButton.styleFrom(
-                                    backgroundColor:
-                                        MyAppColors.transparentGray,
-                                  ),
-                                  onPressed: () {
-                                    setState(() {
-                                      isPaused = !isPaused;
-                                    });
-                                  },
-                                  icon: SvgPicture.string(
-                                    isPaused
-                                        ? '''<svg width="33" height="32" viewBox="0 0 33 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                child: Row(
+                                  children: [
+                                    AnimatedContainer(
+                                      duration: const Duration(
+                                        milliseconds: 200,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: MyAppColors.transparentGray
+                                            .withValues(alpha: 0.5),
+                                        borderRadius: BorderRadius.circular(
+                                          100,
+                                        ),
+                                      ),
+                                      height: 60,
+                                      width:
+                                          controller.isLocked.value
+                                              ? (MediaQuery.of(
+                                                        context,
+                                                      ).size.width *
+                                                      0.9) -
+                                                  20
+                                              : 0,
+                                      alignment: Alignment.centerRight,
+                                      child:
+                                          controller.isLocked.value
+                                              ? SizedBox(
+                                                width: 60,
+                                                height: 60,
+                                                child: IconButton(
+                                                  style: IconButton.styleFrom(
+                                                    backgroundColor:
+                                                        MyAppColors
+                                                            .transparentGray,
+                                                  ),
+                                                  onPressed: () {
+                                                    controller.isLocked.value =
+                                                        false;
+                                                  },
+                                                  icon: Icon(
+                                                    FluentIcons
+                                                        .lock_open_24_filled,
+                                                    size: 30,
+                                                    color: MyAppColors.third,
+                                                  ),
+                                                ),
+                                              )
+                                              : null,
+                                    ),
+
+                                    if (!controller.isLocked.value)
+                                      SizedBox(
+                                        width: 60,
+                                        height: 60,
+                                        child: IconButton(
+                                          style: IconButton.styleFrom(
+                                            backgroundColor:
+                                                MyAppColors.transparentGray,
+                                          ),
+                                          onPressed: () {
+                                            controller.isLocked.value = true;
+                                          },
+                                          icon: SvgPicture.string(
+                                            '''<svg xmlns="http://www.w3.org/2000/svg" width="23" height="28" viewBox="0 0 23 28" fill="none">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M7.16683 7.00008C7.16683 4.60685 9.10693 2.66675 11.5002 2.66675C13.8934 2.66675 15.8335 4.60685 15.8335 7.00008V8.66675H7.16683V7.00008ZM5.16683 8.76034V7.00008C5.16683 3.50228 8.00236 0.666748 11.5002 0.666748C14.998 0.666748 17.8335 3.50228 17.8335 7.00008V8.76034C20.301 9.22842 22.1668 11.3964 22.1668 14.0001V22.0001C22.1668 24.9456 19.779 27.3334 16.8335 27.3334H6.16683C3.22131 27.3334 0.833496 24.9456 0.833496 22.0001V14.0001C0.833496 11.3964 2.6993 9.22842 5.16683 8.76034ZM14.1668 18.0001C14.1668 19.4728 12.9729 20.6667 11.5002 20.6667C10.0274 20.6667 8.8335 19.4728 8.8335 18.0001C8.8335 16.5273 10.0274 15.3334 11.5002 15.3334C12.9729 15.3334 14.1668 16.5273 14.1668 18.0001Z" fill="#047CEC"/>
+                      </svg>''',
+                                          ),
+                                        ),
+                                      ),
+                                    if (!controller.isLocked.value)
+                                      const Spacer(),
+
+                                    if (!controller.isLocked.value)
+                                      SizedBox(
+                                        width: 60,
+                                        height: 60,
+                                        child: IconButton(
+                                          style: IconButton.styleFrom(
+                                            backgroundColor:
+                                                MyAppColors.transparentGray,
+                                          ),
+                                          onPressed: () {
+                                            setState(() {
+                                              isPaused = !isPaused;
+                                            });
+                                          },
+                                          icon: SvgPicture.string(
+                                            isPaused
+                                                ? '''<svg width="33" height="32" viewBox="0 0 33 32" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M24.1278 17.7363L11.4923 24.9566C10.159 25.7185 8.5 24.7558 8.5 23.2201V15.9998V8.77953C8.5 7.24389 10.159 6.28115 11.4923 7.04305L24.1278 14.2634C25.4714 15.0311 25.4714 16.9685 24.1278 17.7363Z" fill="#047CEC"/>
 </svg>
 '''
-                                        : '''<svg xmlns="http://www.w3.org/2000/svg" width="23" height="20" viewBox="0 0 23 20" fill="none">
+                                                : '''<svg xmlns="http://www.w3.org/2000/svg" width="23" height="20" viewBox="0 0 23 20" fill="none">
                                 <path fill-rule="evenodd" clip-rule="evenodd" d="M2.83301 0.666748C1.72844 0.666748 0.833008 1.56218 0.833008 2.66675V17.3334C0.833008 18.438 1.72844 19.3334 2.83301 19.3334H6.83301C7.93758 19.3334 8.83301 18.438 8.83301 17.3334V2.66675C8.83301 1.56218 7.93758 0.666748 6.83301 0.666748H2.83301ZM16.1663 0.666748C15.0618 0.666748 14.1663 1.56218 14.1663 2.66675V17.3334C14.1663 18.438 15.0618 19.3334 16.1663 19.3334H20.1663C21.2709 19.3334 22.1663 18.438 22.1663 17.3334V2.66675C22.1663 1.56218 21.2709 0.666748 20.1663 0.666748H16.1663Z" fill="#FFDE1A"/>
                               </svg>
                               ''',
-                                  ),
+                                          ),
+                                        ),
+                                      ),
+                                    if (!controller.isLocked.value)
+                                      const Spacer(),
+
+                                    if (!controller.isLocked.value)
+                                      SizedBox(
+                                        width: 60,
+                                        height: 60,
+                                        child: IconButton(
+                                          style: IconButton.styleFrom(
+                                            backgroundColor:
+                                                MyAppColors.transparentGray,
+                                          ),
+                                          onPressed: () async {
+                                            await saveWorkout(
+                                              context,
+                                              workoutCalculationResult,
+                                            );
+                                          },
+                                          icon: Icon(
+                                            Icons.stop_rounded,
+                                            size: 36,
+                                            color: MyAppColors.third,
+                                          ),
+                                        ),
+                                      ),
+                                  ],
                                 ),
                               ),
-                              SizedBox(
-                                width: 60,
-                                height: 60,
-                                child: IconButton(
-                                  style: IconButton.styleFrom(
-                                    backgroundColor:
-                                        MyAppColors.transparentGray,
-                                  ),
-                                  onPressed: () async {
-                                    await saveWorkout(
-                                      context,
-                                      workoutCalculationResult,
-                                    );
-                                  },
-                                  icon: Icon(
-                                    Icons.stop_rounded,
-                                    size: 36,
-                                    color: MyAppColors.third,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+                            ),
                       ),
                     ],
                   ),
