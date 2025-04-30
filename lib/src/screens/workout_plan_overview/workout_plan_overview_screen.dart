@@ -119,7 +119,7 @@ class _WorkoutPlanOverviewScreenState extends State<WorkoutPlanOverviewScreen> {
                                   width: 6,
                                   child: CircleAvatar(
                                     backgroundColor:
-                                        isSameDay(day, focusedDay) == false
+                                        isSameDate(day, DateTime.now()) == false
                                             ? MyAppColors.second
                                             : MyAppColors.third,
                                   ),
@@ -137,8 +137,8 @@ class _WorkoutPlanOverviewScreenState extends State<WorkoutPlanOverviewScreen> {
                                 first.endDate != null &&
                                 day.isAfter(first.startDate!) &&
                                 day.isBefore(first.endDate!)) &&
-                            !(isSameDay(first.endDate, day) ||
-                                isSameDay(first.startDate, day))) {
+                            !(isSameDate(first.endDate, day) ||
+                                isSameDate(first.startDate, day))) {
                           return false;
                         }
                         return weekdays.contains(
@@ -257,5 +257,16 @@ class _WorkoutPlanOverviewScreenState extends State<WorkoutPlanOverviewScreen> {
         ),
       ),
     );
+  }
+}
+
+bool isSameDate(DateTime? date1, DateTime? date2) {
+  if (date1 == null || date2 == null) return false;
+  if (date1.year == date2.year &&
+      date1.month == date2.month &&
+      date1.day == date2.day) {
+    return true;
+  } else {
+    return false;
   }
 }

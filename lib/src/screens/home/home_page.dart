@@ -7,7 +7,6 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:intl/intl.dart';
-import 'package:table_calendar/table_calendar.dart';
 import 'package:x_obese/src/resources/svg_string.dart';
 import 'package:x_obese/src/screens/controller/info_collector/controller/all_info_controller.dart';
 import 'package:x_obese/src/screens/blog/blog_list_view.dart';
@@ -506,7 +505,7 @@ class _HomePageState extends State<HomePage> {
             first.endDate != null &&
             day.isAfter(first.startDate!) &&
             day.isBefore(first.endDate!)) &&
-        !(isSameDay(first.endDate, day) || isSameDay(first.startDate, day))) {
+        !(isSameDate(first.endDate, day) || isSameDate(first.startDate, day))) {
       return false;
     }
     return weekdays.contains(DateFormat(DateFormat.WEEKDAY).format(day));
