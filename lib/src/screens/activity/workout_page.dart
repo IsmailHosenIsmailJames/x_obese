@@ -255,7 +255,7 @@ class _ActivityPageState extends State<ActivityPage> {
       Position position = await Geolocator.getCurrentPosition(
         locationSettings: AndroidSettings(accuracy: LocationAccuracy.high),
       );
-      if (position.accuracy > 50) {
+      if (position.accuracy > 100) {
         Navigator.pop(context);
         showDialog(
           context: context,
