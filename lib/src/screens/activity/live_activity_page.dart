@@ -14,6 +14,7 @@ import 'package:wakelock_plus/wakelock_plus.dart';
 import 'package:x_obese/src/apis/middleware/jwt_middleware.dart';
 import 'package:x_obese/src/core/common/functions/calculate_distance.dart'
     as workout_calculator;
+import 'package:x_obese/src/core/common/functions/calculate_distance.dart';
 import 'package:x_obese/src/core/common/functions/format_sec_to_time.dart';
 import 'package:x_obese/src/screens/activity/controller/activity_controller.dart';
 import 'package:x_obese/src/screens/activity/controller/lock_controller.dart';
@@ -124,7 +125,7 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
               child: Row(
                 children: [
                   getBackButton(context, () {
-                    Get.back();
+                    showCancelAndBackPopup();
                   }),
                   const Gap(70),
                   const Text(
@@ -471,8 +472,8 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
                                             backgroundColor:
                                                 MyAppColors.transparentGray,
                                           ),
-                                          onPressed: () async {
-                                            await saveWorkout(
+                                          onPressed: () {
+                                            showSaveWorkoutPopupWithInfo(
                                               context,
                                               workoutCalculationResult,
                                             );
@@ -497,6 +498,122 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
           ],
         ),
       ),
+    );
+  }
+
+  void showCancelAndBackPopup() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Exit without saving!'),
+          content: const Text(
+            'Are you sure that you want to exit workout without saving?',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Get.back();
+              },
+              child: const Text(
+                'Exit Workout',
+                style: TextStyle(color: Colors.red),
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text(
+                'Continue Workout',
+                style: TextStyle(color: Colors.green),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void showSaveWorkoutPopupWithInfo(
+    BuildContext context,
+    WorkoutCalculationResult workoutCalculationResult,
+  ) {
+    showDialog(
+      context: context,
+      builder:
+          (context) => Dialog(
+            insetPadding: const EdgeInsets.all(10),
+
+            child: Container(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Are you sure?',
+                    style: TextStyle(fontSize: 26, fontWeight: FontWeight.w500),
+                  ),
+                  const Gap(20),
+                  Row(
+                    children: [
+                      const Text(
+                        'Distance:',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      const Gap(10),
+                      Text(
+                        '${((distanceEveryPaused + workoutCalculationResult.totalDistance) / 1000).toStringAsFixed(2)} km',
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      const Text(
+                        'Duration:',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      const Gap(10),
+                      Text('${formatSeconds(workoutDurationSec)} Minutes'),
+                    ],
+                  ),
+                  const Gap(20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      ElevatedButton.icon(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: MyAppColors.transparentGray,
+                        ),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        icon: const Icon(
+                          Icons.arrow_right_alt_outlined,
+                          color: Colors.green,
+                        ),
+                        label: const Text('Continue'),
+                      ),
+                      const Gap(20),
+                      ElevatedButton.icon(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: MyAppColors.transparentGray,
+                        ),
+                        onPressed: () async {
+                          Navigator.pop(context);
+                          await saveWorkout(context, workoutCalculationResult);
+                        },
+                        icon: const Icon(Icons.done, color: Colors.green),
+                        label: const Text('Save Now'),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
     );
   }
 
@@ -531,6 +648,7 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
       );
       return;
     }
+
     showLoadingPopUp(context, loadingText: 'Saving...');
 
     // make a api call
