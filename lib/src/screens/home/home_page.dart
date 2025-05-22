@@ -7,6 +7,7 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:intl/intl.dart';
+import 'package:x_obese/helth.dart';
 import 'package:x_obese/src/resources/svg_string.dart';
 import 'package:x_obese/src/screens/controller/info_collector/controller/all_info_controller.dart';
 import 'package:x_obese/src/screens/blog/blog_list_view.dart';
@@ -141,7 +142,9 @@ class _HomePageState extends State<HomePage> {
                   ),
                   const Spacer(),
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      Get.to(() =>  HealthApp());
+                    },
                     icon: SvgPicture.string(notificationSvg),
                   ),
                 ],
