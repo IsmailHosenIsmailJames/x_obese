@@ -1,4 +1,4 @@
-String baseAPI = 'http://116.68.200.97:6053';
+String baseAPI = 'http://103.168.140.134:6053';
 String signUpPath = '/api/auth/v1/users/sign-up';
 String logInPath = '/api/auth/v1/users/login';
 String verifyOTPPath = '/api/auth/v1/users/verify-otp';
