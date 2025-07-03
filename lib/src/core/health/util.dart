@@ -1,5 +1,23 @@
 import "package:health/health.dart";
 
+enum AppState {
+  DATA_NOT_FETCHED,
+  FETCHING_DATA,
+  DATA_READY,
+  NO_DATA,
+  AUTHORIZED,
+  AUTH_NOT_GRANTED,
+  DATA_ADDED,
+  DATA_DELETED,
+  DATA_NOT_ADDED,
+  DATA_NOT_DELETED,
+  STEPS_READY,
+  HEALTH_CONNECT_STATUS,
+  PERMISSIONS_REVOKING,
+  PERMISSIONS_REVOKED,
+  PERMISSIONS_NOT_REVOKED,
+}
+
 /// List of data types available on iOS
 const List<HealthDataType> dataTypesIOS = [
   HealthDataType.ACTIVE_ENERGY_BURNED,
@@ -54,7 +72,6 @@ const List<HealthDataType> dataTypesIOS = [
   // HealthDataType.RESTING_HEART_RATE,
   // HealthDataType.WALKING_HEART_RATE,
   // HealthDataType.ATRIAL_FIBRILLATION_BURDEN,
-
   HealthDataType.NUTRITION,
   HealthDataType.GENDER,
   HealthDataType.BLOOD_TYPE,

@@ -5,9 +5,8 @@ import "package:carp_serializable/carp_serializable.dart";
 import "package:flutter/material.dart";
 import "package:health/health.dart";
 import "package:permission_handler/permission_handler.dart";
-import "package:x_obese/src/core/helth/util.dart";
+import "package:x_obese/src/core/health/util.dart";
 
-// Global Health instance
 final health = Health();
 
 class HealthApp extends StatefulWidget {
@@ -15,24 +14,6 @@ class HealthApp extends StatefulWidget {
 
   @override
   HealthAppState createState() => HealthAppState();
-}
-
-enum AppState {
-  DATA_NOT_FETCHED,
-  FETCHING_DATA,
-  DATA_READY,
-  NO_DATA,
-  AUTHORIZED,
-  AUTH_NOT_GRANTED,
-  DATA_ADDED,
-  DATA_DELETED,
-  DATA_NOT_ADDED,
-  DATA_NOT_DELETED,
-  STEPS_READY,
-  HEALTH_CONNECT_STATUS,
-  PERMISSIONS_REVOKING,
-  PERMISSIONS_REVOKED,
-  PERMISSIONS_NOT_REVOKED,
 }
 
 class HealthAppState extends State<HealthApp> {

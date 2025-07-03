@@ -1,24 +1,28 @@
 import "dart:developer";
 
 import "package:cached_network_image/cached_network_image.dart";
+import "package:fluentui_system_icons/fluentui_system_icons.dart";
 import "package:flutter/material.dart";
 import "package:flutter_svg/svg.dart";
 import "package:gap/gap.dart";
 import "package:get/get.dart";
+import "package:health/health.dart";
 import "package:hive_flutter/adapters.dart";
 import "package:intl/intl.dart";
 import "package:x_obese/helth.dart";
+import "package:x_obese/src/core/health/my_health_functions.dart";
+import "package:x_obese/src/core/health/util.dart";
 import "package:x_obese/src/resources/svg_string.dart";
-import "package:x_obese/src/screens/controller/info_collector/controller/all_info_controller.dart";
 import "package:x_obese/src/screens/blog/blog_list_view.dart";
+import "package:x_obese/src/screens/controller/info_collector/controller/all_info_controller.dart";
 import "package:x_obese/src/screens/create_workout_plan/create_workout_plan.dart";
 import "package:x_obese/src/screens/create_workout_plan/model/get_workout_plans.dart";
+import "package:x_obese/src/screens/marathon/components/virtual_marathon_cards.dart";
 import "package:x_obese/src/screens/marathon/marathon_page.dart";
 import "package:x_obese/src/screens/settings/personal_details_view.dart";
 import "package:x_obese/src/screens/workout_plan_overview/workout_plan_overview_screen.dart";
 import "package:x_obese/src/theme/colors.dart";
 import "package:x_obese/src/widgets/get_blog_card.dart";
-import "package:x_obese/src/screens/marathon/components/virtual_marathon_cards.dart";
 import "package:x_obese/src/widgets/points_overview_widget.dart";
 
 class HomePage extends StatefulWidget {
@@ -72,6 +76,31 @@ class _HomePageState extends State<HomePage> {
       name: "allInfoController.allInfo.value.image",
     );
     return Scaffold(
+      appBar: AppBar(
+        actions: [
+          IconButton(
+            onPressed: () async {
+              HealthConnectSdkStatus? sdkConfigStatus =
+                  await MyHealthFunctions.getSdkConfigurationStatus();
+
+              AppState appState =
+                  await MyHealthFunctions.authorizePermissions();
+
+              if (appState == AppState.AUTHORIZED) {
+                // check steps
+                final now = DateTime.now();
+                final midnight = DateTime(now.year, now.month, now.day);
+                int? steps = await MyHealthFunctions.fetchStepData(
+                  midnight,
+                  now,
+                );
+                log(steps.toString(), name: "heath");
+              }
+            },
+            icon: const Icon(FluentIcons.accessibility_16_filled),
+          ),
+        ],
+      ),
       backgroundColor: MyAppColors.primary,
       body: SingleChildScrollView(
         child: Column(
@@ -143,7 +172,7 @@ class _HomePageState extends State<HomePage> {
                   const Spacer(),
                   IconButton(
                     onPressed: () async {
-                      Get.to(() =>  const HealthApp());
+                      Get.to(() => const HealthApp());
                     },
                     icon: SvgPicture.string(notificationSvg),
                   ),

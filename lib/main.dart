@@ -6,6 +6,7 @@ import "package:get/get.dart";
 import "package:timezone/data/latest.dart" as tz;
 import "package:hive_flutter/hive_flutter.dart";
 import "package:shared_preferences/shared_preferences.dart";
+import "package:x_obese/src/core/health/my_health_functions.dart";
 import "package:x_obese/x_obese.dart";
 import "package:x_obese/src/apis/middleware/jwt_middleware.dart";
 import "package:x_obese/src/screens/auth/controller/auth_controller.dart";
@@ -31,6 +32,7 @@ Future<void> main() async {
   authController.accessToken.value = await getAccessToken();
   SharedPreferences preferences = await SharedPreferences.getInstance();
   tz.initializeTimeZones();
+  await MyHealthFunctions.init();
 
   runApp(XObese(prefs: preferences));
 }
