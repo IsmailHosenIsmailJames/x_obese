@@ -1,9 +1,9 @@
-import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
-import 'package:get/get.dart';
-import 'package:x_obese/src/screens/controller/info_collector/controller/all_info_controller.dart';
-import 'package:x_obese/src/theme/colors.dart';
-import 'package:x_obese/src/widgets/back_button.dart';
+import "package:flutter/material.dart";
+import "package:gap/gap.dart";
+import "package:get/get.dart";
+import "package:x_obese/src/screens/controller/info_collector/controller/all_info_controller.dart";
+import "package:x_obese/src/theme/colors.dart";
+import "package:x_obese/src/widgets/back_button.dart";
 
 class HeightWeigthCollector extends StatefulWidget {
   final PageController pageController;
@@ -62,7 +62,7 @@ class _HeightWeigthCollectorState extends State<HeightWeigthCollector> {
               const Align(
                 alignment: Alignment.topLeft,
                 child: Text(
-                  'Choice Your Gender 👨‍👩‍👦‍👦',
+                  "Choice Your Gender 👨‍👩‍👦‍👦",
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
                 ),
               ),
@@ -76,7 +76,7 @@ class _HeightWeigthCollectorState extends State<HeightWeigthCollector> {
                   Column(
                     children: [
                       const Text(
-                        'Height',
+                        "Height",
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w500,
@@ -101,7 +101,7 @@ class _HeightWeigthCollectorState extends State<HeightWeigthCollector> {
                                   (context, index) => getButtonSelection(
                                     index: index + 1,
                                     toCompare: fit,
-                                    text: '${index + 1} Ft',
+                                    text: "${index + 1} Ft",
                                     onPressed: () {
                                       setState(() {
                                         fit = index + 1;
@@ -125,7 +125,7 @@ class _HeightWeigthCollectorState extends State<HeightWeigthCollector> {
                                   (context, index) => getButtonSelection(
                                     index: index,
                                     toCompare: inch,
-                                    text: '$index in',
+                                    text: "$index in",
                                     onPressed: () {
                                       setState(() {
                                         inch = index;
@@ -141,7 +141,7 @@ class _HeightWeigthCollectorState extends State<HeightWeigthCollector> {
                   Column(
                     children: [
                       const Text(
-                        'Weight',
+                        "Weight",
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w500,
@@ -161,7 +161,7 @@ class _HeightWeigthCollectorState extends State<HeightWeigthCollector> {
                               (context, index) => getButtonSelection(
                                 index: index + 25,
                                 toCompare: weight,
-                                text: '${index + 25} kg',
+                                text: "${index + 25} kg",
 
                                 onPressed: () {
                                   setState(() {
@@ -192,7 +192,7 @@ class _HeightWeigthCollectorState extends State<HeightWeigthCollector> {
                     }
                   },
                   child: const Text(
-                    'Next',
+                    "Next",
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                   ),
                 ),

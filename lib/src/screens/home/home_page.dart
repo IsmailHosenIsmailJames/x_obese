@@ -1,25 +1,25 @@
-import 'dart:developer';
+import "dart:developer";
 
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:gap/gap.dart';
-import 'package:get/get.dart';
-import 'package:hive_flutter/adapters.dart';
-import 'package:intl/intl.dart';
-import 'package:x_obese/helth.dart';
-import 'package:x_obese/src/resources/svg_string.dart';
-import 'package:x_obese/src/screens/controller/info_collector/controller/all_info_controller.dart';
-import 'package:x_obese/src/screens/blog/blog_list_view.dart';
-import 'package:x_obese/src/screens/create_workout_plan/create_workout_plan.dart';
-import 'package:x_obese/src/screens/create_workout_plan/model/get_workout_plans.dart';
-import 'package:x_obese/src/screens/marathon/marathon_page.dart';
-import 'package:x_obese/src/screens/settings/personal_details_view.dart';
-import 'package:x_obese/src/screens/workout_plan_overview/workout_plan_overview_screen.dart';
-import 'package:x_obese/src/theme/colors.dart';
-import 'package:x_obese/src/widgets/get_blog_card.dart';
-import 'package:x_obese/src/screens/marathon/components/virtual_marathon_cards.dart';
-import 'package:x_obese/src/widgets/points_overview_widget.dart';
+import "package:cached_network_image/cached_network_image.dart";
+import "package:flutter/material.dart";
+import "package:flutter_svg/svg.dart";
+import "package:gap/gap.dart";
+import "package:get/get.dart";
+import "package:hive_flutter/adapters.dart";
+import "package:intl/intl.dart";
+import "package:x_obese/helth.dart";
+import "package:x_obese/src/resources/svg_string.dart";
+import "package:x_obese/src/screens/controller/info_collector/controller/all_info_controller.dart";
+import "package:x_obese/src/screens/blog/blog_list_view.dart";
+import "package:x_obese/src/screens/create_workout_plan/create_workout_plan.dart";
+import "package:x_obese/src/screens/create_workout_plan/model/get_workout_plans.dart";
+import "package:x_obese/src/screens/marathon/marathon_page.dart";
+import "package:x_obese/src/screens/settings/personal_details_view.dart";
+import "package:x_obese/src/screens/workout_plan_overview/workout_plan_overview_screen.dart";
+import "package:x_obese/src/theme/colors.dart";
+import "package:x_obese/src/widgets/get_blog_card.dart";
+import "package:x_obese/src/screens/marathon/components/virtual_marathon_cards.dart";
+import "package:x_obese/src/widgets/points_overview_widget.dart";
 
 class HomePage extends StatefulWidget {
   final PageController pageController;
@@ -30,7 +30,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final userBox = Hive.box('user');
+  final userBox = Hive.box("user");
   AllInfoController allInfoController = Get.find();
   ScrollController scrollControllerMarathon = ScrollController();
   ScrollController scrollControllerBlog = ScrollController();
@@ -69,7 +69,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     log(
       allInfoController.allInfo.value.image.toString(),
-      name: 'allInfoController.allInfo.value.image',
+      name: "allInfoController.allInfo.value.image",
     );
     return Scaffold(
       backgroundColor: MyAppColors.primary,
@@ -119,7 +119,7 @@ class _HomePageState extends State<HomePage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const Text(
-                              'Hello 👋',
+                              "Hello 👋",
                               style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w400,
@@ -127,7 +127,7 @@ class _HomePageState extends State<HomePage> {
                             ),
                             Obx(
                               () => Text(
-                                allInfoController.allInfo.value.fullName ?? '',
+                                allInfoController.allInfo.value.fullName ?? "",
                                 style: TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w300,
@@ -143,7 +143,7 @@ class _HomePageState extends State<HomePage> {
                   const Spacer(),
                   IconButton(
                     onPressed: () async {
-                      Get.to(() =>  HealthApp());
+                      Get.to(() =>  const HealthApp());
                     },
                     icon: SvgPicture.string(notificationSvg),
                   ),
@@ -158,7 +158,7 @@ class _HomePageState extends State<HomePage> {
             const Gap(20),
             Obx(() {
               if (allInfoController.getWorkoutPlansList.isEmpty ||
-                  allInfoController.getWorkoutPlansList.first.id == 'init') {
+                  allInfoController.getWorkoutPlansList.first.id == "init") {
                 return Padding(
                   padding: const EdgeInsets.all(15.0),
                   child: SizedBox(
@@ -183,7 +183,7 @@ class _HomePageState extends State<HomePage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const Text(
-                              'Workout Plan',
+                              "Workout Plan",
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500,
@@ -193,7 +193,7 @@ class _HomePageState extends State<HomePage> {
                             SizedBox(
                               width: 180,
                               child: Text(
-                                'Create Your Workout plan',
+                                "Create Your Workout plan",
                                 style: TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w300,
@@ -217,7 +217,7 @@ class _HomePageState extends State<HomePage> {
                             onPressed: () {
                               Get.to(() => const CreateWorkoutPlan());
                             },
-                            child: const Text('Create'),
+                            child: const Text("Create"),
                           ),
                         ),
                       ],
@@ -245,7 +245,7 @@ class _HomePageState extends State<HomePage> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               const Text(
-                                'Workout Plan',
+                                "Workout Plan",
                                 style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w500,
@@ -265,7 +265,7 @@ class _HomePageState extends State<HomePage> {
                                           .endDate !=
                                       null)
                                 Text(
-                                  '${getWeekStatus(allInfoController.getWorkoutPlansList.value.first)} Weeks',
+                                  "${getWeekStatus(allInfoController.getWorkoutPlansList.value.first)} Weeks",
                                   style: TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.w500,
@@ -398,7 +398,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                 );
               } else {
-                return const Text('Something Found Wrong');
+                return const Text("Something Found Wrong");
               }
             }),
             Padding(
@@ -407,7 +407,7 @@ class _HomePageState extends State<HomePage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Text(
-                    'Marathon Program',
+                    "Marathon Program",
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                   ),
                   TextButton(
@@ -415,7 +415,7 @@ class _HomePageState extends State<HomePage> {
                       widget.pageController.jumpToPage(2);
                     },
                     child: Text(
-                      'See All',
+                      "See All",
                       style: TextStyle(color: MyAppColors.third),
                     ),
                   ),
@@ -455,7 +455,7 @@ class _HomePageState extends State<HomePage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Text(
-                    'Our Blogs & Tips',
+                    "Our Blogs & Tips",
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                   ),
                   TextButton(
@@ -463,7 +463,7 @@ class _HomePageState extends State<HomePage> {
                       Get.to(() => const BlogListView());
                     },
                     child: Text(
-                      'See All',
+                      "See All",
                       style: TextStyle(color: MyAppColors.third),
                     ),
                   ),
@@ -503,7 +503,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   bool haveWorkoutDay(GetWorkoutPlans first, DateTime day) {
-    List<String> weekdays = first.workoutDays?.split(',') ?? [];
+    List<String> weekdays = first.workoutDays?.split(",") ?? [];
     if (!(first.startDate != null &&
             first.endDate != null &&
             day.isAfter(first.startDate!) &&
@@ -520,16 +520,16 @@ class _HomePageState extends State<HomePage> {
     int totalDays = start.difference(end).inDays.abs();
     int currentDays = start.difference(DateTime.now()).inDays.abs() + 1;
     if (totalDays < currentDays) currentDays = totalDays;
-    return '${(currentDays / 7).ceil()}/${(totalDays / 7).ceil()}';
+    return "${(currentDays / 7).ceil()}/${(totalDays / 7).ceil()}";
   }
 }
 
 List<String> weekdays = [
-  'Sunday',
-  'Monday',
-  'Tuesday',
-  'Wednesday',
-  'Thursday',
-  'Friday',
-  'Saturday',
+  "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
 ];

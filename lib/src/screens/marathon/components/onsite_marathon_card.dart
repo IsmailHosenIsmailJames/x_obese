@@ -1,12 +1,12 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
-import 'package:get/get.dart';
-import 'package:x_obese/src/core/common/functions/safe_sub_string.dart';
-import 'package:x_obese/src/screens/marathon/models/marathon_model.dart';
-import 'package:x_obese/src/theme/colors.dart';
+import "package:cached_network_image/cached_network_image.dart";
+import "package:flutter/material.dart";
+import "package:gap/gap.dart";
+import "package:get/get.dart";
+import "package:x_obese/src/core/common/functions/safe_sub_string.dart";
+import "package:x_obese/src/screens/marathon/models/marathon_model.dart";
+import "package:x_obese/src/theme/colors.dart";
 
-import '../details_marathon/marathon_details_view.dart';
+import "../details_marathon/marathon_details_view.dart";
 
 Widget getOnsiteMarathon({
   required BuildContext context,
@@ -18,7 +18,7 @@ Widget getOnsiteMarathon({
     margin: margin,
     decoration: BoxDecoration(
       image: DecorationImage(
-        image: CachedNetworkImageProvider(marathonData.imagePath ?? ''),
+        image: CachedNetworkImageProvider(marathonData.imagePath ?? ""),
         fit: BoxFit.cover,
         opacity: 0.5,
       ),
@@ -40,12 +40,12 @@ Widget getOnsiteMarathon({
               foregroundColor: Colors.white,
             ),
             onPressed: () {},
-            child: Text(marathonData.location ?? 'Unknown'),
+            child: Text(marathonData.location ?? "Unknown"),
           ),
         ),
         const Gap(16),
         Text(
-          marathonData.title ?? '',
+          marathonData.title ?? "",
           style: TextStyle(
             fontSize: 17,
             fontWeight: FontWeight.w500,
@@ -54,7 +54,7 @@ Widget getOnsiteMarathon({
         ),
         const Gap(5),
         Text(
-          safeSubString(marathonData.description ?? '', 100),
+          safeSubString(marathonData.description ?? "", 100),
           style: TextStyle(
             fontSize: 13,
             fontWeight: FontWeight.w300,
@@ -70,12 +70,12 @@ Widget getOnsiteMarathon({
             onPressed: () {
               Get.to(
                 () => MarathonDetailsView(
-                  isVirtual: marathonData.type == 'virtual',
+                  isVirtual: marathonData.type == "virtual",
                   marathonData: marathonData,
                 ),
               );
             },
-            label: const Text('Physical  Challenge'),
+            label: const Text("Physical  Challenge"),
             icon: const Icon(Icons.arrow_forward, color: Colors.black),
           ),
         ),

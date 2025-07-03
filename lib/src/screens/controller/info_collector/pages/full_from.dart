@@ -1,21 +1,21 @@
-import 'dart:convert';
-import 'dart:developer';
-import 'dart:io';
+import "dart:convert";
+import "dart:developer";
+import "dart:io";
 
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:gap/gap.dart';
-import 'package:get/get.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:intl/intl.dart';
-import 'package:x_obese/src/apis/middleware/jwt_middleware.dart';
-import 'package:x_obese/src/screens/controller/info_collector/controller/all_info_controller.dart';
-import 'package:x_obese/src/theme/colors.dart';
-import 'package:x_obese/src/widgets/back_button.dart';
-import 'package:x_obese/src/widgets/text_input_decoration.dart';
-import 'package:dio/dio.dart' as dio;
+import "package:cached_network_image/cached_network_image.dart";
+import "package:flutter/material.dart";
+import "package:fluttertoast/fluttertoast.dart";
+import "package:gap/gap.dart";
+import "package:get/get.dart";
+import "package:hive_flutter/hive_flutter.dart";
+import "package:image_picker/image_picker.dart";
+import "package:intl/intl.dart";
+import "package:x_obese/src/apis/middleware/jwt_middleware.dart";
+import "package:x_obese/src/screens/controller/info_collector/controller/all_info_controller.dart";
+import "package:x_obese/src/theme/colors.dart";
+import "package:x_obese/src/widgets/back_button.dart";
+import "package:x_obese/src/widgets/text_input_decoration.dart";
+import "package:dio/dio.dart" as dio;
 
 class FullFromInfoCollector extends StatefulWidget {
   final PageController pageController;
@@ -36,14 +36,14 @@ class _FullFromInfoCollectorState extends State<FullFromInfoCollector> {
 
   Future<void> updateInfo() async {
     Map<String, dynamic> userData = {
-      'email': emailController.text.trim(),
-      'fullName': controller.allInfo.value.fullName,
-      'gender': controller.allInfo.value.gender,
-      'birth': DateFormat('yyyy-MM-dd').format(controller.allInfo.value.birth!),
-      'weight': controller.allInfo.value.weight,
-      'heightFt': controller.allInfo.value.heightFt,
-      'heightIn': controller.allInfo.value.heightIn,
-      'address': controller.allInfo.value.address,
+      "email": emailController.text.trim(),
+      "fullName": controller.allInfo.value.fullName,
+      "gender": controller.allInfo.value.gender,
+      "birth": DateFormat("yyyy-MM-dd").format(controller.allInfo.value.birth!),
+      "weight": controller.allInfo.value.weight,
+      "heightFt": controller.allInfo.value.heightFt,
+      "heightIn": controller.allInfo.value.heightIn,
+      "address": controller.allInfo.value.address,
     };
 
     dio.FormData formData = dio.FormData.fromMap(userData);
@@ -53,21 +53,21 @@ class _FullFromInfoCollectorState extends State<FullFromInfoCollector> {
       if (profileImage != null) {
         userData.clear();
         userData.addAll({
-          'image': await dio.MultipartFile.fromFile(profileImage!.path),
+          "image": await dio.MultipartFile.fromFile(profileImage!.path),
         });
         await controller.updateUserInfo(dio.FormData.fromMap(userData));
       }
     } on dio.DioException catch (e) {
-      log(e.message ?? '');
+      log(e.message ?? "");
       if (e.response != null) {
         printResponse(e.response!);
-        Fluttertoast.showToast(msg: 'Unable to save profile image');
+        Fluttertoast.showToast(msg: "Unable to save profile image");
       }
     }
     if (response != null) {
-      await Hive.box('user').put('info', jsonEncode(response.data['data']));
-      Get.offAllNamed('/home');
-      Fluttertoast.showToast(msg: 'Account information saved successful');
+      await Hive.box("user").put("info", jsonEncode(response.data["data"]));
+      Get.offAllNamed("/home");
+      Fluttertoast.showToast(msg: "Account information saved successful");
     }
   }
 
@@ -94,7 +94,7 @@ class _FullFromInfoCollectorState extends State<FullFromInfoCollector> {
                     );
                   }),
                   const Text(
-                    'Profile',
+                    "Profile",
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                   ),
                   const SizedBox(height: 50, width: 50),
@@ -131,7 +131,7 @@ class _FullFromInfoCollectorState extends State<FullFromInfoCollector> {
                                       if (pickedFile != null) {
                                         profileImage = File(pickedFile.path);
                                       } else {
-                                        log('No image selected.');
+                                        log("No image selected.");
                                       }
                                     });
                                   },
@@ -144,7 +144,7 @@ class _FullFromInfoCollectorState extends State<FullFromInfoCollector> {
                         const Gap(16),
                         Center(
                           child: Text(
-                            controller.allInfo.value.fullName ?? '',
+                            controller.allInfo.value.fullName ?? "",
                             style: const TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w600,
@@ -155,7 +155,7 @@ class _FullFromInfoCollectorState extends State<FullFromInfoCollector> {
                         const Align(
                           alignment: Alignment.topLeft,
                           child: Text(
-                            'Email',
+                            "Email",
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w400,
@@ -166,13 +166,13 @@ class _FullFromInfoCollectorState extends State<FullFromInfoCollector> {
                         TextFormField(
                           decoration: getTextInputDecoration(
                             context,
-                            hintText: 'type your email here...',
+                            hintText: "type your email here...",
                           ),
                           controller: emailController,
                           keyboardType: TextInputType.emailAddress,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Please enter your email';
+                              return "Please enter your email";
                             }
                             return null;
                           },
@@ -182,7 +182,7 @@ class _FullFromInfoCollectorState extends State<FullFromInfoCollector> {
                         const Align(
                           alignment: Alignment.topLeft,
                           child: Text(
-                            'Name',
+                            "Name",
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w400,
@@ -201,7 +201,7 @@ class _FullFromInfoCollectorState extends State<FullFromInfoCollector> {
                         const Align(
                           alignment: Alignment.topLeft,
                           child: Text(
-                            'Gender',
+                            "Gender",
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w400,
@@ -220,7 +220,7 @@ class _FullFromInfoCollectorState extends State<FullFromInfoCollector> {
                         const Align(
                           alignment: Alignment.topLeft,
                           child: Text(
-                            'Birth Of Date',
+                            "Birth Of Date",
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w400,
@@ -232,7 +232,7 @@ class _FullFromInfoCollectorState extends State<FullFromInfoCollector> {
                           decoration: getTextInputDecoration(context),
                           controller: TextEditingController(
                             text: DateFormat(
-                              'yyyy-MM-dd',
+                              "yyyy-MM-dd",
                             ).format(controller.allInfo.value.birth!),
                           ),
                           enabled: false,
@@ -241,7 +241,7 @@ class _FullFromInfoCollectorState extends State<FullFromInfoCollector> {
                         const Align(
                           alignment: Alignment.topLeft,
                           child: Text(
-                            'Weight',
+                            "Weight",
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w400,
@@ -252,7 +252,7 @@ class _FullFromInfoCollectorState extends State<FullFromInfoCollector> {
                         TextFormField(
                           decoration: getTextInputDecoration(context),
                           controller: TextEditingController(
-                            text: '${controller.allInfo.value.weight} Kg',
+                            text: "${controller.allInfo.value.weight} Kg",
                           ),
                           enabled: false,
                         ),
@@ -260,7 +260,7 @@ class _FullFromInfoCollectorState extends State<FullFromInfoCollector> {
                         const Align(
                           alignment: Alignment.topLeft,
                           child: Text(
-                            'Height',
+                            "Height",
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w400,
@@ -272,7 +272,7 @@ class _FullFromInfoCollectorState extends State<FullFromInfoCollector> {
                           decoration: getTextInputDecoration(context),
                           controller: TextEditingController(
                             text:
-                                '${controller.allInfo.value.heightFt!.toInt()} Feet ${controller.allInfo.value.heightIn!.toInt()} inch',
+                                "${controller.allInfo.value.heightFt!.toInt()} Feet ${controller.allInfo.value.heightIn!.toInt()} inch",
                           ),
                           enabled: false,
                         ),
@@ -280,7 +280,7 @@ class _FullFromInfoCollectorState extends State<FullFromInfoCollector> {
                         const Align(
                           alignment: Alignment.topLeft,
                           child: Text(
-                            'Address',
+                            "Address",
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w400,
@@ -312,7 +312,7 @@ class _FullFromInfoCollectorState extends State<FullFromInfoCollector> {
                     }
                   },
                   child: const Text(
-                    'Save to Continue',
+                    "Save to Continue",
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                   ),
                 ),

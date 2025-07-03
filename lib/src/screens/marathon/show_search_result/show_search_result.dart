@@ -1,7 +1,7 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/material.dart';
-import 'package:x_obese/src/screens/marathon/models/marathon_user_model.dart';
-import 'package:x_obese/src/theme/colors.dart';
+import "package:cached_network_image/cached_network_image.dart";
+import "package:flutter/material.dart";
+import "package:x_obese/src/screens/marathon/models/marathon_user_model.dart";
+import "package:x_obese/src/theme/colors.dart";
 
 class ShowSearchResult extends StatefulWidget {
   final List<MarathonUserModel> marathonUserList;
@@ -15,7 +15,7 @@ class _ShowSearchResultState extends State<ShowSearchResult> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Search Result'), centerTitle: true),
+      appBar: AppBar(title: const Text("Search Result"), centerTitle: true),
       body: ListView.builder(
         itemCount: widget.marathonUserList.length,
         itemBuilder: (context, index) {
@@ -83,7 +83,7 @@ class _ShowSearchResultState extends State<ShowSearchResult> {
                 ),
               ),
             ),
-            title: Text(marathonUser.user?.fullName ?? 'Unknown'),
+            title: Text(marathonUser.user?.fullName ?? "Unknown"),
             subtitle: Text(
               "Distance: ${marathonUser.distanceKm ?? '0'},  Duration: ${marathonUser.durationMs?.toString() ?? '0'}",
               style: TextStyle(fontSize: 14, color: MyAppColors.mutedGray),

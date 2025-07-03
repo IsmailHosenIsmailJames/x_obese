@@ -1,9 +1,9 @@
-import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
-import 'package:get/get.dart';
-import 'package:x_obese/src/screens/controller/info_collector/controller/all_info_controller.dart';
-import 'package:x_obese/src/theme/colors.dart' show MyAppColors;
-import 'package:x_obese/src/widgets/text_input_decoration.dart';
+import "package:flutter/material.dart";
+import "package:gap/gap.dart";
+import "package:get/get.dart";
+import "package:x_obese/src/screens/controller/info_collector/controller/all_info_controller.dart";
+import "package:x_obese/src/theme/colors.dart" show MyAppColors;
+import "package:x_obese/src/widgets/text_input_decoration.dart";
 
 class NameCollectPage extends StatefulWidget {
   final PageController pageController;
@@ -39,7 +39,7 @@ class _NameCollectPageState extends State<NameCollectPage> {
               const Align(
                 alignment: Alignment.topLeft,
                 child: Text(
-                  'What’s your name?',
+                  "What’s your name?",
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
                 ),
               ),
@@ -55,7 +55,7 @@ class _NameCollectPageState extends State<NameCollectPage> {
                   },
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter your name';
+                      return "Please enter your name";
                     }
 
                     return null;
@@ -67,7 +67,7 @@ class _NameCollectPageState extends State<NameCollectPage> {
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   decoration: getTextInputDecoration(
                     context,
-                    hintText: 'Enter Your Name',
+                    hintText: "Enter Your Name",
                   ),
                 ),
               ),
@@ -86,7 +86,7 @@ class _NameCollectPageState extends State<NameCollectPage> {
                     }
                   },
                   child: const Text(
-                    'Next',
+                    "Next",
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                   ),
                 ),

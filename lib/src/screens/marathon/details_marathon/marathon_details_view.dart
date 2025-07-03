@@ -1,24 +1,24 @@
-import 'dart:developer';
+import "dart:developer";
 
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:gap/gap.dart';
-import 'package:get/get.dart';
-import 'package:intl/intl.dart';
-import 'package:x_obese/src/apis/apis_url.dart';
-import 'package:x_obese/src/apis/middleware/jwt_middleware.dart';
-import 'package:x_obese/src/screens/activity/workout_page.dart';
-import 'package:x_obese/src/screens/controller/info_collector/controller/all_info_controller.dart';
-import 'package:x_obese/src/screens/marathon/details_marathon/model/full_marathon_data_model.dart';
-import 'package:x_obese/src/screens/marathon/leader_board/leader_board_view.dart';
-import 'package:x_obese/src/screens/marathon/models/marathon_model.dart';
-import 'package:x_obese/src/screens/marathon/models/marathon_user_model.dart';
-import 'package:x_obese/src/theme/colors.dart';
-import 'package:x_obese/src/widgets/back_button.dart';
+import "package:cached_network_image/cached_network_image.dart";
+import "package:dio/dio.dart";
+import "package:flutter/material.dart";
+import "package:flutter_animate/flutter_animate.dart";
+import "package:flutter_svg/flutter_svg.dart";
+import "package:fluttertoast/fluttertoast.dart";
+import "package:gap/gap.dart";
+import "package:get/get.dart";
+import "package:intl/intl.dart";
+import "package:x_obese/src/apis/apis_url.dart";
+import "package:x_obese/src/apis/middleware/jwt_middleware.dart";
+import "package:x_obese/src/screens/activity/workout_page.dart";
+import "package:x_obese/src/screens/controller/info_collector/controller/all_info_controller.dart";
+import "package:x_obese/src/screens/marathon/details_marathon/model/full_marathon_data_model.dart";
+import "package:x_obese/src/screens/marathon/leader_board/leader_board_view.dart";
+import "package:x_obese/src/screens/marathon/models/marathon_model.dart";
+import "package:x_obese/src/screens/marathon/models/marathon_user_model.dart";
+import "package:x_obese/src/theme/colors.dart";
+import "package:x_obese/src/widgets/back_button.dart";
 
 class MarathonDetailsView extends StatefulWidget {
   final MarathonModel marathonData;
@@ -42,11 +42,11 @@ class _MarathonDetailsViewState extends State<MarathonDetailsView> {
     super.initState();
   }
 
-  getSingleMarathonData() async {
+  Future<void> getSingleMarathonData() async {
     DioClient dioClient = DioClient(baseAPI);
     try {
       final response = await dioClient.dio.get(
-        '/api/marathon/v1/marathon/${widget.marathonData.id}',
+        "/api/marathon/v1/marathon/${widget.marathonData.id}",
       );
       printResponse(response);
       if (response.statusCode == 200 || response.statusCode == 201) {
@@ -106,7 +106,7 @@ class _MarathonDetailsViewState extends State<MarathonDetailsView> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    widget.marathonData.title ?? '',
+                    widget.marathonData.title ?? "",
                     style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w500,
@@ -114,7 +114,7 @@ class _MarathonDetailsViewState extends State<MarathonDetailsView> {
                   ),
                   const Gap(8),
                   Text(
-                    widget.marathonData.description ?? '',
+                    widget.marathonData.description ?? "",
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w300,
@@ -201,7 +201,7 @@ class _MarathonDetailsViewState extends State<MarathonDetailsView> {
                       ),
                       const Gap(10),
                       Text(
-                        '${fullMarathonDataModel?.totalParticiants} Participants',
+                        "${fullMarathonDataModel?.totalParticiants} Participants",
                         style: TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.w400,
@@ -212,12 +212,12 @@ class _MarathonDetailsViewState extends State<MarathonDetailsView> {
                   ),
                   const Gap(20),
                   const Text(
-                    'About Challenge :',
+                    "About Challenge :",
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                   ),
                   const Gap(12),
                   Text(
-                    widget.marathonData.about ?? '',
+                    widget.marathonData.about ?? "",
                     style: TextStyle(
                       fontSize: 13,
                       fontWeight: FontWeight.w300,
@@ -226,7 +226,7 @@ class _MarathonDetailsViewState extends State<MarathonDetailsView> {
                   ),
                   const Gap(24),
                   const Text(
-                    'When :',
+                    "When :",
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                   ),
                   const Gap(13),
@@ -239,7 +239,7 @@ class _MarathonDetailsViewState extends State<MarathonDetailsView> {
                       ),
                       const Gap(10),
                       Text(
-                        '${DateFormat.yMMMMd().format(widget.marathonData.startDate!)}  TO  ${DateFormat.yMMMMd().format(widget.marathonData.endDate!)}',
+                        "${DateFormat.yMMMMd().format(widget.marathonData.startDate!)}  TO  ${DateFormat.yMMMMd().format(widget.marathonData.endDate!)}",
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w300,
@@ -250,13 +250,13 @@ class _MarathonDetailsViewState extends State<MarathonDetailsView> {
                   ),
                   const Gap(24),
                   const Text(
-                    'What you’ll get :',
+                    "What you’ll get :",
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                   ),
                   const Gap(13),
                   if ((fullMarathonDataModel?.data?.rewards?.length ?? 0) == 0)
                     Text(
-                      'Reword list is empty',
+                      "Reword list is empty",
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w300,
@@ -268,7 +268,7 @@ class _MarathonDetailsViewState extends State<MarathonDetailsView> {
                     (index) {
                       final currentReward =
                           fullMarathonDataModel?.data?.rewards?[index];
-                      log(currentReward.toString(), name: 'currentReward');
+                      log(currentReward.toString(), name: "currentReward");
                       return Row(
                         children: [
                           SvgPicture.string(
@@ -279,7 +279,7 @@ class _MarathonDetailsViewState extends State<MarathonDetailsView> {
                           ),
                           const Gap(10),
                           Text(
-                            currentReward?['text'] ?? '',
+                            currentReward?["text"] ?? "",
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w300,
@@ -310,9 +310,9 @@ class _MarathonDetailsViewState extends State<MarathonDetailsView> {
                                   DioClient dioClient = DioClient(baseAPI);
                                   dioClient.dio
                                       .post(
-                                        '/api/marathon/v1/user',
+                                        "/api/marathon/v1/user",
                                         data: {
-                                          'marathonId':
+                                          "marathonId":
                                               fullMarathonDataModel!.data!.id,
                                         },
                                       )
@@ -325,10 +325,10 @@ class _MarathonDetailsViewState extends State<MarathonDetailsView> {
                                                 ?.data
                                                 ?.joined = true;
                                           });
-                                          log('Joined Successfully');
+                                          log("Joined Successfully");
                                           Get.snackbar(
-                                            'Success',
-                                            'You have joined the challenge successfully',
+                                            "Success",
+                                            "You have joined the challenge successfully",
                                             backgroundColor: Colors.green,
                                             colorText: Colors.white,
                                           );
@@ -337,7 +337,7 @@ class _MarathonDetailsViewState extends State<MarathonDetailsView> {
                                       .onError((error, stackTrace) {
                                         log(error.toString());
                                         Get.snackbar(
-                                          'Error',
+                                          "Error",
                                           error.toString(),
                                           backgroundColor: Colors.red,
                                           colorText: Colors.white,
@@ -345,7 +345,7 @@ class _MarathonDetailsViewState extends State<MarathonDetailsView> {
                                       });
                                 },
                         label: Text(
-                          widget.isVirtual ? 'Join Challenge' : 'Register Now',
+                          widget.isVirtual ? "Join Challenge" : "Register Now",
                           style: const TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w400,
@@ -365,11 +365,11 @@ class _MarathonDetailsViewState extends State<MarathonDetailsView> {
                           try {
                             DioClient dioClient = DioClient(baseAPI);
                             final response = await dioClient.dio.get(
-                              '/api/marathon/v1/user/${fullMarathonDataModel?.data?.marathonUserId}',
+                              "/api/marathon/v1/user/${fullMarathonDataModel?.data?.marathonUserId}",
                             );
                             final MarathonUserModel marathonUserModel =
                                 MarathonUserModel.fromMap(
-                                  response.data['data'],
+                                  response.data["data"],
                                 );
 
                             Get.to(
@@ -385,7 +385,7 @@ class _MarathonDetailsViewState extends State<MarathonDetailsView> {
                           }
                         },
                         child: const Text(
-                          'Activity Now',
+                          "Activity Now",
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w400,
@@ -409,13 +409,13 @@ class _MarathonDetailsViewState extends State<MarathonDetailsView> {
                           try {
                             DioClient dioClient = DioClient(baseAPI);
                             final response = await dioClient.dio.get(
-                              '/api/marathon/v1/user?marathonId=${fullMarathonDataModel?.data?.id}&size=1000&page=1',
+                              "/api/marathon/v1/user?marathonId=${fullMarathonDataModel?.data?.id}&size=1000&page=1",
                             );
                             printResponse(response);
                             if ((response.statusCode == 200 ||
                                     response.statusCode == 201) &&
-                                response.data['success']) {
-                              List data = response.data['data'];
+                                response.data["success"]) {
+                              List data = response.data["data"];
                               List<MarathonUserModel> marathonUserList = [];
                               for (Map user in data) {
                                 marathonUserList.add(
@@ -427,32 +427,32 @@ class _MarathonDetailsViewState extends State<MarathonDetailsView> {
                               Get.to(
                                 () => LeaderBoardView(
                                   title:
-                                      fullMarathonDataModel?.data?.title ?? '',
+                                      fullMarathonDataModel?.data?.title ?? "",
                                   leaderboardUsers: marathonUserList,
                                   marathonData: fullMarathonDataModel!,
                                 ),
                               );
                             } else {
                               Fluttertoast.showToast(
-                                msg: response.data['message'] ?? '',
+                                msg: response.data["message"] ?? "",
                               );
                             }
                           } on DioException catch (e) {
-                            log(e.message ?? 'No Message');
+                            log(e.message ?? "No Message");
                             if (e.response != null) {
                               Fluttertoast.showToast(
-                                msg: e.response!.data['message'] ?? '',
+                                msg: e.response!.data["message"] ?? "",
                               );
                               printResponse(e.response!);
                             } else {
                               Fluttertoast.showToast(
-                                msg: 'Something went wrong',
+                                msg: "Something went wrong",
                               );
                             }
                           }
                         },
                         child: const Text(
-                          'View Leaderboard',
+                          "View Leaderboard",
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w400,

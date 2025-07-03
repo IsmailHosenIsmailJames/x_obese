@@ -1,10 +1,10 @@
-import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
-import 'package:get/get.dart';
-import 'package:x_obese/src/screens/settings/personal_details_view.dart';
-import 'package:x_obese/src/screens/settings/privacy_policy.dart';
-import 'package:x_obese/src/screens/settings/terms_and_conditions.dart';
-import 'package:x_obese/src/widgets/back_button.dart';
+import "package:flutter/material.dart";
+import "package:gap/gap.dart";
+import "package:get/get.dart";
+import "package:x_obese/src/screens/settings/personal_details_view.dart";
+import "package:x_obese/src/screens/settings/privacy_policy.dart";
+import "package:x_obese/src/screens/settings/terms_and_conditions.dart";
+import "package:x_obese/src/widgets/back_button.dart";
 
 class AboutView extends StatelessWidget {
   const AboutView({super.key});
@@ -24,7 +24,7 @@ class AboutView extends StatelessWidget {
                   }),
                   const Gap(80),
                   const Text(
-                    'About',
+                    "About",
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                   ),
                 ],
@@ -48,7 +48,7 @@ class AboutView extends StatelessWidget {
                   child: Row(
                     children: [
                       const Text(
-                        'Term & Conditions',
+                        "Term & Conditions",
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w400,
@@ -80,7 +80,7 @@ class AboutView extends StatelessWidget {
                   child: Row(
                     children: [
                       const Text(
-                        'Privacy Policy',
+                        "Privacy Policy",
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w400,

@@ -1,4 +1,4 @@
-import 'package:health/health.dart';
+import "package:health/health.dart";
 
 /// List of data types available on iOS
 const List<HealthDataType> dataTypesIOS = [

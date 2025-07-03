@@ -1,21 +1,21 @@
-import 'dart:developer';
+import "dart:developer";
 
-import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:gap/gap.dart';
-import 'package:get/get.dart';
-import 'package:toastification/toastification.dart';
-import 'package:x_obese/src/apis/apis_url.dart';
-import 'package:x_obese/src/apis/middleware/jwt_middleware.dart';
-import 'package:x_obese/src/screens/controller/info_collector/controller/all_info_controller.dart';
-import 'package:x_obese/src/screens/marathon/components/onsite_marathon_card.dart';
-import 'package:x_obese/src/screens/marathon/models/marathon_model.dart';
-import 'package:x_obese/src/screens/marathon/models/marathon_user_model.dart';
-import 'package:x_obese/src/screens/marathon/show_search_result/show_search_result.dart';
-import 'package:x_obese/src/theme/colors.dart';
-import 'package:x_obese/src/widgets/back_button.dart';
-import 'package:x_obese/src/screens/marathon/components/virtual_marathon_cards.dart';
+import "package:dio/dio.dart";
+import "package:flutter/material.dart";
+import "package:flutter_svg/flutter_svg.dart";
+import "package:gap/gap.dart";
+import "package:get/get.dart";
+import "package:toastification/toastification.dart";
+import "package:x_obese/src/apis/apis_url.dart";
+import "package:x_obese/src/apis/middleware/jwt_middleware.dart";
+import "package:x_obese/src/screens/controller/info_collector/controller/all_info_controller.dart";
+import "package:x_obese/src/screens/marathon/components/onsite_marathon_card.dart";
+import "package:x_obese/src/screens/marathon/models/marathon_model.dart";
+import "package:x_obese/src/screens/marathon/models/marathon_user_model.dart";
+import "package:x_obese/src/screens/marathon/show_search_result/show_search_result.dart";
+import "package:x_obese/src/theme/colors.dart";
+import "package:x_obese/src/widgets/back_button.dart";
+import "package:x_obese/src/screens/marathon/components/virtual_marathon_cards.dart";
 
 int nextPageNumber = 2;
 
@@ -34,15 +34,15 @@ Future<void> getMoreMarathonData() async {
   AllInfoController allInfoController = Get.find();
 
   DioClient dioClient = DioClient(baseAPI);
-  log('try to get more marathon info -> $nextPageNumber');
+  log("try to get more marathon info -> $nextPageNumber");
   try {
     // get marathon programs
     final response = await dioClient.dio.get(
-      '/api/marathon/v1/marathon?page=$nextPageNumber&size=10',
+      "/api/marathon/v1/marathon?page=$nextPageNumber&size=10",
     );
     printResponse(response);
     if (response.statusCode == 200) {
-      List marathonListData = response.data['data'];
+      List marathonListData = response.data["data"];
       if (marathonListData.isEmpty) {
         return;
       }
@@ -53,7 +53,7 @@ Future<void> getMoreMarathonData() async {
       }
     }
   } on DioException catch (e) {
-    log(e.message ?? '', name: 'Error');
+    log(e.message ?? "", name: "Error");
     if (e.response != null) {
       printResponse(e.response!);
     }
@@ -70,7 +70,7 @@ class _MarathonPageState extends State<MarathonPage> {
 
   @override
   void initState() {
-    log('Marathon page init state');
+    log("Marathon page init state");
     scrollControllerOnsite.addListener(() async {
       if (scrollControllerOnsite.position.pixels ==
           scrollControllerOnsite.position.maxScrollExtent) {
@@ -114,7 +114,7 @@ class _MarathonPageState extends State<MarathonPage> {
                 ),
                 const Spacer(),
                 const Text(
-                  'Marathon Program',
+                  "Marathon Program",
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                 ),
                 const Spacer(),
@@ -163,7 +163,7 @@ class _MarathonPageState extends State<MarathonPage> {
                     onPressed: () {
                       pageController.jumpToPage(0);
                     },
-                    child: const Text(' Virtual Marathon '),
+                    child: const Text(" Virtual Marathon "),
                   ),
 
                   ElevatedButton(
@@ -182,7 +182,7 @@ class _MarathonPageState extends State<MarathonPage> {
                     onPressed: () {
                       pageController.jumpToPage(1);
                     },
-                    child: const Text(' Onsite marathon '),
+                    child: const Text(" Onsite marathon "),
                   ),
                 ],
               ),
@@ -209,7 +209,7 @@ class _MarathonPageState extends State<MarathonPage> {
                     itemCount: allInfoController.marathonList.length,
                     itemBuilder: (context, index) {
                       if (allInfoController.marathonList[index].type ==
-                          'virtual') {
+                          "virtual") {
                         return getMarathonCard(
                           marathonData: allInfoController.marathonList[index],
                           context: context,
@@ -232,7 +232,7 @@ class _MarathonPageState extends State<MarathonPage> {
                     itemCount: allInfoController.marathonList.length,
                     itemBuilder: (context, index) {
                       if (allInfoController.marathonList[index].type !=
-                          'virtual') {
+                          "virtual") {
                         return getOnsiteMarathon(
                           context: context,
                           marathonData: allInfoController.marathonList[index],
@@ -279,7 +279,7 @@ class _MarathonPageState extends State<MarathonPage> {
                   autofocus: true,
                   keyboardType: TextInputType.webSearch,
                   decoration: InputDecoration(
-                    hintText: 'Search',
+                    hintText: "Search",
                     prefixIcon: const Icon(Icons.search),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(100),
@@ -296,11 +296,11 @@ class _MarathonPageState extends State<MarathonPage> {
                         String searchText = textEditingController.text;
                         DioClient dioClient = DioClient(baseAPI);
                         final response = await dioClient.dio.get(
-                          '/api/marathon/v1/user?search=$searchText',
+                          "/api/marathon/v1/user?search=$searchText",
                         );
                         Navigator.pop(context);
                         printResponse(response);
-                        List searchResult = response.data['data'];
+                        List searchResult = response.data["data"];
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -321,13 +321,13 @@ class _MarathonPageState extends State<MarathonPage> {
                         toastification.show(
                           context: context,
                           title:
-                              e.response?.data['message'] ??
-                              'Something went wrong',
+                              e.response?.data["message"] ??
+                              "Something went wrong",
                           type: ToastificationType.error,
                         );
                       }
                     },
-                    label: const Text('Search'),
+                    label: const Text("Search"),
                     icon: SvgPicture.string(
                       '''<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                   <path d="M22 22L20 20M2 11.5C2 6.25329 6.25329 2 11.5 2C16.7467 2 21 6.25329 21 11.5C21 16.7467 16.7467 21 11.5 21C6.25329 21 2 16.7467 2 11.5Z" stroke="#28303F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>

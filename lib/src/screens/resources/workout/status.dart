@@ -1,4 +1,4 @@
-import 'dart:convert';
+import "dart:convert";
 
 class WorkStatusModel {
   String? heartPts;
@@ -35,18 +35,18 @@ class WorkStatusModel {
   String toJson() => json.encode(toMap());
 
   factory WorkStatusModel.fromMap(Map<String, dynamic> json) => WorkStatusModel(
-    heartPts: json['heartPts'],
-    calories: json['calories'],
-    distanceKm: json['distanceKm'],
-    durationMs: (json['durationMs'])?.toDouble(),
-    steps: json['steps'],
+    heartPts: json["heartPts"],
+    calories: json["calories"],
+    distanceKm: json["distanceKm"],
+    durationMs: (json["durationMs"])?.toDouble(),
+    steps: json["steps"],
   );
 
   Map<String, dynamic> toMap() => {
-    'heartPts': heartPts,
-    'calories': calories,
-    'distanceKm': distanceKm,
-    'durationMs': durationMs,
-    'steps': steps,
+    "heartPts": heartPts,
+    "calories": calories,
+    "distanceKm": distanceKm,
+    "durationMs": durationMs,
+    "steps": steps,
   };
 }

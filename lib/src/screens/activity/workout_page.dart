@@ -1,18 +1,18 @@
-import 'dart:developer';
+import "dart:developer";
 
-import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:gap/gap.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:get/get.dart';
-import 'package:x_obese/src/screens/activity/live_activity_page.dart';
-import 'package:x_obese/src/screens/marathon/details_marathon/model/full_marathon_data_model.dart';
-import 'package:x_obese/src/screens/marathon/models/marathon_user_model.dart';
-import 'package:x_obese/src/theme/colors.dart';
-import 'package:x_obese/src/widgets/back_button.dart';
-import 'package:x_obese/src/widgets/loading_popup.dart';
-import 'package:x_obese/src/core/common/functions/calculate_distance.dart'
+import "package:flutter/material.dart";
+import "package:flutter_svg/svg.dart";
+import "package:fluttertoast/fluttertoast.dart";
+import "package:gap/gap.dart";
+import "package:geolocator/geolocator.dart";
+import "package:get/get.dart";
+import "package:x_obese/src/screens/activity/live_activity_page.dart";
+import "package:x_obese/src/screens/marathon/details_marathon/model/full_marathon_data_model.dart";
+import "package:x_obese/src/screens/marathon/models/marathon_user_model.dart";
+import "package:x_obese/src/theme/colors.dart";
+import "package:x_obese/src/widgets/back_button.dart";
+import "package:x_obese/src/widgets/loading_popup.dart";
+import "package:x_obese/src/core/common/functions/calculate_distance.dart"
     as workout_calculator;
 
 class ActivityPage extends StatefulWidget {
@@ -76,7 +76,7 @@ class _ActivityPageState extends State<ActivityPage> {
                   }),
                   const Gap(55),
                   const Text(
-                    'Workout',
+                    "Workout",
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                   ),
                 ],
@@ -138,7 +138,7 @@ class _ActivityPageState extends State<ActivityPage> {
                         Text(
                           widget.marathonData != null
                               ? '${(widget.marathonData!.data?.distanceKm ?? 0) - double.parse(widget.marathonUserModel?.distanceKm ?? '0')} '
-                              : '0.00 ',
+                              : "0.00 ",
                           style: const TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.w700,
@@ -147,7 +147,7 @@ class _ActivityPageState extends State<ActivityPage> {
                         Padding(
                           padding: const EdgeInsets.only(bottom: 3),
                           child: Text(
-                            'km',
+                            "km",
                             style: TextStyle(
                               fontSize: 16,
                               color: MyAppColors.second,
@@ -160,7 +160,7 @@ class _ActivityPageState extends State<ActivityPage> {
                   ),
                 ),
               ),
-              Expanded(child: SvgPicture.asset('assets/img/workoutPage.svg')),
+              Expanded(child: SvgPicture.asset("assets/img/workoutPage.svg")),
               const Gap(24),
               Container(
                 height: 80,
@@ -232,21 +232,21 @@ class _ActivityPageState extends State<ActivityPage> {
     );
   }
 
-  getLocationAndStartActivity() async {
+  Future<void> getLocationAndStartActivity() async {
     requestTime++;
-    showLoadingPopUp(context, loadingText: 'Getting your location...');
+    showLoadingPopUp(context, loadingText: "Getting your location...");
     LocationPermission status = await Geolocator.checkPermission();
     log(status.toString());
     if (status == LocationPermission.denied) {
       status = await Geolocator.requestPermission();
 
       if (status == LocationPermission.denied && requestTime > 2) {
-        Fluttertoast.showToast(msg: 'Location Permission is Required');
+        Fluttertoast.showToast(msg: "Location Permission is Required");
         await Geolocator.openLocationSettings();
       }
     }
     if (status == LocationPermission.deniedForever) {
-      Fluttertoast.showToast(msg: 'Location Permission is Required');
+      Fluttertoast.showToast(msg: "Location Permission is Required");
       await Geolocator.openLocationSettings();
     }
     status = await Geolocator.checkPermission();
@@ -262,9 +262,9 @@ class _ActivityPageState extends State<ActivityPage> {
           builder:
               (context) => AlertDialog(
                 insetPadding: const EdgeInsets.all(10),
-                title: const Text('The GPS signal is week!'),
+                title: const Text("The GPS signal is week!"),
                 content: Text(
-                  'We need to have better GPS signal. Go open sky for get best GPS signal. Found noise around ${position.accuracy.toPrecision(2)} meter',
+                  "We need to have better GPS signal. Go open sky for get best GPS signal. Found noise around ${position.accuracy.toPrecision(2)} meter",
                 ),
                 actions: [
                   ElevatedButton.icon(
@@ -276,7 +276,7 @@ class _ActivityPageState extends State<ActivityPage> {
                       getLocationAndStartActivity();
                     },
                     label: const Text(
-                      'Try Again',
+                      "Try Again",
                       style: TextStyle(color: Colors.white),
                     ),
                   ),
@@ -298,7 +298,7 @@ class _ActivityPageState extends State<ActivityPage> {
       requestTime = 0;
       return;
     } else {
-      Fluttertoast.showToast(msg: 'Location Permission is Required');
+      Fluttertoast.showToast(msg: "Location Permission is Required");
     }
     Navigator.pop(context);
   }

@@ -1,9 +1,9 @@
-import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
-import 'package:get/get.dart';
-import 'package:x_obese/src/screens/controller/info_collector/controller/all_info_controller.dart';
-import 'package:x_obese/src/theme/colors.dart';
-import 'package:x_obese/src/widgets/back_button.dart';
+import "package:flutter/material.dart";
+import "package:gap/gap.dart";
+import "package:get/get.dart";
+import "package:x_obese/src/screens/controller/info_collector/controller/all_info_controller.dart";
+import "package:x_obese/src/theme/colors.dart";
+import "package:x_obese/src/widgets/back_button.dart";
 
 class NotificationSettingsView extends StatefulWidget {
   const NotificationSettingsView({super.key});
@@ -31,7 +31,7 @@ class _NotificationSettingsViewState extends State<NotificationSettingsView> {
                   }),
                   const Gap(55),
                   const Text(
-                    'Personal Details',
+                    "Personal Details",
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                   ),
                 ],
@@ -52,7 +52,7 @@ class _NotificationSettingsViewState extends State<NotificationSettingsView> {
                   child: Row(
                     children: [
                       const Text(
-                        'Real-time Notification',
+                        "Real-time Notification",
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w400,

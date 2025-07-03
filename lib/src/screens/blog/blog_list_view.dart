@@ -1,16 +1,16 @@
-import 'dart:developer';
+import "dart:developer";
 
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
-import 'package:get/get.dart';
-import 'package:x_obese/src/apis/apis_url.dart';
-import 'package:x_obese/src/apis/middleware/jwt_middleware.dart';
-import 'package:x_obese/src/screens/blog/model/get_blog_model.dart';
-import 'package:x_obese/src/screens/controller/info_collector/controller/all_info_controller.dart';
-import 'package:x_obese/src/theme/colors.dart';
-import 'package:x_obese/src/widgets/back_button.dart';
+import "package:cached_network_image/cached_network_image.dart";
+import "package:dio/dio.dart";
+import "package:flutter/material.dart";
+import "package:gap/gap.dart";
+import "package:get/get.dart";
+import "package:x_obese/src/apis/apis_url.dart";
+import "package:x_obese/src/apis/middleware/jwt_middleware.dart";
+import "package:x_obese/src/screens/blog/model/get_blog_model.dart";
+import "package:x_obese/src/screens/controller/info_collector/controller/all_info_controller.dart";
+import "package:x_obese/src/theme/colors.dart";
+import "package:x_obese/src/widgets/back_button.dart";
 
 class BlogListView extends StatefulWidget {
   const BlogListView({super.key});
@@ -22,15 +22,15 @@ class BlogListView extends StatefulWidget {
 // load more blog data
 int nextBlogPageCount = 2;
 Future<void> getMoreBlogData() async {
-  log('try to get more blogs -> $nextBlogPageCount');
+  log("try to get more blogs -> $nextBlogPageCount");
   AllInfoController allInfoController = Get.find();
   DioClient dioClient = DioClient(baseAPI);
   try {
     final response = await dioClient.dio.get(
-      '/api/other/v1/blog?page=$nextBlogPageCount&size=10',
+      "/api/other/v1/blog?page=$nextBlogPageCount&size=10",
     );
     if (response.statusCode == 200 || response.statusCode == 201) {
-      List allBlogs = response.data['data'] ?? [];
+      List allBlogs = response.data["data"] ?? [];
       if (allBlogs.isNotEmpty) {
         for (int i = 0; i < allBlogs.length; i++) {
           allInfoController.getBlogList.add(
@@ -79,7 +79,7 @@ class _BlogListViewState extends State<BlogListView> {
                 }),
                 const Gap(55),
                 const Text(
-                  'Our Blogs & Tips',
+                  "Our Blogs & Tips",
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                 ),
               ],
@@ -126,7 +126,7 @@ class _BlogListViewState extends State<BlogListView> {
                           padding: const EdgeInsets.only(left: 10, right: 10),
                           child: Center(
                             child: Text(
-                              '${allInfoController.getBlogList[index].readTime} min Read',
+                              "${allInfoController.getBlogList[index].readTime} min Read",
                               style: TextStyle(
                                 fontSize: 15,
                                 fontWeight: FontWeight.w300,
@@ -137,7 +137,7 @@ class _BlogListViewState extends State<BlogListView> {
                         ),
                         const Gap(8),
                         Text(
-                          allInfoController.getBlogList[index].title ?? '',
+                          allInfoController.getBlogList[index].title ?? "",
                           style: const TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.w400,
@@ -146,7 +146,7 @@ class _BlogListViewState extends State<BlogListView> {
                         const Gap(8),
                         Text(
                           allInfoController.getBlogList[index].description ??
-                              '',
+                              "",
                           style: TextStyle(
                             fontSize: 15,
                             fontWeight: FontWeight.w300,

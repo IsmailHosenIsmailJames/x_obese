@@ -1,10 +1,10 @@
-import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
-import 'package:get/get.dart';
-import 'package:x_obese/src/widgets/back_button.dart';
+import "package:flutter/material.dart";
+import "package:gap/gap.dart";
+import "package:get/get.dart";
+import "package:x_obese/src/widgets/back_button.dart";
 
-import '../../../../theme/colors.dart';
-import '../controller/all_info_controller.dart';
+import "../../../../theme/colors.dart";
+import "../controller/all_info_controller.dart";
 
 class GenderCollector extends StatefulWidget {
   final PageController pageController;
@@ -19,7 +19,7 @@ class _GenderCollectorState extends State<GenderCollector> {
   final AllInfoController controller = Get.find();
   @override
   void initState() {
-    controller.allInfo.value.gender = 'Male';
+    controller.allInfo.value.gender = "Male";
     super.initState();
   }
 
@@ -55,7 +55,7 @@ class _GenderCollectorState extends State<GenderCollector> {
               const Align(
                 alignment: Alignment.topLeft,
                 child: Text(
-                  'Choice Your Gender 👨‍👩‍👦‍👦',
+                  "Choice Your Gender 👨‍👩‍👦‍👦",
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
                 ),
               ),
@@ -67,21 +67,21 @@ class _GenderCollectorState extends State<GenderCollector> {
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor:
-                        controller.allInfo.value.gender == 'Male'
+                        controller.allInfo.value.gender == "Male"
                             ? MyAppColors.third
                             : MyAppColors.transparentGray,
                     foregroundColor:
-                        controller.allInfo.value.gender == 'Male'
+                        controller.allInfo.value.gender == "Male"
                             ? MyAppColors.primary
                             : MyAppColors.third,
                   ),
                   onPressed: () {
                     setState(() {
-                      controller.allInfo.value.gender = 'Male';
+                      controller.allInfo.value.gender = "Male";
                     });
                   },
                   child: const Text(
-                    'Male',
+                    "Male",
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                   ),
                 ),
@@ -93,21 +93,21 @@ class _GenderCollectorState extends State<GenderCollector> {
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor:
-                        controller.allInfo.value.gender == 'Female'
+                        controller.allInfo.value.gender == "Female"
                             ? MyAppColors.third
                             : MyAppColors.transparentGray,
                     foregroundColor:
-                        controller.allInfo.value.gender == 'Female'
+                        controller.allInfo.value.gender == "Female"
                             ? MyAppColors.primary
                             : MyAppColors.third,
                   ),
                   onPressed: () {
                     setState(() {
-                      controller.allInfo.value.gender = 'Female';
+                      controller.allInfo.value.gender = "Female";
                     });
                   },
                   child: const Text(
-                    'Female',
+                    "Female",
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                   ),
                 ),
@@ -125,7 +125,7 @@ class _GenderCollectorState extends State<GenderCollector> {
                     );
                   },
                   child: const Text(
-                    'Next',
+                    "Next",
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                   ),
                 ),

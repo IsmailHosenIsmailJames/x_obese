@@ -1,11 +1,11 @@
-import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:gap/gap.dart';
-import 'package:get/get.dart';
-import 'package:x_obese/src/theme/colors.dart';
-import 'package:x_obese/src/widgets/back_button.dart';
+import "package:flutter/material.dart";
+import "package:fluttertoast/fluttertoast.dart";
+import "package:gap/gap.dart";
+import "package:get/get.dart";
+import "package:x_obese/src/theme/colors.dart";
+import "package:x_obese/src/widgets/back_button.dart";
 
-import '../controller/all_info_controller.dart';
+import "../controller/all_info_controller.dart";
 
 class BirthDateCollector extends StatefulWidget {
   final PageController pageController;
@@ -22,18 +22,18 @@ class _BirthDateCollectorState extends State<BirthDateCollector> {
   int? day;
   int? year;
   List<String> months3Char = [
-    'Jan',
-    'Feb',
-    'Mar',
-    'Apr',
-    'May',
-    'Jun',
-    'Jul',
-    'Aug',
-    'Sep',
-    'Oct',
-    'Nov',
-    'Dec',
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
   ];
   @override
   void initState() {
@@ -78,7 +78,7 @@ class _BirthDateCollectorState extends State<BirthDateCollector> {
               const Align(
                 alignment: Alignment.topLeft,
                 child: Text(
-                  'When Where Are You Born.?',
+                  "When Where Are You Born.?",
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
                 ),
               ),
@@ -91,7 +91,7 @@ class _BirthDateCollectorState extends State<BirthDateCollector> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text('Month'),
+                      const Text("Month"),
                       const Gap(5),
                       SizedBox(
                         width:
@@ -99,7 +99,7 @@ class _BirthDateCollectorState extends State<BirthDateCollector> {
                         child: DropdownButtonFormField(
                           value: month,
                           decoration: getDropDownInputDecoration(
-                            hintText: 'Month',
+                            hintText: "Month",
                           ),
                           items: List.generate(
                             12,
@@ -122,7 +122,7 @@ class _BirthDateCollectorState extends State<BirthDateCollector> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text('Day'),
+                      const Text("Day"),
                       const Gap(5),
                       SizedBox(
                         width:
@@ -131,13 +131,13 @@ class _BirthDateCollectorState extends State<BirthDateCollector> {
                         child: DropdownButtonFormField(
                           value: day,
                           decoration: getDropDownInputDecoration(
-                            hintText: 'Day',
+                            hintText: "Day",
                           ),
                           items: List.generate(
                             31,
                             (index) => DropdownMenuItem(
                               value: index,
-                              child: Text('${index + 1}'),
+                              child: Text("${index + 1}"),
                             ),
                           ),
                           onChanged: (value) {
@@ -154,7 +154,7 @@ class _BirthDateCollectorState extends State<BirthDateCollector> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text('Year'),
+                      const Text("Year"),
                       const Gap(5),
                       SizedBox(
                         width:
@@ -162,13 +162,13 @@ class _BirthDateCollectorState extends State<BirthDateCollector> {
                         child: DropdownButtonFormField(
                           value: year == null ? null : (year! - 1940),
                           decoration: getDropDownInputDecoration(
-                            hintText: 'Year',
+                            hintText: "Year",
                           ),
                           items: List.generate(
                             100,
                             (index) => DropdownMenuItem(
                               value: index,
-                              child: Text('${1940 + index}'),
+                              child: Text("${1940 + index}"),
                             ),
                           ),
                           onChanged: (value) {
@@ -201,11 +201,11 @@ class _BirthDateCollectorState extends State<BirthDateCollector> {
                         curve: Curves.easeIn,
                       );
                     } else {
-                      Fluttertoast.showToast(msg: 'Please select all fields');
+                      Fluttertoast.showToast(msg: "Please select all fields");
                     }
                   },
                   child: const Text(
-                    'Next',
+                    "Next",
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                   ),
                 ),

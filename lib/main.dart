@@ -1,14 +1,14 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_foreground_task/flutter_foreground_task.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
-import 'package:get/get.dart';
-import 'package:timezone/data/latest.dart' as tz;
-import 'package:hive_flutter/hive_flutter.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:x_obese/x_obese.dart';
-import 'package:x_obese/src/apis/middleware/jwt_middleware.dart';
-import 'package:x_obese/src/screens/auth/controller/auth_controller.dart';
+import "package:flutter/material.dart";
+import "package:flutter/services.dart";
+import "package:flutter_foreground_task/flutter_foreground_task.dart";
+import "package:flutter_native_splash/flutter_native_splash.dart";
+import "package:get/get.dart";
+import "package:timezone/data/latest.dart" as tz;
+import "package:hive_flutter/hive_flutter.dart";
+import "package:shared_preferences/shared_preferences.dart";
+import "package:x_obese/x_obese.dart";
+import "package:x_obese/src/apis/middleware/jwt_middleware.dart";
+import "package:x_obese/src/screens/auth/controller/auth_controller.dart";
 
 Future<void> main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -16,8 +16,8 @@ Future<void> main() async {
   FlutterForegroundTask.initCommunicationPort();
 
   await Hive.initFlutter();
-  await Hive.openBox('user');
-  await Hive.openBox('tokens');
+  await Hive.openBox("user");
+  await Hive.openBox("tokens");
 
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(

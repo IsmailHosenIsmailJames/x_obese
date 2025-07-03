@@ -1,13 +1,13 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:gap/gap.dart';
-import 'package:get/get.dart';
-import 'package:x_obese/src/core/common/functions/safe_sub_string.dart';
-import 'package:x_obese/src/resources/svg_string.dart';
-import 'package:x_obese/src/screens/marathon/details_marathon/marathon_details_view.dart';
-import 'package:x_obese/src/screens/marathon/models/marathon_model.dart';
-import 'package:x_obese/src/theme/colors.dart';
+import "package:cached_network_image/cached_network_image.dart";
+import "package:flutter/material.dart";
+import "package:flutter_svg/svg.dart";
+import "package:gap/gap.dart";
+import "package:get/get.dart";
+import "package:x_obese/src/core/common/functions/safe_sub_string.dart";
+import "package:x_obese/src/resources/svg_string.dart";
+import "package:x_obese/src/screens/marathon/details_marathon/marathon_details_view.dart";
+import "package:x_obese/src/screens/marathon/models/marathon_model.dart";
+import "package:x_obese/src/theme/colors.dart";
 
 Widget getMarathonCard({
   required BuildContext context,
@@ -25,7 +25,7 @@ Widget getMarathonCard({
           marathonData.imagePath == null
               ? null
               : DecorationImage(
-                image: CachedNetworkImageProvider(marathonData.imagePath ?? ''),
+                image: CachedNetworkImageProvider(marathonData.imagePath ?? ""),
                 colorFilter: ColorFilter.mode(
                   Colors.black.withOpacity(0.5),
                   BlendMode.darken,
@@ -44,7 +44,7 @@ Widget getMarathonCard({
         ),
         const Gap(14),
         Text(
-          marathonData.title ?? '',
+          marathonData.title ?? "",
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w600,
@@ -53,7 +53,7 @@ Widget getMarathonCard({
         ),
         const Gap(4),
         Text(
-          safeSubString(marathonData.description ?? '', 100),
+          safeSubString(marathonData.description ?? "", 100),
           style: TextStyle(fontSize: 12, color: MyAppColors.primary),
         ),
         const Gap(16),
@@ -65,7 +65,7 @@ Widget getMarathonCard({
             onPressed: () {
               Get.to(
                 () => MarathonDetailsView(
-                  isVirtual: marathonData.type == 'virtual',
+                  isVirtual: marathonData.type == "virtual",
                   marathonData: marathonData,
                 ),
               );

@@ -1,4 +1,4 @@
-import 'dart:convert';
+import "dart:convert";
 
 class AllInfoModel {
   String? id;
@@ -59,30 +59,30 @@ class AllInfoModel {
   String toJson() => json.encode(toMap());
 
   factory AllInfoModel.fromMap(Map<String, dynamic> json) => AllInfoModel(
-    id: json['id'],
-    mobile: json['mobile'],
-    fullName: json['fullName'],
-    email: json['email'],
-    image: json['imagePath'],
-    gender: json['gender'],
-    address: json['address'],
-    birth: json['birth'] != null ? DateTime.parse(json['birth']) : null,
-    heightFt: json['heightFt'],
-    heightIn: json['heightIn'],
-    weight: json['weight'],
+    id: json["id"],
+    mobile: json["mobile"],
+    fullName: json["fullName"],
+    email: json["email"],
+    image: json["imagePath"],
+    gender: json["gender"],
+    address: json["address"],
+    birth: json["birth"] != null ? DateTime.parse(json["birth"]) : null,
+    heightFt: json["heightFt"],
+    heightIn: json["heightIn"],
+    weight: json["weight"],
   );
 
   Map<String, dynamic> toMap() => {
-    'id': id,
-    'mobile': mobile,
-    'fullName': fullName,
-    'email': email,
-    'imagePath': image,
-    'gender': gender,
-    'address': address,
-    'birth': birth?.toIso8601String(),
-    'heightFt': heightFt,
-    'heightIn': heightIn,
-    'weight': weight,
+    "id": id,
+    "mobile": mobile,
+    "fullName": fullName,
+    "email": email,
+    "imagePath": image,
+    "gender": gender,
+    "address": address,
+    "birth": birth?.toIso8601String(),
+    "heightFt": heightFt,
+    "heightIn": heightIn,
+    "weight": weight,
   };
 }

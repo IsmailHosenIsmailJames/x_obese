@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:gap/gap.dart';
-import 'package:x_obese/src/theme/colors.dart';
+import "package:flutter/material.dart";
+import "package:flutter_svg/flutter_svg.dart";
+import "package:gap/gap.dart";
+import "package:x_obese/src/theme/colors.dart";
 
 class IntroPage1 extends StatelessWidget {
   final PageController pageController;
@@ -15,7 +15,7 @@ class IntroPage1 extends StatelessWidget {
           height: MediaQuery.of(context).size.height - 50,
           width: double.infinity,
           child: Image.asset(
-            'assets/img/intro/walking.png',
+            "assets/img/intro/walking.png",
             fit: BoxFit.cover,
             alignment: Alignment.topCenter,
           ),
@@ -48,18 +48,18 @@ class IntroPage1 extends StatelessWidget {
                         fontWeight: FontWeight.w600,
                       ),
                       children: <InlineSpan>[
-                        const TextSpan(text: 'Your '),
+                        const TextSpan(text: "Your "),
                         TextSpan(
-                          text: 'Fitness ',
+                          text: "Fitness ",
                           style: TextStyle(color: MyAppColors.third),
                         ),
-                        const TextSpan(text: 'Journey Starts Here'),
+                        const TextSpan(text: "Journey Starts Here"),
                       ],
                     ),
                   ),
                   const Gap(8),
                   Text(
-                    'Set your goals, track your progress, and achieve greatness',
+                    "Set your goals, track your progress, and achieve greatness",
                     style: TextStyle(
                       color: MyAppColors.mutedGray,
                       fontSize: 16,
@@ -79,7 +79,7 @@ class IntroPage1 extends StatelessWidget {
                         );
                       },
                       child: const Text(
-                        'Get Ready',
+                        "Get Ready",
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w600,

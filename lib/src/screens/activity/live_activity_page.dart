@@ -1,30 +1,30 @@
-import 'dart:async';
+import "dart:async";
 
-import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:dio/dio.dart';
-import 'package:fluentui_system_icons/fluentui_system_icons.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:gap/gap.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:get/get.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:wakelock_plus/wakelock_plus.dart';
-import 'package:x_obese/src/apis/middleware/jwt_middleware.dart';
-import 'package:x_obese/src/core/common/functions/calculate_distance.dart'
+import "package:connectivity_plus/connectivity_plus.dart";
+import "package:dio/dio.dart";
+import "package:fluentui_system_icons/fluentui_system_icons.dart";
+import "package:flutter/material.dart";
+import "package:flutter_svg/svg.dart";
+import "package:fluttertoast/fluttertoast.dart";
+import "package:gap/gap.dart";
+import "package:geolocator/geolocator.dart";
+import "package:get/get.dart";
+import "package:google_maps_flutter/google_maps_flutter.dart";
+import "package:wakelock_plus/wakelock_plus.dart";
+import "package:x_obese/src/apis/middleware/jwt_middleware.dart";
+import "package:x_obese/src/core/common/functions/calculate_distance.dart"
     as workout_calculator;
-import 'package:x_obese/src/core/common/functions/calculate_distance.dart';
-import 'package:x_obese/src/core/common/functions/format_sec_to_time.dart';
-import 'package:x_obese/src/screens/activity/controller/activity_controller.dart';
-import 'package:x_obese/src/screens/activity/controller/lock_controller.dart';
-import 'package:x_obese/src/screens/controller/info_collector/controller/all_info_controller.dart';
-import 'package:x_obese/src/screens/marathon/details_marathon/model/full_marathon_data_model.dart';
-import 'package:x_obese/src/screens/marathon/models/marathon_user_model.dart';
-import 'package:x_obese/src/theme/colors.dart';
-import 'package:x_obese/src/widgets/back_button.dart';
-import 'package:x_obese/src/widgets/loading_popup.dart';
-import 'package:dio/dio.dart' as dio;
+import "package:x_obese/src/core/common/functions/calculate_distance.dart";
+import "package:x_obese/src/core/common/functions/format_sec_to_time.dart";
+import "package:x_obese/src/screens/activity/controller/activity_controller.dart";
+import "package:x_obese/src/screens/activity/controller/lock_controller.dart";
+import "package:x_obese/src/screens/controller/info_collector/controller/all_info_controller.dart";
+import "package:x_obese/src/screens/marathon/details_marathon/model/full_marathon_data_model.dart";
+import "package:x_obese/src/screens/marathon/models/marathon_user_model.dart";
+import "package:x_obese/src/theme/colors.dart";
+import "package:x_obese/src/widgets/back_button.dart";
+import "package:x_obese/src/widgets/loading_popup.dart";
+import "package:dio/dio.dart" as dio;
 
 class LiveActivityPage extends StatefulWidget {
   final workout_calculator.ActivityType workoutType;
@@ -129,7 +129,7 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
                   }),
                   const Gap(70),
                   const Text(
-                    'Workout',
+                    "Workout",
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                   ),
                 ],
@@ -157,9 +157,9 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
                     zoomControlsEnabled: false,
                     markers: {
                       Marker(
-                        markerId: const MarkerId('start'),
+                        markerId: const MarkerId("start"),
                         infoWindow: InfoWindow(
-                          title: '${widget.workoutType} Starting point',
+                          title: "${widget.workoutType} Starting point",
                         ),
                         icon: BitmapDescriptor.defaultMarkerWithHue(
                           BitmapDescriptor.hueBlue,
@@ -170,9 +170,9 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
                         ),
                       ),
                       Marker(
-                        markerId: const MarkerId('start'),
+                        markerId: const MarkerId("start"),
                         infoWindow: InfoWindow(
-                          title: '${widget.workoutType} Starting point',
+                          title: "${widget.workoutType} Starting point",
                         ),
                         position: LatLng(
                           latLonOfPositions.last.latitude,
@@ -221,7 +221,7 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
                                 Padding(
                                   padding: const EdgeInsets.only(bottom: 3),
                                   child: Text(
-                                    ' km',
+                                    " km",
                                     style: TextStyle(
                                       fontSize: 16,
                                       color: MyAppColors.second,
@@ -279,14 +279,14 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
                                   ),
                                   const Gap(5),
                                   Text(
-                                    '${((latLonOfPositions.last.speed == 0.0 ? workoutCalculationResult.averageSpeed : latLonOfPositions.last.speed) * 3.6).toPrecision(2)} km/h',
+                                    "${((latLonOfPositions.last.speed == 0.0 ? workoutCalculationResult.averageSpeed : latLonOfPositions.last.speed) * 3.6).toPrecision(2)} km/h",
                                     style: const TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w400,
                                     ),
                                   ),
                                   Text(
-                                    'Avg pace',
+                                    "Avg pace",
                                     style: TextStyle(
                                       fontSize: 12,
                                       fontWeight: FontWeight.w300,
@@ -334,7 +334,7 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
                                     ),
                                   ),
                                   Text(
-                                    'Duration',
+                                    "Duration",
                                     style: TextStyle(
                                       fontSize: 12,
                                       fontWeight: FontWeight.w300,
@@ -506,9 +506,9 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text('Exit without saving!'),
+          title: const Text("Exit without saving!"),
           content: const Text(
-            'Are you sure that you want to exit workout without saving?',
+            "Are you sure that you want to exit workout without saving?",
           ),
           actions: [
             TextButton(
@@ -516,7 +516,7 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
                 Get.back();
               },
               child: const Text(
-                'Exit Workout',
+                "Exit Workout",
                 style: TextStyle(color: Colors.red),
               ),
             ),
@@ -525,7 +525,7 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
                 Navigator.pop(context);
               },
               child: const Text(
-                'Continue Workout',
+                "Continue Workout",
                 style: TextStyle(color: Colors.green),
               ),
             ),
@@ -553,30 +553,30 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
-                    'Are you sure?',
+                    "Are you sure?",
                     style: TextStyle(fontSize: 26, fontWeight: FontWeight.w500),
                   ),
                   const Gap(20),
                   Row(
                     children: [
                       const Text(
-                        'Distance:',
+                        "Distance:",
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                       const Gap(10),
                       Text(
-                        '${((distanceEveryPaused + workoutCalculationResult.totalDistance) / 1000).toStringAsFixed(2)} km',
+                        "${((distanceEveryPaused + workoutCalculationResult.totalDistance) / 1000).toStringAsFixed(2)} km",
                       ),
                     ],
                   ),
                   Row(
                     children: [
                       const Text(
-                        'Duration:',
+                        "Duration:",
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                       const Gap(10),
-                      Text('${formatSeconds(workoutDurationSec)} Minutes'),
+                      Text("${formatSeconds(workoutDurationSec)} Minutes"),
                     ],
                   ),
                   const Gap(20),
@@ -594,7 +594,7 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
                           Icons.arrow_right_alt_outlined,
                           color: Colors.green,
                         ),
-                        label: const Text('Continue'),
+                        label: const Text("Continue"),
                       ),
                       const Gap(20),
                       ElevatedButton.icon(
@@ -606,7 +606,7 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
                           await saveWorkout(context, workoutCalculationResult);
                         },
                         icon: const Icon(Icons.done, color: Colors.green),
-                        label: const Text('Save Now'),
+                        label: const Text("Save Now"),
                       ),
                     ],
                   ),
@@ -627,9 +627,9 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
         builder:
             (context) => AlertDialog(
               insetPadding: const EdgeInsets.all(10),
-              title: const Text('No internet Connection!'),
+              title: const Text("No internet Connection!"),
               content: const Text(
-                'To save the data to the server, we required internet connection. Please check your internet connection.',
+                "To save the data to the server, we required internet connection. Please check your internet connection.",
               ),
               actions: [
                 ElevatedButton(
@@ -641,7 +641,7 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
                     Navigator.pop(context);
                     saveWorkout(context, workoutCalculationResult);
                   },
-                  child: const Text('Try Again'),
+                  child: const Text("Try Again"),
                 ),
               ],
             ),
@@ -649,7 +649,7 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
       return;
     }
 
-    showLoadingPopUp(context, loadingText: 'Saving...');
+    showLoadingPopUp(context, loadingText: "Saving...");
 
     // make a api call
     final activityController = Get.put(ActivityController());
@@ -658,20 +658,20 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
 
       if (widget.marathonUserModel != null) {
         var res = await activityController.saveMarathonUserActivity({
-          'distanceKm':
+          "distanceKm":
               ((distanceEveryPaused + workoutCalculationResult.totalDistance) /
                       1000)
                   .toString(),
-          'durationMs': workoutDurationSec * 1000,
+          "durationMs": workoutDurationSec * 1000,
         }, widget.marathonData!.data!.marathonUserId!);
         if (res != null) response = res;
       }
       var res = await activityController.saveActivity({
-        'distanceKm':
+        "distanceKm":
             (distanceEveryPaused + workoutCalculationResult.totalDistance) /
             1000,
-        'type': widget.workoutType.toString(),
-        'durationMs': workoutDurationSec * 1000,
+        "type": widget.workoutType.toString(),
+        "durationMs": workoutDurationSec * 1000,
         // "steps": 1000, // optional
       });
 
@@ -683,11 +683,11 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
         Navigator.pop(context);
       }
       if (response?.statusCode == 200 || response?.statusCode == 201) {
-        Fluttertoast.showToast(msg: 'Saved successfully');
+        Fluttertoast.showToast(msg: "Saved successfully");
         Get.back();
       } else {
         Navigator.pop(context);
-        Fluttertoast.showToast(msg: 'Unable to save, try again');
+        Fluttertoast.showToast(msg: "Unable to save, try again");
       }
     } on DioException catch (e) {
       printResponse(e.response!);
@@ -698,7 +698,7 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
     Set<Polyline> polyline = {};
     polyline.add(
       Polyline(
-        polylineId: const PolylineId('Workout Paths'),
+        polylineId: const PolylineId("Workout Paths"),
         points: latLonList,
         color: MyAppColors.second,
         width: 5,

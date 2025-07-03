@@ -1,4 +1,4 @@
-import 'dart:convert';
+import "dart:convert";
 
 class GetWorkoutPlans {
   String? id;
@@ -75,44 +75,44 @@ class GetWorkoutPlans {
   String toJson() => json.encode(toMap());
 
   factory GetWorkoutPlans.fromMap(Map<String, dynamic> json) => GetWorkoutPlans(
-    id: json['id'],
-    userId: json['userId'],
-    bmi: json['bmi'],
-    weightGoal: json['weightGoal'],
-    goalType: json['goalType'],
-    workoutTimeMs: json['workoutTimeMs'],
-    workoutDays: json['workoutDays'],
-    activateReminder: json['activateReminder'],
+    id: json["id"],
+    userId: json["userId"],
+    bmi: json["bmi"],
+    weightGoal: json["weightGoal"],
+    goalType: json["goalType"],
+    workoutTimeMs: json["workoutTimeMs"],
+    workoutDays: json["workoutDays"],
+    activateReminder: json["activateReminder"],
     reminderTime:
-        json['reminderTime'] == null
+        json["reminderTime"] == null
             ? null
-            : DateTime.parse(json['reminderTime']),
-    totalDays: json['totalDays'],
-    caloriesGoal: json['caloriesGoal'],
+            : DateTime.parse(json["reminderTime"]),
+    totalDays: json["totalDays"],
+    caloriesGoal: json["caloriesGoal"],
     startDate:
-        json['startDate'] == null ? null : DateTime.parse(json['startDate']),
-    endDate: json['endDate'] == null ? null : DateTime.parse(json['endDate']),
+        json["startDate"] == null ? null : DateTime.parse(json["startDate"]),
+    endDate: json["endDate"] == null ? null : DateTime.parse(json["endDate"]),
     createdAt:
-        json['createdAt'] == null ? null : DateTime.parse(json['createdAt']),
+        json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
     updatedAt:
-        json['updatedAt'] == null ? null : DateTime.parse(json['updatedAt']),
+        json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
   );
 
   Map<String, dynamic> toMap() => {
-    'id': id,
-    'userId': userId,
-    'bmi': bmi,
-    'weightGoal': weightGoal,
-    'goalType': goalType,
-    'workoutTimeMs': workoutTimeMs,
-    'workoutDays': workoutDays,
-    'activateReminder': activateReminder,
-    'reminderTime': reminderTime?.toIso8601String(),
-    'totalDays': totalDays,
-    'caloriesGoal': caloriesGoal,
-    'startDate': startDate?.toIso8601String(),
-    'endDate': endDate?.toIso8601String(),
-    'createdAt': createdAt?.toIso8601String(),
-    'updatedAt': updatedAt?.toIso8601String(),
+    "id": id,
+    "userId": userId,
+    "bmi": bmi,
+    "weightGoal": weightGoal,
+    "goalType": goalType,
+    "workoutTimeMs": workoutTimeMs,
+    "workoutDays": workoutDays,
+    "activateReminder": activateReminder,
+    "reminderTime": reminderTime?.toIso8601String(),
+    "totalDays": totalDays,
+    "caloriesGoal": caloriesGoal,
+    "startDate": startDate?.toIso8601String(),
+    "endDate": endDate?.toIso8601String(),
+    "createdAt": createdAt?.toIso8601String(),
+    "updatedAt": updatedAt?.toIso8601String(),
   };
 }

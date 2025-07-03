@@ -1,20 +1,20 @@
-import 'dart:developer';
+import "dart:developer";
 
-import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:gap/gap.dart';
-import 'package:get/get.dart';
-import 'package:intl/intl.dart';
-import 'package:x_obese/src/apis/apis_url.dart';
-import 'package:x_obese/src/apis/middleware/jwt_middleware.dart';
-import 'package:x_obese/src/screens/controller/info_collector/controller/all_info_controller.dart';
-import 'package:x_obese/src/screens/create_workout_plan/controller/create_workout_plan_controller.dart';
-import 'package:x_obese/src/screens/create_workout_plan/model/create_workout_plan_model.dart';
-import 'package:x_obese/src/screens/create_workout_plan/model/get_workout_plans.dart';
-import 'package:x_obese/src/theme/colors.dart';
-import 'package:x_obese/src/widgets/back_button.dart';
-import 'package:toastification/toastification.dart';
+import "package:dio/dio.dart";
+import "package:flutter/material.dart";
+import "package:fluttertoast/fluttertoast.dart";
+import "package:gap/gap.dart";
+import "package:get/get.dart";
+import "package:intl/intl.dart";
+import "package:x_obese/src/apis/apis_url.dart";
+import "package:x_obese/src/apis/middleware/jwt_middleware.dart";
+import "package:x_obese/src/screens/controller/info_collector/controller/all_info_controller.dart";
+import "package:x_obese/src/screens/create_workout_plan/controller/create_workout_plan_controller.dart";
+import "package:x_obese/src/screens/create_workout_plan/model/create_workout_plan_model.dart";
+import "package:x_obese/src/screens/create_workout_plan/model/get_workout_plans.dart";
+import "package:x_obese/src/theme/colors.dart";
+import "package:x_obese/src/widgets/back_button.dart";
+import "package:toastification/toastification.dart";
 
 class CreateWorkoutPlanPage2 extends StatefulWidget {
   final PageController pageController;
@@ -33,22 +33,22 @@ class CreateWorkoutPlanPage2 extends StatefulWidget {
 
 class _CreateWorkoutPlanPage2State extends State<CreateWorkoutPlanPage2> {
   List<String> selectedWeekDays = [];
-  List<String> weekDays = ['Fri', 'Sat', 'Sun', 'Mon', 'Tue', 'Wed', 'Thu'];
+  List<String> weekDays = ["Fri", "Sat", "Sun", "Mon", "Tue", "Wed", "Thu"];
   Map<String, String> mapOfWeekDays = {
-    'Fri': 'Friday',
-    'Sat': 'Saturday',
-    'Sun': 'Sunday',
-    'Mon': 'Monday',
-    'Tue': 'Tuesday',
-    'Wed': 'Wednesday',
-    'Thu': 'Thursday',
+    "Fri": "Friday",
+    "Sat": "Saturday",
+    "Sun": "Sunday",
+    "Mon": "Monday",
+    "Tue": "Tuesday",
+    "Wed": "Wednesday",
+    "Thu": "Thursday",
   };
   final CreateWorkoutPlanController createWorkoutPlanController = Get.find();
   @override
   void initState() {
     log(
       createWorkoutPlanController.createWorkoutPlanModel.value.workoutTimeMs ??
-          'Not Found',
+          "Not Found",
     );
     createWorkoutPlanController.createWorkoutPlanModel.value.activateReminder =
         true;
@@ -59,13 +59,13 @@ class _CreateWorkoutPlanPage2State extends State<CreateWorkoutPlanPage2> {
         .value
         .endDate ??= DateTime.now().add(const Duration(days: 365));
     createWorkoutPlanController.createWorkoutPlanModel.value.workoutTimeMs ??=
-        '40';
+        "40";
 
     if (createWorkoutPlanController.createWorkoutPlanModel.value.workoutDays !=
         null) {
       String days =
           createWorkoutPlanController.createWorkoutPlanModel.value.workoutDays!;
-      for (String day in days.split(',')) {
+      for (String day in days.split(",")) {
         selectedWeekDays.add(day.substring(0, 3));
       }
     }
@@ -96,7 +96,7 @@ class _CreateWorkoutPlanPage2State extends State<CreateWorkoutPlanPage2> {
                   }),
                   const Gap(55),
                   const Text(
-                    'Workout Goal',
+                    "Workout Goal",
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                   ),
                 ],
@@ -111,7 +111,7 @@ class _CreateWorkoutPlanPage2State extends State<CreateWorkoutPlanPage2> {
                       const Gap(10),
 
                       const Text(
-                        'Daily Duration',
+                        "Daily Duration",
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
@@ -122,7 +122,7 @@ class _CreateWorkoutPlanPage2State extends State<CreateWorkoutPlanPage2> {
                       Align(
                         alignment: Alignment.centerRight,
                         child: Text(
-                          '${createWorkoutPlanController.createWorkoutPlanModel.value.workoutTimeMs} Min',
+                          "${createWorkoutPlanController.createWorkoutPlanModel.value.workoutTimeMs} Min",
                         ),
                       ),
                       const Gap(10),
@@ -161,19 +161,19 @@ class _CreateWorkoutPlanPage2State extends State<CreateWorkoutPlanPage2> {
                       Row(
                         children: [
                           Text(
-                            '0 Min',
+                            "0 Min",
                             style: TextStyle(color: MyAppColors.mutedGray),
                           ),
                           const Spacer(),
                           Text(
-                            '90 Min',
+                            "90 Min",
                             style: TextStyle(color: MyAppColors.mutedGray),
                           ),
                         ],
                       ),
                       const Gap(33),
                       const Text(
-                        'Day For workout',
+                        "Day For workout",
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
@@ -195,7 +195,7 @@ class _CreateWorkoutPlanPage2State extends State<CreateWorkoutPlanPage2> {
                                 } else {
                                   selectedWeekDays.add(weekDays[index]);
                                 }
-                                String workoutDaysString = '';
+                                String workoutDaysString = "";
                                 for (
                                   int i = 0;
                                   i < selectedWeekDays.length;
@@ -206,7 +206,7 @@ class _CreateWorkoutPlanPage2State extends State<CreateWorkoutPlanPage2> {
                                         mapOfWeekDays[selectedWeekDays[i]]!;
                                   } else {
                                     workoutDaysString +=
-                                        '${mapOfWeekDays[selectedWeekDays[i]]!},';
+                                        "${mapOfWeekDays[selectedWeekDays[i]]!},";
                                   }
                                 }
                                 createWorkoutPlanController
@@ -218,7 +218,7 @@ class _CreateWorkoutPlanPage2State extends State<CreateWorkoutPlanPage2> {
                                 );
                                 setState(() {
                                   log(
-                                    'Set -> ${createWorkoutPlanController.createWorkoutPlanModel.value.workoutDays}',
+                                    "Set -> ${createWorkoutPlanController.createWorkoutPlanModel.value.workoutDays}",
                                   );
                                 });
                               });
@@ -248,7 +248,7 @@ class _CreateWorkoutPlanPage2State extends State<CreateWorkoutPlanPage2> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           const Text(
-                            'Workout Day Reminder',
+                            "Workout Day Reminder",
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
@@ -278,7 +278,7 @@ class _CreateWorkoutPlanPage2State extends State<CreateWorkoutPlanPage2> {
                       Row(
                         children: [
                           const Text(
-                            'Reminder',
+                            "Reminder",
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
@@ -321,7 +321,7 @@ class _CreateWorkoutPlanPage2State extends State<CreateWorkoutPlanPage2> {
                       Row(
                         children: [
                           const Text(
-                            'Start Date',
+                            "Start Date",
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
@@ -388,7 +388,7 @@ class _CreateWorkoutPlanPage2State extends State<CreateWorkoutPlanPage2> {
                       Row(
                         children: [
                           const Text(
-                            'End Date',
+                            "End Date",
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
@@ -460,20 +460,20 @@ class _CreateWorkoutPlanPage2State extends State<CreateWorkoutPlanPage2> {
                     if (selectedWeekDays.isEmpty) {
                       toastification.show(
                         context: context,
-                        title: const Text('Please select at least one day'),
+                        title: const Text("Please select at least one day"),
                         type: ToastificationType.error,
                         autoCloseDuration: const Duration(seconds: 3),
                       );
                       return;
                     }
-                    String workoutDaysString = '';
+                    String workoutDaysString = "";
                     for (int i = 0; i < selectedWeekDays.length; i++) {
                       if (i == selectedWeekDays.length - 1) {
                         workoutDaysString +=
                             mapOfWeekDays[selectedWeekDays[i]]!;
                       } else {
                         workoutDaysString +=
-                            '${mapOfWeekDays[selectedWeekDays[i]]!},';
+                            "${mapOfWeekDays[selectedWeekDays[i]]!},";
                       }
                     }
 
@@ -485,7 +485,7 @@ class _CreateWorkoutPlanPage2State extends State<CreateWorkoutPlanPage2> {
                     createWorkoutPlanController
                         .createWorkoutPlanModel
                         .value
-                        .reminderTime = DateFormat('yyyy-MM-dd').format(
+                        .reminderTime = DateFormat("yyyy-MM-dd").format(
                       DateTime.now().copyWith(
                         hour: reminderTime.hour,
                         minute: reminderTime.minute,
@@ -504,7 +504,7 @@ class _CreateWorkoutPlanPage2State extends State<CreateWorkoutPlanPage2> {
                             .millisecondsSinceEpoch) {
                       toastification.show(
                         context: context,
-                        title: const Text('Start and End date not valid'),
+                        title: const Text("Start and End date not valid"),
                         type: ToastificationType.error,
                         autoCloseDuration: const Duration(seconds: 3),
                       );
@@ -517,7 +517,7 @@ class _CreateWorkoutPlanPage2State extends State<CreateWorkoutPlanPage2> {
                           .toJson(),
                     );
                   },
-                  child: const Text('Generate Plan'),
+                  child: const Text("Generate Plan"),
                 ),
               ),
             ],
@@ -532,20 +532,20 @@ class _CreateWorkoutPlanPage2State extends State<CreateWorkoutPlanPage2> {
         createWorkoutPlanController.createWorkoutPlanModel.value.copyWith();
     createWorkoutPlanModel.goalType = createWorkoutPlanModel.goalType!
         .toLowerCase()
-        .replaceAll(' ', '_');
+        .replaceAll(" ", "_");
 
     createWorkoutPlanModel.workoutTimeMs =
-        ((int.parse(createWorkoutPlanModel.workoutTimeMs ?? '0')) * 60000)
+        ((int.parse(createWorkoutPlanModel.workoutTimeMs ?? "0")) * 60000)
             .toString();
 
-    log(createWorkoutPlanModel.toJson(), name: 'Save Workout Plan Data');
+    log(createWorkoutPlanModel.toJson(), name: "Save Workout Plan Data");
     DioClient dioClient = DioClient(baseAPI);
     try {
-      log(createWorkoutPlanModel.toJson(), name: 'Save Workout Plan');
+      log(createWorkoutPlanModel.toJson(), name: "Save Workout Plan");
       final response =
           widget.update == true
               ? await dioClient.dio.patch(
-                '/api/user/v1/workout/plan/${widget.id}',
+                "/api/user/v1/workout/plan/${widget.id}",
                 data: createWorkoutPlanModel.toMap(),
               )
               : await dioClient.dio.post(
@@ -555,7 +555,7 @@ class _CreateWorkoutPlanPage2State extends State<CreateWorkoutPlanPage2> {
       printResponse(response);
       if (response.statusCode == 201 || response.statusCode == 200) {
         final GetWorkoutPlans generatedWorkoutPlan = GetWorkoutPlans.fromMap(
-          response.data['data'],
+          response.data["data"],
         );
         createWorkoutPlanController.workOutPlan.value = generatedWorkoutPlan;
         widget.pageController.nextPage(
@@ -564,7 +564,7 @@ class _CreateWorkoutPlanPage2State extends State<CreateWorkoutPlanPage2> {
         );
         toastification.show(
           context: context,
-          title: Text(response.data['message']),
+          title: Text(response.data["message"]),
           type: ToastificationType.success,
           autoCloseDuration: const Duration(seconds: 3),
         );
@@ -574,7 +574,7 @@ class _CreateWorkoutPlanPage2State extends State<CreateWorkoutPlanPage2> {
       log(e.toString());
       if (e.response != null) {
         printResponse(e.response!);
-        Fluttertoast.showToast(msg: e.response?.data['message']);
+        Fluttertoast.showToast(msg: e.response?.data["message"]);
       }
     }
   }

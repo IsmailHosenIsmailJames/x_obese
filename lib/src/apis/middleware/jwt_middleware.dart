@@ -1,10 +1,10 @@
-import 'dart:convert';
-import 'dart:developer';
+import "dart:convert";
+import "dart:developer";
 
-import 'package:dio/dio.dart';
-import 'package:get/get.dart' as getx;
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:x_obese/src/screens/auth/login/login_signup_page.dart';
+import "package:dio/dio.dart";
+import "package:get/get.dart" as getx;
+import "package:shared_preferences/shared_preferences.dart";
+import "package:x_obese/src/screens/auth/login/login_signup_page.dart";
 
 class DioClient {
   final Dio dio = Dio();
@@ -27,11 +27,11 @@ class DioClient {
   ) async {
     final accessToken = await getAccessToken();
     if (accessToken != null) {
-      options.headers['Authorization'] = 'Bearer $accessToken';
+      options.headers["Authorization"] = "Bearer $accessToken";
     }
     String? refreshToken = await getRefreshToken();
     if (refreshToken != null) {
-      options.headers['Cookie'] = 'refreshToken=$refreshToken';
+      options.headers["Cookie"] = "refreshToken=$refreshToken";
     }
     return handler.next(options);
   }
@@ -78,11 +78,11 @@ class DioClient {
   ) async {
     final options = Options(
       method: requestOptions.method,
-      headers: {'Authorization': 'Bearer $accessToken'},
+      headers: {"Authorization": "Bearer $accessToken"},
     );
     String? refreshToken = await getRefreshToken();
     if (refreshToken != null) {
-      dio.options.headers['Cookie'] = 'refreshToken=$refreshToken';
+      dio.options.headers["Cookie"] = "refreshToken=$refreshToken";
     }
     return dio.request(
       requestOptions.path,
@@ -94,11 +94,11 @@ class DioClient {
 
   Future<String?> doRefreshToken(String refreshToken) async {
     try {
-      final response = await dio.post('/api/auth/v1/token/user');
-      log('/api/auth/v1/token/user');
+      final response = await dio.post("/api/auth/v1/token/user");
+      log("/api/auth/v1/token/user");
       printResponse(response);
       if (response.statusCode == 200) {
-        String? newAccessToken = response.data['data']['accessToken'];
+        String? newAccessToken = response.data["data"]["accessToken"];
         String? newRefreshToken = refreshTokenExtractor(response);
         log([newAccessToken, newRefreshToken].toString());
         if (newAccessToken != null) {
@@ -120,36 +120,36 @@ class DioClient {
 }
 
 Future<void> saveTokens(String accessToken, String refreshToken) async {
-  log('Tokens saved', name: 'Tokens Handler');
+  log("Tokens saved", name: "Tokens Handler");
   final SharedPreferences prefs = await SharedPreferences.getInstance();
-  await prefs.setString('access_token', accessToken);
-  await prefs.setString('refresh_token', refreshToken);
+  await prefs.setString("access_token", accessToken);
+  await prefs.setString("refresh_token", refreshToken);
 }
 
 Future<void> clearTokens() async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
-  await prefs.remove('access_token');
-  await prefs.remove('refresh_token');
+  await prefs.remove("access_token");
+  await prefs.remove("refresh_token");
 }
 
 Future<String?> getAccessToken() async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
-  return prefs.getString('access_token');
+  return prefs.getString("access_token");
 }
 
 Future<String?> getRefreshToken() async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
-  return prefs.getString('refresh_token');
+  return prefs.getString("refresh_token");
 }
 
 String? refreshTokenExtractor(Response response) {
-  final cookies = response.headers['set-cookie'];
-  log(cookies.toString(), name: 'Refresh Token Extractor');
-  log(cookies.toString(), name: 'Refresh Token Extractor');
+  final cookies = response.headers["set-cookie"];
+  log(cookies.toString(), name: "Refresh Token Extractor");
+  log(cookies.toString(), name: "Refresh Token Extractor");
   if (cookies != null && cookies.isNotEmpty) {
     for (final cookie in cookies) {
-      if (cookie.contains('refreshToken=')) {
-        final refreshToken = cookie.split('refreshToken=')[1].split(';')[0];
+      if (cookie.contains("refreshToken=")) {
+        final refreshToken = cookie.split("refreshToken=")[1].split(";")[0];
         return refreshToken;
       }
     }
@@ -158,18 +158,18 @@ String? refreshTokenExtractor(Response response) {
 }
 
 void printResponse(Response response) {
-  log(response.requestOptions.path, name: 'request_path');
-  log(response.requestOptions.method, name: 'request_method');
+  log(response.requestOptions.path, name: "request_path");
+  log(response.requestOptions.method, name: "request_method");
   log(
-    const JsonEncoder.withIndent('  ').convert(response.data),
-    name: 'response_body',
+    const JsonEncoder.withIndent("  ").convert(response.data),
+    name: "response_body",
   );
-  log(response.statusCode.toString(), name: 'response_status');
+  log(response.statusCode.toString(), name: "response_status");
 
   try {
     log(
-      const JsonEncoder.withIndent('  ').convert(response.requestOptions.data),
-      name: 'Request_body',
+      const JsonEncoder.withIndent("  ").convert(response.requestOptions.data),
+      name: "Request_body",
     );
   } catch (e) {
     log(e.toString());

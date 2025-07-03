@@ -1,15 +1,15 @@
-import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
-import 'package:get/get.dart';
-import 'package:intl/intl.dart';
-import 'package:table_calendar/table_calendar.dart';
-import 'package:x_obese/src/screens/controller/info_collector/controller/all_info_controller.dart';
-import 'package:x_obese/src/screens/create_workout_plan/create_workout_plan.dart';
-import 'package:x_obese/src/screens/create_workout_plan/model/create_workout_plan_model.dart';
-import 'package:x_obese/src/screens/create_workout_plan/model/get_workout_plans.dart';
-import 'package:x_obese/src/screens/create_workout_plan/pages/page_3.dart';
-import 'package:x_obese/src/theme/colors.dart';
-import 'package:x_obese/src/widgets/back_button.dart';
+import "package:flutter/material.dart";
+import "package:gap/gap.dart";
+import "package:get/get.dart";
+import "package:intl/intl.dart";
+import "package:table_calendar/table_calendar.dart";
+import "package:x_obese/src/screens/controller/info_collector/controller/all_info_controller.dart";
+import "package:x_obese/src/screens/create_workout_plan/create_workout_plan.dart";
+import "package:x_obese/src/screens/create_workout_plan/model/create_workout_plan_model.dart";
+import "package:x_obese/src/screens/create_workout_plan/model/get_workout_plans.dart";
+import "package:x_obese/src/screens/create_workout_plan/pages/page_3.dart";
+import "package:x_obese/src/theme/colors.dart";
+import "package:x_obese/src/widgets/back_button.dart";
 
 class WorkoutPlanOverviewScreen extends StatefulWidget {
   final List<GetWorkoutPlans> getWorkoutPlansList;
@@ -38,7 +38,7 @@ class _WorkoutPlanOverviewScreenState extends State<WorkoutPlanOverviewScreen> {
                   getBackButton(context, () => Get.back()),
                   const Spacer(flex: 4),
                   const Text(
-                    'Plan Overview',
+                    "Plan Overview",
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                   ),
                   const Spacer(flex: 6),
@@ -57,7 +57,7 @@ class _WorkoutPlanOverviewScreenState extends State<WorkoutPlanOverviewScreen> {
                   workoutPlanOverview(
                     context: context,
                     allInfoUser: allInfoController.allInfo.value,
-                    userBMI: widget.getWorkoutPlansList.first.bmi ?? '',
+                    userBMI: widget.getWorkoutPlansList.first.bmi ?? "",
                     startDate:
                         widget.getWorkoutPlansList.first.startDate ??
                         DateTime.now(),
@@ -65,20 +65,20 @@ class _WorkoutPlanOverviewScreenState extends State<WorkoutPlanOverviewScreen> {
                         widget.getWorkoutPlansList.first.endDate ??
                         DateTime.now(),
                     goalType:
-                        (widget.getWorkoutPlansList.first.goalType ?? 'None')
-                            .replaceAll('_', ' ')
+                        (widget.getWorkoutPlansList.first.goalType ?? "None")
+                            .replaceAll("_", " ")
                             .capitalizeFirst,
                     weightGoal:
                         widget.getWorkoutPlansList.first.weightGoal
                             ?.toString() ??
-                        '0',
+                        "0",
                     workoutDays:
-                        widget.getWorkoutPlansList.first.workoutDays ?? '',
+                        widget.getWorkoutPlansList.first.workoutDays ?? "",
                     workoutTimeMs:
-                        widget.getWorkoutPlansList.first.workoutTimeMs ?? '0',
+                        widget.getWorkoutPlansList.first.workoutTimeMs ?? "0",
 
                     daysTotal:
-                        (widget.getWorkoutPlansList.first.totalDays ?? '')
+                        (widget.getWorkoutPlansList.first.totalDays ?? "")
                             .toString(),
                     calorieBairn:
                         widget.getWorkoutPlansList.first.caloriesGoal ?? 0,
@@ -86,7 +86,7 @@ class _WorkoutPlanOverviewScreenState extends State<WorkoutPlanOverviewScreen> {
                   const Gap(20),
                   const Padding(
                     padding: EdgeInsets.all(10),
-                    child: Text('Calendar', style: TextStyle(fontSize: 16)),
+                    child: Text("Calendar", style: TextStyle(fontSize: 16)),
                   ),
                   const Gap(10),
                   Container(
@@ -132,7 +132,7 @@ class _WorkoutPlanOverviewScreenState extends State<WorkoutPlanOverviewScreen> {
                       selectedDayPredicate: (day) {
                         final first = widget.getWorkoutPlansList.first;
                         List<String> weekdays =
-                            first.workoutDays?.split(',') ?? [];
+                            first.workoutDays?.split(",") ?? [];
                         if (!(first.startDate != null &&
                                 first.endDate != null &&
                                 day.isAfter(first.startDate!) &&
@@ -187,7 +187,7 @@ class _WorkoutPlanOverviewScreenState extends State<WorkoutPlanOverviewScreen> {
                               Get.off(() => const CreateWorkoutPlan());
                             },
                             child: Text(
-                              'Create Plan',
+                              "Create Plan",
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500,
@@ -207,7 +207,7 @@ class _WorkoutPlanOverviewScreenState extends State<WorkoutPlanOverviewScreen> {
                                     weightGoal:
                                         getWorkoutPlans.weightGoal.toString(),
                                     goalType: getWorkoutPlans.goalType!
-                                        .replaceAll('_', ' '),
+                                        .replaceAll("_", " "),
                                     endDate: getWorkoutPlans.endDate,
                                     startDate: getWorkoutPlans.startDate,
                                     activateReminder:
@@ -223,7 +223,7 @@ class _WorkoutPlanOverviewScreenState extends State<WorkoutPlanOverviewScreen> {
                                         ((int.parse(
                                                   getWorkoutPlans
                                                           .workoutTimeMs ??
-                                                      '0',
+                                                      "0",
                                                 ) /
                                                 60000))
                                             .toInt()
@@ -239,7 +239,7 @@ class _WorkoutPlanOverviewScreenState extends State<WorkoutPlanOverviewScreen> {
                               );
                             },
                             child: const Text(
-                              'Adjust Plan',
+                              "Adjust Plan",
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500,

@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:gap/gap.dart';
-import 'package:x_obese/src/theme/colors.dart';
+import "package:flutter/material.dart";
+import "package:flutter_svg/svg.dart";
+import "package:gap/gap.dart";
+import "package:x_obese/src/theme/colors.dart";
 
 class IntroPage2 extends StatelessWidget {
   final PageController pageController;
@@ -15,7 +15,7 @@ class IntroPage2 extends StatelessWidget {
           height: MediaQuery.of(context).size.height - 50,
           width: double.infinity,
           child: Image.asset(
-            'assets/img/intro/cycling.png',
+            "assets/img/intro/cycling.png",
             fit: BoxFit.cover,
             alignment: Alignment.topCenter,
           ),
@@ -49,16 +49,16 @@ class IntroPage2 extends StatelessWidget {
                       ),
                       children: <InlineSpan>[
                         TextSpan(
-                          text: 'Fitness, ',
+                          text: "Fitness, ",
                           style: TextStyle(color: MyAppColors.third),
                         ),
-                        const TextSpan(text: 'Tailored for You!'),
+                        const TextSpan(text: "Tailored for You!"),
                       ],
                     ),
                   ),
                   const Gap(8),
                   Text(
-                    'Get workouts and tips that match your unique goals',
+                    "Get workouts and tips that match your unique goals",
                     style: TextStyle(
                       color: MyAppColors.mutedGray,
                       fontSize: 16,
@@ -78,7 +78,7 @@ class IntroPage2 extends StatelessWidget {
                         );
                       },
                       child: const Text(
-                        'NEXT',
+                        "NEXT",
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w600,

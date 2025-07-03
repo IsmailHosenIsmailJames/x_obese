@@ -1,14 +1,14 @@
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:x_obese/src/screens/controller/info_collector/model/all_info_model.dart';
-import 'package:x_obese/src/screens/controller/info_collector/pages/birth_date.dart';
-import 'package:x_obese/src/screens/controller/info_collector/pages/full_from.dart';
-import 'package:x_obese/src/screens/controller/info_collector/pages/gender.dart';
-import 'package:x_obese/src/screens/controller/info_collector/pages/height_weigth.dart';
-import 'package:x_obese/src/screens/controller/info_collector/pages/location.dart';
-import 'package:x_obese/src/screens/controller/info_collector/pages/name.dart';
+import "package:flutter/material.dart";
+import "package:get/get.dart";
+import "package:x_obese/src/screens/controller/info_collector/model/all_info_model.dart";
+import "package:x_obese/src/screens/controller/info_collector/pages/birth_date.dart";
+import "package:x_obese/src/screens/controller/info_collector/pages/full_from.dart";
+import "package:x_obese/src/screens/controller/info_collector/pages/gender.dart";
+import "package:x_obese/src/screens/controller/info_collector/pages/height_weigth.dart";
+import "package:x_obese/src/screens/controller/info_collector/pages/location.dart";
+import "package:x_obese/src/screens/controller/info_collector/pages/name.dart";
 
-import 'controller/all_info_controller.dart';
+import "controller/all_info_controller.dart";
 
 class InfoCollector extends StatefulWidget {
   final AllInfoModel initialData;

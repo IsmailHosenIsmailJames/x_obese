@@ -1,17 +1,17 @@
-import 'dart:convert';
+import "dart:convert";
 
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:gap/gap.dart';
-import 'package:get/get.dart';
-import 'package:x_obese/src/apis/apis_url.dart';
-import 'package:x_obese/src/apis/middleware/jwt_middleware.dart';
-import 'package:x_obese/src/screens/controller/info_collector/controller/all_info_controller.dart';
-import 'package:x_obese/src/screens/marathon/details_marathon/model/full_marathon_data_model.dart';
-import 'package:x_obese/src/screens/marathon/models/marathon_user_model.dart';
-import 'package:x_obese/src/theme/colors.dart';
-import 'package:x_obese/src/widgets/back_button.dart';
+import "package:cached_network_image/cached_network_image.dart";
+import "package:flutter/material.dart";
+import "package:flutter_svg/flutter_svg.dart";
+import "package:gap/gap.dart";
+import "package:get/get.dart";
+import "package:x_obese/src/apis/apis_url.dart";
+import "package:x_obese/src/apis/middleware/jwt_middleware.dart";
+import "package:x_obese/src/screens/controller/info_collector/controller/all_info_controller.dart";
+import "package:x_obese/src/screens/marathon/details_marathon/model/full_marathon_data_model.dart";
+import "package:x_obese/src/screens/marathon/models/marathon_user_model.dart";
+import "package:x_obese/src/theme/colors.dart";
+import "package:x_obese/src/widgets/back_button.dart";
 
 class LeaderBoardView extends StatefulWidget {
   final String title;
@@ -41,10 +41,10 @@ class _LeaderBoardViewState extends State<LeaderBoardView> {
   Future<void> getMyData() async {
     DioClient dioClient = DioClient(baseAPI);
     final response = await dioClient.dio.get(
-      '/api/marathon/v1/user/${widget.marathonData.data?.marathonUserId}/leaderboard',
+      "/api/marathon/v1/user/${widget.marathonData.data?.marathonUserId}/leaderboard",
     );
     myPosition = MyRank.fromMap(
-      Map<String, dynamic>.from(response.data['data']),
+      Map<String, dynamic>.from(response.data["data"]),
     );
     setState(() {});
     printResponse(response);
@@ -69,7 +69,7 @@ class _LeaderBoardViewState extends State<LeaderBoardView> {
                       const Spacer(),
                       const Center(
                         child: Text(
-                          'Marathon Program',
+                          "Marathon Program",
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
@@ -109,7 +109,7 @@ class _LeaderBoardViewState extends State<LeaderBoardView> {
                                             color: Colors.white,
                                           ),
                                           child: const Text(
-                                            '2',
+                                            "2",
                                             style: TextStyle(fontSize: 10),
                                           ),
                                         ),
@@ -121,7 +121,7 @@ class _LeaderBoardViewState extends State<LeaderBoardView> {
                                   widget.leaderboardUsers[1].user!.fullName!,
                                 ),
                                 Text(
-                                  '${widget.leaderboardUsers[1].distanceKm} km',
+                                  "${widget.leaderboardUsers[1].distanceKm} km",
                                   style: TextStyle(
                                     fontSize: 12,
                                     color: MyAppColors.mutedGray,
@@ -161,7 +161,7 @@ class _LeaderBoardViewState extends State<LeaderBoardView> {
                                             color: Colors.white,
                                           ),
                                           child: const Text(
-                                            '1',
+                                            "1",
                                             style: TextStyle(fontSize: 10),
                                           ),
                                         ),
@@ -171,10 +171,10 @@ class _LeaderBoardViewState extends State<LeaderBoardView> {
                                 ),
                                 Text(
                                   widget.leaderboardUsers[0].user?.fullName ??
-                                      '',
+                                      "",
                                 ),
                                 Text(
-                                  '${widget.leaderboardUsers[0].distanceKm} km',
+                                  "${widget.leaderboardUsers[0].distanceKm} km",
                                   style: TextStyle(
                                     fontSize: 12,
                                     color: MyAppColors.mutedGray,
@@ -207,7 +207,7 @@ class _LeaderBoardViewState extends State<LeaderBoardView> {
                                             color: Colors.white,
                                           ),
                                           child: const Text(
-                                            '3',
+                                            "3",
                                             style: TextStyle(fontSize: 10),
                                           ),
                                         ),
@@ -217,10 +217,10 @@ class _LeaderBoardViewState extends State<LeaderBoardView> {
                                 ),
                                 Text(
                                   widget.leaderboardUsers[2].user?.fullName ??
-                                      '',
+                                      "",
                                 ),
                                 Text(
-                                  '${widget.leaderboardUsers[2].distanceKm} km',
+                                  "${widget.leaderboardUsers[2].distanceKm} km",
                                   style: TextStyle(
                                     fontSize: 12,
                                     color: MyAppColors.mutedGray,
@@ -245,7 +245,7 @@ class _LeaderBoardViewState extends State<LeaderBoardView> {
                             padding: const EdgeInsets.only(top: 12, bottom: 12),
                             child: Row(
                               children: [
-                                Text('${index + 4}'.padLeft(2, '0')),
+                                Text("${index + 4}".padLeft(2, "0")),
                                 const Gap(20),
                                 ClipRRect(
                                   borderRadius: BorderRadius.circular(100),
@@ -269,9 +269,9 @@ class _LeaderBoardViewState extends State<LeaderBoardView> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(user.user!.fullName ?? ''),
+                                    Text(user.user!.fullName ?? ""),
                                     Text(
-                                      '${user.distanceKm} km',
+                                      "${user.distanceKm} km",
                                       style: TextStyle(
                                         fontSize: 12,
                                         color: MyAppColors.mutedGray,
@@ -320,7 +320,7 @@ class _LeaderBoardViewState extends State<LeaderBoardView> {
                 child: Row(
                   children: [
                     Text(
-                      myPosition?.rank?.toString().padLeft(2, '0') ?? '',
+                      myPosition?.rank?.toString().padLeft(2, "0") ?? "",
                       style: TextStyle(color: MyAppColors.primary),
                     ),
                     const Gap(20),
@@ -348,11 +348,11 @@ class _LeaderBoardViewState extends State<LeaderBoardView> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          allInfoController.allInfo.value.fullName ?? '',
+                          allInfoController.allInfo.value.fullName ?? "",
                           style: TextStyle(color: MyAppColors.primary),
                         ),
                         Text(
-                          '${myPosition?.user?.distanceKm} km',
+                          "${myPosition?.user?.distanceKm} km",
                           style: TextStyle(
                             fontSize: 12,
                             color: MyAppColors.primary,
@@ -423,11 +423,11 @@ class MyRank {
   String toJson() => json.encode(toMap());
 
   factory MyRank.fromMap(Map<String, dynamic> json) => MyRank(
-    user: json['user'] == null ? null : MyRankData.fromMap(json['user']),
-    rank: json['rank'],
+    user: json["user"] == null ? null : MyRankData.fromMap(json["user"]),
+    rank: json["rank"],
   );
 
-  Map<String, dynamic> toMap() => {'user': user?.toMap(), 'rank': rank};
+  Map<String, dynamic> toMap() => {"user": user?.toMap(), "rank": rank};
 }
 
 class MyRankData {
@@ -473,24 +473,24 @@ class MyRankData {
   String toJson() => json.encode(toMap());
 
   factory MyRankData.fromMap(Map<String, dynamic> json) => MyRankData(
-    id: json['id'],
-    userId: json['userId'],
-    marathonId: json['marathonId'],
-    distanceKm: json['distanceKm'],
-    durationMs: json['durationMs'],
+    id: json["id"],
+    userId: json["userId"],
+    marathonId: json["marathonId"],
+    distanceKm: json["distanceKm"],
+    durationMs: json["durationMs"],
     createdAt:
-        json['createdAt'] == null ? null : DateTime.parse(json['createdAt']),
+        json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
     updatedAt:
-        json['updatedAt'] == null ? null : DateTime.parse(json['updatedAt']),
+        json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
   );
 
   Map<String, dynamic> toMap() => {
-    'id': id,
-    'userId': userId,
-    'marathonId': marathonId,
-    'distanceKm': distanceKm,
-    'durationMs': durationMs,
-    'createdAt': createdAt?.toIso8601String(),
-    'updatedAt': updatedAt?.toIso8601String(),
+    "id": id,
+    "userId": userId,
+    "marathonId": marathonId,
+    "distanceKm": distanceKm,
+    "durationMs": durationMs,
+    "createdAt": createdAt?.toIso8601String(),
+    "updatedAt": updatedAt?.toIso8601String(),
   };
 }

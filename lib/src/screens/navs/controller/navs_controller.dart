@@ -1,4 +1,4 @@
-import 'package:get/get.dart';
+import "package:get/get.dart";
 
 class NavsController extends GetxController {
   RxInt bottomNavIndex = 0.obs;

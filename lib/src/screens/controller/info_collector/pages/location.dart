@@ -1,16 +1,16 @@
-import 'dart:async';
-import 'dart:math';
+import "dart:async";
+import "dart:math";
 
-import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:get/get.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:x_obese/src/core/location_service/location_service.dart';
-import 'package:x_obese/src/screens/controller/info_collector/controller/all_info_controller.dart';
-import 'package:x_obese/src/theme/colors.dart';
-import 'package:x_obese/src/widgets/back_button.dart';
-import 'package:x_obese/src/widgets/text_input_decoration.dart';
+import "package:flutter/material.dart";
+import "package:gap/gap.dart";
+import "package:geolocator/geolocator.dart";
+import "package:get/get.dart";
+import "package:google_maps_flutter/google_maps_flutter.dart";
+import "package:x_obese/src/core/location_service/location_service.dart";
+import "package:x_obese/src/screens/controller/info_collector/controller/all_info_controller.dart";
+import "package:x_obese/src/theme/colors.dart";
+import "package:x_obese/src/widgets/back_button.dart";
+import "package:x_obese/src/widgets/text_input_decoration.dart";
 
 class LocationCollector extends StatefulWidget {
   final PageController pageController;
@@ -54,9 +54,9 @@ class _LocationCollectorState extends State<LocationCollector> {
       );
       markers = {
         Marker(
-          markerId: const MarkerId('location'),
+          markerId: const MarkerId("location"),
           position: LatLng(position.latitude, position.longitude),
-          infoWindow: const InfoWindow(title: 'Your Location'),
+          infoWindow: const InfoWindow(title: "Your Location"),
         ),
       };
       controller.allInfo.value.address = address;
@@ -129,7 +129,7 @@ class _LocationCollectorState extends State<LocationCollector> {
                                 ),
                                 position: latLng,
                                 infoWindow: const InfoWindow(
-                                  title: 'Your Location',
+                                  title: "Your Location",
                                 ),
                                 icon: BitmapDescriptor.defaultMarkerWithHue(
                                   BitmapDescriptor.hueRed,
@@ -157,7 +157,7 @@ class _LocationCollectorState extends State<LocationCollector> {
                     const Align(
                       alignment: Alignment.topLeft,
                       child: Text(
-                        'What’s Your Location?',
+                        "What’s Your Location?",
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w500,
@@ -169,7 +169,7 @@ class _LocationCollectorState extends State<LocationCollector> {
                       controller: addressController,
                       decoration: getTextInputDecoration(
                         context,
-                        hintText: 'Enter Home Address',
+                        hintText: "Enter Home Address",
                       ),
                     ),
                   ],
@@ -191,7 +191,7 @@ class _LocationCollectorState extends State<LocationCollector> {
                     }
                   },
                   child: const Text(
-                    'Next',
+                    "Next",
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                   ),
                 ),

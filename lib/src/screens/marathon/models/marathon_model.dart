@@ -1,4 +1,4 @@
-import 'dart:convert';
+import "dart:convert";
 
 class MarathonModel {
   String? id;
@@ -71,39 +71,39 @@ class MarathonModel {
   String toJson() => json.encode(toMap());
 
   factory MarathonModel.fromMap(Map<String, dynamic> json) => MarathonModel(
-    id: json['id'],
-    title: json['title'],
-    description: json['description'],
-    about: json['about'],
-    distanceKm: json['distanceKm'],
-    location: json['location'],
+    id: json["id"],
+    title: json["title"],
+    description: json["description"],
+    about: json["about"],
+    distanceKm: json["distanceKm"],
+    location: json["location"],
     startDate:
-        json['startDate'] == null ? null : DateTime.parse(json['startDate']),
-    endDate: json['endDate'] == null ? null : DateTime.parse(json['endDate']),
-    imagePath: json['imagePath'],
-    type: json['type'],
-    createdBy: json['createdBy'],
+        json["startDate"] == null ? null : DateTime.parse(json["startDate"]),
+    endDate: json["endDate"] == null ? null : DateTime.parse(json["endDate"]),
+    imagePath: json["imagePath"],
+    type: json["type"],
+    createdBy: json["createdBy"],
     createdAt:
-        json['createdAt'] == null ? null : DateTime.parse(json['createdAt']),
+        json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
     updatedAt:
-        json['updatedAt'] == null ? null : DateTime.parse(json['updatedAt']),
-    joined: json['joined'],
+        json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
+    joined: json["joined"],
   );
 
   Map<String, dynamic> toMap() => {
-    'id': id,
-    'title': title,
-    'description': description,
-    'about': about,
-    'distanceKm': distanceKm,
-    'location': location,
-    'startDate': startDate?.toIso8601String(),
-    'endDate': endDate?.toIso8601String(),
-    'imagePath': imagePath,
-    'type': type,
-    'createdBy': createdBy,
-    'createdAt': createdAt?.toIso8601String(),
-    'updatedAt': updatedAt?.toIso8601String(),
-    'joined': joined,
+    "id": id,
+    "title": title,
+    "description": description,
+    "about": about,
+    "distanceKm": distanceKm,
+    "location": location,
+    "startDate": startDate?.toIso8601String(),
+    "endDate": endDate?.toIso8601String(),
+    "imagePath": imagePath,
+    "type": type,
+    "createdBy": createdBy,
+    "createdAt": createdAt?.toIso8601String(),
+    "updatedAt": updatedAt?.toIso8601String(),
+    "joined": joined,
   };
 }

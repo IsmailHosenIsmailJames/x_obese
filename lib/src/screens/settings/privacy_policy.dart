@@ -1,10 +1,9 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
-import 'package:gap/gap.dart';
-import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:intl/intl.dart';
-import 'package:x_obese/src/widgets/back_button.dart';
+import "package:flutter/material.dart";
+import "package:flutter_html/flutter_html.dart";
+import "package:gap/gap.dart";
+import "package:get/get.dart";
+import "package:intl/intl.dart";
+import "package:x_obese/src/widgets/back_button.dart";
 
 class PrivacyPolicy extends StatelessWidget {
   const PrivacyPolicy({super.key});
@@ -31,7 +30,7 @@ class PrivacyPolicy extends StatelessWidget {
                     }),
                     const Gap(10),
                     const Text(
-                      'Privacy Policy',
+                      "Privacy Policy",
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,

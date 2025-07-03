@@ -1,16 +1,16 @@
-import 'dart:developer';
+import "dart:developer";
 
-import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:gap/gap.dart';
-import 'package:get/get.dart';
-import 'package:x_obese/src/screens/activity/live_activity_page.dart';
-import 'package:x_obese/src/screens/auth/controller/auth_controller.dart';
-import 'package:x_obese/src/screens/auth/login/otp_page.dart';
-import 'package:x_obese/src/theme/colors.dart';
-import 'package:dio/dio.dart' as dio;
-import 'package:x_obese/src/widgets/loading_popup.dart';
+import "package:flutter/material.dart";
+import "package:flutter_svg/svg.dart";
+import "package:fluttertoast/fluttertoast.dart";
+import "package:gap/gap.dart";
+import "package:get/get.dart";
+import "package:x_obese/src/screens/activity/live_activity_page.dart";
+import "package:x_obese/src/screens/auth/controller/auth_controller.dart";
+import "package:x_obese/src/screens/auth/login/otp_page.dart";
+import "package:x_obese/src/theme/colors.dart";
+import "package:dio/dio.dart" as dio;
+import "package:x_obese/src/widgets/loading_popup.dart";
 
 class LoginSignupPage extends StatefulWidget {
   const LoginSignupPage({super.key});
@@ -20,7 +20,7 @@ class LoginSignupPage extends StatefulWidget {
 }
 
 class _LoginSignupPageState extends State<LoginSignupPage> {
-  String pageName = 'login';
+  String pageName = "login";
   final AuthController authController = Get.put(AuthController());
   TextEditingController phoneController = TextEditingController();
   // from key
@@ -56,7 +56,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          pageName == 'login' ? 'Hi!' : 'Welcome  !',
+                          pageName == "login" ? "Hi!" : "Welcome  !",
                           style: TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.w700,
@@ -65,9 +65,9 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                         ),
                         const Gap(7),
                         Text(
-                          pageName == 'login'
-                              ? 'Unlock Your Fitness Journey Today'
-                              : 'Join the Community That Moves You.',
+                          pageName == "login"
+                              ? "Unlock Your Fitness Journey Today"
+                              : "Join the Community That Moves You.",
                           style: TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.w700,
@@ -75,9 +75,9 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                           ),
                         ),
                         Text(
-                          pageName == 'login'
-                              ? 'Please login to continue'
-                              : 'Please enter your information',
+                          pageName == "login"
+                              ? "Please login to continue"
+                              : "Please enter your information",
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w300,
@@ -104,11 +104,11 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                           child: TextButton(
                             style: TextButton.styleFrom(
                               backgroundColor:
-                                  pageName == 'login'
+                                  pageName == "login"
                                       ? MyAppColors.primary
                                       : MyAppColors.transparentGray,
                               foregroundColor:
-                                  pageName == 'login'
+                                  pageName == "login"
                                       ? MyAppColors.third
                                       : Colors.black,
                               elevation: 0,
@@ -118,11 +118,11 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                             ),
                             onPressed: () {
                               setState(() {
-                                pageName = 'login';
+                                pageName = "login";
                               });
                             },
                             child: const Text(
-                              'Login',
+                              "Login",
                               style: TextStyle(
                                 fontWeight: FontWeight.w500,
                                 fontSize: 16,
@@ -138,11 +138,11 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                             style: TextButton.styleFrom(
                               padding: EdgeInsets.zero,
                               backgroundColor:
-                                  pageName == 'signup'
+                                  pageName == "signup"
                                       ? MyAppColors.primary
                                       : MyAppColors.transparentGray,
                               foregroundColor:
-                                  pageName == 'signup'
+                                  pageName == "signup"
                                       ? MyAppColors.third
                                       : Colors.black,
                               elevation: 0,
@@ -153,11 +153,11 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                             ),
                             onPressed: () {
                               setState(() {
-                                pageName = 'signup';
+                                pageName = "signup";
                               });
                             },
                             child: const Text(
-                              'Signup',
+                              "Signup",
                               style: TextStyle(
                                 fontWeight: FontWeight.w500,
                                 fontSize: 16,
@@ -178,10 +178,10 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                       },
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter your phone number';
+                          return "Please enter your phone number";
                         }
                         if (value.length != 11 || int.tryParse(value) == null) {
-                          return 'Please enter a valid phone number';
+                          return "Please enter a valid phone number";
                         }
 
                         return null;
@@ -206,14 +206,14 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                         ),
 
                         label: const Text(
-                          'Phone Number',
+                          "Phone Number",
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w400,
                             color: Colors.black,
                           ),
                         ),
-                        hintText: '01xxxxxxxxx',
+                        hintText: "01xxxxxxxxx",
                         hintStyle: TextStyle(color: MyAppColors.mutedGray),
                         prefixIcon: SizedBox(
                           width: 11.667,
@@ -240,14 +240,14 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                           if (formKey.currentState?.validate() == true) {
                             if (!(await checkConnectivity())) {
                               Fluttertoast.showToast(
-                                msg: 'Check Internet Connection!',
+                                msg: "Check Internet Connection!",
                               );
                               return;
                             }
                             showLoadingPopUp(context);
                             try {
                               dio.Response? response =
-                                  pageName == 'login'
+                                  pageName == "login"
                                       ? await authController.login(
                                         phoneController.text,
                                       )
@@ -255,19 +255,19 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                                         phoneController.text,
                                       );
                               if (response != null) {
-                                log('OtpPage', name: 'Route');
+                                log("OtpPage", name: "Route");
                                 Get.to(
                                   () => OtpPage(
                                     isSignup:
-                                        pageName == 'login' ? false : true,
+                                        pageName == "login" ? false : true,
                                     phone: phoneController.text,
                                     response: response,
                                   ),
                                 );
                               } else {
                                 log(
-                                  'Response found Null',
-                                  name: 'Response null',
+                                  "Response found Null",
+                                  name: "Response null",
                                 );
                               }
                             } catch (e) {
@@ -277,7 +277,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                           }
                         },
                         child: Text(
-                          pageName == 'login' ? 'Log In' : 'Sign Up',
+                          pageName == "login" ? "Log In" : "Sign Up",
                           style: const TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w600,

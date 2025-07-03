@@ -1,10 +1,10 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
-import 'package:get/get.dart';
-import 'package:x_obese/src/screens/blog/model/get_blog_model.dart';
-import 'package:x_obese/src/theme/colors.dart';
-import 'package:x_obese/src/widgets/back_button.dart';
+import "package:cached_network_image/cached_network_image.dart";
+import "package:flutter/material.dart";
+import "package:gap/gap.dart";
+import "package:get/get.dart";
+import "package:x_obese/src/screens/blog/model/get_blog_model.dart";
+import "package:x_obese/src/theme/colors.dart";
+import "package:x_obese/src/widgets/back_button.dart";
 
 class BlogDetailsView extends StatefulWidget {
   final GetBlogModel blogData;
@@ -60,7 +60,7 @@ class _BlogDetailsViewState extends State<BlogDetailsView> {
                         padding: const EdgeInsets.only(left: 10, right: 10),
                         child: Center(
                           child: Text(
-                            '${widget.blogData.readTime} min Read',
+                            "${widget.blogData.readTime} min Read",
                             style: TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.w300,
@@ -71,7 +71,7 @@ class _BlogDetailsViewState extends State<BlogDetailsView> {
                       ),
                       const Gap(12),
                       Text(
-                        widget.blogData.title ?? '',
+                        widget.blogData.title ?? "",
                         style: const TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.w500,
@@ -79,7 +79,7 @@ class _BlogDetailsViewState extends State<BlogDetailsView> {
                       ),
                       const Divider(color: Colors.transparent),
                       Text(
-                        widget.blogData.details ?? '',
+                        widget.blogData.details ?? "",
                         style: const TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w400,

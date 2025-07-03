@@ -1,9 +1,9 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:gap/gap.dart';
-import 'package:get/get.dart';
-import 'package:x_obese/src/screens/auth/login/login_signup_page.dart';
-import 'package:x_obese/src/theme/colors.dart';
+import "package:flutter/material.dart";
+import "package:flutter_svg/svg.dart";
+import "package:gap/gap.dart";
+import "package:get/get.dart";
+import "package:x_obese/src/screens/auth/login/login_signup_page.dart";
+import "package:x_obese/src/theme/colors.dart";
 
 class IntroPage3 extends StatelessWidget {
   final PageController pageController;
@@ -17,7 +17,7 @@ class IntroPage3 extends StatelessWidget {
           height: MediaQuery.of(context).size.height - 50,
           width: double.infinity,
           child: Image.asset(
-            'assets/img/intro/running.png',
+            "assets/img/intro/running.png",
             fit: BoxFit.cover,
             alignment: Alignment.topCenter,
           ),
@@ -50,18 +50,18 @@ class IntroPage3 extends StatelessWidget {
                         fontWeight: FontWeight.w600,
                       ),
                       children: <InlineSpan>[
-                        const TextSpan(text: 'Run '),
+                        const TextSpan(text: "Run "),
                         TextSpan(
-                          text: 'Together ',
+                          text: "Together ",
                           style: TextStyle(color: MyAppColors.third),
                         ),
-                        const TextSpan(text: ', Win Together!'),
+                        const TextSpan(text: ", Win Together!"),
                       ],
                     ),
                   ),
                   const Gap(8),
                   Text(
-                    'Get workouts and tips that match your unique goals',
+                    "Get workouts and tips that match your unique goals",
                     style: TextStyle(
                       color: MyAppColors.mutedGray,
                       fontSize: 16,
@@ -77,7 +77,7 @@ class IntroPage3 extends StatelessWidget {
                         Get.off(() => const LoginSignupPage());
                       },
                       child: const Text(
-                        'Get Stated',
+                        "Get Stated",
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w600,

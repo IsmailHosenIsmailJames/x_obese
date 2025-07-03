@@ -1,4 +1,4 @@
-import 'dart:convert';
+import "dart:convert";
 
 class GetBlogModel {
   String? id;
@@ -51,28 +51,28 @@ class GetBlogModel {
   String toJson() => json.encode(toMap());
 
   factory GetBlogModel.fromMap(Map<String, dynamic> json) => GetBlogModel(
-    id: json['id'],
-    createdBy: json['createdBy'],
-    title: json['title'],
-    readTime: json['readTime'],
-    description: json['description'],
-    details: json['details'],
-    imagePath: json['imagePath'],
+    id: json["id"],
+    createdBy: json["createdBy"],
+    title: json["title"],
+    readTime: json["readTime"],
+    description: json["description"],
+    details: json["details"],
+    imagePath: json["imagePath"],
     createdAt:
-        json['createdAt'] == null ? null : DateTime.parse(json['createdAt']),
+        json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
     updatedAt:
-        json['updatedAt'] == null ? null : DateTime.parse(json['updatedAt']),
+        json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
   );
 
   Map<String, dynamic> toMap() => {
-    'id': id,
-    'createdBy': createdBy,
-    'title': title,
-    'readTime': readTime,
-    'description': description,
-    'details': details,
-    'imagePath': imagePath,
-    'createdAt': createdAt?.toIso8601String(),
-    'updatedAt': updatedAt?.toIso8601String(),
+    "id": id,
+    "createdBy": createdBy,
+    "title": title,
+    "readTime": readTime,
+    "description": description,
+    "details": details,
+    "imagePath": imagePath,
+    "createdAt": createdAt?.toIso8601String(),
+    "updatedAt": updatedAt?.toIso8601String(),
   };
 }

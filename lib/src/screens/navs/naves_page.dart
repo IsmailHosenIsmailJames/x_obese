@@ -1,24 +1,24 @@
-import 'dart:async';
-import 'dart:developer';
-import 'dart:io';
+import "dart:async";
+import "dart:developer";
+import "dart:io";
 
-import 'package:flutter/material.dart';
-import 'package:flutter_foreground_task/flutter_foreground_task.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:get/get.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:x_obese/src/core/background/background_task.dart';
-import 'package:x_obese/src/screens/activity/workout_page.dart';
-import 'package:x_obese/src/screens/controller/info_collector/controller/all_info_controller.dart';
-import 'package:x_obese/src/screens/home/home_page.dart';
-import 'package:x_obese/src/resources/svg_string.dart';
-import 'package:x_obese/src/screens/marathon/marathon_page.dart';
-import 'package:x_obese/src/screens/navs/controller/navs_controller.dart';
-import 'package:x_obese/src/screens/settings/settings_page.dart';
+import "package:flutter/material.dart";
+import "package:flutter_foreground_task/flutter_foreground_task.dart";
+import "package:flutter_svg/svg.dart";
+import "package:fluttertoast/fluttertoast.dart";
+import "package:get/get.dart";
+import "package:hive_flutter/hive_flutter.dart";
+import "package:permission_handler/permission_handler.dart";
+import "package:x_obese/src/core/background/background_task.dart";
+import "package:x_obese/src/screens/activity/workout_page.dart";
+import "package:x_obese/src/screens/controller/info_collector/controller/all_info_controller.dart";
+import "package:x_obese/src/screens/home/home_page.dart";
+import "package:x_obese/src/resources/svg_string.dart";
+import "package:x_obese/src/screens/marathon/marathon_page.dart";
+import "package:x_obese/src/screens/navs/controller/navs_controller.dart";
+import "package:x_obese/src/screens/settings/settings_page.dart";
 
-import '../../theme/colors.dart';
+import "../../theme/colors.dart";
 
 class NavesPage extends StatefulWidget {
   const NavesPage({super.key});
@@ -31,7 +31,7 @@ class _NavesPageState extends State<NavesPage> {
   final NavsController navsController = Get.put(NavsController());
   PageController pageController = PageController();
 
-  final userBox = Hive.box('user');
+  final userBox = Hive.box("user");
   AllInfoController allInfoController = Get.put(AllInfoController());
 
   Future<void> _requestPermissions() async {
@@ -61,23 +61,23 @@ class _NavesPageState extends State<NavesPage> {
         PermissionStatus requestStatus =
             await Permission.activityRecognition.request();
         if (!requestStatus.isGranted) {
-          Fluttertoast.showToast(msg: 'Please allow access Physical activity');
+          Fluttertoast.showToast(msg: "Please allow access Physical activity");
           await openAppSettings();
         }
       }
-      log(status.toString(), name: 'Permission status');
+      log(status.toString(), name: "Permission status");
     } catch (e) {
-      log(e.toString(), name: 'Permission error');
+      log(e.toString(), name: "Permission error");
     }
   }
 
   void _initService() {
     FlutterForegroundTask.init(
       androidNotificationOptions: AndroidNotificationOptions(
-        channelId: 'foreground_service',
-        channelName: 'Foreground Service Notification',
+        channelId: "foreground_service",
+        channelName: "Foreground Service Notification",
         channelDescription:
-            'This notification appears when the foreground service is running.',
+            "This notification appears when the foreground service is running.",
         onlyAlertOnce: true,
       ),
       iosNotificationOptions: const IOSNotificationOptions(
@@ -100,20 +100,20 @@ class _NavesPageState extends State<NavesPage> {
     } else {
       return FlutterForegroundTask.startService(
         serviceId: 256,
-        notificationTitle: 'Foreground Service is running',
-        notificationText: 'Tap to return to the app',
+        notificationTitle: "Foreground Service is running",
+        notificationText: "Tap to return to the app",
         notificationIcon: null,
         notificationButtons: [
-          const NotificationButton(id: 'btn_hello', text: 'hello'),
+          const NotificationButton(id: "btn_hello", text: "hello"),
         ],
-        notificationInitialRoute: '/home',
+        notificationInitialRoute: "/home",
         callback: startCallback,
       );
     }
   }
 
   void _onReceiveTaskData(Object data) {
-    log('onReceiveTaskData: $data');
+    log("onReceiveTaskData: $data");
     allInfoController.stepsCount.value = data as int;
   }
 
@@ -183,22 +183,22 @@ class _NavesPageState extends State<NavesPage> {
                 BottomNavigationBarItem(
                   icon: SvgPicture.string(homeOutLine),
                   activeIcon: SvgPicture.string(homeFill),
-                  label: 'Home',
+                  label: "Home",
                 ),
                 BottomNavigationBarItem(
                   icon: SvgPicture.string(activityOutLine),
                   activeIcon: SvgPicture.string(activityFill),
-                  label: 'Activity',
+                  label: "Activity",
                 ),
                 BottomNavigationBarItem(
                   icon: SvgPicture.string(marathonOutLine),
                   activeIcon: SvgPicture.string(marathonFill),
-                  label: 'Marathon',
+                  label: "Marathon",
                 ),
                 BottomNavigationBarItem(
                   icon: SvgPicture.string(settingsOutLine),
                   activeIcon: SvgPicture.string(settingsFill),
-                  label: 'Settings',
+                  label: "Settings",
                 ),
               ],
             ),

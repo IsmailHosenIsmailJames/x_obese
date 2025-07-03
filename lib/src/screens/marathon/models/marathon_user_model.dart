@@ -1,4 +1,4 @@
-import 'dart:convert';
+import "dart:convert";
 
 class MarathonUserModel {
   String? id;
@@ -49,27 +49,27 @@ class MarathonUserModel {
   factory MarathonUserModel.fromMap(
     Map<String, dynamic> json,
   ) => MarathonUserModel(
-    id: json['id'],
-    userId: json['userId'],
-    marathonId: json['marathonId'],
-    distanceKm: json['distanceKm'],
-    durationMs: json['durationMs'],
+    id: json["id"],
+    userId: json["userId"],
+    marathonId: json["marathonId"],
+    distanceKm: json["distanceKm"],
+    durationMs: json["durationMs"],
     createdAt:
-        json['createdAt'] == null ? null : DateTime.parse(json['createdAt']),
+        json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
     updatedAt:
-        json['updatedAt'] == null ? null : DateTime.parse(json['updatedAt']),
-    user: json['user'] == null ? null : User.fromMap(json['user']),
+        json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
+    user: json["user"] == null ? null : User.fromMap(json["user"]),
   );
 
   Map<String, dynamic> toMap() => {
-    'id': id,
-    'userId': userId,
-    'marathonId': marathonId,
-    'distanceKm': distanceKm,
-    'durationMs': durationMs,
-    'createdAt': createdAt?.toIso8601String(),
-    'updatedAt': updatedAt?.toIso8601String(),
-    'user': user?.toMap(),
+    "id": id,
+    "userId": userId,
+    "marathonId": marathonId,
+    "distanceKm": distanceKm,
+    "durationMs": durationMs,
+    "createdAt": createdAt?.toIso8601String(),
+    "updatedAt": updatedAt?.toIso8601String(),
+    "user": user?.toMap(),
   };
 }
 
@@ -89,10 +89,10 @@ class User {
   String toJson() => json.encode(toMap());
 
   factory User.fromMap(Map<String, dynamic> json) =>
-      User(fullName: json['fullName'], imagePath: json['imagePath']);
+      User(fullName: json["fullName"], imagePath: json["imagePath"]);
 
   Map<String, dynamic> toMap() => {
-    'fullName': fullName,
-    'imagePath': imagePath,
+    "fullName": fullName,
+    "imagePath": imagePath,
   };
 }

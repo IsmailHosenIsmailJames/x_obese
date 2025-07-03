@@ -1,9 +1,9 @@
-import 'package:flutter/material.dart';
-import 'package:x_obese/src/screens/intro/pages/intro_page_1.dart';
-import 'package:x_obese/src/screens/intro/pages/intro_page_2.dart';
-import 'package:x_obese/src/screens/intro/pages/intro_page_3.dart';
-import 'package:x_obese/src/theme/colors.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import "package:flutter/material.dart";
+import "package:x_obese/src/screens/intro/pages/intro_page_1.dart";
+import "package:x_obese/src/screens/intro/pages/intro_page_2.dart";
+import "package:x_obese/src/screens/intro/pages/intro_page_3.dart";
+import "package:x_obese/src/theme/colors.dart";
+import "package:smooth_page_indicator/smooth_page_indicator.dart";
 
 class IntroPage extends StatefulWidget {
   const IntroPage({super.key});

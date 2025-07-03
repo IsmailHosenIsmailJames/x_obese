@@ -1,5 +1,5 @@
-import 'package:geolocator/geolocator.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart' show LatLng;
+import "package:geolocator/geolocator.dart";
+import "package:google_maps_flutter/google_maps_flutter.dart" show LatLng;
 
 class WorkoutCalculationResult {
   final Duration totalDuration;
@@ -167,11 +167,11 @@ enum ActivityType {
   String toString() {
     switch (this) {
       case ActivityType.walking:
-        return 'walking';
+        return "walking";
       case ActivityType.running:
-        return 'running';
+        return "running";
       case ActivityType.cycling:
-        return 'cycling';
+        return "cycling";
     }
   }
 }

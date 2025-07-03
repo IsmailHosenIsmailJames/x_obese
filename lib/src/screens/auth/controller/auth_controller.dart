@@ -1,11 +1,11 @@
-import 'dart:convert';
-import 'dart:developer';
+import "dart:convert";
+import "dart:developer";
 
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:get/get.dart';
-import 'package:x_obese/src/apis/apis_url.dart';
-import 'package:x_obese/src/apis/middleware/jwt_middleware.dart';
-import 'package:dio/dio.dart' as dio;
+import "package:fluttertoast/fluttertoast.dart";
+import "package:get/get.dart";
+import "package:x_obese/src/apis/apis_url.dart";
+import "package:x_obese/src/apis/middleware/jwt_middleware.dart";
+import "package:dio/dio.dart" as dio;
 
 class AuthController extends GetxController {
   static DioClient dioClient = DioClient(baseAPI);
@@ -16,7 +16,7 @@ class AuthController extends GetxController {
     try {
       final response = await dioClient.dio.post(
         signUpPath,
-        data: {'mobile': phone},
+        data: {"mobile": phone},
       );
 
       printResponse(response);
@@ -29,7 +29,7 @@ class AuthController extends GetxController {
         return null;
       }
     } on dio.DioException catch (e) {
-      log(e.message ?? 'No Message');
+      log(e.message ?? "No Message");
       if (e.response != null) {
         showToastMessageFromResponse(e.response!);
         printResponse(e.response!);
@@ -42,7 +42,7 @@ class AuthController extends GetxController {
     try {
       final response = await dioClient.dio.post(
         logInPath,
-        data: {'mobile': phone},
+        data: {"mobile": phone},
       );
 
       printResponse(response);
@@ -55,7 +55,7 @@ class AuthController extends GetxController {
         return null;
       }
     } on dio.DioException catch (e) {
-      log(e.message ?? 'No Message');
+      log(e.message ?? "No Message");
       if (e.response != null) {
         showToastMessageFromResponse(e.response!);
         printResponse(e.response!);
@@ -65,13 +65,13 @@ class AuthController extends GetxController {
   }
 
   Future<dio.Response?> verifyOTP(String otp, String type, String id) async {
-    final data = {'code': '889327', 'type': type};
-    log(jsonEncode(data), name: 'body');
-    log(id, name: 'id');
+    final data = {"code": "889327", "type": type};
+    log(jsonEncode(data), name: "body");
+    log(id, name: "id");
 
     final response = await dioClient.dio.post(
-      '$verifyOTPPath/$id',
-      data: {'code': otp, 'type': type},
+      "$verifyOTPPath/$id",
+      data: {"code": otp, "type": type},
     );
 
     printResponse(response);
@@ -100,9 +100,9 @@ class AuthController extends GetxController {
 
 void showToastMessageFromResponse(dio.Response response) {
   try {
-    String message = response.data['message'] ?? '';
+    String message = response.data["message"] ?? "";
     Fluttertoast.showToast(msg: message);
   } catch (e) {
-    log(e.toString(), name: 'error_message');
+    log(e.toString(), name: "error_message");
   }
 }

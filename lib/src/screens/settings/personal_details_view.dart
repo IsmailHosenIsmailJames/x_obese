@@ -1,11 +1,11 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:gap/gap.dart';
-import 'package:get/get.dart';
-import 'package:intl/intl.dart';
-import 'package:x_obese/src/screens/controller/info_collector/controller/all_info_controller.dart';
-import 'package:x_obese/src/theme/colors.dart';
-import 'package:x_obese/src/widgets/back_button.dart';
+import "package:flutter/material.dart";
+import "package:flutter_svg/svg.dart";
+import "package:gap/gap.dart";
+import "package:get/get.dart";
+import "package:intl/intl.dart";
+import "package:x_obese/src/screens/controller/info_collector/controller/all_info_controller.dart";
+import "package:x_obese/src/theme/colors.dart";
+import "package:x_obese/src/widgets/back_button.dart";
 
 class PersonalDetailsView extends StatelessWidget {
   const PersonalDetailsView({super.key});
@@ -26,7 +26,7 @@ class PersonalDetailsView extends StatelessWidget {
                   }),
                   const Gap(55),
                   const Text(
-                    'Personal Details',
+                    "Personal Details",
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                   ),
                 ],
@@ -41,7 +41,7 @@ class PersonalDetailsView extends StatelessWidget {
 
                   child: Row(
                     children: [
-                      const Text('Gender'),
+                      const Text("Gender"),
                       const Spacer(),
                       Text(
                         allInfoController.allInfo.value.gender.toString(),
@@ -66,11 +66,11 @@ class PersonalDetailsView extends StatelessWidget {
 
                   child: Row(
                     children: [
-                      const Text('Date Of Birth'),
+                      const Text("Date Of Birth"),
                       const Spacer(),
                       Text(
                         DateFormat(
-                          'yyyy-MM-dd',
+                          "yyyy-MM-dd",
                         ).format(allInfoController.allInfo.value.birth!),
                         style: TextStyle(
                           fontSize: 12,
@@ -93,10 +93,10 @@ class PersonalDetailsView extends StatelessWidget {
 
                   child: Row(
                     children: [
-                      const Text('Height'),
+                      const Text("Height"),
                       const Spacer(),
                       Text(
-                        '${allInfoController.allInfo.value.heightFt} feet ${allInfoController.allInfo.value.heightIn} inch',
+                        "${allInfoController.allInfo.value.heightFt} feet ${allInfoController.allInfo.value.heightIn} inch",
                         style: TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.w300,
@@ -118,10 +118,10 @@ class PersonalDetailsView extends StatelessWidget {
 
                   child: Row(
                     children: [
-                      const Text('Weight'),
+                      const Text("Weight"),
                       const Spacer(),
                       Text(
-                        '${allInfoController.allInfo.value.weight} kg',
+                        "${allInfoController.allInfo.value.weight} kg",
                         style: TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.w300,

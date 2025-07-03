@@ -1,24 +1,24 @@
-import 'dart:convert';
-import 'dart:developer';
+import "dart:convert";
+import "dart:developer";
 
-import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:gap/gap.dart';
-import 'package:get/get.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:x_obese/src/apis/middleware/jwt_middleware.dart';
-import 'package:x_obese/src/core/common/functions/is_information_fulfilled.dart';
-import 'package:x_obese/src/screens/activity/live_activity_page.dart';
-import 'package:x_obese/src/screens/auth/controller/auth_controller.dart';
-import 'package:x_obese/src/screens/controller/info_collector/info_collector.dart';
-import 'package:x_obese/src/screens/controller/info_collector/model/all_info_model.dart';
-import 'package:x_obese/src/screens/auth/login/success_page.dart';
-import 'package:x_obese/src/theme/colors.dart';
-import 'package:x_obese/src/widgets/loading_popup.dart';
-import 'package:pinput/pinput.dart';
-import 'package:dio/dio.dart' as dio;
+import "package:flutter/material.dart";
+import "package:flutter_svg/svg.dart";
+import "package:fluttertoast/fluttertoast.dart";
+import "package:gap/gap.dart";
+import "package:get/get.dart";
+import "package:hive_flutter/hive_flutter.dart";
+import "package:shared_preferences/shared_preferences.dart";
+import "package:x_obese/src/apis/middleware/jwt_middleware.dart";
+import "package:x_obese/src/core/common/functions/is_information_fulfilled.dart";
+import "package:x_obese/src/screens/activity/live_activity_page.dart";
+import "package:x_obese/src/screens/auth/controller/auth_controller.dart";
+import "package:x_obese/src/screens/controller/info_collector/info_collector.dart";
+import "package:x_obese/src/screens/controller/info_collector/model/all_info_model.dart";
+import "package:x_obese/src/screens/auth/login/success_page.dart";
+import "package:x_obese/src/theme/colors.dart";
+import "package:x_obese/src/widgets/loading_popup.dart";
+import "package:pinput/pinput.dart";
+import "package:dio/dio.dart" as dio;
 
 class OtpPage extends StatefulWidget {
   final bool isSignup;
@@ -38,30 +38,30 @@ class OtpPage extends StatefulWidget {
 class _OtpPageState extends State<OtpPage> {
   final AuthController authController = Get.find();
   Future<void> checkOTP(String otp) async {
-    String id = widget.response.data['data']?['id'] ?? '';
-    String type = widget.isSignup ? 'signup' : 'login';
+    String id = widget.response.data["data"]?["id"] ?? "";
+    String type = widget.isSignup ? "signup" : "login";
     if (!(await checkConnectivity())) {
-      Fluttertoast.showToast(msg: 'Check Internet Connection!');
+      Fluttertoast.showToast(msg: "Check Internet Connection!");
       return;
     }
     showLoadingPopUp(context);
     try {
       final response = await authController.verifyOTP(otp, type, id);
       if (response != null) {
-        log('OTP verified', name: 'OTP');
-        await Hive.box('user').put('info', jsonEncode({'phone': widget.phone}));
+        log("OTP verified", name: "OTP");
+        await Hive.box("user").put("info", jsonEncode({"phone": widget.phone}));
         final SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setString(
-          'access_token',
-          response.data['data']['accessToken'].toString(),
+          "access_token",
+          response.data["data"]["accessToken"].toString(),
         );
 
         String? refreshToken = refreshTokenExtractor(response);
         if (refreshToken != null) {
-          await prefs.setString('refresh_token', refreshToken);
-          log('Saved refresh token', name: 'success');
+          await prefs.setString("refresh_token", refreshToken);
+          log("Saved refresh token", name: "success");
         } else {
-          Fluttertoast.showToast(msg: 'Refresh token not found');
+          Fluttertoast.showToast(msg: "Refresh token not found");
         }
 
         dio.Response? userDataResponse = await authController.getUserData(
@@ -72,9 +72,9 @@ class _OtpPageState extends State<OtpPage> {
         if (userDataResponse != null) {
           printResponse(userDataResponse);
           final userData = AllInfoModel.fromMap(
-            Map<String, dynamic>.from(userDataResponse.data['data']),
+            Map<String, dynamic>.from(userDataResponse.data["data"]),
           );
-          await Hive.box('user').put('info', userData.toJson());
+          await Hive.box("user").put("info", userData.toJson());
           if (isInformationNotFullFilled(userData)) {
             Get.offAll(() => InfoCollector(initialData: userData));
             return;
@@ -146,11 +146,11 @@ class _OtpPageState extends State<OtpPage> {
               ),
               const Gap(10),
               const Text(
-                'Verification Code',
+                "Verification Code",
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
               ),
               const Text(
-                '''We have sent the code Verification to your mobile number ''',
+                """We have sent the code Verification to your mobile number """,
                 style: TextStyle(fontSize: 14, fontWeight: FontWeight.w300),
                 textAlign: TextAlign.center,
               ),
@@ -178,7 +178,7 @@ class _OtpPageState extends State<OtpPage> {
               TextButton(
                 onPressed: () {},
                 child: Text(
-                  'Resend Code',
+                  "Resend Code",
                   style: TextStyle(
                     fontSize: 14,
                     color: MyAppColors.third,
@@ -196,14 +196,14 @@ class _OtpPageState extends State<OtpPage> {
                       checkOTP(otpController.text);
                     } else {
                       Fluttertoast.showToast(
-                        msg: 'OTP is not valid',
+                        msg: "OTP is not valid",
                         textColor: Colors.white,
                         backgroundColor: Colors.red,
                       );
                     }
                   },
                   child: const Text(
-                    'Verify Now',
+                    "Verify Now",
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                   ),
                 ),

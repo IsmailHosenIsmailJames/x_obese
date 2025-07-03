@@ -1,4 +1,4 @@
-import 'dart:convert';
+import "dart:convert";
 
 class FullMarathonDataModel {
   bool? success;
@@ -36,24 +36,24 @@ class FullMarathonDataModel {
 
   factory FullMarathonDataModel.fromMap(Map<String, dynamic> json) =>
       FullMarathonDataModel(
-        success: json['success'],
-        message: json['message'],
-        data: json['data'] == null ? null : Data.fromMap(json['data']),
-        totalParticiants: json['totalParticiants'],
+        success: json["success"],
+        message: json["message"],
+        data: json["data"] == null ? null : Data.fromMap(json["data"]),
+        totalParticiants: json["totalParticiants"],
         particiants:
-            json['particiants'] == null
+            json["particiants"] == null
                 ? []
                 : List<Particiant>.from(
-                  json['particiants']!.map((x) => Particiant.fromMap(x)),
+                  json["particiants"]!.map((x) => Particiant.fromMap(x)),
                 ),
       );
 
   Map<String, dynamic> toMap() => {
-    'success': success,
-    'message': message,
-    'data': data?.toMap(),
-    'totalParticiants': totalParticiants,
-    'particiants':
+    "success": success,
+    "message": message,
+    "data": data?.toMap(),
+    "totalParticiants": totalParticiants,
+    "particiants":
         particiants == null
             ? []
             : List<dynamic>.from(particiants!.map((x) => x.toMap())),
@@ -138,47 +138,47 @@ class Data {
   String toJson() => json.encode(toMap());
 
   factory Data.fromMap(Map<String, dynamic> json) => Data(
-    id: json['id'],
-    title: json['title'],
-    description: json['description'],
-    about: json['about'],
-    distanceKm: json['distanceKm'],
-    location: json['location'],
+    id: json["id"],
+    title: json["title"],
+    description: json["description"],
+    about: json["about"],
+    distanceKm: json["distanceKm"],
+    location: json["location"],
     startDate:
-        json['startDate'] == null ? null : DateTime.parse(json['startDate']),
-    endDate: json['endDate'] == null ? null : DateTime.parse(json['endDate']),
-    imagePath: json['imagePath'],
-    type: json['type'],
-    joined: json['joined'],
-    marathonUserId: json['marathonUserId'],
-    createdBy: json['createdBy'],
+        json["startDate"] == null ? null : DateTime.parse(json["startDate"]),
+    endDate: json["endDate"] == null ? null : DateTime.parse(json["endDate"]),
+    imagePath: json["imagePath"],
+    type: json["type"],
+    joined: json["joined"],
+    marathonUserId: json["marathonUserId"],
+    createdBy: json["createdBy"],
     createdAt:
-        json['createdAt'] == null ? null : DateTime.parse(json['createdAt']),
+        json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
     updatedAt:
-        json['updatedAt'] == null ? null : DateTime.parse(json['updatedAt']),
+        json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
     rewards:
-        json['Rewards'] == null
+        json["Rewards"] == null
             ? []
-            : List<dynamic>.from(json['Rewards']!.map((x) => x)),
+            : List<dynamic>.from(json["Rewards"]!.map((x) => x)),
   );
 
   Map<String, dynamic> toMap() => {
-    'id': id,
-    'title': title,
-    'description': description,
-    'about': about,
-    'distanceKm': distanceKm,
-    'location': location,
-    'startDate': startDate?.toIso8601String(),
-    'endDate': endDate?.toIso8601String(),
-    'imagePath': imagePath,
-    'type': type,
-    'joined': joined,
-    'marathonUserId': marathonUserId,
-    'createdBy': createdBy,
-    'createdAt': createdAt?.toIso8601String(),
-    'updatedAt': updatedAt?.toIso8601String(),
-    'Rewards':
+    "id": id,
+    "title": title,
+    "description": description,
+    "about": about,
+    "distanceKm": distanceKm,
+    "location": location,
+    "startDate": startDate?.toIso8601String(),
+    "endDate": endDate?.toIso8601String(),
+    "imagePath": imagePath,
+    "type": type,
+    "joined": joined,
+    "marathonUserId": marathonUserId,
+    "createdBy": createdBy,
+    "createdAt": createdAt?.toIso8601String(),
+    "updatedAt": updatedAt?.toIso8601String(),
+    "Rewards":
         rewards == null ? [] : List<dynamic>.from(rewards!.map((x) => x)),
   };
 }
@@ -209,16 +209,16 @@ class Particiant {
   String toJson() => json.encode(toMap());
 
   factory Particiant.fromMap(Map<String, dynamic> json) => Particiant(
-    id: json['id'],
-    fullName: json['fullName'],
-    image: json['image'],
-    imagePath: json['imagePath'],
+    id: json["id"],
+    fullName: json["fullName"],
+    image: json["image"],
+    imagePath: json["imagePath"],
   );
 
   Map<String, dynamic> toMap() => {
-    'id': id,
-    'fullName': fullName,
-    'image': image,
-    'imagePath': imagePath,
+    "id": id,
+    "fullName": fullName,
+    "image": image,
+    "imagePath": imagePath,
   };
 }

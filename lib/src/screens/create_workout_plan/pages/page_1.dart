@@ -1,15 +1,15 @@
-import 'dart:developer';
+import "dart:developer";
 
-import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:gap/gap.dart';
-import 'package:get/get.dart';
-import 'package:x_obese/src/screens/controller/info_collector/controller/all_info_controller.dart';
-import 'package:x_obese/src/screens/create_workout_plan/controller/create_workout_plan_controller.dart';
-import 'package:x_obese/src/theme/colors.dart';
-import 'package:x_obese/src/widgets/back_button.dart';
-import 'package:x_obese/src/widgets/text_input_decoration.dart';
-import 'package:toastification/toastification.dart';
+import "package:flutter/material.dart";
+import "package:flutter_svg/svg.dart";
+import "package:gap/gap.dart";
+import "package:get/get.dart";
+import "package:x_obese/src/screens/controller/info_collector/controller/all_info_controller.dart";
+import "package:x_obese/src/screens/create_workout_plan/controller/create_workout_plan_controller.dart";
+import "package:x_obese/src/theme/colors.dart";
+import "package:x_obese/src/widgets/back_button.dart";
+import "package:x_obese/src/widgets/text_input_decoration.dart";
+import "package:toastification/toastification.dart";
 
 class CreateWorkoutPlanPage1 extends StatefulWidget {
   final PageController pageController;
@@ -47,7 +47,7 @@ class _CreateWorkoutPlanPage1State extends State<CreateWorkoutPlanPage1> {
   late TextEditingController textEditingController = TextEditingController(
     text:
         createWorkoutPlanController.createWorkoutPlanModel.value.weightGoal ??
-        '6',
+        "6",
   );
 
   @override
@@ -67,7 +67,7 @@ class _CreateWorkoutPlanPage1State extends State<CreateWorkoutPlanPage1> {
                   }),
                   const Gap(55),
                   const Text(
-                    'Workout Goal',
+                    "Workout Goal",
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                   ),
                 ],
@@ -86,7 +86,7 @@ class _CreateWorkoutPlanPage1State extends State<CreateWorkoutPlanPage1> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                'Your BMI : $userBMI',
+                                "Your BMI : $userBMI",
                                 style: const TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400,
@@ -140,16 +140,16 @@ class _CreateWorkoutPlanPage1State extends State<CreateWorkoutPlanPage1> {
                           const Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
-                              Text('18.4'),
-                              Text('24.9'),
-                              Text('29.9'),
+                              Text("18.4"),
+                              Text("24.9"),
+                              Text("29.9"),
                             ],
                           ),
                         ],
                       ),
                       const Gap(32),
                       const Text(
-                        'Workout Goal',
+                        "Workout Goal",
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
@@ -161,7 +161,7 @@ class _CreateWorkoutPlanPage1State extends State<CreateWorkoutPlanPage1> {
                         children: [
                           getWorkoutGoalCard(
                             context: context,
-                            title: 'Gain Muscle',
+                            title: "Gain Muscle",
                             svg:
                                 '''<svg xmlns="http://www.w3.org/2000/svg" width="61" height="62" viewBox="0 0 61 62" fill="none">
                     <path d="M26.4332 61.1769C15.0108 61.1769 9.19941 56.945 8.11493 56.061C4.24853 56.0492 0.818271 52.6543 0.676817 52.5128C0.570727 52.4067 0.5 52.2535 0.5 52.1003C0.5 42.9883 2.96365 32.2024 7.43124 21.7348C11.1916 12.9293 16.1542 4.97255 20.3625 0.988272C20.4686 0.882181 20.6218 0.823242 20.7633 0.823242H35.3919C35.5334 0.823242 35.6749 0.870393 35.7809 0.976484L40.1896 4.86646C40.3782 5.03149 40.4371 5.3144 40.3428 5.55016L37.891 11.1022C37.8084 11.279 37.6434 11.4087 37.443 11.4441L28.4725 12.9175C28.2367 12.9529 28.001 12.8468 27.8831 12.6464L26.3978 10.2653L23.4391 9.78198C21.1876 13.7898 21.3055 18.8586 21.4234 24.2221C21.5295 29.0786 21.6473 34.4775 20.0088 39.8173C20.7986 39.0511 21.8006 38.2024 22.9558 37.4244C26.999 34.7132 30.9951 34.3714 34.4961 36.446C36.5 37.6366 37.9499 38.9922 38.7043 39.7938C42.0639 33.2397 47.6749 31.8252 51.8595 31.8252C56.5157 31.8252 60.335 33.4991 60.5 33.5698L60.0285 34.6425C59.9931 34.6307 56.2564 33.004 51.8595 33.004H51.8242C46.0128 33.004 41.8163 35.7388 39.3762 41.0786C39.2937 41.2673 39.1169 41.3969 38.9047 41.4205C38.7043 41.4441 38.5039 41.3616 38.3743 41.2083C38.3625 41.1847 36.6886 39.0983 33.8831 37.4362C30.7593 35.5855 27.3173 35.9038 23.6277 38.3557C20.7986 40.2417 18.889 42.7407 18.8772 42.7761C18.7004 43.0118 18.3703 43.0826 18.111 42.9293C17.8517 42.7761 17.7456 42.4578 17.8635 42.1867C20.5039 36.1749 20.3743 30.1042 20.2446 24.2221C20.1267 18.5285 20.0088 13.1533 22.6375 8.8036C22.7672 8.6032 23.0029 8.48532 23.2387 8.53248L26.8576 9.12187C27.0226 9.14544 27.1758 9.25153 27.2583 9.39299L28.6847 11.668L36.9597 10.3124L39.1051 5.45585L35.1916 2.00202H21.0108C16.944 5.93916 12.1699 13.6484 8.51572 22.1946C4.15422 32.4146 1.72593 42.9293 1.67878 51.8409C2.38605 52.4893 5.20334 54.8822 8.13851 54.8822H8.30354C8.45678 54.8822 8.59823 54.9293 8.71611 55.0354C8.77505 55.0826 14.445 59.9981 26.4332 59.9981C38.4332 59.9981 43.1365 56.6621 43.1837 56.6268C43.3841 56.4853 43.6552 56.4735 43.8556 56.6032L49.1601 60.0806L48.5118 61.0708L43.5255 57.8056C42.2171 58.6071 37.1719 61.1769 26.4332 61.1769Z" fill="#8AC6FF"/>
@@ -174,7 +174,7 @@ class _CreateWorkoutPlanPage1State extends State<CreateWorkoutPlanPage1> {
                           ),
                           getWorkoutGoalCard(
                             context: context,
-                            title: 'Keep Fit',
+                            title: "Keep Fit",
                             svg:
                                 '''<svg xmlns="http://www.w3.org/2000/svg" width="83" height="79" viewBox="0 0 83 79" fill="none">
                     <path d="M55.4348 60.0747V50.2332C55.4348 49.5587 55.657 48.9004 56.0803 48.3756C59.1644 44.5527 60.5745 40.4368 61.3439 36.9325C63.9403 36.902 66.2357 36.7024 68.2558 36.3917M37.1539 18.4776V22.5533C33.508 24.5138 29.3905 23.445 25.7173 24.8213C25.2311 25.0032 24.6935 24.9774 24.2219 24.7585C18.786 22.2458 14.1051 23.0796 10.7458 25.375C10.3337 25.6567 9.7832 25.3267 9.84597 24.8325L10.2854 21.3798C10.4523 20.0652 10.9285 18.8088 11.6751 17.7139C12.4216 16.619 13.4172 15.7168 14.58 15.0812L15.9482 14.3343C15.9482 14.3343 19.6392 15.2212 21.9651 14.3601C22.5221 14.154 22.8343 13.5601 22.7088 12.9806C22.1325 10.3311 19.8999 5.49728 18.9196 5.57615C17.8106 5.66468 10.4158 7.86509 9.05402 9.99789C7.2351 12.8438 3.69384 19.1118 1.54333 29.3798C1.39685 30.0752 1.62704 30.8012 2.1534 31.2792C4.06085 33.0145 9.58521 36.7875 21.6561 36.9324C22.4255 40.4366 23.8356 44.5525 26.9197 48.3755C27.343 48.9002 27.5651 49.5586 27.5651 50.233V60.0745M45.8461 18.4776V22.5533C49.492 24.5138 53.6095 23.445 57.2827 24.8213C57.7689 25.0032 58.3065 24.9774 58.7781 24.7585C64.2139 22.2458 68.8948 23.0796 72.2542 25.375C72.6663 25.6567 73.2168 25.3267 73.154 24.8325L72.7146 21.3798C72.5477 20.0652 72.0715 18.8088 71.3249 17.7139C70.5784 16.619 69.5828 15.7168 68.42 15.0812L67.0518 14.3343C67.0518 14.3343 63.3608 15.2212 61.0349 14.3601C60.4779 14.154 60.1656 13.5601 60.2912 12.9806C60.8675 10.3311 63.1001 5.49728 64.0803 5.57615C65.1894 5.66468 72.5842 7.86509 73.946 9.99789C75.7649 12.8438 79.3062 19.1118 81.4567 29.3798C81.6031 30.0752 81.373 30.8012 80.8466 31.2792C79.773 32.2563 77.5564 33.8756 73.6723 35.1328" stroke="#8AC6FF" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
@@ -187,7 +187,7 @@ class _CreateWorkoutPlanPage1State extends State<CreateWorkoutPlanPage1> {
                           ),
                           getWorkoutGoalCard(
                             context: context,
-                            title: 'Lose Weight',
+                            title: "Lose Weight",
                             svg:
                                 '''<svg xmlns="http://www.w3.org/2000/svg" width="61" height="64" viewBox="0 0 61 64" fill="none">
                     <path d="M18.5295 28.3438L19.8279 29.9676L23.7262 26.8489C23.8477 26.7513 23.9457 26.6277 24.013 26.4872C24.0803 26.3466 24.1153 26.1928 24.1153 26.037C24.1153 25.8812 24.0803 25.7274 24.013 25.5868C23.9457 25.4463 23.8477 25.3227 23.7262 25.2251L19.8279 22.1064L18.5295 23.7302L20.1138 24.9974H9.71094V27.0766H20.1127L18.5295 28.3438ZM41.1762 29.9676L42.4756 28.3438L40.8914 27.0766H51.2931V24.9974H40.8914L42.4756 23.7302L41.1762 22.1064L37.2779 25.2251C37.1564 25.3227 37.0584 25.4463 36.9911 25.5868C36.9237 25.7274 36.8888 25.8812 36.8888 26.037C36.8888 26.1928 36.9237 26.3466 36.9911 26.4872C37.0584 26.6277 37.1564 26.7513 37.2779 26.8489L41.1762 29.9676Z" fill="white"/>
@@ -206,9 +206,9 @@ class _CreateWorkoutPlanPage1State extends State<CreateWorkoutPlanPage1> {
                               .value
                               .goalType
                               ?.toLowerCase() ==
-                          'Lose Weight'.toLowerCase())
+                          "Lose Weight".toLowerCase())
                         const Text(
-                          'Wight Goal',
+                          "Wight Goal",
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
@@ -219,26 +219,26 @@ class _CreateWorkoutPlanPage1State extends State<CreateWorkoutPlanPage1> {
                               .value
                               .goalType
                               ?.toLowerCase() ==
-                          'Lose Weight'.toLowerCase())
+                          "Lose Weight".toLowerCase())
                         const Gap(16),
                       if (createWorkoutPlanController
                               .createWorkoutPlanModel
                               .value
                               .goalType
                               ?.toLowerCase() ==
-                          'Lose Weight'.toLowerCase())
+                          "Lose Weight".toLowerCase())
                         TextFormField(
                           controller: textEditingController,
                           keyboardType: TextInputType.number,
                           decoration: getTextInputDecoration(
                             context,
-                            hintText: 'Weight want to lose',
-                          ).copyWith(suffixText: ('kg')),
+                            hintText: "Weight want to lose",
+                          ).copyWith(suffixText: ("kg")),
                           validator: (value) {
-                            if (double.tryParse(value ?? '') != null) {
+                            if (double.tryParse(value ?? "") != null) {
                               return null;
                             } else {
-                              return 'Please enter a valid weight';
+                              return "Please enter a valid weight";
                             }
                           },
                           autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -263,7 +263,7 @@ class _CreateWorkoutPlanPage1State extends State<CreateWorkoutPlanPage1> {
                                   .createWorkoutPlanModel
                                   .value
                                   .goalType ==
-                              'Lose Weight'.toLowerCase()) {
+                              "Lose Weight".toLowerCase()) {
                         createWorkoutPlanController
                             .createWorkoutPlanModel
                             .value
@@ -276,18 +276,18 @@ class _CreateWorkoutPlanPage1State extends State<CreateWorkoutPlanPage1> {
                       log(
                         createWorkoutPlanController.createWorkoutPlanModel.value
                             .toJson(),
-                        name: 'WorkOutPLan',
+                        name: "WorkOutPLan",
                       );
                     } else {
                       toastification.show(
                         context: context,
-                        title: const Text('Please select workout goal'),
+                        title: const Text("Please select workout goal"),
                         type: ToastificationType.error,
                         autoCloseDuration: const Duration(seconds: 3),
                       );
                     }
                   },
-                  child: const Text('NEXT '),
+                  child: const Text("NEXT "),
                 ),
               ),
             ],

@@ -1,10 +1,10 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
-import 'package:get/get.dart';
-import 'package:x_obese/src/screens/blog/blog_details_view.dart';
-import 'package:x_obese/src/screens/blog/model/get_blog_model.dart';
-import 'package:x_obese/src/theme/colors.dart';
+import "package:cached_network_image/cached_network_image.dart";
+import "package:flutter/material.dart";
+import "package:gap/gap.dart";
+import "package:get/get.dart";
+import "package:x_obese/src/screens/blog/blog_details_view.dart";
+import "package:x_obese/src/screens/blog/model/get_blog_model.dart";
+import "package:x_obese/src/theme/colors.dart";
 
 Widget getBlogCard(BuildContext context, GetBlogModel blogData) {
   return GestureDetector(
@@ -36,10 +36,10 @@ Widget getBlogCard(BuildContext context, GetBlogModel blogData) {
           ),
           const Gap(8),
           Text(
-            '${blogData.readTime} min Read',
+            "${blogData.readTime} min Read",
             style: TextStyle(fontSize: 12, color: MyAppColors.third),
           ),
-          Text(blogData.title ?? '', style: const TextStyle(fontSize: 12)),
+          Text(blogData.title ?? "", style: const TextStyle(fontSize: 12)),
         ],
       ),
     ),

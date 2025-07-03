@@ -1,15 +1,15 @@
-import 'dart:developer';
+import "dart:developer";
 
-import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
-import 'package:get/get.dart';
-import 'package:intl/intl.dart';
-import 'package:x_obese/src/screens/controller/info_collector/controller/all_info_controller.dart';
-import 'package:x_obese/src/screens/controller/info_collector/model/all_info_model.dart';
-import 'package:x_obese/src/screens/create_workout_plan/controller/create_workout_plan_controller.dart';
-import 'package:x_obese/src/screens/create_workout_plan/model/create_workout_plan_model.dart';
-import 'package:x_obese/src/theme/colors.dart';
-import 'package:x_obese/src/widgets/back_button.dart';
+import "package:flutter/material.dart";
+import "package:gap/gap.dart";
+import "package:get/get.dart";
+import "package:intl/intl.dart";
+import "package:x_obese/src/screens/controller/info_collector/controller/all_info_controller.dart";
+import "package:x_obese/src/screens/controller/info_collector/model/all_info_model.dart";
+import "package:x_obese/src/screens/create_workout_plan/controller/create_workout_plan_controller.dart";
+import "package:x_obese/src/screens/create_workout_plan/model/create_workout_plan_model.dart";
+import "package:x_obese/src/theme/colors.dart";
+import "package:x_obese/src/widgets/back_button.dart";
 
 class CreateWorkoutPlanPage3 extends StatefulWidget {
   final PageController pageController;
@@ -51,7 +51,7 @@ class _CreateWorkoutPlanPage3State extends State<CreateWorkoutPlanPage3> {
                   }),
                   const Gap(55),
                   const Text(
-                    'Plan Overview',
+                    "Plan Overview",
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                   ),
                 ],
@@ -76,32 +76,32 @@ class _CreateWorkoutPlanPage3State extends State<CreateWorkoutPlanPage3> {
                           DateTime.now(),
                       userBMI:
                           createWorkoutPlanController.workOutPlan.value?.bmi ??
-                          '',
+                          "",
                       goalType:
                           createWorkoutPlanController
                               .workOutPlan
                               .value
                               ?.goalType ??
-                          '',
+                          "",
                       weightGoal:
                           (createWorkoutPlanController
                                       .workOutPlan
                                       .value
                                       ?.weightGoal ??
-                                  '')
+                                  "")
                               .toString(),
                       workoutDays:
                           createWorkoutPlanController
                               .workOutPlan
                               .value
                               ?.workoutDays ??
-                          '',
+                          "",
                       workoutTimeMs:
                           createWorkoutPlanController
                               .workOutPlan
                               .value
                               ?.workoutTimeMs ??
-                          '0',
+                          "0",
                       calorieBairn:
                           (createWorkoutPlanController
                                   .workOutPlan
@@ -114,7 +114,7 @@ class _CreateWorkoutPlanPage3State extends State<CreateWorkoutPlanPage3> {
                                       .workOutPlan
                                       .value
                                       ?.totalDays ??
-                                  '0')
+                                  "0")
                               .toString(),
                       context: context,
                       controller:
@@ -131,7 +131,7 @@ class _CreateWorkoutPlanPage3State extends State<CreateWorkoutPlanPage3> {
                   onPressed: () {
                     Get.back();
                   },
-                  child: const Text('Done'),
+                  child: const Text("Done"),
                 ),
               ),
             ],
@@ -164,7 +164,7 @@ Widget workoutPlanOverview({
       const Gap(10),
 
       const Text(
-        'Generated For You',
+        "Generated For You",
         style: TextStyle(
           fontSize: 14,
           fontWeight: FontWeight.w600,
@@ -181,7 +181,7 @@ Widget workoutPlanOverview({
         ),
       ),
       Text(
-        '${DateFormat.yMMMMd().format(startDate)} - ${DateFormat.yMMMMd().format(endDate)}',
+        "${DateFormat.yMMMMd().format(startDate)} - ${DateFormat.yMMMMd().format(endDate)}",
         style: TextStyle(
           fontSize: 14,
           fontWeight: FontWeight.w600,
@@ -200,7 +200,7 @@ Widget workoutPlanOverview({
             Row(
               children: [
                 const Text(
-                  'BMI: ',
+                  "BMI: ",
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                 ),
                 Text(
@@ -216,11 +216,11 @@ Widget workoutPlanOverview({
             Row(
               children: [
                 const Text(
-                  'Workout Goal: ',
+                  "Workout Goal: ",
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                 ),
                 Text(
-                  goalType.replaceAll('_', ' ').capitalize,
+                  goalType.replaceAll("_", " ").capitalize,
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
@@ -234,7 +234,7 @@ Widget workoutPlanOverview({
               Row(
                 children: [
                   const Text(
-                    'Wight: ',
+                    "Wight: ",
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                   ),
                   Text(
@@ -270,18 +270,18 @@ Widget workoutPlanOverview({
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Text(
-                            (workoutDays.split(',').length).toString(),
+                            (workoutDays.split(",").length).toString(),
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w500,
                               color: MyAppColors.third,
                             ),
                           ),
-                          const Text(' Day'),
+                          const Text(" Day"),
                         ],
                       ),
                       Text(
-                        'Weekly',
+                        "Weekly",
                         style: TextStyle(
                           fontSize: 16,
                           color: MyAppColors.mutedGray,
@@ -298,18 +298,18 @@ Widget workoutPlanOverview({
                     Row(
                       children: [
                         Text(
-                          '$daysTotal ',
+                          "$daysTotal ",
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w500,
                             color: MyAppColors.third,
                           ),
                         ),
-                        const Text('Day'),
+                        const Text("Day"),
                       ],
                     ),
                     Text(
-                      'Total',
+                      "Total",
                       style: TextStyle(
                         fontSize: 16,
                         color: MyAppColors.mutedGray,
@@ -333,18 +333,18 @@ Widget workoutPlanOverview({
                       Row(
                         children: [
                           Text(
-                            '${(int.parse(workoutTimeMs) / 60000).toInt()} ',
+                            "${(int.parse(workoutTimeMs) / 60000).toInt()} ",
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w500,
                               color: MyAppColors.third,
                             ),
                           ),
-                          const Text('Min'),
+                          const Text("Min"),
                         ],
                       ),
                       Text(
-                        'Duration Time',
+                        "Duration Time",
                         style: TextStyle(
                           fontSize: 16,
                           color: MyAppColors.mutedGray,
@@ -362,18 +362,18 @@ Widget workoutPlanOverview({
                       children: [
                         Text('${calorieBairn < 0 ? 'Lose' : 'Gain'} '),
                         Text(
-                          '${calorieBairn.abs()} ',
+                          "${calorieBairn.abs()} ",
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w500,
                             color: MyAppColors.third,
                           ),
                         ),
-                        const Text('Cal'),
+                        const Text("Cal"),
                       ],
                     ),
                     Text(
-                      'Consumption',
+                      "Consumption",
                       style: TextStyle(
                         fontSize: 16,
                         color: MyAppColors.mutedGray,

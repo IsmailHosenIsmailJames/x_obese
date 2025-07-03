@@ -1,10 +1,10 @@
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:x_obese/src/screens/create_workout_plan/controller/create_workout_plan_controller.dart';
-import 'package:x_obese/src/screens/create_workout_plan/model/create_workout_plan_model.dart';
-import 'package:x_obese/src/screens/create_workout_plan/pages/page_1.dart';
-import 'package:x_obese/src/screens/create_workout_plan/pages/page_2.dart';
-import 'package:x_obese/src/screens/create_workout_plan/pages/page_3.dart';
+import "package:flutter/material.dart";
+import "package:get/get.dart";
+import "package:x_obese/src/screens/create_workout_plan/controller/create_workout_plan_controller.dart";
+import "package:x_obese/src/screens/create_workout_plan/model/create_workout_plan_model.dart";
+import "package:x_obese/src/screens/create_workout_plan/pages/page_1.dart";
+import "package:x_obese/src/screens/create_workout_plan/pages/page_2.dart";
+import "package:x_obese/src/screens/create_workout_plan/pages/page_3.dart";
 
 class CreateWorkoutPlan extends StatefulWidget {
   final CreateWorkoutPlanModel? createWorkoutPlanModel;

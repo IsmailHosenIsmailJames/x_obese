@@ -1,13 +1,13 @@
-import 'dart:developer';
+import "dart:developer";
 
-import 'package:fl_chart/fl_chart.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:gap/gap.dart';
-import 'package:get/get.dart';
-import 'package:x_obese/src/resources/svg_string.dart';
-import 'package:x_obese/src/screens/controller/info_collector/controller/all_info_controller.dart';
-import 'package:x_obese/src/theme/colors.dart';
+import "package:fl_chart/fl_chart.dart";
+import "package:flutter/material.dart";
+import "package:flutter_svg/svg.dart";
+import "package:gap/gap.dart";
+import "package:get/get.dart";
+import "package:x_obese/src/resources/svg_string.dart";
+import "package:x_obese/src/screens/controller/info_collector/controller/all_info_controller.dart";
+import "package:x_obese/src/theme/colors.dart";
 
 Column pointsOverviewWidget(
   BuildContext context,
@@ -80,9 +80,9 @@ Column pointsOverviewWidget(
                       () => getPointsWidget(
                         context: context,
                         svg: stepsIconRed,
-                        title: 'Steps',
+                        title: "Steps",
                         points: controller.stepsCount.value.toString(),
-                        target: '6000',
+                        target: "6000",
                       ),
                     ),
                   ),
@@ -99,10 +99,10 @@ Column pointsOverviewWidget(
                       () => getPointsWidget(
                         context: context,
                         svg: calorieIconBlue,
-                        title: 'Calories',
+                        title: "Calories",
                         points:
                             controller.workStatus.value.calories?.toString() ??
-                            '0',
+                            "0",
                         target:
                             (controller
                                         .getWorkoutPlansList
@@ -140,9 +140,9 @@ Column pointsOverviewWidget(
                   () => getPointsWidget(
                     context: context,
                     svg: heartIconSVGYellow,
-                    title: 'Heart Points',
+                    title: "Heart Points",
                     points: double.parse(
-                      controller.workStatus.value.heartPts ?? '0',
+                      controller.workStatus.value.heartPts ?? "0",
                     ).toStringAsFixed(2),
                   ),
                 ),
@@ -161,15 +161,15 @@ Column pointsOverviewWidget(
                   () => getPointsWidget(
                     context: context,
                     svg: workOutIconSVGGreen,
-                    title: 'Workout Time',
+                    title: "Workout Time",
                     points:
                         controller.workStatus.value.durationMs?.toStringAsFixed(
                           2,
                         ) ??
-                        '0',
+                        "0",
                     target:
                         (int.parse(
-                              '${(controller.getWorkoutPlansList.first.workoutTimeMs ?? 0)}',
+                              "${(controller.getWorkoutPlansList.first.workoutTimeMs ?? 0)}",
                             ).abs() /
                             60000),
                   ),
@@ -192,7 +192,7 @@ PieChart getPieChart(AllInfoController controller) {
   if (!(targetCalBran > 0)) targetCalBran = 1;
 
   double targetWorkout = double.parse(
-    controller.getWorkoutPlansList.value.first.workoutTimeMs ?? '0',
+    controller.getWorkoutPlansList.value.first.workoutTimeMs ?? "0",
   );
   targetWorkout /= 60000;
   if (!(targetWorkout > 0)) targetWorkout = 1;
@@ -209,24 +209,24 @@ PieChart getPieChart(AllInfoController controller) {
           final touchedSection = p1?.touchedSection?.touchedSection;
           if (touchedSection != null) {
             log(touchedSection.title.toString());
-            if (touchedSection.title.toString() == 'Steps') {
+            if (touchedSection.title.toString() == "Steps") {
               controller.selectedPoints.value =
                   controller.stepsCount.value.toDouble();
               controller.selectedCategory.value =
                   touchedSection.title.toString();
-            } else if (touchedSection.title.toString() == 'Heart Points') {
+            } else if (touchedSection.title.toString() == "Heart Points") {
               controller.selectedPoints.value = double.parse(
-                controller.workStatus.value.heartPts ?? '0',
+                controller.workStatus.value.heartPts ?? "0",
               ).toPrecision(2);
               controller.selectedCategory.value =
                   touchedSection.title.toString();
-            } else if (touchedSection.title.toString() == 'Calories') {
+            } else if (touchedSection.title.toString() == "Calories") {
               controller.selectedPoints.value = double.parse(
-                controller.workStatus.value.calories ?? '0',
+                controller.workStatus.value.calories ?? "0",
               ).toPrecision(2);
               controller.selectedCategory.value =
                   touchedSection.title.toString();
-            } else if (touchedSection.title.toString() == 'Duration') {
+            } else if (touchedSection.title.toString() == "Duration") {
               controller.selectedPoints.value =
                   (controller.workStatus.value.durationMs ?? 0).toPrecision(2);
               controller.selectedCategory.value =
@@ -247,11 +247,11 @@ PieChart getPieChart(AllInfoController controller) {
       sections: [
         PieChartSectionData(
           value:
-              double.parse(controller.workStatus.value.heartPts ?? '0.0') /
+              double.parse(controller.workStatus.value.heartPts ?? "0.0") /
               targetHartPoints,
           color: Colors.yellow,
-          radius: controller.selectedCategory.value == 'Heart Points' ? 27 : 20,
-          title: 'Heart Points',
+          radius: controller.selectedCategory.value == "Heart Points" ? 27 : 20,
+          title: "Heart Points",
           showTitle: false,
         ),
         PieChartSectionData(
@@ -259,25 +259,25 @@ PieChart getPieChart(AllInfoController controller) {
               (controller.workStatus.value.durationMs?.toDouble() ?? 1) /
               targetWorkout,
           color: Colors.green,
-          radius: controller.selectedCategory.value == 'Duration' ? 27 : 20,
-          title: 'Duration',
+          radius: controller.selectedCategory.value == "Duration" ? 27 : 20,
+          title: "Duration",
           showTitle: false,
         ),
         PieChartSectionData(
           value: controller.stepsCount.toDouble() / 6000,
           color: Colors.red,
-          radius: controller.selectedCategory.value == 'Steps' ? 27 : 20,
-          title: 'Steps',
+          radius: controller.selectedCategory.value == "Steps" ? 27 : 20,
+          title: "Steps",
           showTitle: false,
         ),
 
         PieChartSectionData(
           value:
-              double.parse(controller.workStatus.value.calories ?? '0.0') /
+              double.parse(controller.workStatus.value.calories ?? "0.0") /
               targetCalBran,
           color: Colors.blue,
-          title: 'Calories',
-          radius: controller.selectedCategory.value == 'Calories' ? 27 : 20,
+          title: "Calories",
+          radius: controller.selectedCategory.value == "Calories" ? 27 : 20,
           showTitle: false,
         ),
       ],
@@ -324,7 +324,7 @@ Widget getPointsWidget({
               ),
               if (target != null)
                 Text(
-                  '/$target',
+                  "/$target",
                   style: TextStyle(fontSize: 13, color: MyAppColors.mutedGray),
                 ),
             ],

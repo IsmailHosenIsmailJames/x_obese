@@ -1,17 +1,17 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:gap/gap.dart';
-import 'package:get/get.dart';
-import 'package:x_obese/src/apis/middleware/jwt_middleware.dart';
-import 'package:x_obese/src/screens/auth/login/login_signup_page.dart';
-import 'package:x_obese/src/screens/controller/info_collector/controller/all_info_controller.dart';
-import 'package:x_obese/src/screens/controller/info_collector/info_collector.dart';
-import 'package:x_obese/src/screens/settings/about_view.dart';
-import 'package:x_obese/src/screens/settings/notification_settings_view.dart';
-import 'package:x_obese/src/screens/settings/personal_details_view.dart';
-import 'package:x_obese/src/theme/colors.dart';
-import 'package:x_obese/src/widgets/back_button.dart';
+import "package:cached_network_image/cached_network_image.dart";
+import "package:flutter/material.dart";
+import "package:flutter_svg/flutter_svg.dart";
+import "package:gap/gap.dart";
+import "package:get/get.dart";
+import "package:x_obese/src/apis/middleware/jwt_middleware.dart";
+import "package:x_obese/src/screens/auth/login/login_signup_page.dart";
+import "package:x_obese/src/screens/controller/info_collector/controller/all_info_controller.dart";
+import "package:x_obese/src/screens/controller/info_collector/info_collector.dart";
+import "package:x_obese/src/screens/settings/about_view.dart";
+import "package:x_obese/src/screens/settings/notification_settings_view.dart";
+import "package:x_obese/src/screens/settings/personal_details_view.dart";
+import "package:x_obese/src/theme/colors.dart";
+import "package:x_obese/src/widgets/back_button.dart";
 
 class SettingsPage extends StatefulWidget {
   final PageController pageController;
@@ -39,7 +39,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     }),
                     const Gap(55),
                     const Text(
-                      'Settings',
+                      "Settings",
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
@@ -77,7 +77,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text(allInfoController.allInfo.value.fullName ?? ''),
+                    Text(allInfoController.allInfo.value.fullName ?? ""),
 
                     IconButton(
                       onPressed: () {
@@ -102,7 +102,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      'My Account',
+                      "My Account",
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
@@ -129,7 +129,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     child: Row(
                       children: [
                         const Text(
-                          'Personal Details',
+                          "Personal Details",
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w400,
@@ -161,7 +161,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     child: Row(
                       children: [
                         const Text(
-                          'Notification',
+                          "Notification",
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w400,
@@ -192,7 +192,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     child: Row(
                       children: [
                         const Text(
-                          'About',
+                          "About",
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w400,
@@ -238,7 +238,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     children: [
                       Icon(Icons.logout_rounded),
                       Gap(20),
-                      Text('Signout'),
+                      Text("Signout"),
                     ],
                   ),
                 ),
