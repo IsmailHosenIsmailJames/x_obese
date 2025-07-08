@@ -1,5 +1,6 @@
 import "dart:developer";
 
+import "package:dio/dio.dart" as dio;
 import "package:flutter/material.dart";
 import "package:flutter_svg/svg.dart";
 import "package:fluttertoast/fluttertoast.dart";
@@ -9,7 +10,6 @@ import "package:x_obese/src/screens/activity/live_activity_page.dart";
 import "package:x_obese/src/screens/auth/controller/auth_controller.dart";
 import "package:x_obese/src/screens/auth/login/otp_page.dart";
 import "package:x_obese/src/theme/colors.dart";
-import "package:dio/dio.dart" as dio;
 import "package:x_obese/src/widgets/loading_popup.dart";
 
 class LoginSignupPage extends StatefulWidget {
@@ -31,17 +31,22 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
       backgroundColor: MyAppColors.primary,
       body: Stack(
         children: [
-          SvgPicture.string(
-            '''
+          SizedBox(
+            width: MediaQuery.of(context).size.width,
+            // height: 270,
+            child: SvgPicture.string(
+              '''
 <svg width="375" height="247" viewBox="0 0 375 247" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M361.95 176.04C283.05 150.18 205.2 192.54 175.49 210.92C161.02 219.7 106.76 250.26 42.44 234.24C25.48 230.02 11.31 223.42 0 216.7V221.44C10.63 228.06 21.91 235.98 37.5 240.5C101.16 258.94 164.21 230.23 179 222C209.38 204.75 282.93 164.16 360.79 192.98C365.44 194.7 370.18 196.71 374.99 199.03V180.97C370.56 179.08 366.2 177.44 361.93 176.04H361.95Z" fill="#FFDE1A"/>
 <path d="M175.49 210.93C205.2 192.54 283.05 150.19 361.95 176.05C366.22 177.45 370.58 179.09 375.01 180.98V0H0.0100098V216.71C11.31 223.43 25.48 230.03 42.45 234.25C106.77 250.27 161.03 219.71 175.5 210.93H175.49Z" fill="#047CEC"/>
 </svg>
 
 ''',
-            fit: BoxFit.cover,
-            width: double.infinity,
-            height: 250,
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
+              alignment: Alignment.topCenter,
+              fit: BoxFit.fitWidth,
+            ),
           ),
           Padding(
             padding: const EdgeInsets.only(left: 23, bottom: 23, right: 23),
