@@ -42,7 +42,7 @@ class _NavesPageState extends State<NavesPage> {
     }
 
     var ignoreBatteryOpt = await Permission.ignoreBatteryOptimizations.status;
-    if (ignoreBatteryOpt != PermissionStatus.granted) {
+    if (ignoreBatteryOpt != PermissionStatus.granted && Platform.isAndroid) {
       ignoreBatteryOpt = await Permission.ignoreBatteryOptimizations.request();
     }
 

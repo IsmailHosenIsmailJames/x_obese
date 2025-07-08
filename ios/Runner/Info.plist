@@ -36,6 +36,12 @@
 	<string>We will sync your data with the Apple Health app to give you better insights</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>This app need Location access when user runing, Walking or Cycleing etc. </string>
+	<key>NSBonjourServices</key>
+	<array>
+		<string>_dartobservatory._tcp</string>
+	</array>
+	<key>NSLocalNetworkUsageDescription</key>
+	<string>Allow this app to find and connect to devices on your local network.</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UIBackgroundModes</key>
