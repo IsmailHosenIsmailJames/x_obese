@@ -1,10 +1,8 @@
 import "package:flutter/material.dart";
 import "package:flutter_native_splash/flutter_native_splash.dart";
-import "package:get/get.dart";
 import "package:hive_flutter/hive_flutter.dart";
 import "package:shared_preferences/shared_preferences.dart";
 import "package:x_obese/src/core/common/functions/is_information_fulfilled.dart";
-import "package:x_obese/src/screens/auth/controller/auth_controller.dart";
 import "package:x_obese/src/screens/auth/login/login_signup_page.dart";
 import "package:x_obese/src/screens/controller/info_collector/info_collector.dart";
 import "package:x_obese/src/screens/controller/info_collector/model/all_info_model.dart";
@@ -19,7 +17,6 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     FlutterNativeSplash.remove();
-    AuthController authController = Get.put(AuthController());
     final PageTransitionsTheme pageTransitionsTheme =
         const PageTransitionsTheme(
           builders: <TargetPlatform, PageTransitionsBuilder>{
@@ -72,8 +69,8 @@ class App extends StatelessWidget {
                 AllInfoModel.fromJson(Hive.box("user").get("info")),
               )
               ? "/infoCollector"
-              : (authController.refreshToken.value == null &&
-                  authController.accessToken.value == null)
+              : (prefs.getString("refresh_token") == null &&
+                  prefs.getString("access_token") == null)
               ? "/login"
               : "/home",
     );
