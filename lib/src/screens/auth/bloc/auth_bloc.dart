@@ -2,10 +2,9 @@ import "dart:developer";
 
 import "package:bloc/bloc.dart";
 import "package:dio/dio.dart" as dio;
-import "package:hive/hive.dart";
-import "package:shared_preferences/shared_preferences.dart";
 import "package:x_obese/src/apis/middleware/jwt_middleware.dart";
 import "package:x_obese/src/core/common/functions/is_information_fulfilled.dart";
+import "package:x_obese/src/data/user_db.dart";
 import "package:x_obese/src/screens/auth/bloc/auth_event.dart";
 import "package:x_obese/src/screens/auth/bloc/auth_state.dart";
 import "package:x_obese/src/screens/auth/repository/auth_repository.dart";
@@ -66,7 +65,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       );
       if (response != null &&
           (response.statusCode == 200 || response.statusCode == 201)) {
-        await _handleSuccessfulVerification(response);
+        AuthFailure? isFailed = await _handleSuccessfulVerification(response);
+        if (isFailed != null) {
+          emit(isFailed);
+        }
 
         final userDataResponse = await authRepository.getUserData();
         if (userDataResponse != null &&
@@ -75,7 +77,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           final userData = AllInfoModel.fromMap(
             Map<String, dynamic>.from(userDataResponse.data["data"]),
           );
-          await Hive.box("user").put("info", userData.toJson());
+          await UserDB.saveUserAllInfo(userData);
 
           if (isInformationNotFullFilled(userData)) {
             emit(AuthNavigateToInfoCollector(userData));
@@ -99,17 +101,20 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
   }
 
-  Future<void> _handleSuccessfulVerification(dio.Response response) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString(
-      "access_token",
+  Future<AuthFailure?> _handleSuccessfulVerification(
+    dio.Response response,
+  ) async {
+    await UserDB.saveAccessToken(
       response.data["data"]["accessToken"].toString(),
     );
-
     String? refreshToken = refreshTokenExtractor(response);
     if (refreshToken != null) {
-      await prefs.setString("refresh_token", refreshToken);
+      await UserDB.saveRefreshToken(refreshToken);
       log("Saved refresh token", name: "success");
+    } else {
+      log("Unable to extract refresh token");
+      return const AuthFailure("Unable to extract refresh token");
     }
+    return null;
   }
 }

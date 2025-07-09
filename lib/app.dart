@@ -1,8 +1,8 @@
 import "package:flutter/material.dart";
 import "package:flutter_native_splash/flutter_native_splash.dart";
 import "package:hive_flutter/hive_flutter.dart";
-import "package:shared_preferences/shared_preferences.dart";
 import "package:x_obese/src/core/common/functions/is_information_fulfilled.dart";
+import "package:x_obese/src/data/user_db.dart";
 import "package:x_obese/src/screens/auth/login/login_signup_page.dart";
 import "package:x_obese/src/screens/controller/info_collector/info_collector.dart";
 import "package:x_obese/src/screens/controller/info_collector/model/all_info_model.dart";
@@ -12,8 +12,7 @@ import "package:x_obese/src/theme/colors.dart";
 
 class App extends StatelessWidget {
   static GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
-  final SharedPreferences prefs;
-  const App({super.key, required this.prefs});
+  const App({super.key});
   @override
   Widget build(BuildContext context) {
     FlutterNativeSplash.remove();
@@ -63,14 +62,13 @@ class App extends StatelessWidget {
         },
       },
       initialRoute:
-          Hive.box("user").get("info", defaultValue: null) == null
+          UserDB.userAllInfo() == null
               ? "/intro"
               : isInformationNotFullFilled(
                 AllInfoModel.fromJson(Hive.box("user").get("info")),
               )
               ? "/infoCollector"
-              : (prefs.getString("refresh_token") == null &&
-                  prefs.getString("access_token") == null)
+              : (UserDB.accessToken() == null && UserDB.refreshToken() == null)
               ? "/login"
               : "/home",
     );
