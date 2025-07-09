@@ -1,0 +1,53 @@
+CLIENT OF UIKIT REQUIRES UPDATE: This process does not adopt UIScene lifecycle. This will become an assert in a future version.
+FlutterView implements focusItemsInRect: - caching for linear focus movement is limited as long as this view is on screen.
+flutter: The Dart VM service is listening on http://127.0.0.1:65421/C0Zp1SN6jFE=/
+D/Swift: 32m [AWESOME NOTIFICATIONS]0m  LiceCycleManager listener successfully attached to iOS (LifeCycleManager:81)
+D/Swift: 32m [AWESOME NOTIFICATIONS]0m  App is now Terminated (LifeCycleManager:134)
+D/Swift: 32m [AWESOME NOTIFICATIONS]0m  LiceCycleManager listener successfully attached to iOS (LifeCycleManager:81)
+D/Swift: 32m [AWESOME NOTIFICATIONS]0m  Awesome Notifications plugin attached to iOS 3502.0 (AwesomeNotificationsPlugin:60)
+D/Swift: 32m [AWESOME NOTIFICATIONS]0m  Awesome Notifications - App Group : group.awn.15994d2f (AwesomeNotificationsPlugin:61)
+D/Swift: 32m [AWESOME NOTIFICATIONS]0m  Awesome Notifications attached for iOS (AwesomeNotifications:531)
+D/Swift: 32m [AWESOME NOTIFICATIONS]0m  App is now Foreground (LifeCycleManager:134)
+connection error: Error Domain=com.apple.healthkit Code=4 "Missing com.apple.developer.healthkit entitlement." UserInfo={NSLocalizedDescription=Missing com.apple.developer.healthkit entitlement.}
+App is being debugged, do not track this hang
+Hang detected: 0.74s (debugger attached, not reporting)
+App is being debugged, do not track this hang
+Hang detected: 2.19s (debugger attached, not reporting)
+App is being debugged, do not track this hang
+Hang detected: 1.31s (debugger attached, not reporting)
+App is being debugged, do not track this hang
+Hang detected: 3.31s (debugger attached, not reporting)
+App is being debugged, do not track this hang
+Hang detected: 1.82s (debugger attached, not reporting)
+App is being debugged, do not track this hang
+Hang detected: 1.06s (debugger attached, not reporting)
+App is being debugged, do not track this hang
+Hang detected: 0.57s (debugger attached, not reporting)
+App is being debugged, do not track this hang
+Hang detected: 0.70s (debugger attached, not reporting)
+App is being debugged, do not track this hang
+Hang detected: 0.65s (debugger attached, not reporting)
+App is being debugged, do not track this hang
+Hang detected: 0.67s (debugger attached, not reporting)
+App is being debugged, do not track this hang
+Hang detected: 0.51s (debugger attached, not reporting)
+App is being debugged, do not track this hang
+Hang detected: 1.24s (debugger attached, not reporting)
+App is being debugged, do not track this hang
+Hang detected: 7.52s (debugger attached, not reporting)
+App is being debugged, do not track this hang
+Hang detected: 3.25s (debugger attached, not reporting)
+App is being debugged, do not track this hang
+Hang detected: 0.83s (debugger attached, not reporting)
+App is being debugged, do not track this hang
+Hang detected: 0.73s (debugger attached, not reporting)
+App is being debugged, do not track this hang
+Hang detected: 12.66s (debugger attached, not reporting)
+App is being debugged, do not track this hang
+Hang detected: 4.14s (debugger attached, not reporting)
+D/Swift: 32m [AWESOME NOTIFICATIONS]0m  LiceCycleManager listener successfully attached to iOS (LifeCycleManager:81)
+D/Swift: 32m [AWESOME NOTIFICATIONS]0m  Awesome Notifications plugin attached to iOS 3502.0 (AwesomeNotificationsPlugin:60)
+D/Swift: 32m [AWESOME NOTIFICATIONS]0m  Awesome Notifications - App Group : group.awn.15994d2f (AwesomeNotificationsPlugin:61)
+App is being debugged, do not track this hang
+Hang detected: 0.28s (debugger attached, not reporting)
+This app has crashed because it attempted to access privacy-sensitive data without a usage description.  The app's Info.plist must contain an NSMotionUsageDescription key with a string value explaining to the user how the app uses this data.
