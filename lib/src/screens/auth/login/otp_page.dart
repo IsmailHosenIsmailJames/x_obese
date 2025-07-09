@@ -1,24 +1,24 @@
 import "dart:convert";
 import "dart:developer";
 
+import "package:dio/dio.dart" as dio;
 import "package:flutter/material.dart";
 import "package:flutter_svg/svg.dart";
 import "package:fluttertoast/fluttertoast.dart";
 import "package:gap/gap.dart";
 import "package:get/get.dart";
 import "package:hive_flutter/hive_flutter.dart";
+import "package:pinput/pinput.dart";
 import "package:shared_preferences/shared_preferences.dart";
 import "package:x_obese/src/apis/middleware/jwt_middleware.dart";
+import "package:x_obese/src/common_functions/common_functions.dart";
 import "package:x_obese/src/core/common/functions/is_information_fulfilled.dart";
-import "package:x_obese/src/screens/activity/live_activity_page.dart";
 import "package:x_obese/src/screens/auth/controller/auth_controller.dart";
+import "package:x_obese/src/screens/auth/login/success_page.dart";
 import "package:x_obese/src/screens/controller/info_collector/info_collector.dart";
 import "package:x_obese/src/screens/controller/info_collector/model/all_info_model.dart";
-import "package:x_obese/src/screens/auth/login/success_page.dart";
 import "package:x_obese/src/theme/colors.dart";
 import "package:x_obese/src/widgets/loading_popup.dart";
-import "package:pinput/pinput.dart";
-import "package:dio/dio.dart" as dio;
 
 class OtpPage extends StatefulWidget {
   final bool isSignup;

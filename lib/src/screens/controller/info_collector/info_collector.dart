@@ -11,7 +11,7 @@ import "package:x_obese/src/screens/controller/info_collector/pages/name.dart";
 import "controller/all_info_controller.dart";
 
 class InfoCollector extends StatefulWidget {
-  final AllInfoModel initialData;
+  final AllInfoModel? initialData;
   const InfoCollector({super.key, required this.initialData});
 
   @override
@@ -25,7 +25,7 @@ class _InfoCollectorState extends State<InfoCollector> {
 
   @override
   void initState() {
-    allInfoController.allInfo.value = widget.initialData;
+    allInfoController.allInfo.value = widget.initialData ?? AllInfoModel();
     super.initState();
   }
 

@@ -6,11 +6,10 @@ import "package:flutter_svg/svg.dart";
 import "package:fluttertoast/fluttertoast.dart";
 import "package:gap/gap.dart";
 import "package:get/get.dart";
-import "package:x_obese/src/screens/activity/live_activity_page.dart";
+import "package:x_obese/src/common_functions/common_functions.dart";
 import "package:x_obese/src/screens/auth/controller/auth_controller.dart";
 import "package:x_obese/src/screens/auth/login/otp_page.dart";
 import "package:x_obese/src/theme/colors.dart";
-import "package:x_obese/src/widgets/loading_popup.dart";
 
 class LoginSignupPage extends StatefulWidget {
   const LoginSignupPage({super.key});
@@ -240,61 +239,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                     child: SizedBox(
                       height: 56,
                       width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: () async {
-                          if (formKey.currentState?.validate() == true) {
-                            if (!(await checkConnectivity())) {
-                              Fluttertoast.showToast(
-                                msg: "Check Internet Connection!",
-                              );
-                              return;
-                            }
-                            showLoadingPopUp(context);
-                            try {
-                              dio.Response? response =
-                                  pageName == "login"
-                                      ? await authController.login(
-                                        phoneController.text,
-                                      )
-                                      : await authController.signup(
-                                        phoneController.text,
-                                      );
-                              if (response != null) {
-                                log("OtpPage", name: "Route");
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder:
-                                        (context) => OtpPage(
-                                          isSignup:
-                                              pageName == "login"
-                                                  ? false
-                                                  : true,
-                                          phone: phoneController.text,
-                                          response: response,
-                                        ),
-                                  ),
-                                );
-                              } else {
-                                log(
-                                  "Response found Null",
-                                  name: "Response null",
-                                );
-                              }
-                            } catch (e) {
-                              log(e.toString());
-                            }
-                            Navigator.pop(context);
-                          }
-                        },
-                        child: Text(
-                          pageName == "login" ? "Log In" : "Sign Up",
-                          style: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
+                      child: _loginSignupButton(context),
                     ),
                   ),
                 ],
@@ -302,6 +247,47 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  ElevatedButton _loginSignupButton(BuildContext context) {
+    return ElevatedButton(
+      onPressed: () async {
+        if (formKey.currentState?.validate() == true) {
+          if (!(await checkConnectivity())) {
+            Fluttertoast.showToast(msg: "Check Internet Connection!");
+            return;
+          }
+          try {
+            dio.Response? response =
+                pageName == "login"
+                    ? await authController.login(phoneController.text)
+                    : await authController.signup(phoneController.text);
+            if (response != null) {
+              log("OtpPage", name: "Route");
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder:
+                      (context) => OtpPage(
+                        isSignup: pageName == "login" ? false : true,
+                        phone: phoneController.text,
+                        response: response,
+                      ),
+                ),
+              );
+            } else {
+              log("Response found Null", name: "Response null");
+            }
+          } catch (e) {
+            log(e.toString());
+          }
+        }
+      },
+      child: Text(
+        pageName == "login" ? "Log In" : "Sign Up",
+        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
       ),
     );
   }

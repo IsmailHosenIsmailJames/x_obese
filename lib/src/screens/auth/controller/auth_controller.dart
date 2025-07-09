@@ -1,11 +1,11 @@
 import "dart:convert";
 import "dart:developer";
 
-import "package:fluttertoast/fluttertoast.dart";
+import "package:dio/dio.dart" as dio;
 import "package:get/get.dart";
 import "package:x_obese/src/apis/apis_url.dart";
 import "package:x_obese/src/apis/middleware/jwt_middleware.dart";
-import "package:dio/dio.dart" as dio;
+import "package:x_obese/src/common_functions/common_functions.dart";
 
 class AuthController extends GetxController {
   static DioClient dioClient = DioClient(baseAPI);
@@ -95,14 +95,5 @@ class AuthController extends GetxController {
     } else {
       return null;
     }
-  }
-}
-
-void showToastMessageFromResponse(dio.Response response) {
-  try {
-    String message = response.data["message"] ?? "";
-    Fluttertoast.showToast(msg: message);
-  } catch (e) {
-    log(e.toString(), name: "error_message");
   }
 }

@@ -5,9 +5,9 @@ import "package:hive_flutter/hive_flutter.dart";
 import "package:shared_preferences/shared_preferences.dart";
 import "package:x_obese/src/core/common/functions/is_information_fulfilled.dart";
 import "package:x_obese/src/screens/auth/controller/auth_controller.dart";
+import "package:x_obese/src/screens/auth/login/login_signup_page.dart";
 import "package:x_obese/src/screens/controller/info_collector/info_collector.dart";
 import "package:x_obese/src/screens/controller/info_collector/model/all_info_model.dart";
-import "package:x_obese/src/screens/auth/login/login_signup_page.dart";
 import "package:x_obese/src/screens/intro/intro_page.dart";
 import "package:x_obese/src/screens/navs/naves_page.dart";
 import "package:x_obese/src/theme/colors.dart";
@@ -18,6 +18,7 @@ class App extends StatelessWidget {
   const App({super.key, required this.prefs});
   @override
   Widget build(BuildContext context) {
+    FlutterNativeSplash.remove();
     AuthController authController = Get.put(AuthController());
     final PageTransitionsTheme pageTransitionsTheme =
         const PageTransitionsTheme(
@@ -29,7 +30,7 @@ class App extends StatelessWidget {
             TargetPlatform.windows: CupertinoPageTransitionsBuilder(),
           },
         );
-    return GetMaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
       key: navigatorKey,
       theme: ThemeData(
@@ -51,23 +52,19 @@ class App extends StatelessWidget {
           ),
         ),
       ),
-      defaultTransition: Transition.leftToRight,
       themeMode: ThemeMode.light,
       darkTheme: ThemeData.dark(),
-      getPages: [
-        GetPage(name: "/intro", page: () => const IntroPage()),
-        GetPage(name: "/login", page: () => const LoginSignupPage()),
-        GetPage(name: "/home", page: () => const NavesPage()),
-        GetPage(
-          name: "/infoCollector",
-          page:
-              () => InfoCollector(
-                initialData: AllInfoModel.fromJson(
-                  Hive.box("user").get("info"),
-                ),
-              ),
-        ),
-      ],
+      routes: <String, WidgetBuilder>{
+        "/intro": (BuildContext context) => const IntroPage(),
+        "/login": (BuildContext context) => const LoginSignupPage(),
+        "/home": (BuildContext context) => const NavesPage(),
+        "/infoCollector": (BuildContext context) {
+          final String? info = Hive.box("user").get("info");
+          return InfoCollector(
+            initialData: info != null ? AllInfoModel.fromJson(info) : null,
+          );
+        },
+      },
       initialRoute:
           Hive.box("user").get("info", defaultValue: null) == null
               ? "/intro"
@@ -79,9 +76,6 @@ class App extends StatelessWidget {
                   authController.accessToken.value == null)
               ? "/login"
               : "/home",
-      onInit: () async {
-        FlutterNativeSplash.remove();
-      },
     );
   }
 }
