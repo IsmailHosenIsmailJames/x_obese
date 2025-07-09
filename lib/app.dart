@@ -1,28 +1,36 @@
 import "package:flutter/material.dart";
 import "package:flutter_native_splash/flutter_native_splash.dart";
-import "package:get/get.dart";
 import "package:hive_flutter/hive_flutter.dart";
-import "package:shared_preferences/shared_preferences.dart";
 import "package:x_obese/src/core/common/functions/is_information_fulfilled.dart";
-import "package:x_obese/src/screens/auth/controller/auth_controller.dart";
+import "package:x_obese/src/data/user_db.dart";
+import "package:x_obese/src/screens/auth/login/login_signup_page.dart";
 import "package:x_obese/src/screens/controller/info_collector/info_collector.dart";
 import "package:x_obese/src/screens/controller/info_collector/model/all_info_model.dart";
-import "package:x_obese/src/screens/auth/login/login_signup_page.dart";
 import "package:x_obese/src/screens/intro/intro_page.dart";
 import "package:x_obese/src/screens/navs/naves_page.dart";
 import "package:x_obese/src/theme/colors.dart";
 
-class XObese extends StatelessWidget {
-  final SharedPreferences prefs;
-  const XObese({super.key, required this.prefs});
+class App extends StatelessWidget {
+  static GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+  const App({super.key});
   @override
   Widget build(BuildContext context) {
-    AuthController authController = Get.put(AuthController());
-
-    return GetMaterialApp(
+    FlutterNativeSplash.remove();
+    final PageTransitionsTheme pageTransitionsTheme =
+        const PageTransitionsTheme(
+          builders: <TargetPlatform, PageTransitionsBuilder>{
+            TargetPlatform.android: CupertinoPageTransitionsBuilder(),
+            TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+            TargetPlatform.linux: CupertinoPageTransitionsBuilder(),
+            TargetPlatform.macOS: CupertinoPageTransitionsBuilder(),
+            TargetPlatform.windows: CupertinoPageTransitionsBuilder(),
+          },
+        );
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-
+      key: navigatorKey,
       theme: ThemeData(
+        pageTransitionsTheme: pageTransitionsTheme,
         colorScheme: ColorScheme.fromSeed(
           seedColor: MyAppColors.primary,
           brightness: Brightness.light,
@@ -40,37 +48,29 @@ class XObese extends StatelessWidget {
           ),
         ),
       ),
-      defaultTransition: Transition.leftToRight,
       themeMode: ThemeMode.light,
       darkTheme: ThemeData.dark(),
-      getPages: [
-        GetPage(name: "/intro", page: () => const IntroPage()),
-        GetPage(name: "/login", page: () => const LoginSignupPage()),
-        GetPage(name: "/home", page: () => const NavesPage()),
-        GetPage(
-          name: "/infoCollector",
-          page:
-              () => InfoCollector(
-                initialData: AllInfoModel.fromJson(
-                  Hive.box("user").get("info"),
-                ),
-              ),
-        ),
-      ],
+      routes: <String, WidgetBuilder>{
+        "/intro": (BuildContext context) => const IntroPage(),
+        "/login": (BuildContext context) => const LoginSignupPage(),
+        "/home": (BuildContext context) => const NavesPage(),
+        "/infoCollector": (BuildContext context) {
+          final String? info = Hive.box("user").get("info");
+          return InfoCollector(
+            initialData: info != null ? AllInfoModel.fromJson(info) : null,
+          );
+        },
+      },
       initialRoute:
-          Hive.box("user").get("info", defaultValue: null) == null
+          UserDB.userAllInfo() == null
               ? "/intro"
               : isInformationNotFullFilled(
                 AllInfoModel.fromJson(Hive.box("user").get("info")),
               )
               ? "/infoCollector"
-              : (authController.refreshToken.value == null &&
-                  authController.accessToken.value == null)
+              : (UserDB.accessToken() == null && UserDB.refreshToken() == null)
               ? "/login"
               : "/home",
-      onInit: () async {
-        FlutterNativeSplash.remove();
-      },
     );
   }
 }

@@ -1,24 +1,21 @@
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
+import "package:flutter_bloc/flutter_bloc.dart";
 import "package:flutter_foreground_task/flutter_foreground_task.dart";
 import "package:flutter_native_splash/flutter_native_splash.dart";
-import "package:get/get.dart";
 import "package:timezone/data/latest.dart" as tz;
-import "package:hive_flutter/hive_flutter.dart";
-import "package:shared_preferences/shared_preferences.dart";
+import "package:x_obese/app.dart";
 import "package:x_obese/src/core/health/my_health_functions.dart";
-import "package:x_obese/x_obese.dart";
-import "package:x_obese/src/apis/middleware/jwt_middleware.dart";
-import "package:x_obese/src/screens/auth/controller/auth_controller.dart";
+import "package:x_obese/src/data/user_db.dart";
+import "package:x_obese/src/screens/auth/bloc/auth_bloc.dart";
+import "package:x_obese/src/screens/auth/repository/auth_repository.dart";
 
 Future<void> main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   FlutterForegroundTask.initCommunicationPort();
 
-  await Hive.initFlutter();
-  await Hive.openBox("user");
-  await Hive.openBox("tokens");
+  await UserDB.init();
 
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
@@ -27,12 +24,13 @@ Future<void> main() async {
       statusBarBrightness: Brightness.light,
     ),
   );
-  final authController = Get.put(AuthController());
-  authController.refreshToken.value = await getRefreshToken();
-  authController.accessToken.value = await getAccessToken();
-  SharedPreferences preferences = await SharedPreferences.getInstance();
   tz.initializeTimeZones();
   await MyHealthFunctions.init();
 
-  runApp(XObese(prefs: preferences));
+  runApp(
+    BlocProvider(
+      create: (context) => AuthBloc(authRepository: AuthRepository()),
+      child: const App(),
+    ),
+  );
 }

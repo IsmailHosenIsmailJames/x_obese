@@ -63,7 +63,7 @@ class _CreateWorkoutPlanPage1State extends State<CreateWorkoutPlanPage1> {
               Row(
                 children: [
                   getBackButton(context, () {
-                    Get.back();
+                    Navigator.pop(context);
                   }),
                   const Gap(55),
                   const Text(

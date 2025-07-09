@@ -1,7 +1,6 @@
 import "package:cached_network_image/cached_network_image.dart";
 import "package:flutter/material.dart";
 import "package:gap/gap.dart";
-import "package:get/get.dart";
 import "package:x_obese/src/screens/blog/model/get_blog_model.dart";
 import "package:x_obese/src/theme/colors.dart";
 import "package:x_obese/src/widgets/back_button.dart";
@@ -95,7 +94,7 @@ class _BlogDetailsViewState extends State<BlogDetailsView> {
             child: Padding(
               padding: const EdgeInsets.all(15.0),
               child: getBackButton(context, () {
-                Get.back();
+                Navigator.pop(context);
               }),
             ),
           ),

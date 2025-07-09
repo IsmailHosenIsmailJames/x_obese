@@ -81,9 +81,13 @@ class _SettingsPageState extends State<SettingsPage> {
 
                     IconButton(
                       onPressed: () {
-                        Get.to(
-                          () => InfoCollector(
-                            initialData: allInfoController.allInfo.value,
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder:
+                                (context) => InfoCollector(
+                                  initialData: allInfoController.allInfo.value,
+                                ),
                           ),
                         );
                       },
@@ -123,7 +127,12 @@ class _SettingsPageState extends State<SettingsPage> {
                       ),
                     ),
                     onPressed: () {
-                      Get.to(() => const PersonalDetailsView());
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const PersonalDetailsView(),
+                        ),
+                      );
                     },
 
                     child: Row(
@@ -155,7 +164,13 @@ class _SettingsPageState extends State<SettingsPage> {
                       ),
                     ),
                     onPressed: () {
-                      Get.to(() => const NotificationSettingsView());
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder:
+                              (context) => const NotificationSettingsView(),
+                        ),
+                      );
                     },
 
                     child: Row(
@@ -186,7 +201,12 @@ class _SettingsPageState extends State<SettingsPage> {
                       ),
                     ),
                     onPressed: () {
-                      Get.to(() => const AboutView());
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const AboutView(),
+                        ),
+                      );
                     },
 
                     child: Row(
@@ -214,7 +234,13 @@ class _SettingsPageState extends State<SettingsPage> {
                 onTap: () async {
                   await clearTokens();
                   await clearTokens();
-                  Get.offAll(() => const LoginSignupPage());
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const LoginSignupPage(),
+                    ),
+                    (route) => false,
+                  );
                   // showDialog(
                   //   context: context,
                   //   builder: (context) {

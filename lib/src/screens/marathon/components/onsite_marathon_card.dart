@@ -1,7 +1,6 @@
 import "package:cached_network_image/cached_network_image.dart";
 import "package:flutter/material.dart";
 import "package:gap/gap.dart";
-import "package:get/get.dart";
 import "package:x_obese/src/core/common/functions/safe_sub_string.dart";
 import "package:x_obese/src/screens/marathon/models/marathon_model.dart";
 import "package:x_obese/src/theme/colors.dart";
@@ -68,10 +67,14 @@ Widget getOnsiteMarathon({
           child: ElevatedButton.icon(
             style: ElevatedButton.styleFrom(iconAlignment: IconAlignment.end),
             onPressed: () {
-              Get.to(
-                () => MarathonDetailsView(
-                  isVirtual: marathonData.type == "virtual",
-                  marathonData: marathonData,
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder:
+                      (context) => MarathonDetailsView(
+                        isVirtual: marathonData.type == "virtual",
+                        marathonData: marathonData,
+                      ),
                 ),
               );
             },

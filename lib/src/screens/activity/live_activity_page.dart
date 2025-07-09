@@ -1,6 +1,6 @@
 import "dart:async";
 
-import "package:connectivity_plus/connectivity_plus.dart";
+import "package:dio/dio.dart" as dio;
 import "package:dio/dio.dart";
 import "package:fluentui_system_icons/fluentui_system_icons.dart";
 import "package:flutter/material.dart";
@@ -12,6 +12,7 @@ import "package:get/get.dart";
 import "package:google_maps_flutter/google_maps_flutter.dart";
 import "package:wakelock_plus/wakelock_plus.dart";
 import "package:x_obese/src/apis/middleware/jwt_middleware.dart";
+import "package:x_obese/src/common_functions/common_functions.dart";
 import "package:x_obese/src/core/common/functions/calculate_distance.dart"
     as workout_calculator;
 import "package:x_obese/src/core/common/functions/calculate_distance.dart";
@@ -24,7 +25,6 @@ import "package:x_obese/src/screens/marathon/models/marathon_user_model.dart";
 import "package:x_obese/src/theme/colors.dart";
 import "package:x_obese/src/widgets/back_button.dart";
 import "package:x_obese/src/widgets/loading_popup.dart";
-import "package:dio/dio.dart" as dio;
 
 class LiveActivityPage extends StatefulWidget {
   final workout_calculator.ActivityType workoutType;
@@ -513,7 +513,7 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
           actions: [
             TextButton(
               onPressed: () {
-                Get.back();
+                Navigator.pop(context);
               },
               child: const Text(
                 "Exit Workout",
@@ -684,7 +684,7 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
       }
       if (response?.statusCode == 200 || response?.statusCode == 201) {
         Fluttertoast.showToast(msg: "Saved successfully");
-        Get.back();
+        Navigator.pop(context);
       } else {
         Navigator.pop(context);
         Fluttertoast.showToast(msg: "Unable to save, try again");
@@ -706,20 +706,5 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
     );
 
     return polyline;
-  }
-}
-
-Future<bool> checkConnectivity() async {
-  final List<ConnectivityResult> connectivityResult =
-      await (Connectivity().checkConnectivity());
-
-  if (connectivityResult.contains(ConnectivityResult.mobile)) {
-    return true;
-  } else if (connectivityResult.contains(ConnectivityResult.wifi)) {
-    return true;
-  } else if (connectivityResult.contains(ConnectivityResult.ethernet)) {
-    return true;
-  } else {
-    return false;
   }
 }

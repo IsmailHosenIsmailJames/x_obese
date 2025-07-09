@@ -27,7 +27,7 @@ class _NotificationSettingsViewState extends State<NotificationSettingsView> {
               Row(
                 children: [
                   getBackButton(context, () {
-                    Get.back();
+                    Navigator.pop(context);
                   }),
                   const Gap(55),
                   const Text(

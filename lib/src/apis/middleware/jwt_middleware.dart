@@ -2,8 +2,9 @@ import "dart:convert";
 import "dart:developer";
 
 import "package:dio/dio.dart";
-import "package:get/get.dart" as getx;
+import "package:flutter/material.dart";
 import "package:shared_preferences/shared_preferences.dart";
+import "package:x_obese/app.dart";
 import "package:x_obese/src/screens/auth/login/login_signup_page.dart";
 
 class DioClient {
@@ -58,15 +59,27 @@ class DioClient {
             );
           } else {
             await clearTokens();
-            getx.Get.offAll(() => const LoginSignupPage());
+            Navigator.pushAndRemoveUntil(
+              App.navigatorKey.currentContext!,
+              MaterialPageRoute(builder: (context) => const LoginSignupPage()),
+              (route) => true,
+            );
           }
         } catch (refreshError) {
           await clearTokens();
-          getx.Get.offAll(() => const LoginSignupPage());
+          Navigator.pushAndRemoveUntil(
+            App.navigatorKey.currentContext!,
+            MaterialPageRoute(builder: (context) => const LoginSignupPage()),
+            (route) => true,
+          );
         }
       } else {
         await clearTokens();
-        getx.Get.offAll(() => const LoginSignupPage());
+        Navigator.pushAndRemoveUntil(
+          App.navigatorKey.currentContext!,
+          MaterialPageRoute(builder: (context) => const LoginSignupPage()),
+          (route) => true,
+        );
       }
     }
     return handler.next(error);
@@ -109,7 +122,11 @@ class DioClient {
         }
       } else if (response.statusCode == 403) {
         await clearTokens();
-        getx.Get.offAll(() => const LoginSignupPage());
+        Navigator.pushAndRemoveUntil(
+          App.navigatorKey.currentContext!,
+          MaterialPageRoute(builder: (context) => const LoginSignupPage()),
+          (route) => true,
+        );
         return null;
       }
     } catch (e) {

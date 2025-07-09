@@ -35,7 +35,7 @@ class _WorkoutPlanOverviewScreenState extends State<WorkoutPlanOverviewScreen> {
               padding: const EdgeInsets.only(top: 15.0, left: 15, right: 15),
               child: Row(
                 children: [
-                  getBackButton(context, () => Get.back()),
+                  getBackButton(context, () => Navigator.pop(context)),
                   const Spacer(flex: 4),
                   const Text(
                     "Plan Overview",
@@ -184,7 +184,14 @@ class _WorkoutPlanOverviewScreenState extends State<WorkoutPlanOverviewScreen> {
                               backgroundColor: MyAppColors.transparentGray,
                             ),
                             onPressed: () {
-                              Get.off(() => const CreateWorkoutPlan());
+                              Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(
+                                  builder:
+                                      (context) => const CreateWorkoutPlan(),
+                                ),
+                                (route) => false,
+                              );
                             },
                             child: Text(
                               "Create Plan",
@@ -230,12 +237,17 @@ class _WorkoutPlanOverviewScreenState extends State<WorkoutPlanOverviewScreen> {
                                             .toString(),
                                   );
 
-                              Get.off(
-                                () => CreateWorkoutPlan(
-                                  createWorkoutPlanModel:
-                                      createWorkoutPlanModel,
-                                  id: getWorkoutPlans.id,
+                              Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(
+                                  builder:
+                                      (context) => CreateWorkoutPlan(
+                                        createWorkoutPlanModel:
+                                            createWorkoutPlanModel,
+                                        id: getWorkoutPlans.id,
+                                      ),
                                 ),
+                                (route) => false,
                               );
                             },
                             child: const Text(
