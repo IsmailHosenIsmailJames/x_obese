@@ -92,7 +92,7 @@ class _MarathonDetailsViewState extends State<MarathonDetailsView> {
                   child: Padding(
                     padding: const EdgeInsets.all(15.0),
                     child: getBackButton(context, () {
-                      Get.back();
+                      Navigator.pop(context);
                     }),
                   ),
                 ),
@@ -372,10 +372,14 @@ class _MarathonDetailsViewState extends State<MarathonDetailsView> {
                                   response.data["data"],
                                 );
 
-                            Get.to(
-                              () => ActivityPage(
-                                marathonData: fullMarathonDataModel,
-                                marathonUserModel: marathonUserModel,
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder:
+                                    (context) => ActivityPage(
+                                      marathonData: fullMarathonDataModel,
+                                      marathonUserModel: marathonUserModel,
+                                    ),
                               ),
                             );
                           } on DioException catch (e) {
@@ -424,12 +428,19 @@ class _MarathonDetailsViewState extends State<MarathonDetailsView> {
                                   ),
                                 );
                               }
-                              Get.to(
-                                () => LeaderBoardView(
-                                  title:
-                                      fullMarathonDataModel?.data?.title ?? "",
-                                  leaderboardUsers: marathonUserList,
-                                  marathonData: fullMarathonDataModel!,
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder:
+                                      (context) => LeaderBoardView(
+                                        title:
+                                            fullMarathonDataModel
+                                                ?.data
+                                                ?.title ??
+                                            "",
+                                        leaderboardUsers: marathonUserList,
+                                        marathonData: fullMarathonDataModel!,
+                                      ),
                                 ),
                               );
                             } else {

@@ -1,6 +1,5 @@
 import "package:flutter/material.dart";
 import "package:gap/gap.dart";
-import "package:get/get.dart";
 import "package:x_obese/src/screens/settings/personal_details_view.dart";
 import "package:x_obese/src/screens/settings/privacy_policy.dart";
 import "package:x_obese/src/screens/settings/terms_and_conditions.dart";
@@ -20,7 +19,7 @@ class AboutView extends StatelessWidget {
               Row(
                 children: [
                   getBackButton(context, () {
-                    Get.back();
+                    Navigator.pop(context);
                   }),
                   const Gap(80),
                   const Text(
@@ -42,7 +41,12 @@ class AboutView extends StatelessWidget {
                     ),
                   ),
                   onPressed: () {
-                    Get.to(() => const TermsAndConditions());
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const TermsAndConditions(),
+                      ),
+                    );
                   },
 
                   child: Row(
@@ -74,7 +78,12 @@ class AboutView extends StatelessWidget {
                     ),
                   ),
                   onPressed: () {
-                    Get.to(() => const PrivacyPolicy());
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const PrivacyPolicy(),
+                      ),
+                    );
                   },
 
                   child: Row(

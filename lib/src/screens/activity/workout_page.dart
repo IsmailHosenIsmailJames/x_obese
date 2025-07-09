@@ -71,7 +71,7 @@ class _ActivityPageState extends State<ActivityPage> {
                         curve: Curves.easeIn,
                       );
                     } else {
-                      Get.back();
+                      Navigator.pop(context);
                     }
                   }),
                   const Gap(55),
@@ -286,12 +286,16 @@ class _ActivityPageState extends State<ActivityPage> {
         return;
       }
       Navigator.pop(context);
-      await Get.to(
-        () => LiveActivityPage(
-          workoutType: selectedMode,
-          initialLatLon: position,
-          marathonData: widget.marathonData,
-          marathonUserModel: widget.marathonUserModel,
+      await Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder:
+              (context) => LiveActivityPage(
+                workoutType: selectedMode,
+                initialLatLon: position,
+                marathonData: widget.marathonData,
+                marathonUserModel: widget.marathonUserModel,
+              ),
         ),
       );
 

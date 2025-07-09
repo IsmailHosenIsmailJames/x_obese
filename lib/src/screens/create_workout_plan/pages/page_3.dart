@@ -47,7 +47,7 @@ class _CreateWorkoutPlanPage3State extends State<CreateWorkoutPlanPage3> {
               Row(
                 children: [
                   getBackButton(context, () {
-                    Get.back();
+                    Navigator.pop(context);
                   }),
                   const Gap(55),
                   const Text(
@@ -129,7 +129,7 @@ class _CreateWorkoutPlanPage3State extends State<CreateWorkoutPlanPage3> {
                 height: 50,
                 child: ElevatedButton(
                   onPressed: () {
-                    Get.back();
+                    Navigator.pop(context);
                   },
                   child: const Text("Done"),
                 ),

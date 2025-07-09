@@ -66,7 +66,7 @@ class _FullFromInfoCollectorState extends State<FullFromInfoCollector> {
     }
     if (response != null) {
       await Hive.box("user").put("info", jsonEncode(response.data["data"]));
-      Get.offAllNamed("/home");
+      Navigator.pushNamedAndRemoveUntil(context, "/home", (route) => true);
       Fluttertoast.showToast(msg: "Account information saved successful");
     }
   }

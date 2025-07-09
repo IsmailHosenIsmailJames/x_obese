@@ -76,10 +76,20 @@ class _OtpPageState extends State<OtpPage> {
           );
           await Hive.box("user").put("info", userData.toJson());
           if (isInformationNotFullFilled(userData)) {
-            Get.offAll(() => InfoCollector(initialData: userData));
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                builder: (context) => InfoCollector(initialData: userData),
+              ),
+              (route) => true,
+            );
             return;
           } else {
-            Get.offAll(() => const LoginSuccessPage());
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => const LoginSuccessPage()),
+              (route) => true,
+            );
             return;
           }
         }
@@ -110,7 +120,7 @@ class _OtpPageState extends State<OtpPage> {
                   width: 50,
                   child: IconButton(
                     onPressed: () {
-                      Get.back();
+                      Navigator.pop(context);
                     },
                     icon: SvgPicture.string(
                       '''<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">

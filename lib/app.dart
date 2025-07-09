@@ -12,17 +12,28 @@ import "package:x_obese/src/screens/intro/intro_page.dart";
 import "package:x_obese/src/screens/navs/naves_page.dart";
 import "package:x_obese/src/theme/colors.dart";
 
-class XObese extends StatelessWidget {
+class App extends StatelessWidget {
+  static GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
   final SharedPreferences prefs;
-  const XObese({super.key, required this.prefs});
+  const App({super.key, required this.prefs});
   @override
   Widget build(BuildContext context) {
     AuthController authController = Get.put(AuthController());
-
+    final PageTransitionsTheme pageTransitionsTheme =
+        const PageTransitionsTheme(
+          builders: <TargetPlatform, PageTransitionsBuilder>{
+            TargetPlatform.android: CupertinoPageTransitionsBuilder(),
+            TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+            TargetPlatform.linux: CupertinoPageTransitionsBuilder(),
+            TargetPlatform.macOS: CupertinoPageTransitionsBuilder(),
+            TargetPlatform.windows: CupertinoPageTransitionsBuilder(),
+          },
+        );
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-
+      key: navigatorKey,
       theme: ThemeData(
+        pageTransitionsTheme: pageTransitionsTheme,
         colorScheme: ColorScheme.fromSeed(
           seedColor: MyAppColors.primary,
           brightness: Brightness.light,

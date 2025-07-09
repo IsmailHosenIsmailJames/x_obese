@@ -64,7 +64,7 @@ class _LeaderBoardViewState extends State<LeaderBoardView> {
                   Row(
                     children: [
                       getBackButton(context, () {
-                        Get.back();
+                        Navigator.pop(context);
                       }),
                       const Spacer(),
                       const Center(

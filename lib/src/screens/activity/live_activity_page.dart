@@ -513,7 +513,7 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
           actions: [
             TextButton(
               onPressed: () {
-                Get.back();
+                Navigator.pop(context);
               },
               child: const Text(
                 "Exit Workout",
@@ -684,7 +684,7 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
       }
       if (response?.statusCode == 200 || response?.statusCode == 201) {
         Fluttertoast.showToast(msg: "Saved successfully");
-        Get.back();
+        Navigator.pop(context);
       } else {
         Navigator.pop(context);
         Fluttertoast.showToast(msg: "Unable to save, try again");

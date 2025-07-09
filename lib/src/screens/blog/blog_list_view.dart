@@ -75,7 +75,7 @@ class _BlogListViewState extends State<BlogListView> {
             child: Row(
               children: [
                 getBackButton(context, () {
-                  Get.back();
+                  Navigator.pop(context);
                 }),
                 const Gap(55),
                 const Text(

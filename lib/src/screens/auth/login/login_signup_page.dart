@@ -261,12 +261,18 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                                       );
                               if (response != null) {
                                 log("OtpPage", name: "Route");
-                                Get.to(
-                                  () => OtpPage(
-                                    isSignup:
-                                        pageName == "login" ? false : true,
-                                    phone: phoneController.text,
-                                    response: response,
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder:
+                                        (context) => OtpPage(
+                                          isSignup:
+                                              pageName == "login"
+                                                  ? false
+                                                  : true,
+                                          phone: phoneController.text,
+                                          response: response,
+                                        ),
                                   ),
                                 );
                               } else {

@@ -7,7 +7,7 @@ import "package:gap/gap.dart";
 import "package:get/get.dart";
 import "package:hive_flutter/adapters.dart";
 import "package:intl/intl.dart";
-import "package:x_obese/helth.dart";
+import "package:x_obese/src/test/helth.dart";
 import "package:x_obese/src/resources/svg_string.dart";
 import "package:x_obese/src/screens/blog/blog_list_view.dart";
 import "package:x_obese/src/screens/controller/info_collector/controller/all_info_controller.dart";
@@ -143,7 +143,12 @@ class _HomePageState extends State<HomePage> {
                   const Spacer(),
                   IconButton(
                     onPressed: () async {
-                      Get.to(() => const HealthApp());
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const HealthApp(),
+                        ),
+                      );
                     },
                     icon: SvgPicture.string(notificationSvg),
                   ),
@@ -215,7 +220,13 @@ class _HomePageState extends State<HomePage> {
                               ),
                             ),
                             onPressed: () {
-                              Get.to(() => const CreateWorkoutPlan());
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder:
+                                      (context) => const CreateWorkoutPlan(),
+                                ),
+                              );
                             },
                             child: const Text("Create"),
                           ),
@@ -228,10 +239,14 @@ class _HomePageState extends State<HomePage> {
                   allInfoController.getWorkoutPlansList.first.id != null) {
                 return GestureDetector(
                   onTap: () {
-                    Get.to(
-                      () => WorkoutPlanOverviewScreen(
-                        getWorkoutPlansList:
-                            allInfoController.getWorkoutPlansList,
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder:
+                            (context) => WorkoutPlanOverviewScreen(
+                              getWorkoutPlansList:
+                                  allInfoController.getWorkoutPlansList,
+                            ),
                       ),
                     );
                   },
@@ -460,7 +475,12 @@ class _HomePageState extends State<HomePage> {
                   ),
                   TextButton(
                     onPressed: () {
-                      Get.to(() => const BlogListView());
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const BlogListView(),
+                        ),
+                      );
                     },
                     child: Text(
                       "See All",
