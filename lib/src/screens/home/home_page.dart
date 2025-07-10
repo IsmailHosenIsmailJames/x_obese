@@ -502,45 +502,43 @@ class _HomePageState extends State<HomePage> {
 
             SizedBox(
               height: 125,
-              child: Obx(
-                () => Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: ListView(
-                        scrollDirection: Axis.horizontal,
-                        controller: scrollControllerBlog,
-                        padding: const EdgeInsets.only(
-                          left: 15,
-                          right: 15,
-                          bottom: 5,
-                        ),
-                        children: List.generate(10, (index) {
-                          return getSpecialistDoctorCard(
-                            context: context,
-                            data: SpecialistsNearYouModel(
-                              image:
-                                  "https://www.figma.com/file/8frEvJAGHDh0TUQVUTXRF6/image/181a9ed08884107a88ece2bdbbae5d5fa943a40a",
-                              address: "Hathazari Medical",
-                              category: "General Specialist",
-                              distance: "3.5 km",
-                              name: "Dr. Ahmed Ali",
-                            ),
-                            width: 300.0,
-                            height: 120.0,
-                            onTap: () {},
-                            catalogFontSize: 10.0,
-                            nameFontSize: 16.0,
-                            distanceFontSize: 12.0,
-                            addressFontSize: 10.0,
-                            iconHeight: 15.0,
-                          );
-                        }),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: ListView(
+                      scrollDirection: Axis.horizontal,
+                      controller: scrollControllerBlog,
+                      padding: const EdgeInsets.only(
+                        left: 15,
+                        right: 15,
+                        bottom: 5,
                       ),
+                      children: List.generate(10, (index) {
+                        return getSpecialistDoctorCard(
+                          context: context,
+                          data: SpecialistsNearYouModel(
+                            image:
+                                "https://www.figma.com/file/8frEvJAGHDh0TUQVUTXRF6/image/181a9ed08884107a88ece2bdbbae5d5fa943a40a",
+                            address: "Hathazari Medical",
+                            category: "General Specialist",
+                            distance: "3.5 km",
+                            name: "Dr. Ahmed Ali",
+                          ),
+                          width: 300.0,
+                          height: 120.0,
+                          onTap: () {},
+                          catalogFontSize: 10.0,
+                          nameFontSize: 16.0,
+                          distanceFontSize: 12.0,
+                          addressFontSize: 10.0,
+                          iconHeight: 15.0,
+                        );
+                      }),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
 
