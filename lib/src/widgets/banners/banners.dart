@@ -30,6 +30,7 @@ class _BannersState extends State<Banners> {
             decoration: BoxDecoration(
               color: MyAppColors.third,
               borderRadius: BorderRadius.circular(8),
+              border: Border.all(color: MyAppColors.transparentGray),
             ),
 
             child: ClipRRect(

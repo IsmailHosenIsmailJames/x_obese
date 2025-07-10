@@ -7,6 +7,8 @@ import "package:gap/gap.dart";
 import "package:get/get.dart";
 import "package:hive_flutter/adapters.dart";
 import "package:intl/intl.dart";
+import "package:x_obese/src/screens/specialists_near_you/models/specialists_near_you_model.dart";
+import "package:x_obese/src/screens/specialists_near_you/specialists_near_you.dart";
 import "package:x_obese/src/test/helth.dart";
 import "package:x_obese/src/resources/svg_string.dart";
 import "package:x_obese/src/screens/blog/blog_list_view.dart";
@@ -20,6 +22,7 @@ import "package:x_obese/src/screens/workout_plan_overview/workout_plan_overview_
 import "package:x_obese/src/theme/colors.dart";
 import "package:x_obese/src/widgets/banners/banners.dart";
 import "package:x_obese/src/widgets/get_blog_card.dart";
+import "package:x_obese/src/widgets/get_specialist_doctor_card.dart";
 import "package:x_obese/src/widgets/points_overview_widget.dart";
 
 class HomePage extends StatefulWidget {
@@ -465,6 +468,77 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                     if (isMarathonLoading) const CircularProgressIndicator(),
+                  ],
+                ),
+              ),
+            ),
+
+            Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    "Specialists Near You",
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const SpecialistsNearYou(),
+                        ),
+                      );
+                    },
+                    child: Text(
+                      "See All",
+                      style: TextStyle(color: MyAppColors.third),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            SizedBox(
+              height: 125,
+              child: Obx(
+                () => Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: ListView(
+                        scrollDirection: Axis.horizontal,
+                        controller: scrollControllerBlog,
+                        padding: const EdgeInsets.only(
+                          left: 15,
+                          right: 15,
+                          bottom: 5,
+                        ),
+                        children: List.generate(10, (index) {
+                          return getSpecialistDoctorCard(
+                            context: context,
+                            data: SpecialistsNearYouModel(
+                              image:
+                                  "https://www.figma.com/file/8frEvJAGHDh0TUQVUTXRF6/image/181a9ed08884107a88ece2bdbbae5d5fa943a40a",
+                              address: "Hathazari Medical",
+                              category: "General Specialist",
+                              distance: "3.5 km",
+                              name: "Dr. Ahmed Ali",
+                            ),
+                            width: 300.0,
+                            height: 120.0,
+                            onTap: () {},
+                            catalogFontSize: 10.0,
+                            nameFontSize: 16.0,
+                            distanceFontSize: 12.0,
+                            addressFontSize: 10.0,
+                            iconHeight: 15.0,
+                          );
+                        }),
+                      ),
+                    ),
                   ],
                 ),
               ),
