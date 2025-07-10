@@ -11,6 +11,7 @@ import "package:x_obese/src/screens/blog/model/get_blog_model.dart";
 import "package:x_obese/src/screens/info_collector/controller/all_info_controller.dart";
 import "package:x_obese/src/theme/colors.dart";
 import "package:x_obese/src/widgets/back_button.dart";
+import "package:x_obese/src/widgets/banners/banners.dart";
 
 class BlogListView extends StatefulWidget {
   const BlogListView({super.key});
@@ -89,73 +90,103 @@ class _BlogListViewState extends State<BlogListView> {
             child: ListView.builder(
               itemCount: allInfoController.getBlogList.length,
               controller: scrollController,
-              itemBuilder:
-                  (context, index) => Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          height: 154,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
-                            image:
-                                allInfoController
-                                            .getBlogList[index]
-                                            .imagePath ==
-                                        null
-                                    ? null
-                                    : DecorationImage(
-                                      fit: BoxFit.cover,
-                                      image: CachedNetworkImageProvider(
-                                        allInfoController
-                                            .getBlogList[index]
-                                            .imagePath!,
-                                      ),
-                                    ),
-                          ),
-                        ),
-                        const Gap(15),
-                        Container(
-                          width: 130,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(15),
-                            color: MyAppColors.transparentGray,
-                          ),
-                          padding: const EdgeInsets.only(left: 10, right: 10),
-                          child: Center(
-                            child: Text(
-                              "${allInfoController.getBlogList[index].readTime} min Read",
-                              style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.w300,
+              itemBuilder: (context, index) {
+                return Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          if (allInfoController.getBlogList[index].imagePath !=
+                              null)
+                            Container(
+                              height: 154,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8),
                                 color: MyAppColors.third,
+                              ),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(8),
+                                child: CachedNetworkImage(
+                                  height: 154,
+                                  width: MediaQuery.of(context).size.width,
+                                  imageUrl:
+                                      allInfoController
+                                          .getBlogList[index]
+                                          .imagePath!,
+                                  errorWidget: (context, url, error) {
+                                    return Center(
+                                      child: Icon(
+                                        Icons.broken_image,
+                                        size: 50,
+                                        color: MyAppColors.transparentGray
+                                            .withValues(alpha: 0.5),
+                                      ),
+                                    );
+                                  },
+                                  progressIndicatorBuilder: (
+                                    context,
+                                    url,
+                                    progress,
+                                  ) {
+                                    return Center(
+                                      child: CircularProgressIndicator(
+                                        color: MyAppColors.primary,
+                                      ),
+                                    );
+                                  },
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                          const Gap(15),
+                          Container(
+                            width: 130,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15),
+                              color: MyAppColors.transparentGray,
+                            ),
+                            padding: const EdgeInsets.only(left: 10, right: 10),
+                            child: Center(
+                              child: Text(
+                                "${allInfoController.getBlogList[index].readTime} min Read",
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w300,
+                                  color: MyAppColors.third,
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                        const Gap(8),
-                        Text(
-                          allInfoController.getBlogList[index].title ?? "",
-                          style: const TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w400,
+                          const Gap(8),
+                          Text(
+                            allInfoController.getBlogList[index].title ?? "",
+                            style: const TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w400,
+                            ),
                           ),
-                        ),
-                        const Gap(8),
-                        Text(
-                          allInfoController.getBlogList[index].description ??
-                              "",
-                          style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w300,
-                            color: MyAppColors.mutedGray,
+                          const Gap(8),
+                          Text(
+                            allInfoController.getBlogList[index].description ??
+                                "",
+                            style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w300,
+                              color: MyAppColors.mutedGray,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
+                    if (index % 2 == 0) const Gap(10),
+                    if (index % 2 == 0) const Banners(),
+                    if (index % 2 == 0) const Gap(10),
+                  ],
+                );
+              },
             ),
           ),
           if (isLoading) const LinearProgressIndicator(),
