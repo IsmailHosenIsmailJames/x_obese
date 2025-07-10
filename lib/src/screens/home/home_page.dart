@@ -451,6 +451,8 @@ class _HomePageState extends State<HomePage> {
                         padding: const EdgeInsets.only(right: 15),
                         itemBuilder: (context, index) {
                           return getMarathonCard(
+                            width: 300,
+                            height: 220,
                             context: context,
                             marathonData: allInfoController.marathonList[index],
                             margin: const EdgeInsets.only(left: 15),

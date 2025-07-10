@@ -210,10 +210,16 @@ class _MarathonPageState extends State<MarathonPage> {
                     itemBuilder: (context, index) {
                       if (allInfoController.marathonList[index].type ==
                           "virtual") {
-                        return getMarathonCard(
-                          marathonData: allInfoController.marathonList[index],
-                          context: context,
-                          margin: const EdgeInsets.only(top: 20),
+                        return SizedBox(
+                          height: 250,
+                          width: MediaQuery.of(context).size.width,
+                          child: getMarathonCard(
+                            height: 300,
+                            width: MediaQuery.of(context).size.width,
+                            marathonData: allInfoController.marathonList[index],
+                            context: context,
+                            margin: const EdgeInsets.only(top: 20),
+                          ),
                         );
                       } else {
                         return const SizedBox();

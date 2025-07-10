@@ -10,10 +10,12 @@ import "package:x_obese/src/theme/colors.dart";
 Widget getMarathonCard({
   required BuildContext context,
   required MarathonModel marathonData,
+  required double width,
+  required double height,
   EdgeInsetsGeometry? margin,
 }) {
   return Container(
-    width: 300,
+    width: width,
     margin: margin,
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(4),
@@ -25,8 +27,8 @@ Widget getMarathonCard({
           ClipRRect(
             borderRadius: BorderRadius.circular(4),
             child: CachedNetworkImage(
-              width: 300,
-              height: 220,
+              width: width,
+              height: height,
               imageUrl: marathonData.imagePath.toString(),
               fit: BoxFit.cover,
               errorWidget: (context, url, error) {
