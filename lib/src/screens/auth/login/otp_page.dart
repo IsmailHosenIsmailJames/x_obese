@@ -1,4 +1,3 @@
-
 import "package:dio/dio.dart" as dio;
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
@@ -11,7 +10,7 @@ import "package:x_obese/src/screens/auth/bloc/auth_bloc.dart";
 import "package:x_obese/src/screens/auth/bloc/auth_event.dart";
 import "package:x_obese/src/screens/auth/bloc/auth_state.dart";
 import "package:x_obese/src/screens/auth/login/success_page.dart";
-import "package:x_obese/src/screens/controller/info_collector/info_collector.dart";
+import "package:x_obese/src/screens/info_collector/info_collector.dart";
 import "package:x_obese/src/theme/colors.dart";
 
 class OtpPage extends StatefulWidget {
@@ -58,8 +57,8 @@ class _OtpPageState extends State<OtpPage> {
             Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(
-                builder: (context) =>
-                    InfoCollector(initialData: state.userData),
+                builder:
+                    (context) => InfoCollector(initialData: state.userData),
               ),
               (route) => false,
             );
@@ -164,26 +163,30 @@ class _OtpPageState extends State<OtpPage> {
                   child: BlocBuilder<AuthBloc, AuthState>(
                     builder: (context, state) {
                       return ElevatedButton(
-                        onPressed: state is AuthLoading
-                            ? null
-                            : () {
-                                if (otpController.text.length == 6) {
-                                  _checkOTP(otpController.text);
-                                } else {
-                                  Fluttertoast.showToast(
-                                    msg: "OTP is not valid",
-                                    textColor: Colors.white,
-                                    backgroundColor: Colors.red,
-                                  );
-                                }
-                              },
-                        child: state is AuthLoading
-                            ? const CircularProgressIndicator()
-                            : const Text(
-                                "Verify Now",
-                                style: TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.w500),
-                              ),
+                        onPressed:
+                            state is AuthLoading
+                                ? null
+                                : () {
+                                  if (otpController.text.length == 6) {
+                                    _checkOTP(otpController.text);
+                                  } else {
+                                    Fluttertoast.showToast(
+                                      msg: "OTP is not valid",
+                                      textColor: Colors.white,
+                                      backgroundColor: Colors.red,
+                                    );
+                                  }
+                                },
+                        child:
+                            state is AuthLoading
+                                ? const CircularProgressIndicator()
+                                : const Text(
+                                  "Verify Now",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
                       );
                     },
                   ),
@@ -196,4 +199,3 @@ class _OtpPageState extends State<OtpPage> {
     );
   }
 }
-

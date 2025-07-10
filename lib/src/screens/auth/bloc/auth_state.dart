@@ -1,6 +1,6 @@
 import "package:dio/dio.dart" as dio;
 import "package:equatable/equatable.dart";
-import "package:x_obese/src/screens/controller/info_collector/model/all_info_model.dart";
+import "package:x_obese/src/screens/info_collector/model/all_info_model.dart";
 
 abstract class AuthState extends Equatable {
   const AuthState();

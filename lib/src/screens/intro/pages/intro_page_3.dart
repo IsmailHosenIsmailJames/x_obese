@@ -12,10 +12,10 @@ class IntroPage3 extends StatelessWidget {
     return Stack(
       children: [
         SizedBox(
-          height: MediaQuery.of(context).size.height - 50,
-          width: double.infinity,
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height * 0.80,
           child: Image.asset(
-            "assets/img/intro/running.png",
+            "assets/img/running_outdoor.png",
             fit: BoxFit.cover,
             alignment: Alignment.topCenter,
           ),
@@ -39,33 +39,34 @@ class IntroPage3 extends StatelessWidget {
               padding: const EdgeInsets.all(23.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text.rich(
                     TextSpan(
                       style: const TextStyle(
-                        fontSize: 28,
+                        fontSize: 24,
                         fontWeight: FontWeight.w600,
                       ),
                       children: <InlineSpan>[
-                        const TextSpan(text: "Run "),
+                        const TextSpan(text: "Ultimate "),
                         TextSpan(
-                          text: "Together ",
+                          text: "Resource for ",
                           style: TextStyle(color: MyAppColors.third),
                         ),
-                        const TextSpan(text: ", Win Together!"),
+                        const TextSpan(text: "Your Fitness Tips"),
                       ],
                     ),
                   ),
                   const Gap(8),
                   Text(
-                    "Get workouts and tips that match your unique goals",
+                    "Get quick mindfulness tips and stress-relief routines in Bangla. Because your mental health is just as important.",
                     style: TextStyle(
                       color: MyAppColors.mutedGray,
                       fontSize: 16,
                       fontWeight: FontWeight.w400,
                     ),
                   ),
-                  const Gap(50),
+                  const Gap(30),
                   SizedBox(
                     width: double.infinity,
                     height: 56,

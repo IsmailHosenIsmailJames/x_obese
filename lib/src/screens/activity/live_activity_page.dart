@@ -19,7 +19,7 @@ import "package:x_obese/src/core/common/functions/calculate_distance.dart";
 import "package:x_obese/src/core/common/functions/format_sec_to_time.dart";
 import "package:x_obese/src/screens/activity/controller/activity_controller.dart";
 import "package:x_obese/src/screens/activity/controller/lock_controller.dart";
-import "package:x_obese/src/screens/controller/info_collector/controller/all_info_controller.dart";
+import "package:x_obese/src/screens/info_collector/controller/all_info_controller.dart";
 import "package:x_obese/src/screens/marathon/details_marathon/model/full_marathon_data_model.dart";
 import "package:x_obese/src/screens/marathon/models/marathon_user_model.dart";
 import "package:x_obese/src/theme/colors.dart";

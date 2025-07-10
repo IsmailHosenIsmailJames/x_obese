@@ -8,7 +8,7 @@ import "package:get/get.dart";
 import "package:intl/intl.dart";
 import "package:x_obese/src/apis/apis_url.dart";
 import "package:x_obese/src/apis/middleware/jwt_middleware.dart";
-import "package:x_obese/src/screens/controller/info_collector/controller/all_info_controller.dart";
+import "package:x_obese/src/screens/info_collector/controller/all_info_controller.dart";
 import "package:x_obese/src/screens/create_workout_plan/controller/create_workout_plan_controller.dart";
 import "package:x_obese/src/screens/create_workout_plan/model/create_workout_plan_model.dart";
 import "package:x_obese/src/screens/create_workout_plan/model/get_workout_plans.dart";

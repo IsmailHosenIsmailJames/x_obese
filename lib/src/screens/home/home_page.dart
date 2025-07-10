@@ -10,7 +10,7 @@ import "package:intl/intl.dart";
 import "package:x_obese/src/test/helth.dart";
 import "package:x_obese/src/resources/svg_string.dart";
 import "package:x_obese/src/screens/blog/blog_list_view.dart";
-import "package:x_obese/src/screens/controller/info_collector/controller/all_info_controller.dart";
+import "package:x_obese/src/screens/info_collector/controller/all_info_controller.dart";
 import "package:x_obese/src/screens/create_workout_plan/create_workout_plan.dart";
 import "package:x_obese/src/screens/create_workout_plan/model/get_workout_plans.dart";
 import "package:x_obese/src/screens/marathon/components/virtual_marathon_cards.dart";
@@ -18,6 +18,7 @@ import "package:x_obese/src/screens/marathon/marathon_page.dart";
 import "package:x_obese/src/screens/settings/personal_details_view.dart";
 import "package:x_obese/src/screens/workout_plan_overview/workout_plan_overview_screen.dart";
 import "package:x_obese/src/theme/colors.dart";
+import "package:x_obese/src/widgets/banners/banners.dart";
 import "package:x_obese/src/widgets/get_blog_card.dart";
 import "package:x_obese/src/widgets/points_overview_widget.dart";
 
@@ -416,6 +417,9 @@ class _HomePageState extends State<HomePage> {
                 return const Text("Something Found Wrong");
               }
             }),
+            const Gap(10),
+            const Banners(),
+            const Gap(10),
             Padding(
               padding: const EdgeInsets.all(15.0),
               child: Row(
@@ -451,6 +455,8 @@ class _HomePageState extends State<HomePage> {
                         padding: const EdgeInsets.only(right: 15),
                         itemBuilder: (context, index) {
                           return getMarathonCard(
+                            width: 300,
+                            height: 220,
                             context: context,
                             marathonData: allInfoController.marathonList[index],
                             margin: const EdgeInsets.only(left: 15),

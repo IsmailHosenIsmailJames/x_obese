@@ -12,10 +12,10 @@ class IntroPage1 extends StatelessWidget {
     return Stack(
       children: [
         SizedBox(
-          height: MediaQuery.of(context).size.height - 50,
-          width: double.infinity,
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height * 0.80,
           child: Image.asset(
-            "assets/img/intro/walking.png",
+            "assets/img/walking_competition.jpg",
             fit: BoxFit.cover,
             alignment: Alignment.topCenter,
           ),
@@ -39,33 +39,34 @@ class IntroPage1 extends StatelessWidget {
               padding: const EdgeInsets.all(23.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.start,
+
                 children: [
                   Text.rich(
                     TextSpan(
                       style: const TextStyle(
-                        fontSize: 28,
+                        fontSize: 24,
                         fontWeight: FontWeight.w600,
                       ),
                       children: <InlineSpan>[
-                        const TextSpan(text: "Your "),
                         TextSpan(
-                          text: "Fitness ",
+                          text: "Run Marathons ",
                           style: TextStyle(color: MyAppColors.third),
                         ),
-                        const TextSpan(text: "Journey Starts Here"),
+                        const TextSpan(text: " with Your Community"),
                       ],
                     ),
                   ),
                   const Gap(8),
                   Text(
-                    "Set your goals, track your progress, and achieve greatness",
+                    "Discover upcoming marathons and local running events in Bangladesh. Sign up, show up, and shine!",
                     style: TextStyle(
                       color: MyAppColors.mutedGray,
                       fontSize: 16,
                       fontWeight: FontWeight.w400,
                     ),
                   ),
-                  const Gap(50),
+                  const Gap(30),
                   SizedBox(
                     width: double.infinity,
                     height: 56,
