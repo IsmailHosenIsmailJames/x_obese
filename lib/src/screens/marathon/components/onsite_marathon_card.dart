@@ -1,7 +1,6 @@
 import "package:cached_network_image/cached_network_image.dart";
 import "package:flutter/material.dart";
 import "package:gap/gap.dart";
-import "package:x_obese/src/core/common/functions/safe_sub_string.dart";
 import "package:x_obese/src/screens/marathon/models/marathon_model.dart";
 import "package:x_obese/src/theme/colors.dart";
 
@@ -13,73 +12,108 @@ Widget getOnsiteMarathon({
   EdgeInsetsGeometry? margin,
 }) {
   return Container(
-    padding: const EdgeInsets.all(10),
+    height: 250,
+    width: MediaQuery.of(context).size.width,
+
     margin: margin,
     decoration: BoxDecoration(
-      image: DecorationImage(
-        image: CachedNetworkImageProvider(marathonData.imagePath ?? ""),
-        fit: BoxFit.cover,
-        opacity: 0.5,
-      ),
-      color: Colors.black,
+      color: MyAppColors.third,
       borderRadius: BorderRadius.circular(4.6),
     ),
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
+    child: Stack(
       children: [
-        SizedBox(
-          width: 120,
-          child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: MyAppColors.third,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(100),
-              ),
-              foregroundColor: Colors.white,
+        if (marathonData.imagePath != null)
+          ClipRRect(
+            borderRadius: BorderRadius.circular(4),
+            child: CachedNetworkImage(
+              height: 250,
+              width: MediaQuery.of(context).size.width,
+              imageUrl: marathonData.imagePath!,
+              fit: BoxFit.cover,
+              errorWidget: (context, url, error) {
+                return Center(
+                  child: Icon(
+                    Icons.broken_image,
+                    size: 50,
+                    color: MyAppColors.transparentGray.withValues(alpha: 0.5),
+                  ),
+                );
+              },
             ),
-            onPressed: () {},
-            child: Text(marathonData.location ?? "Unknown"),
           ),
-        ),
-        const Gap(16),
-        Text(
-          marathonData.title ?? "",
-          style: TextStyle(
-            fontSize: 17,
-            fontWeight: FontWeight.w500,
-            color: MyAppColors.primary,
-          ),
-        ),
-        const Gap(5),
-        Text(
-          safeSubString(marathonData.description ?? "", 100),
-          style: TextStyle(
-            fontSize: 13,
-            fontWeight: FontWeight.w300,
-            color: MyAppColors.primary,
-          ),
-        ),
-        const Gap(18),
-        SizedBox(
-          width: double.infinity,
-          height: 46.7,
-          child: ElevatedButton.icon(
-            style: ElevatedButton.styleFrom(iconAlignment: IconAlignment.end),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder:
-                      (context) => MarathonDetailsView(
-                        isVirtual: marathonData.type == "virtual",
-                        marathonData: marathonData,
-                      ),
+        Padding(
+          padding: const EdgeInsets.all(10),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                width: 120,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: MyAppColors.third,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(100),
+                    ),
+                    foregroundColor: Colors.white,
+                    side: const BorderSide(color: Colors.white, width: 0.5),
+                  ),
+                  onPressed: () {},
+                  child: Text(marathonData.location ?? "Unknown"),
                 ),
-              );
-            },
-            label: const Text("Physical  Challenge"),
-            icon: const Icon(Icons.arrow_forward, color: Colors.black),
+              ),
+              const Gap(10),
+              SizedBox(
+                width: MediaQuery.of(context).size.width,
+                child: Text(
+                  marathonData.title ?? "",
+                  style: TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.w500,
+                    color: MyAppColors.primary,
+                  ),
+                ),
+              ),
+              const Gap(5),
+              Expanded(
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  child: Text(
+                    marathonData.description ?? "",
+                    style: TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w300,
+                      color: MyAppColors.primary,
+                    ),
+                    overflow: TextOverflow.fade,
+                  ),
+                ),
+              ),
+              const Gap(18),
+              SizedBox(
+                width: double.infinity,
+                height: 46.7,
+                child: ElevatedButton.icon(
+                  style: ElevatedButton.styleFrom(
+                    iconAlignment: IconAlignment.end,
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder:
+                            (context) => MarathonDetailsView(
+                              isVirtual: marathonData.type == "virtual",
+                              marathonData: marathonData,
+                            ),
+                      ),
+                    );
+                  },
+                  label: const Text("Physical  Challenge"),
+                  icon: const Icon(Icons.arrow_forward, color: Colors.black),
+                ),
+              ),
+            ],
           ),
         ),
       ],

@@ -28,15 +28,31 @@ Widget getBlogCard(BuildContext context, GetBlogModel blogData) {
 
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(4),
-              image:
-                  blogData.imagePath == null
-                      ? null
-                      : DecorationImage(
-                        image: CachedNetworkImageProvider(blogData.imagePath!),
-
-                        fit: BoxFit.cover,
-                      ),
+              color: MyAppColors.third,
             ),
+            child:
+                blogData.imagePath == null
+                    ? null
+                    : ClipRRect(
+                      borderRadius: BorderRadius.circular(4),
+                      child: CachedNetworkImage(
+                        height: 80,
+                        width: 160,
+                        imageUrl: blogData.imagePath!,
+                        fit: BoxFit.cover,
+                        errorWidget: (context, url, error) {
+                          return Center(
+                            child: Icon(
+                              Icons.broken_image,
+                              size: 50,
+                              color: MyAppColors.transparentGray.withValues(
+                                alpha: 0.5,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
           ),
           const Gap(8),
           Text(
