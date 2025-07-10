@@ -3,7 +3,7 @@ import "package:gap/gap.dart";
 import "package:get/get.dart";
 import "package:x_obese/src/widgets/back_button.dart";
 
-import "../../../../theme/colors.dart";
+import "../../../theme/colors.dart";
 import "../controller/all_info_controller.dart";
 
 class GenderCollector extends StatefulWidget {
@@ -55,7 +55,7 @@ class _GenderCollectorState extends State<GenderCollector> {
               const Align(
                 alignment: Alignment.topLeft,
                 child: Text(
-                  "Choice Your Gender 👨‍👩‍👦‍👦",
+                  "Choose Your Gender ?",
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
                 ),
               ),

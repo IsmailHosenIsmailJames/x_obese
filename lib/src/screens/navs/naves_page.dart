@@ -12,7 +12,7 @@ import "package:permission_handler/permission_handler.dart";
 import "package:x_obese/src/core/background/background_task.dart";
 import "package:x_obese/src/resources/svg_string.dart";
 import "package:x_obese/src/screens/activity/workout_page.dart";
-import "package:x_obese/src/screens/controller/info_collector/controller/all_info_controller.dart";
+import "package:x_obese/src/screens/info_collector/controller/all_info_controller.dart";
 import "package:x_obese/src/screens/home/home_page.dart";
 import "package:x_obese/src/screens/marathon/marathon_page.dart";
 import "package:x_obese/src/screens/navs/controller/navs_controller.dart";

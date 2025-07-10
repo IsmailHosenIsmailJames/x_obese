@@ -1,7 +1,7 @@
 import "package:flutter/material.dart";
 import "package:gap/gap.dart";
 import "package:get/get.dart";
-import "package:x_obese/src/screens/controller/info_collector/controller/all_info_controller.dart";
+import "package:x_obese/src/screens/info_collector/controller/all_info_controller.dart";
 import "package:x_obese/src/theme/colors.dart";
 import "package:x_obese/src/widgets/back_button.dart";
 
@@ -62,7 +62,7 @@ class _HeightWeigthCollectorState extends State<HeightWeigthCollector> {
               const Align(
                 alignment: Alignment.topLeft,
                 child: Text(
-                  "Choice Your Gender 👨‍👩‍👦‍👦",
+                  "What’s your height & Weight ?",
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
                 ),
               ),

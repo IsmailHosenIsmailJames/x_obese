@@ -32,17 +32,17 @@ class _IntroPageState extends State<IntroPage> {
             ],
           ),
           Align(
-            alignment: const Alignment(0.9, 0.2),
+            alignment: const Alignment(0.9, 0.25),
             child: SmoothPageIndicator(
               controller: pageController,
-              count: 3,
+              count: 4,
 
               axisDirection: Axis.horizontal,
               effect: ExpandingDotsEffect(
                 activeDotColor: MyAppColors.third,
                 dotHeight: 10,
                 dotWidth: 10,
-                dotColor: MyAppColors.mutedGray,
+                dotColor: MyAppColors.transparentGray,
               ),
               onDotClicked: (index) {
                 pageController.animateToPage(

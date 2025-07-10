@@ -1,6 +1,6 @@
 import "package:hive_flutter/hive_flutter.dart";
 import "package:shared_preferences/shared_preferences.dart";
-import "package:x_obese/src/screens/controller/info_collector/model/all_info_model.dart";
+import "package:x_obese/src/screens/info_collector/model/all_info_model.dart";
 
 class UserDB {
   static Box? _userDBBox;
@@ -13,8 +13,8 @@ class UserDB {
   }
 
   static AllInfoModel? userAllInfo() {
-    String? info =_userDBBox!.get("info", defaultValue: null);
-    if(info == null) return null;
+    String? info = _userDBBox!.get("info", defaultValue: null);
+    if (info == null) return null;
     return AllInfoModel.fromJson(_userDBBox!.get("info"));
   }
 

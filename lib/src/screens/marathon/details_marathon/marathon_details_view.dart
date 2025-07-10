@@ -12,7 +12,7 @@ import "package:intl/intl.dart";
 import "package:x_obese/src/apis/apis_url.dart";
 import "package:x_obese/src/apis/middleware/jwt_middleware.dart";
 import "package:x_obese/src/screens/activity/workout_page.dart";
-import "package:x_obese/src/screens/controller/info_collector/controller/all_info_controller.dart";
+import "package:x_obese/src/screens/info_collector/controller/all_info_controller.dart";
 import "package:x_obese/src/screens/marathon/details_marathon/model/full_marathon_data_model.dart";
 import "package:x_obese/src/screens/marathon/leader_board/leader_board_view.dart";
 import "package:x_obese/src/screens/marathon/models/marathon_model.dart";

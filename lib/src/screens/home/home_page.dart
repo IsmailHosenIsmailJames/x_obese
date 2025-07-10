@@ -10,7 +10,7 @@ import "package:intl/intl.dart";
 import "package:x_obese/src/test/helth.dart";
 import "package:x_obese/src/resources/svg_string.dart";
 import "package:x_obese/src/screens/blog/blog_list_view.dart";
-import "package:x_obese/src/screens/controller/info_collector/controller/all_info_controller.dart";
+import "package:x_obese/src/screens/info_collector/controller/all_info_controller.dart";
 import "package:x_obese/src/screens/create_workout_plan/create_workout_plan.dart";
 import "package:x_obese/src/screens/create_workout_plan/model/get_workout_plans.dart";
 import "package:x_obese/src/screens/marathon/components/virtual_marathon_cards.dart";
