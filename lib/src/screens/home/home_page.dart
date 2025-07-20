@@ -7,7 +7,8 @@ import "package:gap/gap.dart";
 import "package:get/get.dart";
 import "package:hive_flutter/adapters.dart";
 import "package:intl/intl.dart";
-import "package:x_obese/src/test/helth.dart";
+import "package:x_obese/src/core/health/my_health_functions.dart";
+import "package:x_obese/src/screens/navs/naves_page.dart";
 import "package:x_obese/src/resources/svg_string.dart";
 import "package:x_obese/src/screens/blog/blog_list_view.dart";
 import "package:x_obese/src/screens/info_collector/controller/all_info_controller.dart";
@@ -74,191 +75,130 @@ class _HomePageState extends State<HomePage> {
     );
     return Scaffold(
       backgroundColor: MyAppColors.primary,
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: Row(
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      widget.pageController.jumpToPage(3);
-                    },
-                    child: Row(
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(100),
-                          child: Container(
-                            height: 40,
-                            width: 40,
-                            color: MyAppColors.transparentGray,
-                            child:
-                                allInfoController.allInfo.value.image == null
-                                    ? const Icon(Icons.person, size: 18)
-                                    : CachedNetworkImage(
-                                      imageUrl:
-                                          allInfoController
-                                              .allInfo
-                                              .value
-                                              .image!,
-                                      alignment: Alignment.topCenter,
-                                      fit: BoxFit.cover,
-                                      errorWidget: (context, url, error) {
-                                        return Icon(
-                                          Icons.broken_image,
-                                          color: MyAppColors.mutedGray,
-                                          size: 18,
-                                        );
-                                      },
-                                    ),
-                          ),
-                        ),
-                        const Gap(8),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              "Hello 👋",
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                            Obx(
-                              () => Text(
-                                allInfoController.allInfo.value.fullName ?? "",
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w300,
-                                  color: MyAppColors.mutedGray,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  const Spacer(),
-                  IconButton(
-                    onPressed: () async {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const HealthApp(),
-                        ),
-                      );
-                    },
-                    icon: SvgPicture.string(notificationSvg),
-                  ),
-                ],
-              ),
-            ),
-
-            Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: pointsOverviewWidget(context, allInfoController),
-            ),
-            const Gap(20),
-            Obx(() {
-              if (allInfoController.getWorkoutPlansList.isEmpty ||
-                  allInfoController.getWorkoutPlansList.first.id == "init") {
-                return Padding(
-                  padding: const EdgeInsets.all(15.0),
-                  child: SizedBox(
-                    height: 80,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(100),
-                          child: Container(
-                            height: 40,
-                            width: 40,
-                            color: MyAppColors.transparentGray,
-                            padding: const EdgeInsets.all(8),
-                            child: SvgPicture.string(workoutPlanIconSvgBlue),
-                          ),
-                        ),
-                        const Gap(12),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              "Workout Plan",
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                            const Gap(4),
-                            SizedBox(
-                              width: 180,
-                              child: Text(
-                                "Create Your Workout plan",
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w300,
-                                  color: MyAppColors.mutedGray,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        const Spacer(),
-                        SizedBox(
-                          width: 85,
-                          height: 32,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              padding: EdgeInsets.zero,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(100),
-                              ),
-                            ),
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder:
-                                      (context) => const CreateWorkoutPlan(),
-                                ),
-                              );
-                            },
-                            child: const Text("Create"),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              } else if (allInfoController.getWorkoutPlansList.isNotEmpty &&
-                  allInfoController.getWorkoutPlansList.first.id != null) {
-                return GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder:
-                            (context) => WorkoutPlanOverviewScreen(
-                              getWorkoutPlansList:
-                                  allInfoController.getWorkoutPlansList,
-                            ),
-                      ),
-                    );
-                  },
-                  child: Obx(
-                    () => Padding(
-                      padding: const EdgeInsets.only(left: 15, right: 15),
-                      child: Column(
+      body: RefreshIndicator(
+        onRefresh: () async {
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => const NavesPage()),
+            (route) {
+              return false;
+            },
+          );
+        },
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: Row(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        widget.pageController.jumpToPage(3);
+                      },
+                      child: Row(
                         children: [
-                          Row(
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(100),
+                            child: Container(
+                              height: 40,
+                              width: 40,
+                              color: MyAppColors.transparentGray,
+                              child:
+                                  allInfoController.allInfo.value.image == null
+                                      ? const Icon(Icons.person, size: 18)
+                                      : CachedNetworkImage(
+                                        imageUrl:
+                                            allInfoController
+                                                .allInfo
+                                                .value
+                                                .image!,
+                                        alignment: Alignment.topCenter,
+                                        fit: BoxFit.cover,
+                                        errorWidget: (context, url, error) {
+                                          return Icon(
+                                            Icons.broken_image,
+                                            color: MyAppColors.mutedGray,
+                                            size: 18,
+                                          );
+                                        },
+                                      ),
+                            ),
+                          ),
+                          const Gap(8),
+                          Column(
                             mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                "Hello 👋",
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                              Obx(
+                                () => Text(
+                                  allInfoController.allInfo.value.fullName ??
+                                      "",
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w300,
+                                    color: MyAppColors.mutedGray,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    const Spacer(),
+                    IconButton(
+                      onPressed: () async {
+                        DateTime now = DateTime.now();
+                        double calories = await MyHealthFunctions.fetchCalories(
+                          DateTime(now.year, now.month, now.day),
+                          now,
+                        );
+                        log(calories.toString(), name: "Calories");
+                      },
+                      icon: SvgPicture.string(notificationSvg),
+                    ),
+                  ],
+                ),
+              ),
+
+              const Padding(
+                padding: EdgeInsets.all(15.0),
+                child: PointsOverviewWidget(),
+              ),
+              const Gap(20),
+              Obx(() {
+                if (allInfoController.getWorkoutPlansList.isEmpty ||
+                    allInfoController.getWorkoutPlansList.first.id == "init") {
+                  return Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: SizedBox(
+                      height: 80,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(100),
+                            child: Container(
+                              height: 40,
+                              width: 40,
+                              color: MyAppColors.transparentGray,
+                              padding: const EdgeInsets.all(8),
+                              child: SvgPicture.string(workoutPlanIconSvgBlue),
+                            ),
+                          ),
+                          const Gap(12),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               const Text(
                                 "Workout Plan",
@@ -267,330 +207,412 @@ class _HomePageState extends State<HomePage> {
                                   fontWeight: FontWeight.w500,
                                 ),
                               ),
-                              const Gap(10),
-                              if (allInfoController
-                                          .getWorkoutPlansList
-                                          .value
-                                          .first
-                                          .startDate !=
-                                      null &&
-                                  allInfoController
-                                          .getWorkoutPlansList
-                                          .value
-                                          .first
-                                          .endDate !=
-                                      null)
-                                Text(
-                                  "${getWeekStatus(allInfoController.getWorkoutPlansList.value.first)} Weeks",
+                              const Gap(4),
+                              SizedBox(
+                                width: 180,
+                                child: Text(
+                                  "Create Your Workout plan",
                                   style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500,
-                                    color: MyAppColors.third,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w300,
+                                    color: MyAppColors.mutedGray,
                                   ),
                                 ),
-                              const Spacer(),
-                              arrowIcon,
+                              ),
                             ],
                           ),
-                          const Gap(10),
-                          Container(
-                            height: 100,
-                            padding: const EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              color: MyAppColors.transparentGray,
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Column(
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: List.generate(weekdays.length, (
-                                    index,
-                                  ) {
-                                    String day = DateFormat(
-                                      DateFormat.WEEKDAY,
-                                    ).format(DateTime.now());
-                                    bool isSelected =
-                                        weekdays.indexOf(day) == index;
-
-                                    DateTime thisDay = DateTime.now().add(
-                                      Duration(
-                                        days: index - weekdays.indexOf(day),
-                                      ),
-                                    );
-
-                                    return Container(
-                                      width: 32,
-                                      height: 44,
-                                      padding: const EdgeInsets.all(2),
-                                      decoration: BoxDecoration(
-                                        color:
-                                            isSelected
-                                                ? MyAppColors.third
-                                                : null,
-                                        borderRadius: BorderRadius.circular(4),
-                                      ),
-                                      child: FittedBox(
-                                        child: Column(
-                                          children: [
-                                            Text(
-                                              weekdays[index]
-                                                  .substring(0, 3)
-                                                  .capitalizeFirst,
-                                              style: TextStyle(
-                                                color:
-                                                    isSelected
-                                                        ? Colors.white
-                                                        : null,
-                                              ),
-                                            ),
-                                            Text(
-                                              (thisDay.day).toString(),
-                                              style: TextStyle(
-                                                color:
-                                                    isSelected
-                                                        ? Colors.white
-                                                        : null,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    );
-                                  }),
+                          const Spacer(),
+                          SizedBox(
+                            width: 85,
+                            height: 32,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                padding: EdgeInsets.zero,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(100),
                                 ),
-                                Divider(
-                                  color: MyAppColors.third.withValues(
-                                    alpha: 0.2,
+                              ),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder:
+                                        (context) => const CreateWorkoutPlan(),
                                   ),
-                                  thickness: 1,
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: List.generate(weekdays.length, (
-                                    index,
-                                  ) {
-                                    String day = DateFormat(
-                                      DateFormat.WEEKDAY,
-                                    ).format(DateTime.now());
-
-                                    DateTime thisDay = DateTime.now().add(
-                                      Duration(
-                                        days: index - weekdays.indexOf(day),
-                                      ),
-                                    );
-
-                                    bool isSelected = haveWorkoutDay(
-                                      allInfoController
-                                          .getWorkoutPlansList
-                                          .value
-                                          .first,
-                                      thisDay,
-                                    );
-                                    return SizedBox(
-                                      width: 32,
-
-                                      child:
-                                          isSelected
-                                              ? Center(
-                                                child: CircleAvatar(
-                                                  radius: 3,
-                                                  backgroundColor:
-                                                      MyAppColors.second,
-                                                ),
-                                              )
-                                              : null,
-                                    );
-                                  }),
-                                ),
-                              ],
+                                );
+                              },
+                              child: const Text("Create"),
                             ),
                           ),
                         ],
                       ),
                     ),
-                  ),
-                );
-              } else {
-                return const Text("Something Found Wrong");
-              }
-            }),
-            const Gap(10),
-            const Banners(),
-            const Gap(10),
-            Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    "Marathon Program",
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      widget.pageController.jumpToPage(2);
-                    },
-                    child: Text(
-                      "See All",
-                      style: TextStyle(color: MyAppColors.third),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
-            SizedBox(
-              height: 220,
-              child: Obx(
-                () => Row(
-                  children: [
-                    Expanded(
-                      child: ListView.builder(
-                        controller: scrollControllerMarathon,
-                        scrollDirection: Axis.horizontal,
-                        itemCount: allInfoController.marathonList.length,
-                        padding: const EdgeInsets.only(right: 15),
-                        itemBuilder: (context, index) {
-                          return getMarathonCard(
-                            width: 300,
-                            height: 220,
-                            context: context,
-                            marathonData: allInfoController.marathonList[index],
-                            margin: const EdgeInsets.only(left: 15),
-                          );
-                        },
-                      ),
-                    ),
-                    if (isMarathonLoading) const CircularProgressIndicator(),
-                  ],
-                ),
-              ),
-            ),
-
-            // Padding(
-            //   padding: const EdgeInsets.all(15.0),
-            //   child: Row(
-            //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //     children: [
-            //       const Text(
-            //         "Specialists Near You",
-            //         style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-            //       ),
-            //       TextButton(
-            //         onPressed: () {
-            //           Navigator.push(
-            //             context,
-            //             MaterialPageRoute(
-            //               builder: (context) => const SpecialistsNearYou(),
-            //             ),
-            //           );
-            //         },
-            //         child: Text(
-            //           "See All",
-            //           style: TextStyle(color: MyAppColors.third),
-            //         ),
-            //       ),
-            //     ],
-            //   ),
-            // ),
-
-            // SizedBox(
-            //   height: 125,
-            //   child: Row(
-            //     mainAxisAlignment: MainAxisAlignment.start,
-            //     crossAxisAlignment: CrossAxisAlignment.start,
-            //     children: [
-            //       Expanded(
-            //         child: ListView(
-            //           scrollDirection: Axis.horizontal,
-            //           controller: scrollControllerBlog,
-            //           padding: const EdgeInsets.only(
-            //             left: 15,
-            //             right: 15,
-            //             bottom: 5,
-            //           ),
-            //           children: List.generate(10, (index) {
-            //             return getSpecialistDoctorCard(
-            //               context: context,
-            //               data: SpecialistsNearYouModel(
-            //                 image:
-            //                     "https://www.figma.com/file/8frEvJAGHDh0TUQVUTXRF6/image/181a9ed08884107a88ece2bdbbae5d5fa943a40a",
-            //                 address: "Hathazari Medical",
-            //                 category: "General Specialist",
-            //                 distance: "3.5 km",
-            //                 name: "Dr. Ahmed Ali",
-            //               ),
-            //               width: 300.0,
-            //               height: 120.0,
-            //               onTap: () {},
-            //               catalogFontSize: 10.0,
-            //               nameFontSize: 16.0,
-            //               distanceFontSize: 12.0,
-            //               addressFontSize: 10.0,
-            //               iconHeight: 15.0,
-            //             );
-            //           }),
-            //         ),
-            //       ),
-            //     ],
-            //   ),
-            // ),
-            Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    "Our Blogs & Tips",
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-                  ),
-                  TextButton(
-                    onPressed: () {
+                  );
+                } else if (allInfoController.getWorkoutPlansList.isNotEmpty &&
+                    allInfoController.getWorkoutPlansList.first.id != null) {
+                  return GestureDetector(
+                    onTap: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const BlogListView(),
+                          builder:
+                              (context) => WorkoutPlanOverviewScreen(
+                                getWorkoutPlansList:
+                                    allInfoController.getWorkoutPlansList,
+                              ),
                         ),
                       );
                     },
-                    child: Text(
-                      "See All",
-                      style: TextStyle(color: MyAppColors.third),
+                    child: Obx(
+                      () => Padding(
+                        padding: const EdgeInsets.only(left: 15, right: 15),
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                const Text(
+                                  "Workout Plan",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                const Gap(10),
+                                if (allInfoController
+                                            .getWorkoutPlansList
+                                            .value
+                                            .first
+                                            .startDate !=
+                                        null &&
+                                    allInfoController
+                                            .getWorkoutPlansList
+                                            .value
+                                            .first
+                                            .endDate !=
+                                        null)
+                                  Text(
+                                    "${getWeekStatus(allInfoController.getWorkoutPlansList.value.first)} Weeks",
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500,
+                                      color: MyAppColors.third,
+                                    ),
+                                  ),
+                                const Spacer(),
+                                arrowIcon,
+                              ],
+                            ),
+                            const Gap(10),
+                            Container(
+                              height: 100,
+                              padding: const EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                color: MyAppColors.transparentGray,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Column(
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: List.generate(weekdays.length, (
+                                      index,
+                                    ) {
+                                      String day = DateFormat(
+                                        DateFormat.WEEKDAY,
+                                      ).format(DateTime.now());
+                                      bool isSelected =
+                                          weekdays.indexOf(day) == index;
+
+                                      DateTime thisDay = DateTime.now().add(
+                                        Duration(
+                                          days: index - weekdays.indexOf(day),
+                                        ),
+                                      );
+
+                                      return Container(
+                                        width: 32,
+                                        height: 44,
+                                        padding: const EdgeInsets.all(2),
+                                        decoration: BoxDecoration(
+                                          color:
+                                              isSelected
+                                                  ? MyAppColors.third
+                                                  : null,
+                                          borderRadius: BorderRadius.circular(
+                                            4,
+                                          ),
+                                        ),
+                                        child: FittedBox(
+                                          child: Column(
+                                            children: [
+                                              Text(
+                                                weekdays[index]
+                                                    .substring(0, 3)
+                                                    .capitalizeFirst,
+                                                style: TextStyle(
+                                                  color:
+                                                      isSelected
+                                                          ? Colors.white
+                                                          : null,
+                                                ),
+                                              ),
+                                              Text(
+                                                (thisDay.day).toString(),
+                                                style: TextStyle(
+                                                  color:
+                                                      isSelected
+                                                          ? Colors.white
+                                                          : null,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      );
+                                    }),
+                                  ),
+                                  Divider(
+                                    color: MyAppColors.third.withValues(
+                                      alpha: 0.2,
+                                    ),
+                                    thickness: 1,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: List.generate(weekdays.length, (
+                                      index,
+                                    ) {
+                                      String day = DateFormat(
+                                        DateFormat.WEEKDAY,
+                                      ).format(DateTime.now());
+
+                                      DateTime thisDay = DateTime.now().add(
+                                        Duration(
+                                          days: index - weekdays.indexOf(day),
+                                        ),
+                                      );
+
+                                      bool isSelected = haveWorkoutDay(
+                                        allInfoController
+                                            .getWorkoutPlansList
+                                            .value
+                                            .first,
+                                        thisDay,
+                                      );
+                                      return SizedBox(
+                                        width: 32,
+
+                                        child:
+                                            isSelected
+                                                ? Center(
+                                                  child: CircleAvatar(
+                                                    radius: 3,
+                                                    backgroundColor:
+                                                        MyAppColors.second,
+                                                  ),
+                                                )
+                                                : null,
+                                      );
+                                    }),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(
-              height: 210,
-              child: Obx(
-                () => Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  );
+                } else {
+                  return const Text("Something Found Wrong");
+                }
+              }),
+              const Gap(10),
+              const Banners(),
+              const Gap(10),
+              Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Expanded(
-                      child: ListView(
-                        scrollDirection: Axis.horizontal,
-                        controller: scrollControllerBlog,
-                        children: List.generate(
-                          allInfoController.getBlogList.length,
-                          (index) {
-                            return getBlogCard(
-                              context,
-                              allInfoController.getBlogList[index],
+                    const Text(
+                      "Marathon Program",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        widget.pageController.jumpToPage(2);
+                      },
+                      child: Text(
+                        "See All",
+                        style: TextStyle(color: MyAppColors.third),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              SizedBox(
+                height: 220,
+                child: Obx(
+                  () => Row(
+                    children: [
+                      Expanded(
+                        child: ListView.builder(
+                          controller: scrollControllerMarathon,
+                          scrollDirection: Axis.horizontal,
+                          itemCount: allInfoController.marathonList.length,
+                          padding: const EdgeInsets.only(right: 15),
+                          itemBuilder: (context, index) {
+                            return getMarathonCard(
+                              width: 300,
+                              height: 220,
+                              context: context,
+                              marathonData:
+                                  allInfoController.marathonList[index],
+                              margin: const EdgeInsets.only(left: 15),
                             );
                           },
                         ),
                       ),
+                      if (isMarathonLoading) const CircularProgressIndicator(),
+                    ],
+                  ),
+                ),
+              ),
+
+              // Padding(
+              //   padding: const EdgeInsets.all(15.0),
+              //   child: Row(
+              //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //     children: [
+              //       const Text(
+              //         "Specialists Near You",
+              //         style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+              //       ),
+              //       TextButton(
+              //         onPressed: () {
+              //           Navigator.push(
+              //             context,
+              //             MaterialPageRoute(
+              //               builder: (context) => const SpecialistsNearYou(),
+              //             ),
+              //           );
+              //         },
+              //         child: Text(
+              //           "See All",
+              //           style: TextStyle(color: MyAppColors.third),
+              //         ),
+              //       ),
+              //     ],
+              //   ),
+              // ),
+
+              // SizedBox(
+              //   height: 125,
+              //   child: Row(
+              //     mainAxisAlignment: MainAxisAlignment.start,
+              //     crossAxisAlignment: CrossAxisAlignment.start,
+              //     children: [
+              //       Expanded(
+              //         child: ListView(
+              //           scrollDirection: Axis.horizontal,
+              //           controller: scrollControllerBlog,
+              //           padding: const EdgeInsets.only(
+              //             left: 15,
+              //             right: 15,
+              //             bottom: 5,
+              //           ),
+              //           children: List.generate(10, (index) {
+              //             return getSpecialistDoctorCard(
+              //               context: context,
+              //               data: SpecialistsNearYouModel(
+              //                 image:
+              //                     "https://www.figma.com/file/8frEvJAGHDh0TUQVUTXRF6/image/181a9ed08884107a88ece2bdbbae5d5fa943a40a",
+              //                 address: "Hathazari Medical",
+              //                 category: "General Specialist",
+              //                 distance: "3.5 km",
+              //                 name: "Dr. Ahmed Ali",
+              //               ),
+              //               width: 300.0,
+              //               height: 120.0,
+              //               onTap: () {},
+              //               catalogFontSize: 10.0,
+              //               nameFontSize: 16.0,
+              //               distanceFontSize: 12.0,
+              //               addressFontSize: 10.0,
+              //               iconHeight: 15.0,
+              //             );
+              //           }),
+              //         ),
+              //       ),
+              //     ],
+              //   ),
+              // ),
+              Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      "Our Blogs & Tips",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const BlogListView(),
+                          ),
+                        );
+                      },
+                      child: Text(
+                        "See All",
+                        style: TextStyle(color: MyAppColors.third),
+                      ),
                     ),
                   ],
                 ),
               ),
-            ),
-          ],
+              SizedBox(
+                height: 210,
+                child: Obx(
+                  () => Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: ListView(
+                          scrollDirection: Axis.horizontal,
+                          controller: scrollControllerBlog,
+                          children: List.generate(
+                            allInfoController.getBlogList.length,
+                            (index) {
+                              return getBlogCard(
+                                context,
+                                allInfoController.getBlogList[index],
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

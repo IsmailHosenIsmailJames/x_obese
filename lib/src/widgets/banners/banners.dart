@@ -27,7 +27,9 @@ class _BannersState extends State<Banners> {
 
     if (bannersFormDB.isNotEmpty) {
       bannersModelList =
-          bannersFormDB.map((e) => BannerModel.fromMap(e)).toList();
+          bannersFormDB
+              .map((e) => BannerModel.fromMap(Map<String, dynamic>.from(e)))
+              .toList();
     }
 
     setState(() {});

@@ -19,7 +19,7 @@ class _SpecialistsNearYouState extends State<SpecialistsNearYou> {
         child: Column(
           children: [
             Padding(
-              padding: EdgeInsets.all(20),
+              padding: const EdgeInsets.all(20),
               child: Row(
                 children: [
                   getBackButton(context, () {
@@ -35,7 +35,7 @@ class _SpecialistsNearYouState extends State<SpecialistsNearYou> {
             ),
             Expanded(
               child: ListView.builder(
-                padding: EdgeInsets.all(20),
+                padding: const EdgeInsets.all(20),
                 itemBuilder: (context, index) {
                   return Padding(
                     padding: const EdgeInsets.only(top: 10, bottom: 10),

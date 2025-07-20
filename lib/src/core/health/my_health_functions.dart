@@ -24,6 +24,18 @@ class MyHealthFunctions {
   static Future<void> installHealthConnect() async =>
       await _health.installHealthConnect();
 
+  static Future<bool> hasPermissions() async {
+    List<HealthDataType> types = getAllTypes();
+    List<HealthDataAccess> permissions = getPermissionsType(types);
+
+    // Check if we have health permissions
+    bool? hasPermissions = await _health.hasPermissions(
+      types,
+      permissions: permissions,
+    );
+    return hasPermissions ?? false;
+  }
+
   static Future<AppState> authorizePermissions() async {
     // If we are trying to read Step Count, Workout, Sleep or other data that requires
     // the ACTIVITY_RECOGNITION permission, we need to request the permission first.
@@ -86,14 +98,7 @@ class MyHealthFunctions {
 
     // Or both READ and WRITE
 
-    List<HealthDataType> readOnlyTypes = [
-      HealthDataType.WALKING_HEART_RATE,
-      HealthDataType.ELECTROCARDIOGRAM,
-      HealthDataType.HIGH_HEART_RATE_EVENT,
-      HealthDataType.LOW_HEART_RATE_EVENT,
-      HealthDataType.IRREGULAR_HEART_RATE_EVENT,
-      HealthDataType.EXERCISE_TIME,
-    ];
+    List<HealthDataType> readOnlyTypes = [HealthDataType.WORKOUT];
 
     List<HealthDataAccess> permissions = [];
     for (var type in types) {
@@ -157,10 +162,83 @@ class MyHealthFunctions {
     // });
   }
 
-  static Future<int?> fetchStepData(
+  static Future<int?> fetchSteps(DateTime startTime, DateTime endTime) async {
+    return await _health.getTotalStepsInInterval(startTime, endTime);
+  }
+
+  static Future<double> fetchCalories(
     DateTime startTime,
     DateTime endTime,
   ) async {
-    return await _health.getTotalStepsInInterval(startTime, endTime);
+    double calories = 0;
+    try {
+      List<HealthDataPoint> healthData = await _health.getHealthDataFromTypes(
+        types: [HealthDataType.ACTIVE_ENERGY_BURNED],
+        startTime: startTime,
+        endTime: endTime,
+      );
+
+      log(healthData.toString(), name: "MyHealthFunctions");
+      for (final dataPoint in healthData) {
+        log(dataPoint.value.toString(), name: "MyHealthFunctions");
+        final value = dataPoint.value as NumericHealthValue?;
+        if (value != null) {
+          calories += value.numericValue.toDouble();
+        }
+      }
+    } catch (e) {
+      log("Error fetching calories: $e", name: "MyHealthFunctions");
+    }
+    return calories;
+  }
+
+  static Future<int> fetchHeartPoints(
+    DateTime startTime,
+    DateTime endTime,
+  ) async {
+    int heartPoints = 0;
+    try {
+      List<HealthDataPoint> healthData = await _health.getHealthDataFromTypes(
+        types: [HealthDataType.ACTIVE_ENERGY_BURNED],
+        startTime: startTime,
+        endTime: endTime,
+      );
+
+      for (final dataPoint in healthData) {
+        final value = dataPoint.value as NumericHealthValue?;
+        if (value != null) {
+          heartPoints += value.numericValue.toInt();
+        }
+      }
+    } catch (e) {
+      log("Error fetching heart points: $e", name: "MyHealthFunctions");
+    }
+    return heartPoints;
+  }
+
+  static Future<int> fetchWorkoutTime(
+    DateTime startTime,
+    DateTime endTime,
+  ) async {
+    int workoutTime = 0;
+    try {
+      List<HealthDataPoint> healthData = await _health.getHealthDataFromTypes(
+        types: [HealthDataType.WORKOUT],
+        startTime: startTime,
+        endTime: endTime,
+      );
+
+      for (final dataPoint in healthData) {
+        final value = dataPoint.value as WorkoutHealthValue?;
+        if (value != null) {
+          workoutTime +=
+              (dataPoint.dateTo.millisecondsSinceEpoch -
+                  dataPoint.dateFrom.millisecondsSinceEpoch);
+        }
+      }
+    } catch (e) {
+      log('Error fetching workout time: $e', name: 'MyHealthFunctions');
+    }
+    return workoutTime;
   }
 }
