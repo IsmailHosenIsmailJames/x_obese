@@ -2,7 +2,7 @@ import "package:flutter/material.dart";
 import "package:x_obese/src/screens/intro/pages/intro_page_1.dart";
 import "package:x_obese/src/screens/intro/pages/intro_page_2.dart";
 import "package:x_obese/src/screens/intro/pages/intro_page_3.dart";
-import "package:x_obese/src/screens/intro/pages/intro_page_4.dart";
+// import "package:x_obese/src/screens/intro/pages/intro_page_4.dart";
 import "package:x_obese/src/theme/colors.dart";
 import "package:smooth_page_indicator/smooth_page_indicator.dart";
 
@@ -28,14 +28,14 @@ class _IntroPageState extends State<IntroPage> {
               IntroPage1(pageController: pageController),
               IntroPage2(pageController: pageController),
               IntroPage3(pageController: pageController),
-              IntroPage4(pageController: pageController),
+              // IntroPage4(pageController: pageController),
             ],
           ),
           Align(
             alignment: const Alignment(0.9, 0.25),
             child: SmoothPageIndicator(
               controller: pageController,
-              count: 4,
+              count: 3,
 
               axisDirection: Axis.horizontal,
               effect: ExpandingDotsEffect(

@@ -1,0 +1,26 @@
+{
+    "success": true,
+    "message": "Get banners successfully!",
+    "data": [
+        {
+            "id": "5d5271fa-342c-4663-8e3e-f88e07c7562c",
+            "title": "banner 2",
+            "createdAt": "2025-07-20T06:26:44.000Z",
+            "updatedAt": "2025-07-20T06:26:44.000Z",
+            "imagePath": "http://103.168.140.134:6053/uploads/photos/e6a145e4-fc85-440f-9093-e76ddb15a1f8-1752992804462.png"
+        },
+        {
+            "id": "28484ecc-46ee-4182-a838-b99d696b9b81",
+            "title": "Banner 1",
+            "createdAt": "2025-07-20T06:06:24.000Z",
+            "updatedAt": "2025-07-20T06:06:24.000Z",
+            "imagePath": "http://103.168.140.134:6053/uploads/photos/8e865a8e-78ba-4fb1-a04d-e01e02963d92-1752991584932.png"
+        }
+    ],
+    "pagination": {
+        "current_page": 1,
+        "per_page": 20,
+        "total_page": 1,
+        "total_items": 2
+    }
+}
