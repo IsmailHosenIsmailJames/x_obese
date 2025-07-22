@@ -13,7 +13,6 @@ import "package:x_obese/src/core/health/my_health_functions.dart";
 import "package:x_obese/src/core/health/util.dart";
 import "package:x_obese/src/resources/svg_string.dart";
 import "package:x_obese/src/screens/info_collector/controller/all_info_controller.dart";
-import "package:x_obese/src/screens/resources/workout/status.dart";
 import "package:x_obese/src/theme/colors.dart";
 
 class PointsOverviewWidget extends StatefulWidget {

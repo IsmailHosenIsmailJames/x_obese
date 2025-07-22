@@ -60,6 +60,9 @@ class App extends StatelessWidget {
             initialData: info != null ? AllInfoModel.fromJson(info) : null,
           );
         },
+        "/workout": (BuildContext context) {
+          return const Scaffold(body: Center(child: Text("Workout")));
+        },
       },
       initialRoute:
           UserDB.userAllInfo() == null

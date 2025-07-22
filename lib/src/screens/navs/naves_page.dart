@@ -1,19 +1,14 @@
-import "dart:async";
-import "dart:developer";
-import "dart:io";
-
 import "package:flutter/material.dart";
 // import "package:flutter_foreground_task/flutter_foreground_task.dart";
 import "package:flutter_svg/svg.dart";
-import "package:fluttertoast/fluttertoast.dart";
 import "package:get/get.dart";
 import "package:hive_flutter/hive_flutter.dart";
-import "package:permission_handler/permission_handler.dart";
+import "package:x_obese/src/core/permissions/permission.dart";
 // import "package:x_obese/src/core/background/background_task.dart";
 import "package:x_obese/src/resources/svg_string.dart";
 import "package:x_obese/src/screens/activity/workout_page.dart";
-import "package:x_obese/src/screens/info_collector/controller/all_info_controller.dart";
 import "package:x_obese/src/screens/home/home_page.dart";
+import "package:x_obese/src/screens/info_collector/controller/all_info_controller.dart";
 import "package:x_obese/src/screens/marathon/marathon_page.dart";
 import "package:x_obese/src/screens/navs/controller/navs_controller.dart";
 import "package:x_obese/src/screens/settings/settings_page.dart";
@@ -21,7 +16,9 @@ import "package:x_obese/src/screens/settings/settings_page.dart";
 import "../../theme/colors.dart";
 
 class NavesPage extends StatefulWidget {
-  const NavesPage({super.key});
+  final bool? autonav;
+
+  const NavesPage({super.key, this.autonav});
 
   @override
   State<NavesPage> createState() => _NavesPageState();
@@ -33,47 +30,6 @@ class _NavesPageState extends State<NavesPage> {
 
   final userBox = Hive.box("user");
   AllInfoController allInfoController = Get.put(AllInfoController());
-
-  Future<void> _requestPermissions() async {
-    final PermissionStatus notificationPermission =
-        await Permission.notification.status;
-    if (notificationPermission != PermissionStatus.granted) {
-      await Permission.notification.request();
-    }
-
-    var ignoreBatteryOpt = await Permission.ignoreBatteryOptimizations.status;
-    if (ignoreBatteryOpt != PermissionStatus.granted && Platform.isAndroid) {
-      ignoreBatteryOpt = await Permission.ignoreBatteryOptimizations.request();
-    }
-
-    if (Platform.isAndroid) {
-      if (!await Permission.ignoreBatteryOptimizations.isGranted) {
-        await Permission.ignoreBatteryOptimizations.request();
-      }
-
-      if (!await Permission.scheduleExactAlarm.isGranted) {
-        await Permission.scheduleExactAlarm.request();
-      }
-    }
-    try {
-      if (Platform.isAndroid) {
-        bool status = await Permission.activityRecognition.isGranted;
-        if (!status) {
-          PermissionStatus requestStatus =
-              await Permission.activityRecognition.request();
-          if (!requestStatus.isGranted) {
-            Fluttertoast.showToast(
-              msg: "Please allow access Physical activity",
-            );
-            await openAppSettings();
-          }
-        }
-        log(status.toString(), name: "Permission status");
-      }
-    } catch (e) {
-      log(e.toString(), name: "Permission error");
-    }
-  }
 
   // void _initService() {
   // FlutterForegroundTask.init(
@@ -128,7 +84,7 @@ class _NavesPageState extends State<NavesPage> {
     // FlutterForegroundTask.addTaskDataCallback(_onReceiveTaskData);
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await _requestPermissions();
+      await requestPermissions();
     });
   }
 
