@@ -4,8 +4,10 @@ import "dart:developer";
 
 import "package:flutter/foundation.dart";
 import "package:flutter_foreground_task/flutter_foreground_task.dart";
-import "package:geolocator/geolocator.dart";
+import "package:geolocator/geolocator.dart" hide ActivityType;
+import "package:get/get.dart";
 import "package:shared_preferences/shared_preferences.dart";
+import "package:x_obese/src/core/common/functions/calculate_distance.dart";
 
 @pragma("vm:entry-point")
 void startCallback() {
@@ -26,6 +28,34 @@ class ForegroundExerciseTask extends TaskHandler {
       "geolocationHistory",
       geolocationHistory,
     );
+
+    String? activityType = sharedPreferences.getString("workout_type");
+    String sh = activityType ??= "walking";
+    ActivityType activity = ActivityType.values.firstWhere(
+      (element) => element.name == sh,
+    );
+    List<Position> positions =
+        geolocationHistory.map((e) => Position.fromMap(jsonDecode(e))).toList();
+    WorkoutCalculationResult workoutCalculationResult =
+        WorkoutCalculator(
+          rawPositions: positions,
+          activityType: activity,
+        ).processData();
+    double distanceEveryPaused =
+        sharedPreferences.getDouble("distanceEveryPaused") ?? 0.0;
+
+    if (positions.isEmpty) {
+      return;
+    }
+    int durationInSec =
+        positions.first.timestamp.difference(DateTime.now()).inSeconds.abs();
+    FlutterForegroundTask.updateService(
+      notificationTitle: "Workout is running",
+      notificationText:
+          "Distance: ${(distanceEveryPaused + workoutCalculationResult.totalDistance / 1000).toPrecision(2)} km, Duration: ${durationInSec ~/ 60}:${durationInSec % 60} min, Avg speed: ${((positions.last.speed == 0.0 ? workoutCalculationResult.averageSpeed : positions.last.speed) * 3.6).toPrecision(2)} km/h",
+      callback: startCallback,
+    );
+
     log("geolocationHistory: ${geolocationHistory.length}");
     FlutterForegroundTask.sendDataToMain(geolocationHistory);
   }

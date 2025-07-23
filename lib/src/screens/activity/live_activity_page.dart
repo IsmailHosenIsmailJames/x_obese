@@ -73,7 +73,8 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
       SharedPreferences sharedPreferences =
           await SharedPreferences.getInstance();
       await sharedPreferences.reload();
-
+      distanceEveryPaused =
+          sharedPreferences.getDouble("distanceEveryPaused") ?? 0;
       String? previousWorkoutType = sharedPreferences.getString("workout_type");
       if (previousWorkoutType != widget.workoutType.name) {
         await dismissWorkout();
@@ -145,6 +146,10 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
                 activityType: widget.workoutType,
               ).processData().totalDistance;
           sharedPreferences.setStringList("geolocationHistory", []);
+          sharedPreferences.setDouble(
+            "distanceEveryPaused",
+            distanceEveryPaused,
+          );
         }
       }
       if (!isDispose) setState(() {});
@@ -267,12 +272,14 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
                   actions: [
                     TextButton(
                       onPressed: () {
+                        showBackWarning = true;
                         Navigator.pop(context);
                       },
-                      child: const Text("No"),
+                      child: const Text("Cancel"),
                     ),
                     TextButton(
                       onPressed: () {
+                        showBackWarning = false;
                         Navigator.pop(context);
                         Navigator.pop(context);
                         dismissWorkout();
