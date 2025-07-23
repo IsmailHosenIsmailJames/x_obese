@@ -744,7 +744,7 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
     showDialog(
       context: context,
       builder:
-          (context) => Dialog(
+          (dialogContext) => Dialog(
             insetPadding: const EdgeInsets.all(10),
 
             child: Container(
@@ -791,7 +791,7 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
                         ),
                         onPressed: () {
                           showBackWarning = false;
-                          Navigator.pop(context);
+                          Navigator.pop(dialogContext);
                         },
                         icon: const Icon(
                           Icons.arrow_right_alt_outlined,
@@ -805,7 +805,7 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
                           backgroundColor: MyAppColors.transparentGray,
                         ),
                         onPressed: () async {
-                          Navigator.pop(context);
+                          Navigator.pop(dialogContext);
                           await saveWorkout(context, workoutCalculationResult);
                           await dismissWorkout();
                         },
@@ -825,7 +825,9 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
     BuildContext context,
     workout_calculator.WorkoutCalculationResult workoutCalculationResult,
   ) async {
+    if (!mounted) return;
     if (await checkConnectivity() == false) {
+      if (!mounted) return;
       showDialog(
         context: context,
         builder:
@@ -883,17 +885,22 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
 
       if (res != null) response = res;
 
-      if (response?.statusCode == 200 || response?.statusCode == 201) {
-        Navigator.pop(context);
-      }
+      if (!mounted) return;
+      Navigator.pop(context); // Pop loading
+
       if (response?.statusCode == 200 || response?.statusCode == 201) {
         Fluttertoast.showToast(msg: "Saved successfully");
-        Navigator.pop(context);
+        if (mounted) {
+          Navigator.pop(context);
+        }
       } else {
-        Navigator.pop(context);
         Fluttertoast.showToast(msg: "Unable to save, try again");
       }
     } on DioException catch (e) {
+      if (mounted) {
+        Navigator.pop(context);
+        Fluttertoast.showToast(msg: "An error occurred while saving.");
+      }
       printResponse(e.response!);
     }
   }

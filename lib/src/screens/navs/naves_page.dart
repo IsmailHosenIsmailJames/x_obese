@@ -1,4 +1,5 @@
 import "dart:convert";
+import "dart:developer";
 
 import "package:flutter/material.dart";
 // import "package:flutter_foreground_task/flutter_foreground_task.dart";
@@ -96,31 +97,38 @@ class _NavesPageState extends State<NavesPage> {
         pageController.jumpToPage(1);
         SharedPreferences sharedPreferences =
             await SharedPreferences.getInstance();
+        await sharedPreferences.reload();
         String? workoutType = sharedPreferences.getString("workout_type");
+        log("workoutType: $workoutType");
         if (workoutType == null) {
           ActivityType? activityType = ActivityType.values.firstWhereOrNull(
             (element) => element.name == workoutType,
           );
+          log(activityType.toString(), name: "activityType");
           if (activityType == null) {
             return;
           }
           List<String> geolocationHistory =
               sharedPreferences.getStringList("geolocationHistory") ?? [];
           if (geolocationHistory.isEmpty) {
+            log("geolocationHistory is empty");
             return;
           }
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder:
-                  (context) => LiveActivityPage(
-                    workoutType: activityType,
-                    initialLatLon: Position.fromMap(
-                      jsonDecode(geolocationHistory.first),
+          log("Auto Nav: ${geolocationHistory.length}");
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder:
+                    (context) => LiveActivityPage(
+                      workoutType: activityType,
+                      initialLatLon: Position.fromMap(
+                        jsonDecode(geolocationHistory.first),
+                      ),
                     ),
-                  ),
-            ),
-          );
+              ),
+            );
+          });
         }
       }
     });

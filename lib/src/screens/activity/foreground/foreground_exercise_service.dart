@@ -14,8 +14,11 @@ void startCallback() {
 
 class ForegroundExerciseTask extends TaskHandler {
   Future<void> _handleGeolocationHistory() async {
-    Position position = await Geolocator.getCurrentPosition();
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    await sharedPreferences.reload();
+    bool isPaused = sharedPreferences.getBool("isPaused") ?? false;
+    if (isPaused) return;
+    Position position = await Geolocator.getCurrentPosition();
     List<String> geolocationHistory =
         sharedPreferences.getStringList("geolocationHistory") ?? [];
     geolocationHistory.add(jsonEncode(position));

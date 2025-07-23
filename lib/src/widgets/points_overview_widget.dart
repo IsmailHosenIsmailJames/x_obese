@@ -68,28 +68,28 @@ class _PointsOverviewWidgetState extends State<PointsOverviewWidget> {
       log(steps.toString(), name: "Steps");
     }
 
-    double calories = await MyHealthFunctions.fetchCalories(
-      DateTime(now.year, now.month, now.day),
-      now,
-    );
-    controller.workStatus.value.calories = calories.toString();
-    log(calories.toString(), name: "Calories");
+    // double calories = await MyHealthFunctions.fetchCalories(
+    //   DateTime(now.year, now.month, now.day),
+    //   now,
+    // );
+    // controller.workStatus.value.calories = calories.toString();
+    // log(calories.toString(), name: "Calories");
 
-    int heartPoints = await MyHealthFunctions.fetchHeartPoints(
-      // this week
-      DateTime(now.year, now.month, now.day).subtract(const Duration(days: 7)),
-      now,
-    );
-    controller.workStatus.value.heartPts = heartPoints.toString();
+    // int heartPoints = await MyHealthFunctions.fetchHeartPoints(
+    //   // this week
+    //   DateTime(now.year, now.month, now.day).subtract(const Duration(days: 7)),
+    //   now,
+    // );
+    // controller.workStatus.value.heartPts = heartPoints.toString();
 
-    log(heartPoints.toString(), name: "Heart Points");
+    // log(heartPoints.toString(), name: "Heart Points");
 
-    int workoutTime = await MyHealthFunctions.fetchWorkoutTime(
-      DateTime(now.year, now.month, now.day),
-      now,
-    );
-    controller.workStatus.value.durationMs = workoutTime * 60000;
-    log(workoutTime.toString(), name: "Workout Time");
+    // int workoutTime = await MyHealthFunctions.fetchWorkoutTime(
+    //   DateTime(now.year, now.month, now.day),
+    //   now,
+    // );
+    // controller.workStatus.value.durationMs = workoutTime * 60000;
+    // log(workoutTime.toString(), name: "Workout Time");
   }
 
   @override
