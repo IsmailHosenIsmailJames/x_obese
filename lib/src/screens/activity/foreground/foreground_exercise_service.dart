@@ -1,5 +1,6 @@
 import "dart:async";
 import "dart:convert";
+import "dart:developer";
 
 import "package:flutter/foundation.dart";
 import "package:flutter_foreground_task/flutter_foreground_task.dart";
@@ -22,6 +23,7 @@ class ForegroundExerciseTask extends TaskHandler {
       "geolocationHistory",
       geolocationHistory,
     );
+    log("geolocationHistory: ${geolocationHistory.length}");
     FlutterForegroundTask.sendDataToMain(geolocationHistory);
   }
 
@@ -79,5 +81,6 @@ Future dismissWorkout() async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
   await sharedPreferences.remove("geolocationHistory");
   await sharedPreferences.remove("workout_type");
+  await sharedPreferences.remove("isPaused");
   FlutterForegroundTask.stopService();
 }

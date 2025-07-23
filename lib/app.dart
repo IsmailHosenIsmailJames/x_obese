@@ -61,7 +61,7 @@ class App extends StatelessWidget {
           );
         },
         "/workout": (BuildContext context) {
-          return const Scaffold(body: Center(child: Text("Workout")));
+          return const NavesPage(autoNavToWorkout: true);
         },
       },
       initialRoute:

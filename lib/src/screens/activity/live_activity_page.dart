@@ -1,4 +1,6 @@
 import "dart:async";
+import "dart:convert";
+import "dart:developer";
 
 import "package:dio/dio.dart" as dio;
 import "package:dio/dio.dart";
@@ -51,12 +53,13 @@ class LiveActivityPage extends StatefulWidget {
 }
 
 class _LiveActivityPageState extends State<LiveActivityPage> {
-  bool isPaused = false;
   final Completer<GoogleMapController> googleMapController =
       Completer<GoogleMapController>();
   double distanceEveryPaused = 0;
   late List<Position> latLonOfPositions = [widget.initialLatLon];
   int workoutDurationSec = 1;
+  bool isPaused = false;
+  late AllInfoController controller;
 
   late StreamSubscription streamSubscription;
 
@@ -69,6 +72,27 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
       await requestPermissions();
       SharedPreferences sharedPreferences =
           await SharedPreferences.getInstance();
+      await sharedPreferences.reload();
+
+      String? previousWorkoutType = sharedPreferences.getString("workout_type");
+      if (previousWorkoutType != widget.workoutType.name) {
+        await dismissWorkout();
+      }
+
+      latLonOfPositions =
+          (sharedPreferences.getStringList("geolocationHistory") ?? [])
+              .map((e) => Position.fromMap(jsonDecode(e)))
+              .toList();
+
+      if (latLonOfPositions.isNotEmpty) {
+        workoutDurationSec =
+            latLonOfPositions.first.timestamp
+                .difference(latLonOfPositions.last.timestamp)
+                .inSeconds
+                .abs();
+      } else {
+        latLonOfPositions = [widget.initialLatLon];
+      }
       await sharedPreferences.setString(
         "workout_type",
         widget.workoutType.name,
@@ -79,15 +103,37 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
         await _startService();
       }
     });
-    streamSubscription = Geolocator.getPositionStream(
-      locationSettings: AndroidSettings(accuracy: LocationAccuracy.high),
-    ).listen((event) async {
+    streamSubscription = Stream.periodic(const Duration(seconds: 5), (
+      computationCount,
+    ) {
+      return DateTime.now();
+    }).listen((event) async {
+      SharedPreferences sharedPreferences =
+          await SharedPreferences.getInstance();
+      await sharedPreferences.reload();
+      isPaused = sharedPreferences.getBool("isPaused") ?? false;
       if (!isPaused) {
-        latLonOfPositions.add(event);
+        latLonOfPositions =
+            (sharedPreferences.getStringList("geolocationHistory") ?? [])
+                .map((e) => Position.fromMap(jsonDecode(e)))
+                .toList();
+
+        log(
+          latLonOfPositions.length.toString(),
+          name: "onPage-> latLonOfPositions",
+        );
+
+        if (latLonOfPositions.isEmpty) {
+          latLonOfPositions = [widget.initialLatLon];
+        }
+
         final controller = await googleMapController.future;
         controller.animateCamera(
           CameraUpdate.newLatLngZoom(
-            LatLng(event.latitude, event.longitude),
+            LatLng(
+              latLonOfPositions.last.latitude,
+              latLonOfPositions.last.longitude,
+            ),
             16.5,
           ),
         );
@@ -98,12 +144,19 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
                 rawPositions: latLonOfPositions,
                 activityType: widget.workoutType,
               ).processData().totalDistance;
-          latLonOfPositions = [];
+          sharedPreferences.setStringList("geolocationHistory", []);
         }
       }
+      if (!isDispose) setState(() {});
     });
 
-    Timer.periodic(const Duration(seconds: 1), (timer) {
+    Timer.periodic(const Duration(seconds: 1), (timer) async {
+      SharedPreferences sharedPreferences =
+          await SharedPreferences.getInstance();
+      await sharedPreferences.reload();
+
+      isPaused = sharedPreferences.getBool("isPaused") ?? false;
+
       if (isPaused == false) {
         workoutDurationSec++;
         if (!isDispose) setState(() {});
@@ -186,6 +239,8 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
     }
   }
 
+  bool showBackWarning = true;
+
   @override
   Widget build(BuildContext context) {
     workout_calculator.WorkoutCalculationResult workoutCalculationResult =
@@ -196,38 +251,41 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
     return PopScope(
       canPop: false,
       onPopInvoked: (didPop) async {
-        showDialog(
-          context: context,
-          builder:
-              (context) => AlertDialog(
-                title: const Text(
-                  "Are you sure?",
-                  style: TextStyle(color: Colors.red),
-                ),
-                content: const Text(
-                  "Are you sure you want to cancel the workout?",
-                ),
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: const Text("No"),
+        await Future.delayed(const Duration(milliseconds: 200));
+        if (showBackWarning) {
+          showDialog(
+            context: context,
+            builder:
+                (context) => AlertDialog(
+                  title: const Text(
+                    "Are you sure?",
+                    style: TextStyle(color: Colors.red),
                   ),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                      Navigator.pop(context);
-                      dismissWorkout();
-                    },
-                    child: const Text(
-                      "Yes",
-                      style: TextStyle(color: Colors.red),
+                  content: const Text(
+                    "Are you sure you want to cancel the workout?",
+                  ),
+                  actions: [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: const Text("No"),
                     ),
-                  ),
-                ],
-              ),
-        );
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                        Navigator.pop(context);
+                        dismissWorkout();
+                      },
+                      child: const Text(
+                        "Yes",
+                        style: TextStyle(color: Colors.red),
+                      ),
+                    ),
+                  ],
+                ),
+          );
+        }
       },
       child: Scaffold(
         body: SafeArea(
@@ -245,6 +303,7 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
                 child: Row(
                   children: [
                     getBackButton(context, () {
+                      showBackWarning = false;
                       showCancelAndBackPopup();
                     }),
                     const Gap(70),
@@ -571,10 +630,19 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
                                               backgroundColor:
                                                   MyAppColors.transparentGray,
                                             ),
-                                            onPressed: () {
-                                              setState(() {
-                                                isPaused = !isPaused;
-                                              });
+                                            onPressed: () async {
+                                              isPaused = !isPaused;
+
+                                              SharedPreferences
+                                              sharedPreferences =
+                                                  await SharedPreferences.getInstance();
+                                              await sharedPreferences.reload();
+
+                                              await sharedPreferences.setBool(
+                                                "isPaused",
+                                                isPaused,
+                                              );
+                                              setState(() {});
                                             },
                                             icon: SvgPicture.string(
                                               isPaused
@@ -602,6 +670,7 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
                                                   MyAppColors.transparentGray,
                                             ),
                                             onPressed: () {
+                                              showBackWarning = false;
                                               showSaveWorkoutPopupWithInfo(
                                                 context,
                                                 workoutCalculationResult,
@@ -655,6 +724,7 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
             TextButton(
               onPressed: () {
                 Navigator.pop(context);
+                showBackWarning = true;
               },
               child: const Text(
                 "Continue Workout",
@@ -720,6 +790,7 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
                           backgroundColor: MyAppColors.transparentGray,
                         ),
                         onPressed: () {
+                          showBackWarning = false;
                           Navigator.pop(context);
                         },
                         icon: const Icon(
@@ -736,6 +807,7 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
                         onPressed: () async {
                           Navigator.pop(context);
                           await saveWorkout(context, workoutCalculationResult);
+                          await dismissWorkout();
                         },
                         icon: const Icon(Icons.done, color: Colors.green),
                         label: const Text("Save Now"),

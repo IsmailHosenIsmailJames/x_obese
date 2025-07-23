@@ -1,11 +1,17 @@
+import "dart:convert";
+
 import "package:flutter/material.dart";
 // import "package:flutter_foreground_task/flutter_foreground_task.dart";
 import "package:flutter_svg/svg.dart";
+import "package:geolocator/geolocator.dart" hide ActivityType;
 import "package:get/get.dart";
 import "package:hive_flutter/hive_flutter.dart";
+import "package:shared_preferences/shared_preferences.dart";
+import "package:x_obese/src/core/common/functions/calculate_distance.dart";
 import "package:x_obese/src/core/permissions/permission.dart";
 // import "package:x_obese/src/core/background/background_task.dart";
 import "package:x_obese/src/resources/svg_string.dart";
+import "package:x_obese/src/screens/activity/live_activity_page.dart";
 import "package:x_obese/src/screens/activity/workout_page.dart";
 import "package:x_obese/src/screens/home/home_page.dart";
 import "package:x_obese/src/screens/info_collector/controller/all_info_controller.dart";
@@ -16,9 +22,9 @@ import "package:x_obese/src/screens/settings/settings_page.dart";
 import "../../theme/colors.dart";
 
 class NavesPage extends StatefulWidget {
-  final bool? autonav;
+  final bool? autoNavToWorkout;
 
-  const NavesPage({super.key, this.autonav});
+  const NavesPage({super.key, this.autoNavToWorkout});
 
   @override
   State<NavesPage> createState() => _NavesPageState();
@@ -85,6 +91,38 @@ class _NavesPageState extends State<NavesPage> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await requestPermissions();
+      if (widget.autoNavToWorkout == true) {
+        navsController.changeBottomNav(1);
+        pageController.jumpToPage(1);
+        SharedPreferences sharedPreferences =
+            await SharedPreferences.getInstance();
+        String? workoutType = sharedPreferences.getString("workout_type");
+        if (workoutType == null) {
+          ActivityType? activityType = ActivityType.values.firstWhereOrNull(
+            (element) => element.name == workoutType,
+          );
+          if (activityType == null) {
+            return;
+          }
+          List<String> geolocationHistory =
+              sharedPreferences.getStringList("geolocationHistory") ?? [];
+          if (geolocationHistory.isEmpty) {
+            return;
+          }
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder:
+                  (context) => LiveActivityPage(
+                    workoutType: activityType,
+                    initialLatLon: Position.fromMap(
+                      jsonDecode(geolocationHistory.first),
+                    ),
+                  ),
+            ),
+          );
+        }
+      }
     });
   }
 
