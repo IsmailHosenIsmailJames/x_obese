@@ -31,7 +31,7 @@ PODS:
   - GoogleMaps/Base (8.4.0)
   - GoogleMaps/Maps (8.4.0):
     - GoogleMaps/Base
-  - health (13.1.0):
+  - health (13.1.1):
     - Flutter
   - image_picker_ios (0.0.1):
     - Flutter
@@ -138,7 +138,7 @@ SPEC CHECKSUMS:
   Google-Maps-iOS-Utils: 66d6de12be1ce6d3742a54661e7a79cb317a9321
   google_maps_flutter_ios: 0291eb2aa252298a769b04d075e4a9d747ff7264
   GoogleMaps: 8939898920281c649150e0af74aa291c60f2e77d
-  health: e42053a628b0e9a2de7c78d4a01bf9d90ce33d76
+  health: 0488159eaa0cb4551cb066fe469c6a647416ca1a
   image_picker_ios: 7fe1ff8e34c1790d6fff70a32484959f563a928a
   IosAwnCore: 653786a911089012092ce831f2945cd339855a89
   package_info_plus: af8e2ca6888548050f16fa2f1938db7b5a5df499

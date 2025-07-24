@@ -17,7 +17,9 @@ class MyHealthFunctions {
   static Future<HealthConnectSdkStatus?> getSdkConfigurationStatus() async {
     // configure the health plugin before use and check the Health Connect status
     await init();
-    assert(Platform.isAndroid, "This is only available on Android");
+    if (Platform.isIOS) {
+      return HealthConnectSdkStatus.sdkAvailable;
+    }
     return await _health.getHealthConnectSdkStatus();
   }
 

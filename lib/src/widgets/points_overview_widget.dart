@@ -46,11 +46,11 @@ class _PointsOverviewWidgetState extends State<PointsOverviewWidget> {
               ? AppState.AUTHORIZED
               : AppState.AUTH_NOT_GRANTED;
     }
-    await fetchData();
+    if (appState == AppState.AUTHORIZED) await fetchData();
     streamSubscription = Stream.periodic(const Duration(minutes: 1)).listen((
       event,
     ) {
-      fetchData();
+      if (appState == AppState.AUTHORIZED) fetchData();
     });
 
     initCallFinished = true;
