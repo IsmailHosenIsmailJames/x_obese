@@ -85,18 +85,12 @@ class _PopupWidgetState extends State<PopupWidget> {
                               ? (controllerGetx.downloadProgress.value > 0.99 ||
                                       isDownloaded ||
                                       widget.isExitsSameVersionAPK)
-                                  ? const Icon(
-                                    Icons.download_done,
-                                    color: Colors.white,
-                                  )
+                                  ? const Icon(Icons.download_done)
                                   : null
                               : (controllerGetx.downloadProgress.value > 0.99 ||
                                   isDownloaded ||
                                   widget.isExitsSameVersionAPK)
-                              ? const Icon(
-                                Icons.download_done,
-                                color: Colors.white,
-                              )
+                              ? const Icon(Icons.download_done)
                               : CircularProgressIndicator(
                                 color: Colors.white,
                                 value: controllerGetx.downloadProgress.value,
