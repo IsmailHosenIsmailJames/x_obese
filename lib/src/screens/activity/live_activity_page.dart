@@ -295,6 +295,7 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
         }
       },
       child: Scaffold(
+        backgroundColor: MyAppColors.primary,
         body: SafeArea(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,

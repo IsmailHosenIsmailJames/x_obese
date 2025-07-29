@@ -15,6 +15,8 @@ class _ShowSearchResultState extends State<ShowSearchResult> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: MyAppColors.primary,
+
       appBar: AppBar(title: const Text("Search Result"), centerTitle: true),
       body: ListView.builder(
         itemCount: widget.marathonUserList.length,

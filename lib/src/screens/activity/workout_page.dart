@@ -54,7 +54,7 @@ class _ActivityPageState extends State<ActivityPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xffFAFAFA),
+      backgroundColor: MyAppColors.primary,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(20.0),

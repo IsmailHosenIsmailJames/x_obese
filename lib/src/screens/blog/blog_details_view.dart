@@ -17,6 +17,7 @@ class _BlogDetailsViewState extends State<BlogDetailsView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: MyAppColors.primary,
       body: Stack(
         children: [
           SingleChildScrollView(

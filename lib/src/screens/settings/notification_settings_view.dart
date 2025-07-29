@@ -19,6 +19,7 @@ class _NotificationSettingsViewState extends State<NotificationSettingsView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: MyAppColors.primary,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(20),

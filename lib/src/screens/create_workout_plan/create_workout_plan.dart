@@ -5,6 +5,7 @@ import "package:x_obese/src/screens/create_workout_plan/model/create_workout_pla
 import "package:x_obese/src/screens/create_workout_plan/pages/page_1.dart";
 import "package:x_obese/src/screens/create_workout_plan/pages/page_2.dart";
 import "package:x_obese/src/screens/create_workout_plan/pages/page_3.dart";
+import "package:x_obese/src/theme/colors.dart";
 
 class CreateWorkoutPlan extends StatefulWidget {
   final CreateWorkoutPlanModel? createWorkoutPlanModel;
@@ -34,6 +35,7 @@ class _CreateWorkoutPlanState extends State<CreateWorkoutPlan> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: MyAppColors.primary,
       body: PageView(
         controller: pageController,
         physics: const NeverScrollableScrollPhysics(),

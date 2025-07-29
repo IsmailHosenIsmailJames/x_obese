@@ -14,6 +14,7 @@ class PersonalDetailsView extends StatelessWidget {
   Widget build(BuildContext context) {
     AllInfoController allInfoController = Get.find();
     return Scaffold(
+      backgroundColor: MyAppColors.primary,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(20),

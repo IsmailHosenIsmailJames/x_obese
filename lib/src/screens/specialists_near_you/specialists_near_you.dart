@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 import "package:gap/gap.dart";
 import "package:x_obese/src/screens/specialists_near_you/models/specialists_near_you_model.dart";
+import "package:x_obese/src/theme/colors.dart";
 import "package:x_obese/src/widgets/back_button.dart";
 import "package:x_obese/src/widgets/get_specialist_doctor_card.dart";
 
@@ -15,6 +16,7 @@ class _SpecialistsNearYouState extends State<SpecialistsNearYou> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: MyAppColors.primary,
       body: SafeArea(
         child: Column(
           children: [

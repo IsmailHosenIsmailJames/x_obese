@@ -70,6 +70,7 @@ class _BlogListViewState extends State<BlogListView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: MyAppColors.primary,
       body: Column(
         children: [
           SafeArea(

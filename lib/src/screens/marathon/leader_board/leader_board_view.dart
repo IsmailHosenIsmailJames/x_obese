@@ -53,7 +53,7 @@ class _LeaderBoardViewState extends State<LeaderBoardView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: MyAppColors.primary,
       body: Stack(
         children: [
           Padding(

@@ -3,6 +3,7 @@ import "package:gap/gap.dart";
 import "package:x_obese/src/screens/settings/personal_details_view.dart";
 import "package:x_obese/src/screens/settings/privacy_policy.dart";
 import "package:x_obese/src/screens/settings/terms_and_conditions.dart";
+import "package:x_obese/src/theme/colors.dart";
 import "package:x_obese/src/widgets/back_button.dart";
 
 class AboutView extends StatelessWidget {
@@ -11,6 +12,7 @@ class AboutView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: MyAppColors.primary,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(20),
