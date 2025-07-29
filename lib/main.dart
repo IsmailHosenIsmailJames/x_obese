@@ -10,6 +10,8 @@ import "package:x_obese/src/data/user_db.dart";
 import "package:x_obese/src/screens/auth/bloc/auth_bloc.dart";
 import "package:x_obese/src/screens/auth/repository/auth_repository.dart";
 
+bool isUpdateChecked = false;
+
 Future<void> main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);

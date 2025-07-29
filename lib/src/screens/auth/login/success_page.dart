@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 import "package:flutter_svg/svg.dart";
 import "package:x_obese/src/screens/navs/naves_page.dart";
+import "package:x_obese/src/theme/colors.dart";
 
 class LoginSuccessPage extends StatelessWidget {
   const LoginSuccessPage({super.key});
@@ -18,6 +19,7 @@ class LoginSuccessPage extends StatelessWidget {
   Widget build(BuildContext context) {
     autoRoute(context);
     return Scaffold(
+      backgroundColor: MyAppColors.primary,
       body: Center(
         child: SvgPicture.asset("assets/img/intro/success_screen.svg"),
       ),

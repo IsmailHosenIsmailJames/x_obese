@@ -1,7 +1,11 @@
+import "dart:io";
+
 import "package:flutter/material.dart";
 import "package:flutter_native_splash/flutter_native_splash.dart";
 import "package:hive_flutter/hive_flutter.dart";
+import "package:x_obese/main.dart";
 import "package:x_obese/src/core/common/functions/is_information_fulfilled.dart";
+import "package:x_obese/src/core/in_app_update/in_app_android_update/in_app_update_android.dart";
 import "package:x_obese/src/data/user_db.dart";
 import "package:x_obese/src/screens/auth/login/login_signup_page.dart";
 import "package:x_obese/src/screens/info_collector/info_collector.dart";
@@ -15,6 +19,9 @@ class App extends StatelessWidget {
   const App({super.key});
   @override
   Widget build(BuildContext context) {
+    if (isUpdateChecked != true) {
+      if (Platform.isAndroid) inAppUpdateAndroid(context);
+    }
     FlutterNativeSplash.remove();
     final PageTransitionsTheme pageTransitionsTheme =
         const PageTransitionsTheme(
@@ -32,7 +39,7 @@ class App extends StatelessWidget {
       theme: ThemeData(
         pageTransitionsTheme: pageTransitionsTheme,
         colorScheme: ColorScheme.fromSeed(
-          seedColor: MyAppColors.primary,
+          seedColor: MyAppColors.third,
           brightness: Brightness.light,
         ),
         fontFamily: "Lexend",
@@ -59,6 +66,9 @@ class App extends StatelessWidget {
           return InfoCollector(
             initialData: info != null ? AllInfoModel.fromJson(info) : null,
           );
+        },
+        "/workout": (BuildContext context) {
+          return const NavesPage(autoNavToWorkout: true);
         },
       },
       initialRoute:

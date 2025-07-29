@@ -41,6 +41,14 @@ class _OtpPageState extends State<OtpPage> {
     context.read<AuthBloc>().add(VerifyOTP(otp: otp, type: type, id: id));
   }
 
+  DateTime otpSentTime = DateTime.now();
+
+  Future<void> _resendOTP() async {
+    context.read<AuthBloc>().add(LoginRequested(widget.phone));
+    otpSentTime = DateTime.now();
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -145,16 +153,44 @@ class _OtpPageState extends State<OtpPage> {
                   ),
                 ),
                 const Gap(30),
-                TextButton(
-                  onPressed: () {},
-                  child: Text(
-                    "Resend Code",
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: MyAppColors.third,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
+                StreamBuilder<int>(
+                  stream: Stream.periodic(const Duration(seconds: 1), (x) {
+                    final secondsPassed =
+                        DateTime.now().difference(otpSentTime).inSeconds;
+                    final secondsLeft = 30 - secondsPassed;
+                    return secondsLeft > 0 ? secondsLeft : 0;
+                  }),
+                  builder: (context, snapshot) {
+                    final secondsLeft = snapshot.data ?? 0;
+                    return Column(
+                      children: [
+                        TextButton(
+                          onPressed:
+                              secondsLeft > 0
+                                  ? null
+                                  : () {
+                                    _resendOTP();
+                                  },
+                          child: Text(
+                            "Resend Code",
+                            style: TextStyle(
+                              fontSize: 14,
+                              color:
+                                  secondsLeft > 0
+                                      ? Colors.grey
+                                      : MyAppColors.third,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                        ),
+                        if (secondsLeft > 0)
+                          Text(
+                            "You can resend code in $secondsLeft seconds",
+                            style: const TextStyle(fontSize: 12),
+                          ),
+                      ],
+                    );
+                  },
                 ),
                 const Gap(30),
                 SizedBox(

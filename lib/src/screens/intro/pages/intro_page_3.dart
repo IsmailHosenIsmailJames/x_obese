@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 import "package:flutter_svg/svg.dart";
 import "package:gap/gap.dart";
+import "package:x_obese/src/screens/auth/login/login_signup_page.dart";
 import "package:x_obese/src/theme/colors.dart";
 
 class IntroPage3 extends StatelessWidget {
@@ -72,9 +73,12 @@ class IntroPage3 extends StatelessWidget {
                     height: 56,
                     child: ElevatedButton(
                       onPressed: () {
-                        pageController.nextPage(
-                          duration: const Duration(milliseconds: 200),
-                          curve: Curves.easeInOut,
+                        Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const LoginSignupPage(),
+                          ),
+                          (route) => true,
                         );
                       },
                       child: const Text(

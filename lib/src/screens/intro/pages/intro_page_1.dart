@@ -15,7 +15,7 @@ class IntroPage1 extends StatelessWidget {
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height * 0.80,
           child: Image.asset(
-            "assets/img/walking_competition.jpg",
+            "assets/img/madel.jpeg",
             fit: BoxFit.cover,
             alignment: Alignment.topCenter,
           ),

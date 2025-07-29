@@ -8,3 +8,4 @@ String saveStepsCount = "/api/user/v1/workout/steps";
 String workoutPlanPath = "/api/user/v1/workout/plan";
 String blogPath = "/api/other/v1/blog";
 String getUserWorkoutStatus = "/api/user/v1/workout";
+String banners = "/api/other/v1/banner";

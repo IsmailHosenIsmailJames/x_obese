@@ -2,6 +2,7 @@ import "package:flutter/material.dart";
 import "package:flutter_html/flutter_html.dart";
 import "package:gap/gap.dart";
 import "package:intl/intl.dart";
+import "package:x_obese/src/theme/colors.dart";
 import "package:x_obese/src/widgets/back_button.dart";
 
 class PrivacyPolicy extends StatelessWidget {
@@ -10,6 +11,7 @@ class PrivacyPolicy extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: MyAppColors.primary,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(10),

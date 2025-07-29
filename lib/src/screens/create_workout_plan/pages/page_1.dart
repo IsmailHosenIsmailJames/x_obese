@@ -53,6 +53,8 @@ class _CreateWorkoutPlanPage1State extends State<CreateWorkoutPlanPage1> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: MyAppColors.primary,
+
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(20.0),
