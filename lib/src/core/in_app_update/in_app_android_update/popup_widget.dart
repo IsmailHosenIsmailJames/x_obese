@@ -67,12 +67,11 @@ class _PopupWidgetState extends State<PopupWidget> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   const Gap(40),
-                  const Icon(Icons.download, color: Colors.white),
+                  const Icon(Icons.download),
                   const Gap(10),
                   Text(
                     "Update Available",
                     style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                      color: Colors.white,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
