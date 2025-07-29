@@ -3,22 +3,30 @@ import "dart:io";
 
 import "package:fluttertoast/fluttertoast.dart";
 import "package:permission_handler/permission_handler.dart";
+import "package:shared_preferences/shared_preferences.dart";
 
 Future<void> requestPermissions() async {
+  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+
   final PermissionStatus notificationPermission =
       await Permission.notification.status;
   if (notificationPermission != PermissionStatus.granted) {
     await Permission.notification.request();
   }
 
-  var ignoreBatteryOpt = await Permission.ignoreBatteryOptimizations.status;
-  if (ignoreBatteryOpt != PermissionStatus.granted && Platform.isAndroid) {
-    ignoreBatteryOpt = await Permission.ignoreBatteryOptimizations.request();
-  }
-
   if (Platform.isAndroid) {
+    bool? ignoreBatteryOptimizationsDenied = sharedPreferences.getBool(
+      "ignoreBatteryOptimizationsDenied",
+    );
     if (!await Permission.ignoreBatteryOptimizations.isGranted) {
-      await Permission.ignoreBatteryOptimizations.request();
+      if (ignoreBatteryOptimizationsDenied != true) {
+        PermissionStatus permissionStatus =
+            await Permission.ignoreBatteryOptimizations.request();
+        if (permissionStatus == PermissionStatus.denied ||
+            permissionStatus == PermissionStatus.permanentlyDenied) {
+          sharedPreferences.setBool("ignoreBatteryOptimizationsDenied", true);
+        }
+      }
     }
 
     if (!await Permission.scheduleExactAlarm.isGranted) {
