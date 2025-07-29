@@ -192,6 +192,7 @@ class _PopupWidgetState extends State<PopupWidget> {
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.white,
                                 shadowColor: Colors.transparent,
+                                padding: const EdgeInsets.all(0),
                               ),
                               onPressed: () {
                                 FlutterClipboard.copy(
@@ -222,6 +223,11 @@ class _PopupWidgetState extends State<PopupWidget> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       OutlinedButton(
+                        style: OutlinedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
                         onPressed:
                             widget.latestAppInfoAPIModel.forceToUpdate == true
                                 ? null
