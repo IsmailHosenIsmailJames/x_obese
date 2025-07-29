@@ -1,3 +1,5 @@
+import "dart:io";
+
 import "package:flutter/material.dart";
 import "package:flutter_native_splash/flutter_native_splash.dart";
 import "package:hive_flutter/hive_flutter.dart";
@@ -18,7 +20,7 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (isUpdateChecked != true) {
-      inAppUpdateAndroid(context);
+      if (Platform.isAndroid) inAppUpdateAndroid(context);
     }
     FlutterNativeSplash.remove();
     final PageTransitionsTheme pageTransitionsTheme =
