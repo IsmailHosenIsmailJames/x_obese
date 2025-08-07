@@ -14,6 +14,11 @@ X-Obese is a new fitness application designed to help users on their journey to 
 - **Personalized Information:**
     - **User Profile:** Collects and stores user data such as age, weight, and height for personalized recommendations.
     - **Onboarding:** An introductory flow for new users to get acquainted with the app.
+- **Community and Events:**
+    - **Marathon Programs:** Participate in virtual and on-site marathons.
+        - **Virtual Marathons:** Complete challenges from anywhere.
+        - **On-Site Marathons:** Join physical events organized by Radiant Pharmaceutical.
+    - **Blogs:** Read articles and updates from the admin panel.
 - **User Interface:**
     - **Customizable Theme:** A clean and modern UI with a custom color scheme and fonts.
     - **Animations & Visualizations:** Engaging animations and charts to visualize progress.
