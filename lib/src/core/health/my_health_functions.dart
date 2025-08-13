@@ -100,15 +100,11 @@ class MyHealthFunctions {
 
     // Or both READ and WRITE
 
-    List<HealthDataType> readOnlyTypes = [HealthDataType.WORKOUT];
+    // List<HealthDataType> readOnlyTypes = [HealthDataType.WORKOUT];
 
     List<HealthDataAccess> permissions = [];
-    for (var type in types) {
-      if (readOnlyTypes.contains(type)) {
-        permissions.add(HealthDataAccess.READ);
-      } else {
-        permissions.add(HealthDataAccess.READ_WRITE);
-      }
+    for (var _ in types) {
+      permissions.add(HealthDataAccess.READ_WRITE);
     }
     return permissions;
   }
