@@ -9,6 +9,16 @@ import "package:x_obese/src/core/health/util.dart";
 class MyHealthFunctions {
   static final _health = Health();
 
+  static List<HealthDataType> get types =>
+      (Platform.isAndroid)
+          ? dataTypesAndroid
+          : (Platform.isIOS)
+          ? dataTypesIOS
+          : [];
+
+  static List<HealthDataAccess> get permissions =>
+      types.map((type) => HealthDataAccess.READ).toList();
+
   static Future<void> init() async {
     await _health.configure();
     log("health initialized", name: "health");
@@ -77,36 +87,13 @@ class MyHealthFunctions {
       }
     }
 
-    return (authorized) ? AppState.AUTHORIZED : AppState.AUTH_NOT_GRANTED;
+    if (authorized == true) {
+      log(hasPermissions.toString(), name: "hasPermissions");
+      return AppState.AUTHORIZED;
+    } else {
+      return AppState.AUTH_NOT_GRANTED;
+    }
   }
-
-  static List<HealthDataType> get types =>
-      (Platform.isAndroid)
-          ? dataTypesAndroid
-          : (Platform.isIOS)
-          ? dataTypesIOS
-          : [];
-
-  static List<HealthDataAccess> get permissions =>
-      types
-          .map(
-            (type) =>
-                // can only request READ permissions to the following list of types on iOS
-                [
-                      HealthDataType.APPLE_MOVE_TIME,
-                      HealthDataType.APPLE_STAND_HOUR,
-                      HealthDataType.APPLE_STAND_TIME,
-                      HealthDataType.WALKING_HEART_RATE,
-                      HealthDataType.ELECTROCARDIOGRAM,
-                      HealthDataType.HIGH_HEART_RATE_EVENT,
-                      HealthDataType.LOW_HEART_RATE_EVENT,
-                      HealthDataType.IRREGULAR_HEART_RATE_EVENT,
-                      HealthDataType.EXERCISE_TIME,
-                    ].contains(type)
-                    ? HealthDataAccess.READ
-                    : HealthDataAccess.READ_WRITE,
-          )
-          .toList();
 
   static Future<List<HealthDataPoint>?> fetchData({
     required List<HealthDataType> types,

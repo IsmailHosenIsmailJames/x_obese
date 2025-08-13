@@ -45,6 +45,7 @@ class _PointsOverviewWidgetState extends State<PointsOverviewWidget> {
           await MyHealthFunctions.hasPermissions()
               ? AppState.AUTHORIZED
               : AppState.AUTH_NOT_GRANTED;
+      log(appState.toString(), name: "App State on InIt");
     }
     if (appState == AppState.AUTHORIZED) await fetchData();
     streamSubscription = Stream.periodic(const Duration(minutes: 1)).listen((
@@ -303,7 +304,7 @@ class _PointsOverviewWidgetState extends State<PointsOverviewWidget> {
                         onPressed: () async {
                           AppState appState =
                               await MyHealthFunctions.authorizePermissions();
-                          log(appState.toString());
+                          log(appState.toString(), name: "AppState");
                         },
                       ),
                     ],
