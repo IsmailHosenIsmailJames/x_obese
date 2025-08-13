@@ -7,7 +7,6 @@ import "package:gap/gap.dart";
 import "package:get/get.dart";
 import "package:hive_flutter/adapters.dart";
 import "package:intl/intl.dart";
-import "package:x_obese/src/core/health/my_health_functions.dart";
 import "package:x_obese/src/screens/navs/naves_page.dart";
 import "package:x_obese/src/resources/svg_string.dart";
 import "package:x_obese/src/screens/blog/blog_list_view.dart";
@@ -153,18 +152,17 @@ class _HomePageState extends State<HomePage> {
                         ],
                       ),
                     ),
-                    const Spacer(),
-                    IconButton(
-                      onPressed: () async {
-                        DateTime now = DateTime.now();
-                        double calories = await MyHealthFunctions.fetchCalories(
-                          DateTime(now.year, now.month, now.day),
-                          now,
-                        );
-                        log(calories.toString(), name: "Calories");
-                      },
-                      icon: SvgPicture.string(notificationSvg),
-                    ),
+
+                    // const Spacer(),
+                    // IconButton(
+                    //   onPressed: () async {
+                    //     Navigator.push(
+                    //       context,
+                    //       MaterialPageRoute(builder: (context) => HealthApp()),
+                    //     );
+                    //   },
+                    //   icon: SvgPicture.string(notificationSvg),
+                    // ),
                   ],
                 ),
               ),

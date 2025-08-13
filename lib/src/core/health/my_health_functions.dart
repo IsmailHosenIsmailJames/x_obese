@@ -27,9 +27,6 @@ class MyHealthFunctions {
       await _health.installHealthConnect();
 
   static Future<bool> hasPermissions() async {
-    List<HealthDataType> types = getAllTypes();
-    List<HealthDataAccess> permissions = getPermissionsType(types);
-
     // Check if we have health permissions
     bool? hasPermissions = await _health.hasPermissions(
       types,
@@ -47,8 +44,8 @@ class MyHealthFunctions {
     await Permission.activityRecognition.request();
     await Permission.location.request();
 
-    List<HealthDataType> types = getAllTypes();
-    List<HealthDataAccess> permissions = getPermissionsType(types);
+    log(types.length.toString());
+    log(permissions.length.toString());
 
     // Check if we have health permissions
     bool? hasPermissions = await _health.hasPermissions(
@@ -61,6 +58,7 @@ class MyHealthFunctions {
     hasPermissions = false;
 
     bool authorized = false;
+
     if (!hasPermissions) {
       // requesting access to the data types before reading them
       try {
@@ -82,32 +80,33 @@ class MyHealthFunctions {
     return (authorized) ? AppState.AUTHORIZED : AppState.AUTH_NOT_GRANTED;
   }
 
-  static List<HealthDataType> getAllTypes() {
-    // All types available depending on platform (iOS ot Android).
-    return (Platform.isAndroid)
-        ? dataTypesAndroid
-        : (Platform.isIOS)
-        ? dataTypesIOS
-        : [];
-  }
+  static List<HealthDataType> get types =>
+      (Platform.isAndroid)
+          ? dataTypesAndroid
+          : (Platform.isIOS)
+          ? dataTypesIOS
+          : [];
 
-  static List<HealthDataAccess> getPermissionsType(List<HealthDataType> types) {
-    // Set up corresponding permissions
-
-    // READ only
-    // List<HealthDataAccess> get permissions =>
-    //     types.map((e) => HealthDataAccess.READ).toList();
-
-    // Or both READ and WRITE
-
-    // List<HealthDataType> readOnlyTypes = [HealthDataType.WORKOUT];
-
-    List<HealthDataAccess> permissions = [];
-    for (var _ in types) {
-      permissions.add(HealthDataAccess.READ_WRITE);
-    }
-    return permissions;
-  }
+  static List<HealthDataAccess> get permissions =>
+      types
+          .map(
+            (type) =>
+                // can only request READ permissions to the following list of types on iOS
+                [
+                      HealthDataType.APPLE_MOVE_TIME,
+                      HealthDataType.APPLE_STAND_HOUR,
+                      HealthDataType.APPLE_STAND_TIME,
+                      HealthDataType.WALKING_HEART_RATE,
+                      HealthDataType.ELECTROCARDIOGRAM,
+                      HealthDataType.HIGH_HEART_RATE_EVENT,
+                      HealthDataType.LOW_HEART_RATE_EVENT,
+                      HealthDataType.IRREGULAR_HEART_RATE_EVENT,
+                      HealthDataType.EXERCISE_TIME,
+                    ].contains(type)
+                    ? HealthDataAccess.READ
+                    : HealthDataAccess.READ_WRITE,
+          )
+          .toList();
 
   static Future<List<HealthDataPoint>?> fetchData({
     required List<HealthDataType> types,
