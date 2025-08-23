@@ -3,7 +3,6 @@ import "package:flutter_bloc/flutter_bloc.dart";
 import "package:flutter_svg/svg.dart";
 import "package:fluttertoast/fluttertoast.dart";
 import "package:gap/gap.dart";
-import "package:intl_phone_number_input/intl_phone_number_input.dart";
 import "package:x_obese/src/common_functions/common_functions.dart";
 import "package:x_obese/src/screens/auth/bloc/auth_bloc.dart";
 import "package:x_obese/src/screens/auth/bloc/auth_event.dart";
@@ -21,10 +20,7 @@ class LoginSignupPage extends StatefulWidget {
 class _LoginSignupPageState extends State<LoginSignupPage> {
   AuthPageName pageName = AuthPageName.login;
   final formKey = GlobalKey<FormState>();
-  final TextEditingController controller = TextEditingController();
-  String initialCountry = "BD";
-  PhoneNumber number = PhoneNumber(isoCode: "BD");
-  String? phoneNumber;
+  final TextEditingController phoneController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +35,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                 builder:
                     (context) => OtpPage(
                       isSignup: pageName == AuthPageName.signup,
-                      phone: phoneNumber!,
+                      phone: phoneController.text.trim(),
                       response: state.response,
                     ),
               ),
@@ -194,33 +190,58 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                     const Gap(50),
                     Form(
                       key: formKey,
-                      child: InternationalPhoneNumberInput(
-                        onInputChanged: (PhoneNumber number) {
-                          phoneNumber = number.phoneNumber;
+                      child: TextFormField(
+                        controller: phoneController,
+                        onTapOutside: (event) {
+                          // FocusScope.of(context).unfocus();
                         },
-                        onInputValidated: (bool value) {},
-                        selectorConfig: const SelectorConfig(
-                          selectorType: PhoneInputSelectorType.BOTTOM_SHEET,
-                        ),
-                        ignoreBlank: false,
-                        autoValidateMode: AutovalidateMode.onUserInteraction,
-                        selectorTextStyle: const TextStyle(color: Colors.black),
-                        initialValue: number,
-                        textFieldController: controller,
-                        formatInput: false,
-                        keyboardType: const TextInputType.numberWithOptions(
-                          signed: true,
-                          decimal: true,
-                        ),
-                        inputBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide(
-                            color: MyAppColors.transparentGray,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Please enter your phone number";
+                          }
+                          return null;
+                        },
+                        keyboardType: TextInputType.phone,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(
+                              color: MyAppColors.transparentGray,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(
+                              color: MyAppColors.transparentGray,
+                            ),
+                          ),
+                          label: const Text(
+                            "Phone Number",
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.black,
+                            ),
+                          ),
+                          hintText: "01xxxxxxxxx",
+                          hintStyle: TextStyle(color: MyAppColors.mutedGray),
+                          prefixIcon: SizedBox(
+                            width: 11.667,
+                            height: 16.667,
+                            child: SvgPicture.string(
+                              '''<svg width="14" height="18" viewBox="0 0 14 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="1" y="0.666504" width="11.6667" height="16.6667" rx="3" stroke="#047CEC" stroke-width="1.2" stroke-linejoin="round"/>
+                        <path d="M6 14.8325H7.66667" stroke="#047CEC" stroke-width="1.2" stroke-linecap="round"/>
+                        </svg>
+                        ''',
+                              fit: BoxFit.scaleDown,
+                            ),
                           ),
                         ),
-                        onSaved: (PhoneNumber number) {
-                          phoneNumber = number.phoneNumber;
-                        },
                       ),
                     ),
                     const Gap(50),
@@ -245,11 +266,15 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                                           }
                                           if (pageName == AuthPageName.login) {
                                             context.read<AuthBloc>().add(
-                                              LoginRequested(phoneNumber!),
+                                              LoginRequested(
+                                                phoneController.text.trim(),
+                                              ),
                                             );
                                           } else {
                                             context.read<AuthBloc>().add(
-                                              SignupRequested(phoneNumber!),
+                                              SignupRequested(
+                                                phoneController.text.trim(),
+                                              ),
                                             );
                                           }
                                         }
