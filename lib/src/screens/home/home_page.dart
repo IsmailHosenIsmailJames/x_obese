@@ -24,6 +24,7 @@ import "package:x_obese/src/widgets/points_overview_widget.dart";
 
 class HomePage extends StatefulWidget {
   final PageController pageController;
+
   const HomePage({super.key, required this.pageController});
 
   @override
@@ -37,6 +38,7 @@ class _HomePageState extends State<HomePage> {
   ScrollController scrollControllerBlog = ScrollController();
   bool isBlogLoading = false;
   bool isMarathonLoading = false;
+
   @override
   void initState() {
     scrollControllerMarathon.addListener(() async {
@@ -444,45 +446,90 @@ class _HomePageState extends State<HomePage> {
                         fontWeight: FontWeight.w500,
                       ),
                     ),
-                    TextButton(
-                      onPressed: () {
-                        widget.pageController.jumpToPage(2);
-                      },
-                      child: Text(
-                        "See All",
-                        style: TextStyle(color: MyAppColors.third),
+                    Obx(
+                      () => TextButton(
+                        onPressed:
+                            allInfoController.marathonList.isEmpty
+                                ? null
+                                : () {
+                                  widget.pageController.jumpToPage(2);
+                                },
+                        child: Text(
+                          "See All",
+                          style: TextStyle(
+                            color:
+                                allInfoController.marathonList.isEmpty
+                                    ? MyAppColors.mutedGray
+                                    : MyAppColors.third,
+                          ),
+                        ),
                       ),
                     ),
                   ],
                 ),
               ),
 
-              SizedBox(
-                height: 220,
-                child: Obx(
-                  () => Row(
-                    children: [
-                      Expanded(
-                        child: ListView.builder(
-                          controller: scrollControllerMarathon,
-                          scrollDirection: Axis.horizontal,
-                          itemCount: allInfoController.marathonList.length,
-                          padding: const EdgeInsets.only(right: 15),
-                          itemBuilder: (context, index) {
-                            return getMarathonCard(
-                              width: 300,
-                              height: 220,
-                              context: context,
-                              marathonData:
-                                  allInfoController.marathonList[index],
-                              margin: const EdgeInsets.only(left: 15),
-                            );
-                          },
-                        ),
-                      ),
-                      if (isMarathonLoading) const CircularProgressIndicator(),
-                    ],
-                  ),
+              Obx(
+                () => SizedBox(
+                  height: allInfoController.marathonList.isEmpty ? 120 : 220,
+                  child:
+                      allInfoController.marathonList.isEmpty
+                          ? Container(
+                            height: 220,
+                            width: MediaQuery.of(context).size.width,
+                            margin: const EdgeInsets.only(left: 10, right: 10),
+                            decoration: BoxDecoration(
+                              color: MyAppColors.transparentGray,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            padding: const EdgeInsets.all(10),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.run_circle_outlined,
+                                  // Or any other suitable icon
+                                  size: 40,
+                                  color: Colors.grey[400],
+                                ),
+                                const Gap(5),
+                                Text(
+                                  "Exciting Marathon Events Coming Near You Soon! Stay Tuned.",
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.grey[600],
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
+                            ),
+                          )
+                          : Row(
+                            children: [
+                              Expanded(
+                                child: ListView.builder(
+                                  controller: scrollControllerMarathon,
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount:
+                                      allInfoController.marathonList.length,
+                                  padding: const EdgeInsets.only(right: 15),
+                                  itemBuilder: (context, index) {
+                                    return getMarathonCard(
+                                      width: 300,
+                                      height: 220,
+                                      context: context,
+                                      marathonData:
+                                          allInfoController.marathonList[index],
+                                      margin: const EdgeInsets.only(left: 15),
+                                    );
+                                  },
+                                ),
+                              ),
+                              if (isMarathonLoading)
+                                const CircularProgressIndicator(),
+                            ],
+                          ),
                 ),
               ),
 
@@ -566,18 +613,29 @@ class _HomePageState extends State<HomePage> {
                         fontWeight: FontWeight.w500,
                       ),
                     ),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const BlogListView(),
+                    Obx(
+                      () => TextButton(
+                        onPressed:
+                            allInfoController.getBlogList.isEmpty
+                                ? null
+                                : () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder:
+                                          (context) => const BlogListView(),
+                                    ),
+                                  );
+                                },
+                        child: Text(
+                          "See All",
+                          style: TextStyle(
+                            color:
+                                allInfoController.getBlogList.isEmpty
+                                    ? MyAppColors.mutedGray
+                                    : MyAppColors.third,
                           ),
-                        );
-                      },
-                      child: Text(
-                        "See All",
-                        style: TextStyle(color: MyAppColors.third),
+                        ),
                       ),
                     ),
                   ],
