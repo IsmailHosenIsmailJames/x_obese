@@ -94,7 +94,11 @@ class _NavesPageState extends State<NavesPage> {
     // FlutterForegroundTask.addTaskDataCallback(_onReceiveTaskData);
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await requestPermissions();
+      bool isPermissionAlreadyRequested = Hive.box(
+        "user",
+      ).get("isPermissionAlreadyRequested", defaultValue: false);
+      if (!isPermissionAlreadyRequested) await requestPermissions();
+      Hive.box("user").put("isPermissionAlreadyRequested", true);
       // Schedule update check after MaterialApp is built
 
       if (isUpdateChecked != true) {
