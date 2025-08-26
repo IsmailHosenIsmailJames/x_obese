@@ -342,7 +342,7 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
                         Marker(
                           markerId: const MarkerId("start"),
                           infoWindow: InfoWindow(
-                            title: "${widget.workoutType} Starting point",
+                            title: "${widget.workoutType} starting point",
                           ),
                           icon: BitmapDescriptor.defaultMarkerWithHue(
                             BitmapDescriptor.hueBlue,
@@ -353,9 +353,9 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
                           ),
                         ),
                         Marker(
-                          markerId: const MarkerId("start"),
+                          markerId: const MarkerId("end"),
                           infoWindow: InfoWindow(
-                            title: "${widget.workoutType} Starting point",
+                            title: "${widget.workoutType} ending point",
                           ),
                           position: LatLng(
                             latLonOfPositions.last.latitude,
