@@ -7,12 +7,14 @@ import "package:get/get.dart";
 import "package:x_obese/src/screens/info_collector/controller/all_info_controller.dart";
 import "package:x_obese/src/screens/create_workout_plan/controller/create_workout_plan_controller.dart";
 import "package:x_obese/src/theme/colors.dart";
+import "package:x_obese/src/widgets/app_bar.dart";
 import "package:x_obese/src/widgets/back_button.dart";
 import "package:x_obese/src/widgets/text_input_decoration.dart";
 import "package:toastification/toastification.dart";
 
 class CreateWorkoutPlanPage1 extends StatefulWidget {
   final PageController pageController;
+
   const CreateWorkoutPlanPage1({super.key, required this.pageController});
 
   @override
@@ -38,6 +40,7 @@ class _CreateWorkoutPlanPage1State extends State<CreateWorkoutPlanPage1> {
     (allInfoController.allInfo.value.heightFt ?? 0).toDouble(),
     (allInfoController.allInfo.value.heightIn ?? 0).toDouble(),
   ).toPrecision(2);
+
   @override
   void initState() {
     createWorkoutPlanController.userBMI.value = userBMI;
@@ -62,17 +65,12 @@ class _CreateWorkoutPlanPage1State extends State<CreateWorkoutPlanPage1> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                children: [
-                  getBackButton(context, () {
-                    Navigator.pop(context);
-                  }),
-                  const Gap(55),
-                  const Text(
-                    "Workout Goal",
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                  ),
-                ],
+              getAppBar(
+                backButton: getBackButton(context, () {
+                  Navigator.pop(context);
+                }),
+                title: "Workout Goal",
+                showLogo: true,
               ),
               const Gap(22),
               Expanded(

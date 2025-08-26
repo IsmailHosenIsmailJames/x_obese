@@ -4,6 +4,7 @@ import "dart:io";
 
 import "package:cached_network_image/cached_network_image.dart";
 import "package:flutter/material.dart";
+import "package:flutter_svg/flutter_svg.dart";
 import "package:fluttertoast/fluttertoast.dart";
 import "package:gap/gap.dart";
 import "package:get/get.dart";
@@ -19,6 +20,7 @@ import "package:dio/dio.dart" as dio;
 
 class FullFromInfoCollector extends StatefulWidget {
   final PageController pageController;
+
   const FullFromInfoCollector({super.key, required this.pageController});
 
   @override
@@ -97,7 +99,12 @@ class _FullFromInfoCollectorState extends State<FullFromInfoCollector> {
                     "Profile",
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                   ),
-                  const SizedBox(height: 50, width: 50),
+                  const Spacer(),
+                  SizedBox(
+                    height: 30,
+                    width: 30,
+                    child: SvgPicture.asset("assets/img/x_blue.svg"),
+                  ),
                 ],
               ),
 

@@ -9,12 +9,14 @@ import "package:x_obese/src/screens/info_collector/model/all_info_model.dart";
 import "package:x_obese/src/screens/create_workout_plan/controller/create_workout_plan_controller.dart";
 import "package:x_obese/src/screens/create_workout_plan/model/create_workout_plan_model.dart";
 import "package:x_obese/src/theme/colors.dart";
+import "package:x_obese/src/widgets/app_bar.dart";
 import "package:x_obese/src/widgets/back_button.dart";
 
 class CreateWorkoutPlanPage3 extends StatefulWidget {
   final PageController pageController;
   final bool update;
   final String? id;
+
   const CreateWorkoutPlanPage3({
     super.key,
     required this.pageController,
@@ -29,6 +31,7 @@ class CreateWorkoutPlanPage3 extends StatefulWidget {
 class _CreateWorkoutPlanPage3State extends State<CreateWorkoutPlanPage3> {
   final CreateWorkoutPlanController createWorkoutPlanController = Get.find();
   AllInfoController allInfoController = Get.find();
+
   @override
   void initState() {
     super.initState();
@@ -46,17 +49,12 @@ class _CreateWorkoutPlanPage3State extends State<CreateWorkoutPlanPage3> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                children: [
-                  getBackButton(context, () {
-                    Navigator.pop(context);
-                  }),
-                  const Gap(55),
-                  const Text(
-                    "Plan Overview",
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                  ),
-                ],
+              getAppBar(
+                backButton: getBackButton(context, () {
+                  Navigator.pop(context);
+                }),
+                title: "Plan Overview",
+                showLogo: true,
               ),
               const Gap(22),
               Expanded(

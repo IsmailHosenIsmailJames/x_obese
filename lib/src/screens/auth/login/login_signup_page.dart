@@ -70,40 +70,51 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SafeArea(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
+                      child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            pageName == AuthPageName.login
-                                ? "Hi!"
-                                : "Welcome  !",
-                            style: TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.w700,
-                              color: MyAppColors.primary,
+                          Expanded(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  pageName == AuthPageName.login
+                                      ? "Hi!"
+                                      : "Welcome  !",
+                                  style: TextStyle(
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.w700,
+                                    color: MyAppColors.primary,
+                                  ),
+                                ),
+                                const Gap(7),
+                                Text(
+                                  pageName == AuthPageName.login
+                                      ? "Unlock Your Fitness Journey Today"
+                                      : "Join the Community That Moves You.",
+                                  style: TextStyle(
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.w700,
+                                    color: MyAppColors.primary,
+                                  ),
+                                ),
+                                Text(
+                                  pageName == AuthPageName.login
+                                      ? "Please login to continue"
+                                      : "Please enter your information",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w300,
+                                    color: MyAppColors.primary,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                          const Gap(7),
-                          Text(
-                            pageName == AuthPageName.login
-                                ? "Unlock Your Fitness Journey Today"
-                                : "Join the Community That Moves You.",
-                            style: TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.w700,
-                              color: MyAppColors.primary,
-                            ),
-                          ),
-                          Text(
-                            pageName == AuthPageName.login
-                                ? "Please login to continue"
-                                : "Please enter your information",
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w300,
-                              color: MyAppColors.primary,
-                            ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 15),
+                            child: SvgPicture.asset("assets/img/x_white.svg"),
                           ),
                         ],
                       ),

@@ -13,6 +13,7 @@ import "package:x_obese/src/screens/create_workout_plan/controller/create_workou
 import "package:x_obese/src/screens/create_workout_plan/model/create_workout_plan_model.dart";
 import "package:x_obese/src/screens/create_workout_plan/model/get_workout_plans.dart";
 import "package:x_obese/src/theme/colors.dart";
+import "package:x_obese/src/widgets/app_bar.dart";
 import "package:x_obese/src/widgets/back_button.dart";
 import "package:toastification/toastification.dart";
 
@@ -20,6 +21,7 @@ class CreateWorkoutPlanPage2 extends StatefulWidget {
   final PageController pageController;
   final bool update;
   final String? id;
+
   const CreateWorkoutPlanPage2({
     super.key,
     required this.pageController,
@@ -44,6 +46,7 @@ class _CreateWorkoutPlanPage2State extends State<CreateWorkoutPlanPage2> {
     "Thu": "Thursday",
   };
   final CreateWorkoutPlanController createWorkoutPlanController = Get.find();
+
   @override
   void initState() {
     log(
@@ -88,20 +91,15 @@ class _CreateWorkoutPlanPage2State extends State<CreateWorkoutPlanPage2> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                children: [
-                  getBackButton(context, () {
-                    widget.pageController.previousPage(
-                      duration: const Duration(milliseconds: 300),
-                      curve: Curves.easeIn,
-                    );
-                  }),
-                  const Gap(55),
-                  const Text(
-                    "Workout Goal",
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                  ),
-                ],
+              getAppBar(
+                backButton: getBackButton(context, () {
+                  widget.pageController.previousPage(
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.easeIn,
+                  );
+                }),
+                title: "Workout Goal",
+                showLogo: true,
               ),
               const Gap(22),
               Expanded(

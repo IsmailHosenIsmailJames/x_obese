@@ -17,6 +17,7 @@ class OtpPage extends StatefulWidget {
   final bool isSignup;
   final String phone;
   final dio.Response response;
+
   const OtpPage({
     super.key,
     required this.isSignup,
@@ -81,24 +82,31 @@ class _OtpPageState extends State<OtpPage> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: SizedBox(
-                    height: 50,
-                    width: 50,
-                    child: IconButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      icon: SvgPicture.string(
-                        '''<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SizedBox(
+                      height: 50,
+                      width: 50,
+                      child: IconButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        icon: SvgPicture.string(
+                          '''<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <rect x="0.5" y="0.5" width="39" height="39" rx="19.5" stroke="#F3F3F3"/>
                         <path d="M18 16L14 20M14 20L18 24M14 20L26 20" stroke="#047CEC" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
                         ''',
+                        ),
                       ),
                     ),
-                  ),
+                    SizedBox(
+                      height: 30,
+                      width: 30,
+                      child: SvgPicture.asset("assets/img/x_blue.svg"),
+                    ),
+                  ],
                 ),
                 const Gap(20),
                 SizedBox(
