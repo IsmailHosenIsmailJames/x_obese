@@ -238,7 +238,7 @@ class _WorkoutPlanOverviewScreenState extends State<WorkoutPlanOverviewScreen> {
                                             .toString(),
                                   );
 
-                              Navigator.pushAndRemoveUntil(
+                              Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
                                   builder:
@@ -248,7 +248,6 @@ class _WorkoutPlanOverviewScreenState extends State<WorkoutPlanOverviewScreen> {
                                         id: getWorkoutPlans.id,
                                       ),
                                 ),
-                                (route) => false,
                               );
                             },
                             child: const Text(
