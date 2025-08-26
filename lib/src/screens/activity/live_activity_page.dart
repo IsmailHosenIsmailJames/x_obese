@@ -29,6 +29,7 @@ import "package:x_obese/src/screens/info_collector/controller/all_info_controlle
 import "package:x_obese/src/screens/marathon/details_marathon/model/full_marathon_data_model.dart";
 import "package:x_obese/src/screens/marathon/models/marathon_user_model.dart";
 import "package:x_obese/src/theme/colors.dart";
+import "package:x_obese/src/widgets/app_bar.dart";
 import "package:x_obese/src/widgets/back_button.dart";
 import "package:x_obese/src/widgets/loading_popup.dart";
 
@@ -308,21 +309,13 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
                   bottom: 0,
                   right: 20,
                 ),
-                child: Row(
-                  children: [
-                    getBackButton(context, () {
-                      showBackWarning = false;
-                      showCancelAndBackPopup();
-                    }),
-                    const Gap(70),
-                    const Text(
-                      "Workout",
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ],
+                child: getAppBar(
+                  backButton: getBackButton(context, () {
+                    showBackWarning = false;
+                    showCancelAndBackPopup();
+                  }),
+                  title: "Live Activity",
+                  showLogo: true,
                 ),
               ),
 

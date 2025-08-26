@@ -11,10 +11,12 @@ import "package:x_obese/src/screens/settings/about_view.dart";
 import "package:x_obese/src/screens/settings/notification_settings_view.dart";
 import "package:x_obese/src/screens/settings/personal_details_view.dart";
 import "package:x_obese/src/theme/colors.dart";
+import "package:x_obese/src/widgets/app_bar.dart";
 import "package:x_obese/src/widgets/back_button.dart";
 
 class SettingsPage extends StatefulWidget {
   final PageController pageController;
+
   const SettingsPage({super.key, required this.pageController});
 
   @override
@@ -23,6 +25,7 @@ class SettingsPage extends StatefulWidget {
 
 class _SettingsPageState extends State<SettingsPage> {
   AllInfoController allInfoController = Get.find();
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -32,20 +35,12 @@ class _SettingsPageState extends State<SettingsPage> {
           children: [
             Column(
               children: [
-                Row(
-                  children: [
-                    getBackButton(context, () {
-                      widget.pageController.jumpToPage(0);
-                    }),
-                    const Gap(55),
-                    const Text(
-                      "Settings",
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ],
+                getAppBar(
+                  backButton: getBackButton(context, () {
+                    widget.pageController.jumpToPage(0);
+                  }),
+                  title: "Settings",
+                  showLogo: true,
                 ),
                 const Gap(22),
                 ClipRRect(
@@ -230,44 +225,55 @@ class _SettingsPageState extends State<SettingsPage> {
 
             Align(
               alignment: const Alignment(1, 1),
-              child: GestureDetector(
-                onTap: () async {
-                  await clearTokens();
-                  await clearTokens();
-                  Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const LoginSignupPage(),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Image.asset(
+                    "assets/img/radient_logo.png",
+                    height: 50,
+                    width: 150,
+                  ),
+                  const Gap(10),
+                  InkWell(
+                    onTap: () async {
+                      await clearTokens();
+                      await clearTokens();
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const LoginSignupPage(),
+                        ),
+                        (route) => false,
+                      );
+                      // showDialog(
+                      //   context: context,
+                      //   builder: (context) {
+                      //     return AlertDialog(
+                      //       title: Text('Are you sure ?'),
+                      //       content: Text(''),
+                      //     );
+                      //   },
+                      // );
+                    },
+                    child: Container(
+                      width: double.infinity,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        color: Colors.red[50],
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      child: const Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Icon(Icons.logout_rounded),
+                          Gap(20),
+                          Text("Signout"),
+                        ],
+                      ),
                     ),
-                    (route) => false,
-                  );
-                  // showDialog(
-                  //   context: context,
-                  //   builder: (context) {
-                  //     return AlertDialog(
-                  //       title: Text('Are you sure ?'),
-                  //       content: Text(''),
-                  //     );
-                  //   },
-                  // );
-                },
-                child: Container(
-                  width: double.infinity,
-                  height: 50,
-                  decoration: BoxDecoration(
-                    color: Colors.red[50],
-                    borderRadius: BorderRadius.circular(5),
                   ),
-                  child: const Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Icon(Icons.logout_rounded),
-                      Gap(20),
-                      Text("Signout"),
-                    ],
-                  ),
-                ),
+                ],
               ),
             ),
           ],

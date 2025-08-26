@@ -11,6 +11,7 @@ import "package:x_obese/src/screens/info_collector/controller/all_info_controlle
 import "package:x_obese/src/screens/marathon/details_marathon/model/full_marathon_data_model.dart";
 import "package:x_obese/src/screens/marathon/models/marathon_user_model.dart";
 import "package:x_obese/src/theme/colors.dart";
+import "package:x_obese/src/widgets/app_bar.dart";
 import "package:x_obese/src/widgets/back_button.dart";
 
 class LeaderBoardView extends StatefulWidget {
@@ -61,24 +62,13 @@ class _LeaderBoardViewState extends State<LeaderBoardView> {
             child: SafeArea(
               child: Column(
                 children: [
-                  Row(
-                    children: [
-                      getBackButton(context, () {
-                        Navigator.pop(context);
-                      }),
-                      const Spacer(),
-                      const Center(
-                        child: Text(
-                          "Marathon Program",
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                      const Spacer(),
-                      const Gap(30),
-                    ],
+                  getAppBar(
+                    backButton: getBackButton(
+                      context,
+                          () => Navigator.pop(context),
+                    ),
+                    title: "Leaderboard",
+                    showLogo: true,
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 15, bottom: 15),

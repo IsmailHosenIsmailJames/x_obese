@@ -5,6 +5,7 @@ import "package:get/get.dart";
 import "package:intl/intl.dart";
 import "package:x_obese/src/screens/info_collector/controller/all_info_controller.dart";
 import "package:x_obese/src/theme/colors.dart";
+import "package:x_obese/src/widgets/app_bar.dart";
 import "package:x_obese/src/widgets/back_button.dart";
 
 class PersonalDetailsView extends StatelessWidget {
@@ -20,17 +21,13 @@ class PersonalDetailsView extends StatelessWidget {
           padding: const EdgeInsets.all(20),
           child: Column(
             children: [
-              Row(
-                children: [
-                  getBackButton(context, () {
-                    Navigator.pop(context);
-                  }),
-                  const Gap(55),
-                  const Text(
-                    "Personal Details",
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                  ),
-                ],
+              getAppBar(
+                backButton: getBackButton(
+                  context,
+                  () => Navigator.pop(context),
+                ),
+                title: "Personal Details",
+                showLogo: true,
               ),
               const Gap(22),
 
@@ -134,6 +131,12 @@ class PersonalDetailsView extends StatelessWidget {
                     ],
                   ),
                 ),
+              ),
+              const Spacer(),
+              Image.asset(
+                "assets/img/radient_logo.png",
+                height: 50,
+                width: 150,
               ),
             ],
           ),

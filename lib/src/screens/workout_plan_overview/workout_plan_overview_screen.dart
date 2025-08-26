@@ -9,10 +9,12 @@ import "package:x_obese/src/screens/create_workout_plan/model/create_workout_pla
 import "package:x_obese/src/screens/create_workout_plan/model/get_workout_plans.dart";
 import "package:x_obese/src/screens/create_workout_plan/pages/page_3.dart";
 import "package:x_obese/src/theme/colors.dart";
+import "package:x_obese/src/widgets/app_bar.dart";
 import "package:x_obese/src/widgets/back_button.dart";
 
 class WorkoutPlanOverviewScreen extends StatefulWidget {
   final List<GetWorkoutPlans> getWorkoutPlansList;
+
   const WorkoutPlanOverviewScreen({
     super.key,
     required this.getWorkoutPlansList,
@@ -25,6 +27,7 @@ class WorkoutPlanOverviewScreen extends StatefulWidget {
 
 class _WorkoutPlanOverviewScreenState extends State<WorkoutPlanOverviewScreen> {
   AllInfoController allInfoController = Get.find();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,16 +37,13 @@ class _WorkoutPlanOverviewScreenState extends State<WorkoutPlanOverviewScreen> {
           children: [
             Padding(
               padding: const EdgeInsets.only(top: 15.0, left: 15, right: 15),
-              child: Row(
-                children: [
-                  getBackButton(context, () => Navigator.pop(context)),
-                  const Spacer(flex: 4),
-                  const Text(
-                    "Plan Overview",
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                  ),
-                  const Spacer(flex: 6),
-                ],
+              child: getAppBar(
+                backButton: getBackButton(
+                  context,
+                  () => Navigator.pop(context),
+                ),
+                title: "Plan Overview",
+                showLogo: true,
               ),
             ),
             Expanded(

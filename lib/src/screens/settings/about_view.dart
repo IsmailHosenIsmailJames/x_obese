@@ -4,6 +4,7 @@ import "package:x_obese/src/screens/settings/personal_details_view.dart";
 import "package:x_obese/src/screens/settings/privacy_policy.dart";
 import "package:x_obese/src/screens/settings/terms_and_conditions.dart";
 import "package:x_obese/src/theme/colors.dart";
+import "package:x_obese/src/widgets/app_bar.dart";
 import "package:x_obese/src/widgets/back_button.dart";
 
 class AboutView extends StatelessWidget {
@@ -18,17 +19,13 @@ class AboutView extends StatelessWidget {
           padding: const EdgeInsets.all(20),
           child: Column(
             children: [
-              Row(
-                children: [
-                  getBackButton(context, () {
-                    Navigator.pop(context);
-                  }),
-                  const Gap(80),
-                  const Text(
-                    "About",
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                  ),
-                ],
+              getAppBar(
+                backButton: getBackButton(
+                  context,
+                  () => Navigator.pop(context),
+                ),
+                title: "About",
+                showLogo: true,
               ),
               const Gap(22),
               const Gap(5),
@@ -103,6 +100,12 @@ class AboutView extends StatelessWidget {
                     ],
                   ),
                 ),
+              ),
+              const Spacer(),
+              Image.asset(
+                "assets/img/radient_logo.png",
+                height: 50,
+                width: 150,
               ),
             ],
           ),

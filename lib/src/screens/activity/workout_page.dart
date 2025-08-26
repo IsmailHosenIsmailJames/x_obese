@@ -10,6 +10,7 @@ import "package:x_obese/src/screens/activity/live_activity_page.dart";
 import "package:x_obese/src/screens/marathon/details_marathon/model/full_marathon_data_model.dart";
 import "package:x_obese/src/screens/marathon/models/marathon_user_model.dart";
 import "package:x_obese/src/theme/colors.dart";
+import "package:x_obese/src/widgets/app_bar.dart";
 import "package:x_obese/src/widgets/back_button.dart";
 import "package:x_obese/src/widgets/loading_popup.dart";
 import "package:x_obese/src/core/common/functions/calculate_distance.dart"
@@ -20,6 +21,7 @@ class ActivityPage extends StatefulWidget {
   final FullMarathonDataModel? marathonData;
 
   final PageController? pageController;
+
   const ActivityPage({
     super.key,
     this.pageController,
@@ -40,6 +42,7 @@ class _ActivityPageState extends State<ActivityPage> {
   workout_calculator.ActivityType selectedMode =
       workout_calculator.ActivityType.walking;
   int requestTime = 0;
+
   @override
   void initState() {
     // for (var element in workOutMode) {
@@ -62,24 +65,19 @@ class _ActivityPageState extends State<ActivityPage> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                children: [
-                  getBackButton(context, () {
-                    if (widget.pageController != null) {
-                      widget.pageController!.previousPage(
-                        duration: const Duration(milliseconds: 300),
-                        curve: Curves.easeIn,
-                      );
-                    } else {
-                      Navigator.pop(context);
-                    }
-                  }),
-                  const Gap(55),
-                  const Text(
-                    "Workout",
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                  ),
-                ],
+              getAppBar(
+                backButton: getBackButton(context, () {
+                  if (widget.pageController != null) {
+                    widget.pageController!.previousPage(
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.easeIn,
+                    );
+                  } else {
+                    Navigator.pop(context);
+                  }
+                }),
+                title: "Workout",
+                showLogo: true,
               ),
               const Gap(22),
               Row(
