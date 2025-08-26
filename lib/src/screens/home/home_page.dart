@@ -644,27 +644,60 @@ class _HomePageState extends State<HomePage> {
               SizedBox(
                 height: 210,
                 child: Obx(
-                  () => Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(
-                        child: ListView(
-                          scrollDirection: Axis.horizontal,
-                          controller: scrollControllerBlog,
-                          children: List.generate(
-                            allInfoController.getBlogList.length,
-                            (index) {
-                              return getBlogCard(
-                                context,
-                                allInfoController.getBlogList[index],
-                              );
-                            },
+                  () =>
+                      allInfoController.getBlogList.isEmpty
+                          ? Container(
+                            height: 220,
+                            width: MediaQuery.of(context).size.width,
+                            margin: const EdgeInsets.only(left: 10, right: 10),
+                            decoration: BoxDecoration(
+                              color: MyAppColors.transparentGray,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            padding: const EdgeInsets.all(10),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.text_snippet_rounded,
+                                  // Or any other suitable icon
+                                  size: 40,
+                                  color: Colors.grey[400],
+                                ),
+                                const Gap(5),
+                                Text(
+                                  "Blogs are Coming Near You Soon! Stay Tuned.",
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.grey[600],
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
+                            ),
+                          )
+                          : Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                child: ListView(
+                                  scrollDirection: Axis.horizontal,
+                                  controller: scrollControllerBlog,
+                                  children: List.generate(
+                                    allInfoController.getBlogList.length,
+                                    (index) {
+                                      return getBlogCard(
+                                        context,
+                                        allInfoController.getBlogList[index],
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
-                      ),
-                    ],
-                  ),
                 ),
               ),
             ],
