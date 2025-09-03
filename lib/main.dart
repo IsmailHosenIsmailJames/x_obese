@@ -3,7 +3,6 @@ import "package:flutter/services.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:flutter_foreground_task/flutter_foreground_task.dart";
 import "package:flutter_native_splash/flutter_native_splash.dart";
-import "package:timezone/data/latest.dart" as tz;
 import "package:x_obese/app.dart";
 import "package:x_obese/src/core/health/my_health_functions.dart";
 import "package:x_obese/src/data/user_db.dart";
@@ -26,7 +25,6 @@ Future<void> main() async {
       statusBarBrightness: Brightness.light,
     ),
   );
-  tz.initializeTimeZones();
   await MyHealthFunctions.init();
 
   runApp(

@@ -3,6 +3,7 @@ import "dart:developer";
 import "dart:io";
 
 import "package:cached_network_image/cached_network_image.dart";
+import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
 import "package:flutter_svg/flutter_svg.dart";
 import "package:fluttertoast/fluttertoast.dart";
@@ -37,6 +38,17 @@ class _FullFromInfoCollectorState extends State<FullFromInfoCollector> {
   );
 
   Future<void> updateInfo() async {
+    showCupertinoDialog(
+      context: context,
+      builder:
+          (context) => const Dialog(
+            child: SizedBox(
+              height: 300,
+              width: double.infinity,
+              child: Center(child: CircularProgressIndicator()),
+            ),
+          ),
+    );
     Map<String, dynamic> userData = {
       "email": emailController.text.trim(),
       "fullName": controller.allInfo.value.fullName,
@@ -58,6 +70,9 @@ class _FullFromInfoCollectorState extends State<FullFromInfoCollector> {
           "image": await dio.MultipartFile.fromFile(profileImage!.path),
         });
         await controller.updateUserInfo(dio.FormData.fromMap(userData));
+      }
+      if (Navigator.canPop(context)) {
+        Navigator.pop(context);
       }
     } on dio.DioException catch (e) {
       log(e.message ?? "");

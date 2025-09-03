@@ -26,20 +26,31 @@ Widget getMarathonCard({
         if (marathonData.imagePath != null)
           ClipRRect(
             borderRadius: BorderRadius.circular(4),
-            child: CachedNetworkImage(
-              width: width,
-              height: height,
-              imageUrl: marathonData.imagePath.toString(),
-              fit: BoxFit.cover,
-              errorWidget: (context, url, error) {
-                return Center(
-                  child: Icon(
-                    Icons.broken_image,
-                    size: 50,
-                    color: MyAppColors.transparentGray.withValues(alpha: 0.5),
-                  ),
-                );
-              },
+            child: Stack(
+              children: [
+                CachedNetworkImage(
+                  width: width,
+                  height: height,
+                  imageUrl: marathonData.imagePath.toString(),
+                  fit: BoxFit.cover,
+                  errorWidget: (context, url, error) {
+                    return Center(
+                      child: Icon(
+                        Icons.broken_image,
+                        size: 50,
+                        color: MyAppColors.transparentGray.withValues(
+                          alpha: 0.5,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+                Container(
+                  width: width,
+                  height: height,
+                  color: Colors.black.withValues(alpha: 0.3),
+                ),
+              ],
             ),
           ),
         Padding(

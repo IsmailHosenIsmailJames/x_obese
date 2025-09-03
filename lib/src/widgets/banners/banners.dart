@@ -65,7 +65,7 @@ class _BannersState extends State<Banners> {
             margin: const EdgeInsets.only(left: 10, right: 10),
             decoration: BoxDecoration(
               color: MyAppColors.third,
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(9),
               border: Border.all(color: MyAppColors.transparentGray),
             ),
 

@@ -3,10 +3,14 @@ import "package:flutter/material.dart";
 import "package:flutter_svg/flutter_svg.dart";
 import "package:gap/gap.dart";
 import "package:get/get.dart";
+import "package:hive_flutter/hive_flutter.dart";
+import "package:shared_preferences/shared_preferences.dart";
+import "package:x_obese/src/apis/apis_url.dart";
 import "package:x_obese/src/apis/middleware/jwt_middleware.dart";
 import "package:x_obese/src/screens/auth/login/login_signup_page.dart";
 import "package:x_obese/src/screens/info_collector/controller/all_info_controller.dart";
 import "package:x_obese/src/screens/info_collector/info_collector.dart";
+import "package:x_obese/src/screens/intro/intro_page.dart";
 import "package:x_obese/src/screens/settings/about_view.dart";
 import "package:x_obese/src/screens/settings/notification_settings_view.dart";
 import "package:x_obese/src/screens/settings/personal_details_view.dart";
@@ -159,6 +163,38 @@ class _SettingsPageState extends State<SettingsPage> {
                       ),
                     ),
                     onPressed: () {
+                      showAccountDeletionPopup(context);
+                    },
+
+                    child: Row(
+                      children: [
+                        const Text(
+                          "Account Deletion",
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.black,
+                          ),
+                        ),
+                        const Spacer(),
+                        arrowIcon,
+                      ],
+                    ),
+                  ),
+                ),
+                const Gap(5),
+
+                SizedBox(
+                  width: double.infinity,
+                  height: 40,
+                  child: TextButton(
+                    style: TextButton.styleFrom(
+                      padding: const EdgeInsets.only(left: 10, right: 10),
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.zero,
+                      ),
+                    ),
+                    onPressed: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -279,6 +315,106 @@ class _SettingsPageState extends State<SettingsPage> {
           ],
         ),
       ),
+    );
+  }
+
+  void showAccountDeletionPopup(BuildContext context) async {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Dialog(
+          insetPadding: const EdgeInsets.all(10),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(10),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(
+                  Icons.warning_amber_rounded,
+                  color: Colors.redAccent,
+                  size: 64,
+                ),
+                const Gap(18),
+                const Text(
+                  "Delete Account?",
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.redAccent,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const Gap(12),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Text(
+                    "This will permanently delete your account and all associated data. This action cannot be undone.",
+                    style: TextStyle(fontSize: 16, color: Colors.black87),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                const Gap(24),
+                Row(
+                  children: [
+                    Expanded(
+                      child: ElevatedButton.icon(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.grey[300],
+                          foregroundColor: Colors.black87,
+                          elevation: 0,
+                          padding: const EdgeInsets.symmetric(vertical: 14),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                        icon: const Icon(Icons.close),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        label: const Text("Cancel"),
+                      ),
+                    ),
+                    const Gap(16),
+                    Expanded(
+                      child: ElevatedButton.icon(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.redAccent,
+                          foregroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(vertical: 14),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                        onPressed: () async {
+                          final dioClient = DioClient(baseAPI);
+                          await dioClient.dio.delete(
+                            "/api/user/v1/profile/token",
+                          );
+                          await Hive.deleteFromDisk();
+                          await (await SharedPreferences.getInstance()).clear();
+                          Navigator.pop(context);
+                          Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const IntroPage(),
+                            ),
+                            (route) => false,
+                          );
+                        },
+                        icon: const Icon(Icons.delete_forever),
+                        label: const Text("Delete Forever"),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }
