@@ -52,35 +52,24 @@ class DioClient {
       String? refreshToken = await getRefreshToken();
       if (refreshToken != null) {
         try {
-          final refreshedTokens = await doRefreshToken(refreshToken);
-          if (refreshedTokens != null) {
+          final newAccessToken = await doRefreshToken(refreshToken);
+          if (newAccessToken != null) {
             return handler.resolve(
-              await _retry(error.requestOptions, refreshedTokens),
-            );
-          } else {
-            await clearTokens();
-            Navigator.pushAndRemoveUntil(
-              App.navigatorKey.currentContext!,
-              MaterialPageRoute(builder: (context) => const LoginSignupPage()),
-              (route) => true,
+              await _retry(error.requestOptions, newAccessToken),
             );
           }
-        } catch (refreshError) {
-          await clearTokens();
-          Navigator.pushAndRemoveUntil(
-            App.navigatorKey.currentContext!,
-            MaterialPageRoute(builder: (context) => const LoginSignupPage()),
-            (route) => true,
-          );
+        } catch (e) {
+          log("An error occurred during token refresh: $e");
         }
-      } else {
-        await clearTokens();
-        Navigator.pushAndRemoveUntil(
-          App.navigatorKey.currentContext!,
-          MaterialPageRoute(builder: (context) => const LoginSignupPage()),
-          (route) => true,
-        );
       }
+
+      // If refresh token is null, or if refreshing fails, logout
+      await clearTokens();
+      Navigator.pushAndRemoveUntil(
+        App.navigatorKey.currentContext!,
+        MaterialPageRoute(builder: (context) => const LoginSignupPage()),
+        (route) => false,
+      );
     }
     return handler.next(error);
   }
@@ -91,12 +80,10 @@ class DioClient {
   ) async {
     final options = Options(
       method: requestOptions.method,
-      headers: {"Authorization": "Bearer $accessToken"},
+      headers: requestOptions.headers,
     );
-    String? refreshToken = await getRefreshToken();
-    if (refreshToken != null) {
-      dio.options.headers["Cookie"] = "refreshToken=$refreshToken";
-    }
+    options.headers?["Authorization"] = "Bearer $accessToken";
+
     return dio.request(
       requestOptions.path,
       options: options,
@@ -107,30 +94,32 @@ class DioClient {
 
   Future<String?> doRefreshToken(String refreshToken) async {
     try {
-      final response = await dio.post("/api/auth/v1/token/user");
-      log("/api/auth/v1/token/user");
+      final refreshDio = Dio(BaseOptions(baseUrl: dio.options.baseUrl));
+      refreshDio.options.headers["Cookie"] = "refreshToken=$refreshToken";
+      final response = await refreshDio.post("/api/auth/v1/token/user");
+
+      log("/api/auth/v1/token/user response status: ${response.statusCode}");
       printResponse(response);
+
       if (response.statusCode == 200) {
         String? newAccessToken = response.data["data"]["accessToken"];
         String? newRefreshToken = refreshTokenExtractor(response);
-        log([newAccessToken, newRefreshToken].toString());
+        log("New Tokens - Access: $newAccessToken, Refresh: $newRefreshToken");
+
         if (newAccessToken != null) {
           await saveTokens(newAccessToken, newRefreshToken ?? refreshToken);
           return newAccessToken;
-        } else {
-          return null;
         }
       } else if (response.statusCode == 403) {
         await clearTokens();
         Navigator.pushAndRemoveUntil(
           App.navigatorKey.currentContext!,
           MaterialPageRoute(builder: (context) => const LoginSignupPage()),
-          (route) => true,
+          (route) => false,
         );
-        return null;
       }
     } catch (e) {
-      return null;
+      log("Error during token refresh: $e");
     }
     return null;
   }

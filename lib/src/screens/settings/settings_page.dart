@@ -79,8 +79,8 @@ class _SettingsPageState extends State<SettingsPage> {
                     Text(allInfoController.allInfo.value.fullName ?? ""),
 
                     IconButton(
-                      onPressed: () {
-                        Navigator.push(
+                      onPressed: () async {
+                        await Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder:
@@ -89,6 +89,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                 ),
                           ),
                         );
+                        allInfoController.dataAsync();
                       },
                       icon: SvgPicture.string(
                         '''<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
