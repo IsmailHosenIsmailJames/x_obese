@@ -201,12 +201,13 @@ class _PointsOverviewWidgetState extends State<PointsOverviewWidget> {
                                               ?.toString() ??
                                           "0",
                                       target:
+                                          controller.getWorkoutPlansList.isNotEmpty ?
                                           (controller
                                                       .getWorkoutPlansList
                                                       .first
                                                       .caloriesGoal ??
                                                   0)
-                                              .abs(),
+                                              .abs() : 0,
                                     ),
                                   ),
                                 ),
@@ -264,10 +265,11 @@ class _PointsOverviewWidgetState extends State<PointsOverviewWidget> {
                                           ?.toStringAsFixed(2) ??
                                       "0",
                                   target:
+                                      controller.getWorkoutPlansList.isNotEmpty ?
                                       (int.parse(
                                             "${(controller.getWorkoutPlansList.first.workoutTimeMs ?? 0)}",
                                           ).abs() /
-                                          60000),
+                                          60000) : 0,
                                 ),
                               ),
                             ),
@@ -355,16 +357,23 @@ class _PointsOverviewWidgetState extends State<PointsOverviewWidget> {
   }
 
   PieChart getPieChart(AllInfoController controller) {
-    double targetCalBran =
-        controller.getWorkoutPlansList.value.first.caloriesGoal
-            ?.toDouble()
-            .abs() ??
-        1.0;
+    double targetCalBran = 1.0;
+    if (controller.getWorkoutPlansList.isNotEmpty) {
+      targetCalBran =
+          controller.getWorkoutPlansList.value.first.caloriesGoal
+              ?.toDouble()
+              .abs() ??
+              1.0;
+    }
+
     if (!(targetCalBran > 0)) targetCalBran = 1;
 
-    double targetWorkout = double.parse(
-      controller.getWorkoutPlansList.value.first.workoutTimeMs ?? "0",
-    );
+    double targetWorkout = 1.0;
+    if (controller.getWorkoutPlansList.isNotEmpty) {
+      targetWorkout = double.parse(
+        controller.getWorkoutPlansList.value.first.workoutTimeMs ?? "0",
+      );
+    }
     targetWorkout /= 60000;
     if (!(targetWorkout > 0)) targetWorkout = 1;
 

@@ -17,144 +17,149 @@ class AllInfoController extends GetxController {
   RxString selectedCategory = "Calories".obs;
   RxInt stepsCount = 0.obs;
 
-  static DioClient dioClient = DioClient(baseAPI);
-  static Box userBox = Hive.box("user");
+  static final DioClient _dioClient = DioClient(baseAPI);
+  static final Box _userBox = Hive.box("user");
 
   Rx<AllInfoModel> allInfo = Rx<AllInfoModel>(AllInfoModel());
   Rx<WorkStatusModel> workStatus = Rx<WorkStatusModel>(WorkStatusModel());
   RxList<MarathonModel> marathonList = RxList<MarathonModel>([]);
-  RxList<GetWorkoutPlans> getWorkoutPlansList =
-      (<GetWorkoutPlans>[GetWorkoutPlans(id: "init")]).obs;
+  RxList<GetWorkoutPlans> getWorkoutPlansList = RxList<GetWorkoutPlans>([]);
   RxList<GetBlogModel> getBlogList = RxList<GetBlogModel>([]);
 
-  Future<dio.Response?> updateUserInfo(dio.FormData data) async {
+  @override
+  void onInit() {
+    super.onInit();
+    _loadDataFromCache();
+    dataAsync();
+  }
+
+  Future<bool> updateUserInfo(dio.FormData data) async {
     try {
-      DioClient dioClient = DioClient(baseAPI);
-      final response = await dioClient.dio.patch(userDataPath, data: data);
-      printResponse(response);
+      final response = await _dioClient.dio.patch(userDataPath, data: data);
       if (response.statusCode == 200) {
-        return response;
-      } else {
-        return null;
+        final newInfo = AllInfoModel.fromMap(response.data["data"]);
+        allInfo.value = newInfo;
+        _userBox.put("info", newInfo.toJson());
+        return true;
       }
+      return false;
     } on dio.DioException catch (e) {
       log(e.message.toString());
       if (e.response != null) printResponse(e.response!);
-      return null;
+      return false;
     }
   }
 
   Future<void> dataAsync() async {
-    // get workout plan
-    log("Try get workout plan", name: "Try get workout plan");
+    await Future.wait([
+      _fetchWorkoutStatus(),
+      _fetchMarathonPrograms(),
+      _fetchWorkoutPlans(),
+      _fetchBlogs(),
+    ]);
+  }
+
+  void _loadDataFromCache() {
+    // Load user info
+    final infoJson = _userBox.get("info");
+    if (infoJson != null) {
+      log(infoJson, name: "User Info");
+      allInfo.value = AllInfoModel.fromJson(infoJson);
+    }
+
+    // Load marathon list
+    final marathonListJson = _userBox.get("marathonList", defaultValue: "[]");
+    final List marathonListData = jsonDecode(marathonListJson);
+    marathonList.value =
+        marathonListData
+            .map(
+              (data) => MarathonModel.fromMap(Map<String, dynamic>.from(data)),
+            )
+            .toList();
+
+    // Load workout plans
+    final workoutPlansJson = _userBox.get("workoutPlans", defaultValue: "[]");
+    final List workoutPlansData = jsonDecode(workoutPlansJson);
+    getWorkoutPlansList.value =
+        workoutPlansData
+            .map(
+              (data) =>
+                  GetWorkoutPlans.fromMap(Map<String, dynamic>.from(data)),
+            )
+            .toList();
+
+    // Load blogs
+    final blogListJson = _userBox.get("blogList", defaultValue: "[]");
+    final List blogListData = jsonDecode(blogListJson);
+    getBlogList.value =
+        blogListData
+            .map(
+              (data) => GetBlogModel.fromMap(Map<String, dynamic>.from(data)),
+            )
+            .toList();
+  }
+
+  Future<void> _fetchWorkoutStatus() async {
     try {
-      DioClient dioClient = DioClient(baseAPI);
-      dio.Response response = await dioClient.dio.get(
+      final response = await _dioClient.dio.get(
         "$getUserWorkoutStatus?view=weekly",
       );
-      printResponse(response);
-      if (response.statusCode == 200) {
-        Map? status = response.data["data"];
-        if (status != null) {
-          final statusModel = WorkStatusModel.fromMap(
-            Map<String, dynamic>.from(status),
-          );
-
-          workStatus.value = statusModel.copyWith(
-            durationMs: (statusModel.durationMs ?? 0) / 60000,
-          );
-
-          selectedCategory.value = "Calories";
-          selectedPoints.value = double.parse(workStatus.value.calories ?? "0");
-        }
-      }
-    } on dio.DioException catch (e) {
-      log(e.message ?? "", name: "Error");
-      if (e.response != null) {
-        printResponse(e.response!);
-      }
-    }
-
-    log("try to get marathon info");
-    try {
-      // get marathon programs
-      dio.Response response = await dioClient.dio.get(
-        "/api/marathon/v1/marathon",
-      );
-      if (response.statusCode == 200) {
-        List marathonListData = response.data["data"];
-        userBox.put(
-          "marathonList",
-          const JsonEncoder.withIndent(" ").convert(marathonListData),
+      if (response.statusCode == 200 && response.data["data"] != null) {
+        final status = WorkStatusModel.fromMap(
+          Map<String, dynamic>.from(response.data["data"]),
         );
-        marathonList.clear();
-        for (var marathon in marathonListData) {
-          marathonList.add(MarathonModel.fromMap(marathon));
-        }
-      }
-    } on dio.DioException catch (e) {
-      log(e.message ?? "", name: "Error");
-      if (e.response != null) {
-        printResponse(e.response!);
-      }
-    }
-    try {
-      dio.Response response = await dioClient.dio.get(workoutPlanPath);
-      printResponse(response);
-      if (response.statusCode == 200) {
-        log(
-          const JsonEncoder.withIndent("   ").convert(response.data),
-          name: "dioClient.dio.get(workoutPlanPath)",
+        workStatus.value = status.copyWith(
+          durationMs: (status.durationMs ?? 0) / 60000,
         );
-        List workoutPlans = response.data["data"];
-        if (workoutPlans.isNotEmpty) {
-          getWorkoutPlansList.value = [GetWorkoutPlans(id: "init")];
-          for (var workoutPlan in workoutPlans) {
-            getWorkoutPlansList.add(GetWorkoutPlans.fromMap(workoutPlan));
-          }
-          getWorkoutPlansList.removeAt(0);
-        }
-
-        printResponse(response);
+        selectedCategory.value = "Calories";
+        selectedPoints.value = double.parse(workStatus.value.calories ?? "0");
       }
     } on dio.DioException catch (e) {
-      log(e.message ?? "", name: "Error");
-      if (e.response != null) {
-        printResponse(e.response!);
-      }
-    }
-    try {
-      dio.Response response = await dioClient.dio.get(blogPath);
-      if (response.statusCode == 200) {
-        List blogList = response.data["data"] ?? [];
-        getBlogList.value = [GetBlogModel()];
-        for (var blog in blogList) {
-          getBlogList.add(GetBlogModel.fromMap(blog));
-        }
-        getBlogList.removeAt(0);
-      }
-    } on dio.DioException catch (e) {
-      log(e.message ?? "", name: "Error");
-      if (e.response != null) {
-        printResponse(e.response!);
-      }
+      log("Failed to fetch workout status: ${e.message}");
     }
   }
 
-  @override
-  void onInit() async {
-    allInfo.value = AllInfoModel.fromJson(userBox.get("info"));
-    // load Marathon program cache
-    List marathonListData = jsonDecode(
-      userBox.get("marathonList", defaultValue: "[]"),
-    );
-
-    for (var marathon in marathonListData) {
-      marathonList.add(
-        MarathonModel.fromMap(Map<String, dynamic>.from(marathon)),
-      );
+  Future<void> _fetchMarathonPrograms() async {
+    try {
+      final response = await _dioClient.dio.get("/api/marathon/v1/marathon");
+      if (response.statusCode == 200) {
+        final List marathonListData = response.data["data"];
+        _userBox.put("marathonList", jsonEncode(marathonListData));
+        marathonList.value =
+            marathonListData
+                .map((data) => MarathonModel.fromMap(data))
+                .toList();
+      }
+    } on dio.DioException catch (e) {
+      log("Failed to fetch marathon programs: ${e.message}");
     }
-    dataAsync();
-    super.onInit();
+  }
+
+  Future<void> _fetchWorkoutPlans() async {
+    try {
+      final response = await _dioClient.dio.get(workoutPlanPath);
+      if (response.statusCode == 200) {
+        final List workoutPlans = response.data["data"];
+        _userBox.put("workoutPlans", jsonEncode(workoutPlans));
+        getWorkoutPlansList.value =
+            workoutPlans.map((data) => GetWorkoutPlans.fromMap(data)).toList();
+      }
+    } on dio.DioException catch (e) {
+      log("Failed to fetch workout plans: ${e.message}");
+    }
+  }
+
+  Future<void> _fetchBlogs() async {
+    try {
+      final response = await _dioClient.dio.get(blogPath);
+      if (response.statusCode == 200) {
+        final List blogList = response.data["data"] ?? [];
+        _userBox.put("blogList", jsonEncode(blogList));
+        getBlogList.value =
+            blogList.map((data) => GetBlogModel.fromMap(data)).toList();
+      }
+    } on dio.DioException catch (e) {
+      log("Failed to fetch blogs: ${e.message}");
+    }
   }
 }

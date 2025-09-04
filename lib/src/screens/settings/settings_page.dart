@@ -58,7 +58,8 @@ class _SettingsPageState extends State<SettingsPage> {
                     child:
                         (allInfoController.allInfo.value.image != null)
                             ? CachedNetworkImage(
-                              imageUrl: allInfoController.allInfo.value.image!,
+                              imageUrl:
+                                  "$baseAPI/$imagePath/${allInfoController.allInfo.value.imagePath!}",
                               fit: BoxFit.cover,
                               errorWidget: (context, url, error) {
                                 return Icon(
@@ -324,6 +325,7 @@ class _SettingsPageState extends State<SettingsPage> {
       context: context,
       builder: (context) {
         return Dialog(
+          backgroundColor: Colors.white,
           insetPadding: const EdgeInsets.all(10),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),

@@ -1,21 +1,25 @@
+import "dart:convert";
 import "dart:developer";
 
 import "package:cached_network_image/cached_network_image.dart";
+import "package:dio/dio.dart" as dio;
 import "package:flutter/material.dart";
 import "package:flutter_svg/svg.dart";
 import "package:gap/gap.dart";
 import "package:get/get.dart";
 import "package:hive_flutter/adapters.dart";
 import "package:intl/intl.dart";
-import "package:x_obese/src/screens/navs/naves_page.dart";
+import "package:x_obese/src/apis/apis_url.dart";
+import "package:x_obese/src/apis/middleware/jwt_middleware.dart";
 import "package:x_obese/src/resources/svg_string.dart";
 import "package:x_obese/src/screens/blog/blog_list_view.dart";
-import "package:x_obese/src/screens/info_collector/controller/all_info_controller.dart";
+import "package:x_obese/src/screens/blog/model/get_blog_model.dart";
 import "package:x_obese/src/screens/create_workout_plan/create_workout_plan.dart";
 import "package:x_obese/src/screens/create_workout_plan/model/get_workout_plans.dart";
+import "package:x_obese/src/screens/info_collector/controller/all_info_controller.dart";
 import "package:x_obese/src/screens/marathon/components/virtual_marathon_cards.dart";
-import "package:x_obese/src/screens/marathon/marathon_page.dart";
-import "package:x_obese/src/screens/settings/personal_details_view.dart";
+import "package:x_obese/src/screens/marathon/models/marathon_model.dart";
+import "package:x_obese/src/screens/navs/naves_page.dart";
 import "package:x_obese/src/screens/workout_plan_overview/workout_plan_overview_screen.dart";
 import "package:x_obese/src/theme/colors.dart";
 import "package:x_obese/src/widgets/banners/banners.dart";
@@ -38,6 +42,7 @@ class _HomePageState extends State<HomePage> {
   ScrollController scrollControllerBlog = ScrollController();
   bool isBlogLoading = false;
   bool isMarathonLoading = false;
+  final DioClient dioClient = DioClient(baseAPI);
 
   @override
   void initState() {
@@ -66,6 +71,50 @@ class _HomePageState extends State<HomePage> {
       }
     });
     super.initState();
+  }
+
+  Future<void> getMoreMarathonData() async {
+    try {
+      // get marathon programs
+      dio.Response response = await dioClient.dio.get(
+        "/api/marathon/v1/marathon?page=${(allInfoController.marathonList.length / 10).ceil() + 1}",
+      );
+      printResponse(response);
+      if (response.statusCode == 200) {
+        List marathonListData = response.data["data"];
+        userBox.put(
+          "marathonList",
+          const JsonEncoder.withIndent(" ").convert(marathonListData),
+        );
+        for (var marathon in marathonListData) {
+          allInfoController.marathonList.add(MarathonModel.fromMap(marathon));
+        }
+      }
+    } on dio.DioException catch (e) {
+      log(e.message ?? "", name: "Error");
+      if (e.response != null) {
+        printResponse(e.response!);
+      }
+    }
+  }
+
+  Future<void> getMoreBlogData() async {
+    try {
+      dio.Response response = await dioClient.dio.get(
+        "$blogPath?page=${(allInfoController.getBlogList.length / 10).ceil() + 1}",
+      );
+      if (response.statusCode == 200) {
+        List blogList = response.data["data"] ?? [];
+        for (var blog in blogList) {
+          allInfoController.getBlogList.add(GetBlogModel.fromMap(blog));
+        }
+      }
+    } on dio.DioException catch (e) {
+      log(e.message ?? "", name: "Error");
+      if (e.response != null) {
+        printResponse(e.response!);
+      }
+    }
   }
 
   @override
@@ -105,25 +154,25 @@ class _HomePageState extends State<HomePage> {
                               height: 40,
                               width: 40,
                               color: MyAppColors.transparentGray,
-                              child:
-                                  allInfoController.allInfo.value.image == null
-                                      ? const Icon(Icons.person, size: 18)
-                                      : CachedNetworkImage(
-                                        imageUrl:
-                                            allInfoController
-                                                .allInfo
-                                                .value
-                                                .image!,
-                                        alignment: Alignment.topCenter,
-                                        fit: BoxFit.cover,
-                                        errorWidget: (context, url, error) {
-                                          return Icon(
-                                            Icons.broken_image,
-                                            color: MyAppColors.mutedGray,
-                                            size: 18,
-                                          );
-                                        },
-                                      ),
+                              child: Obx(
+                                () =>
+                                    allInfoController.allInfo.value.image ==
+                                            null
+                                        ? const Icon(Icons.person, size: 18)
+                                        : CachedNetworkImage(
+                                          imageUrl:
+                                              "$baseAPI/$imagePath/${allInfoController.allInfo.value.imagePath}",
+                                          alignment: Alignment.topCenter,
+                                          fit: BoxFit.cover,
+                                          errorWidget: (context, url, error) {
+                                            return Icon(
+                                              Icons.broken_image,
+                                              color: MyAppColors.mutedGray,
+                                              size: 18,
+                                            );
+                                          },
+                                        ),
+                              ),
                             ),
                           ),
                           const Gap(8),
@@ -175,8 +224,7 @@ class _HomePageState extends State<HomePage> {
               ),
               const Gap(20),
               Obx(() {
-                if (allInfoController.getWorkoutPlansList.isEmpty ||
-                    allInfoController.getWorkoutPlansList.first.id == "init") {
+                if (allInfoController.getWorkoutPlansList.isEmpty) {
                   return Padding(
                     padding: const EdgeInsets.all(15.0),
                     child: SizedBox(
@@ -248,8 +296,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                   );
-                } else if (allInfoController.getWorkoutPlansList.isNotEmpty &&
-                    allInfoController.getWorkoutPlansList.first.id != null) {
+                } else if (allInfoController.getWorkoutPlansList.isNotEmpty) {
                   return GestureDetector(
                     onTap: () {
                       Navigator.push(
@@ -405,7 +452,6 @@ class _HomePageState extends State<HomePage> {
                                       );
                                       return SizedBox(
                                         width: 32,
-
                                         child:
                                             isSelected
                                                 ? Center(
@@ -738,3 +784,17 @@ List<String> weekdays = [
   "Friday",
   "Saturday",
 ];
+
+bool isSameDate(DateTime? a, DateTime? b) {
+  if (a == null || b == null) {
+    return false;
+  }
+  return a.year == b.year && a.month == b.month && a.day == b.day;
+}
+
+Widget arrowIcon = SvgPicture.string(
+  '''<svg width="6" height="12" viewBox="0 0 6 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M1 1L5 6L1 11" stroke="#737373" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+''',
+);

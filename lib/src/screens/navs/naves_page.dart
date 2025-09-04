@@ -41,57 +41,9 @@ class _NavesPageState extends State<NavesPage> {
   final userBox = Hive.box("user");
   AllInfoController allInfoController = Get.put(AllInfoController());
 
-  // void _initService() {
-  // FlutterForegroundTask.init(
-  //   androidNotificationOptions: AndroidNotificationOptions(
-  //     channelId: "foreground_service",
-  //     channelName: "Foreground Service Notification",
-  //     channelDescription:
-  //         "This notification appears when the foreground service is running.",
-  //     onlyAlertOnce: true,
-  //   ),
-  //   iosNotificationOptions: const IOSNotificationOptions(
-  //     showNotification: false,
-  //     playSound: false,
-  //   ),
-  //   foregroundTaskOptions: ForegroundTaskOptions(
-  //     eventAction: ForegroundTaskEventAction.repeat(1000),
-  //     autoRunOnBoot: true,
-  //     autoRunOnMyPackageReplaced: true,
-  //     allowWakeLock: true,
-  //     allowWifiLock: true,
-  //   ),
-  // );
-  // }
-
-  // Future<ServiceRequestResult> _startService() async {
-  //   if (await FlutterForegroundTask.isRunningService) {
-  //     return FlutterForegroundTask.restartService();
-  //   } else {
-  //     return FlutterForegroundTask.startService(
-  //       serviceId: 256,
-  //       notificationTitle: "Foreground Service is running",
-  //       notificationText: "Tap to return to the app",
-  //       notificationIcon: null,
-  //       notificationButtons: [
-  //         const NotificationButton(id: "btn_hello", text: "hello"),
-  //       ],
-  //       notificationInitialRoute: "/home",
-  //       // callback: startCallback,
-  //     );
-  //   }
-  // }
-
-  // void _onReceiveTaskData(Object data) {
-  //   log("onReceiveTaskData: $data");
-  //   allInfoController.stepsCount.value = data as int;
-  // }
-
   @override
   void initState() {
     super.initState();
-
-    // FlutterForegroundTask.addTaskDataCallback(_onReceiveTaskData);
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       bool isPermissionAlreadyRequested = Hive.box(

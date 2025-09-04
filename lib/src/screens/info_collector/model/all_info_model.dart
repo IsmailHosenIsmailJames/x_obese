@@ -6,6 +6,7 @@ class AllInfoModel {
   String? fullName;
   String? email;
   String? image;
+  String? imagePath;
   String? gender;
   String? address;
   DateTime? birth;
@@ -19,6 +20,7 @@ class AllInfoModel {
     this.fullName,
     this.email,
     this.image,
+    this.imagePath,
     this.gender,
     this.address,
     this.birth,
@@ -33,6 +35,7 @@ class AllInfoModel {
     String? fullName,
     String? email,
     String? image,
+    String? imagePath,
     String? gender,
     String? address,
     DateTime? birth,
@@ -45,6 +48,7 @@ class AllInfoModel {
     fullName: fullName ?? this.fullName,
     email: email ?? this.email,
     image: image ?? this.image,
+    imagePath: imagePath ?? this.imagePath,
     gender: gender ?? this.gender,
     address: address ?? this.address,
     birth: birth ?? this.birth,
@@ -58,25 +62,29 @@ class AllInfoModel {
 
   String toJson() => json.encode(toMap());
 
-  factory AllInfoModel.fromMap(Map<String, dynamic> json) => AllInfoModel(
-    id: json["id"],
-    mobile: json["mobile"],
-    fullName: json["fullName"],
-    email: json["email"],
-    image: json["imagePath"],
-    gender: json["gender"],
-    address: json["address"],
-    birth: json["birth"] != null ? DateTime.parse(json["birth"]) : null,
-    heightFt: json["heightFt"],
-    heightIn: json["heightIn"],
-    weight: json["weight"],
-  );
+  factory AllInfoModel.fromMap(Map<String, dynamic> json) {
+    return AllInfoModel(
+      id: json["id"],
+      mobile: json["mobile"],
+      fullName: json["fullName"],
+      email: json["email"],
+      image: json["image"],
+      imagePath: json["imagePath"],
+      gender: json["gender"],
+      address: json["address"],
+      birth: json["birth"] != null ? DateTime.parse(json["birth"]) : null,
+      heightFt: json["heightFt"],
+      heightIn: json["heightIn"],
+      weight: json["weight"],
+    );
+  }
 
   Map<String, dynamic> toMap() => {
     "id": id,
     "mobile": mobile,
     "fullName": fullName,
     "email": email,
+    "image": image,
     "imagePath": image,
     "gender": gender,
     "address": address,
