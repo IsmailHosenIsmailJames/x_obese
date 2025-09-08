@@ -9,6 +9,7 @@ import "package:gap/gap.dart";
 import "package:get/get.dart";
 import "package:hive_flutter/adapters.dart";
 import "package:intl/intl.dart";
+import "package:shimmer/shimmer.dart";
 import "package:x_obese/src/apis/apis_url.dart";
 import "package:x_obese/src/apis/middleware/jwt_middleware.dart";
 import "package:x_obese/src/resources/svg_string.dart";
@@ -26,6 +27,33 @@ import "package:x_obese/src/widgets/banners/banners.dart";
 import "package:x_obese/src/widgets/get_blog_card.dart";
 import "package:x_obese/src/widgets/points_overview_widget.dart";
 
+mixin PaginationController<T extends StatefulWidget> on State<T> {
+  void addPaginationListener({
+    required ScrollController controller,
+    required Future<void> Function() onFetch,
+    required ValueGetter<bool> isLoading,
+    required ValueSetter<bool> setLoading,
+    double threshold = 0.9,
+  }) {
+    controller.addListener(() async {
+      if (controller.position.hasContentDimensions &&
+          !isLoading() &&
+          controller.position.pixels >=
+              controller.position.maxScrollExtent * threshold) {
+        if (!mounted) return;
+        setLoading(true);
+        try {
+          await onFetch();
+        } finally {
+          if (mounted) {
+            setLoading(false);
+          }
+        }
+      }
+    });
+  }
+}
+
 class HomePage extends StatefulWidget {
   final PageController pageController;
 
@@ -35,7 +63,8 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage>
+    with PaginationController<HomePage> {
   final userBox = Hive.box("user");
   AllInfoController allInfoController = Get.find();
   ScrollController scrollControllerMarathon = ScrollController();
@@ -46,34 +75,34 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-    scrollControllerMarathon.addListener(() async {
-      if (scrollControllerMarathon.position.pixels ==
-          scrollControllerMarathon.position.maxScrollExtent) {
-        setState(() {
-          isMarathonLoading = true;
-        });
-        await getMoreMarathonData();
-        setState(() {
-          isMarathonLoading = false;
-        });
-      }
-    });
-    scrollControllerBlog.addListener(() async {
-      if (scrollControllerBlog.position.pixels ==
-          scrollControllerBlog.position.maxScrollExtent) {
-        setState(() {
-          isBlogLoading = true;
-        });
-        await getMoreBlogData();
-        setState(() {
-          isBlogLoading = false;
-        });
-      }
-    });
     super.initState();
+    addPaginationListener(
+      controller: scrollControllerMarathon,
+      onFetch: getMoreMarathonData,
+      isLoading: () => isMarathonLoading,
+      setLoading: (loading) => setState(() => isMarathonLoading = loading),
+    );
+    addPaginationListener(
+      controller: scrollControllerBlog,
+      onFetch: getMoreBlogData,
+      isLoading: () => isBlogLoading,
+      setLoading: (loading) => setState(() => isBlogLoading = loading),
+    );
   }
 
+  @override
+  void dispose() {
+    scrollControllerMarathon.dispose();
+    scrollControllerBlog.dispose();
+    super.dispose();
+  }
+
+  bool isThereIsNoMoreMarathon = false;
+
+  bool isThereIsNoMoreBlog = false;
+
   Future<void> getMoreMarathonData() async {
+    if (isThereIsNoMoreMarathon) return;
     try {
       // get marathon programs
       dio.Response response = await dioClient.dio.get(
@@ -89,6 +118,9 @@ class _HomePageState extends State<HomePage> {
         for (var marathon in marathonListData) {
           allInfoController.marathonList.add(MarathonModel.fromMap(marathon));
         }
+        if (isThereIsNoMoreMarathon == false && marathonListData.isEmpty) {
+          isThereIsNoMoreMarathon = true;
+        }
       }
     } on dio.DioException catch (e) {
       log(e.message ?? "", name: "Error");
@@ -99,6 +131,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> getMoreBlogData() async {
+    if (isThereIsNoMoreBlog) return;
     try {
       dio.Response response = await dioClient.dio.get(
         "$blogPath?page=${(allInfoController.getBlogList.length / 10).ceil() + 1}",
@@ -108,6 +141,9 @@ class _HomePageState extends State<HomePage> {
         for (var blog in blogList) {
           allInfoController.getBlogList.add(GetBlogModel.fromMap(blog));
         }
+        if (isThereIsNoMoreBlog == false && blogList.isEmpty) {
+          isThereIsNoMoreBlog = true;
+        }
       }
     } on dio.DioException catch (e) {
       log(e.message ?? "", name: "Error");
@@ -115,6 +151,55 @@ class _HomePageState extends State<HomePage> {
         printResponse(e.response!);
       }
     }
+  }
+
+  Widget _buildShimmerEffect({double height = 220, double width = 300}) {
+    return Shimmer.fromColors(
+      baseColor: Colors.grey.shade300,
+      highlightColor: Colors.grey.shade100,
+      child: Row(
+        children: [
+          const SizedBox(width: 15),
+          Container(
+            height: height,
+            width: width,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  height: height * 0.6, // 60% for image
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(8),
+                      topRight: Radius.circular(8),
+                    ),
+                  ),
+                ),
+                const Gap(8),
+                Container(
+                  height: 8,
+                  width: width * 0.8,
+                  color: Colors.white,
+                  margin: const EdgeInsets.only(left: 8),
+                ),
+                const Gap(4),
+                Container(
+                  height: 8,
+                  width: width * 0.5,
+                  color: Colors.white,
+                  margin: const EdgeInsets.only(left: 8),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -203,17 +288,6 @@ class _HomePageState extends State<HomePage> {
                         ],
                       ),
                     ),
-
-                    // const Spacer(),
-                    // IconButton(
-                    //   onPressed: () async {
-                    //     Navigator.push(
-                    //       context,
-                    //       MaterialPageRoute(builder: (context) => HealthApp()),
-                    //     );
-                    //   },
-                    //   icon: SvgPicture.string(notificationSvg),
-                    // ),
                   ],
                 ),
               ),
@@ -573,80 +647,11 @@ class _HomePageState extends State<HomePage> {
                                 ),
                               ),
                               if (isMarathonLoading)
-                                const CircularProgressIndicator(),
+                                _buildShimmerEffect(height: 220, width: 300),
                             ],
                           ),
                 ),
               ),
-
-              // Padding(
-              //   padding: const EdgeInsets.all(15.0),
-              //   child: Row(
-              //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //     children: [
-              //       const Text(
-              //         "Specialists Near You",
-              //         style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-              //       ),
-              //       TextButton(
-              //         onPressed: () {
-              //           Navigator.push(
-              //             context,
-              //             MaterialPageRoute(
-              //               builder: (context) => const SpecialistsNearYou(),
-              //             ),
-              //           );
-              //         },
-              //         child: Text(
-              //           "See All",
-              //           style: TextStyle(color: MyAppColors.third),
-              //         ),
-              //       ),
-              //     ],
-              //   ),
-              // ),
-
-              // SizedBox(
-              //   height: 125,
-              //   child: Row(
-              //     mainAxisAlignment: MainAxisAlignment.start,
-              //     crossAxisAlignment: CrossAxisAlignment.start,
-              //     children: [
-              //       Expanded(
-              //         child: ListView(
-              //           scrollDirection: Axis.horizontal,
-              //           controller: scrollControllerBlog,
-              //           padding: const EdgeInsets.only(
-              //             left: 15,
-              //             right: 15,
-              //             bottom: 5,
-              //           ),
-              //           children: List.generate(10, (index) {
-              //             return getSpecialistDoctorCard(
-              //               context: context,
-              //               data: SpecialistsNearYouModel(
-              //                 image:
-              //                     "https://www.figma.com/file/8frEvJAGHDh0TUQVUTXRF6/image/181a9ed08884107a88ece2bdbbae5d5fa943a40a",
-              //                 address: "Hathazari Medical",
-              //                 category: "General Specialist",
-              //                 distance: "3.5 km",
-              //                 name: "Dr. Ahmed Ali",
-              //               ),
-              //               width: 300.0,
-              //               height: 120.0,
-              //               onTap: () {},
-              //               catalogFontSize: 10.0,
-              //               nameFontSize: 16.0,
-              //               distanceFontSize: 12.0,
-              //               addressFontSize: 10.0,
-              //               iconHeight: 15.0,
-              //             );
-              //           }),
-              //         ),
-              //       ),
-              //     ],
-              //   ),
-              // ),
               Padding(
                 padding: const EdgeInsets.all(15.0),
                 child: Row(
@@ -728,20 +733,21 @@ class _HomePageState extends State<HomePage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Expanded(
-                                child: ListView(
+                                child: ListView.builder(
                                   scrollDirection: Axis.horizontal,
                                   controller: scrollControllerBlog,
-                                  children: List.generate(
-                                    allInfoController.getBlogList.length,
-                                    (index) {
-                                      return getBlogCard(
-                                        context,
-                                        allInfoController.getBlogList[index],
-                                      );
-                                    },
-                                  ),
+                                  itemCount:
+                                      allInfoController.getBlogList.length,
+                                  itemBuilder: (context, index) {
+                                    return getBlogCard(
+                                      context,
+                                      allInfoController.getBlogList[index],
+                                    );
+                                  },
                                 ),
                               ),
+                              if (isBlogLoading)
+                                _buildShimmerEffect(height: 80, width: 165),
                             ],
                           ),
                 ),
