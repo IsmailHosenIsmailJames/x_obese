@@ -490,46 +490,52 @@ class _PointsOverviewWidgetState extends State<PointsOverviewWidget> {
     required String points,
     dynamic target,
   }) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        SizedBox(width: 22, height: 22, child: SvgPicture.string(svg)),
-        const Gap(7),
-        Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              title,
-              style: TextStyle(
-                fontSize: 14,
-                color: MyAppColors.mutedGray,
-                fontWeight: FontWeight.w300,
-              ),
-            ),
-            Row(
-              children: [
-                Text(
-                  points,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                  ),
+    return GestureDetector(
+      onTap: () {
+        controller.selectedCategory.value = title;
+      },
+      behavior: HitTestBehavior.translucent,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(width: 22, height: 22, child: SvgPicture.string(svg)),
+          const Gap(7),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                style: TextStyle(
+                  fontSize: 14,
+                  color: MyAppColors.mutedGray,
+                  fontWeight: FontWeight.w300,
                 ),
-                if (target != null)
+              ),
+              Row(
+                children: [
                   Text(
-                    "/$target",
-                    style: TextStyle(
-                      fontSize: 13,
-                      color: MyAppColors.mutedGray,
+                    points,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
-              ],
-            ),
-          ],
-        ),
-      ],
+                  if (target != null)
+                    Text(
+                      "/$target",
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: MyAppColors.mutedGray,
+                      ),
+                    ),
+                ],
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }
