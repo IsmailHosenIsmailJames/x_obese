@@ -35,6 +35,7 @@ class App extends StatelessWidget {
           seedColor: MyAppColors.third,
           brightness: Brightness.light,
         ),
+        scaffoldBackgroundColor: MyAppColors.primary,
         fontFamily: "Lexend",
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(

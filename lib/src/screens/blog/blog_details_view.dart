@@ -25,25 +25,32 @@ class _BlogDetailsViewState extends State<BlogDetailsView> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SafeArea(
-                  child: Container(
-                    height: 165,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      image:
-                          widget.blogData.imagePath == null
-                              ? null
-                              : DecorationImage(
-                                image: CachedNetworkImageProvider(
-                                  widget.blogData.imagePath!,
-                                ),
-
-                                fit: BoxFit.cover,
-                              ),
-                    ),
-                  ),
+                CachedNetworkImage(
+                  imageUrl: widget.blogData.imagePath ?? "",
+                  fit: BoxFit.fitWidth,
+                  errorWidget:
+                      (context, url, error) => SizedBox(
+                        height: 200,
+                        width: MediaQuery.of(context).size.width,
+                        child: const Icon(Icons.broken_image, size: 40),
+                      ),
+                  alignment: Alignment.center,
+                  progressIndicatorBuilder:
+                      (context, url, progress) => SizedBox(
+                        height: 200,
+                        width: MediaQuery.of(context).size.width,
+                        child: Center(
+                          child: CircularProgressIndicator(
+                            value:
+                                progress.totalSize == null
+                                    ? null
+                                    : (progress.downloaded /
+                                        progress.totalSize!),
+                          ),
+                        ),
+                      ),
                 ),
-                const Gap(15),
+
                 Padding(
                   padding: const EdgeInsets.all(15.0),
                   child: Column(
@@ -78,11 +85,13 @@ class _BlogDetailsViewState extends State<BlogDetailsView> {
                         ),
                       ),
                       const Divider(color: Colors.transparent),
-                      Text(
-                        widget.blogData.details ?? "",
-                        style: const TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400,
+                      SafeArea(
+                        child: Text(
+                          widget.blogData.details ?? "",
+                          style: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                          ),
                         ),
                       ),
                     ],
