@@ -21,10 +21,11 @@ class AllInfoController extends GetxController {
   static final Box _userBox = Hive.box("user");
 
   Rx<AllInfoModel> allInfo = Rx<AllInfoModel>(AllInfoModel());
-  Rx<WorkStatusModel> workStatus = Rx<WorkStatusModel>(WorkStatusModel());
-  RxList<MarathonModel> marathonList = RxList<MarathonModel>([]);
-  RxList<GetWorkoutPlans> getWorkoutPlansList = RxList<GetWorkoutPlans>([]);
-  RxList<GetBlogModel> getBlogList = RxList<GetBlogModel>([]);
+  Rx<WorkStatusModel?> workStatus = Rx<WorkStatusModel?>(null);
+  Rx<List<MarathonModel>?> marathonList = Rx<List<MarathonModel>?>(null);
+  Rx<List<GetWorkoutPlans>?> getWorkoutPlansList =
+      Rx<List<GetWorkoutPlans>?>(null);
+  Rx<List<GetBlogModel>?> getBlogList = Rx<List<GetBlogModel>?>(null);
 
   @override
   void onInit() {
@@ -112,7 +113,7 @@ class AllInfoController extends GetxController {
           durationMs: (status.durationMs ?? 0) / 60000,
         );
         selectedCategory.value = "Calories";
-        selectedPoints.value = double.parse(workStatus.value.calories ?? "0");
+        selectedPoints.value = double.parse(workStatus.value?.calories ?? "0");
       }
     } on dio.DioException catch (e) {
       log("Failed to fetch workout status: ${e.message}");

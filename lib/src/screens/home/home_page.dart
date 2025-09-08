@@ -106,7 +106,7 @@ class _HomePageState extends State<HomePage>
     try {
       // get marathon programs
       dio.Response response = await dioClient.dio.get(
-        "/api/marathon/v1/marathon?page=${(allInfoController.marathonList.length / 10).ceil() + 1}",
+        "/api/marathon/v1/marathon?page=${((allInfoController.marathonList.value?.length ?? 0) / 10).ceil() + 1}",
       );
       printResponse(response);
       if (response.statusCode == 200) {
@@ -115,9 +115,14 @@ class _HomePageState extends State<HomePage>
           "marathonList",
           const JsonEncoder.withIndent(" ").convert(marathonListData),
         );
-        for (var marathon in marathonListData) {
-          allInfoController.marathonList.add(MarathonModel.fromMap(marathon));
-        }
+        final newMarathons =
+            marathonListData
+                .map((data) => MarathonModel.fromMap(data))
+                .toList();
+        allInfoController.marathonList.value = [
+          ...allInfoController.marathonList.value ?? [],
+          ...newMarathons,
+        ];
         if (isThereIsNoMoreMarathon == false && marathonListData.isEmpty) {
           isThereIsNoMoreMarathon = true;
         }
@@ -134,13 +139,16 @@ class _HomePageState extends State<HomePage>
     if (isThereIsNoMoreBlog) return;
     try {
       dio.Response response = await dioClient.dio.get(
-        "$blogPath?page=${(allInfoController.getBlogList.length / 10).ceil() + 1}",
+        "$blogPath?page=${((allInfoController.getBlogList.value?.length ?? 0) / 10).ceil() + 1}",
       );
       if (response.statusCode == 200) {
         List blogList = response.data["data"] ?? [];
-        for (var blog in blogList) {
-          allInfoController.getBlogList.add(GetBlogModel.fromMap(blog));
-        }
+        final newBlogs =
+            blogList.map((data) => GetBlogModel.fromMap(data)).toList();
+        allInfoController.getBlogList.value = [
+          ...allInfoController.getBlogList.value ?? [],
+          ...newBlogs,
+        ];
         if (isThereIsNoMoreBlog == false && blogList.isEmpty) {
           isThereIsNoMoreBlog = true;
         }
@@ -151,6 +159,23 @@ class _HomePageState extends State<HomePage>
         printResponse(e.response!);
       }
     }
+  }
+
+  Widget _buildWorkoutPlanShimmer() {
+    return Padding(
+      padding: const EdgeInsets.all(15.0),
+      child: Shimmer.fromColors(
+        baseColor: Colors.grey.shade300,
+        highlightColor: Colors.grey.shade100,
+        child: Container(
+          height: 100,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(8),
+          ),
+        ),
+      ),
+    );
   }
 
   Widget _buildShimmerEffect({double height = 220, double width = 300}) {
@@ -298,7 +323,12 @@ class _HomePageState extends State<HomePage>
               ),
               const Gap(20),
               Obx(() {
-                if (allInfoController.getWorkoutPlansList.isEmpty) {
+                final workoutPlans =
+                    allInfoController.getWorkoutPlansList.value;
+                if (workoutPlans == null) {
+                  return _buildWorkoutPlanShimmer();
+                }
+                if (workoutPlans.isEmpty) {
                   return Padding(
                     padding: const EdgeInsets.all(15.0),
                     child: SizedBox(
@@ -370,7 +400,7 @@ class _HomePageState extends State<HomePage>
                       ),
                     ),
                   );
-                } else if (allInfoController.getWorkoutPlansList.isNotEmpty) {
+                } else {
                   return GestureDetector(
                     onTap: () {
                       Navigator.push(
@@ -379,176 +409,159 @@ class _HomePageState extends State<HomePage>
                           builder:
                               (context) => WorkoutPlanOverviewScreen(
                                 getWorkoutPlansList:
-                                    allInfoController.getWorkoutPlansList,
+                                    allInfoController
+                                        .getWorkoutPlansList
+                                        .value!,
                               ),
                         ),
                       );
                     },
-                    child: Obx(
-                      () => Padding(
-                        padding: const EdgeInsets.only(left: 15, right: 15),
-                        child: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                const Text(
-                                  "Workout Plan",
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 15, right: 15),
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              const Text(
+                                "Workout Plan",
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              const Gap(10),
+                              if (workoutPlans.first.startDate != null &&
+                                  workoutPlans.first.endDate != null)
+                                Text(
+                                  "${getWeekStatus(workoutPlans.first)} Weeks",
                                   style: TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.w500,
+                                    color: MyAppColors.third,
                                   ),
                                 ),
-                                const Gap(10),
-                                if (allInfoController
-                                            .getWorkoutPlansList
-                                            .value
-                                            .first
-                                            .startDate !=
-                                        null &&
-                                    allInfoController
-                                            .getWorkoutPlansList
-                                            .value
-                                            .first
-                                            .endDate !=
-                                        null)
-                                  Text(
-                                    "${getWeekStatus(allInfoController.getWorkoutPlansList.value.first)} Weeks",
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w500,
-                                      color: MyAppColors.third,
-                                    ),
+                              const Spacer(),
+                              arrowIcon,
+                            ],
+                          ),
+                          const Gap(10),
+                          Container(
+                            height: 100,
+                            padding: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              color: MyAppColors.transparentGray,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Column(
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: List.generate(weekdays.length, (
+                                    index,
+                                  ) {
+                                    String day = DateFormat(
+                                      DateFormat.WEEKDAY,
+                                    ).format(DateTime.now());
+                                    bool isSelected =
+                                        weekdays.indexOf(day) == index;
+
+                                    DateTime thisDay = DateTime.now().add(
+                                      Duration(
+                                        days: index - weekdays.indexOf(day),
+                                      ),
+                                    );
+
+                                    return Container(
+                                      width: 32,
+                                      height: 44,
+                                      padding: const EdgeInsets.all(2),
+                                      decoration: BoxDecoration(
+                                        color:
+                                            isSelected
+                                                ? MyAppColors.third
+                                                : null,
+                                        borderRadius: BorderRadius.circular(4),
+                                      ),
+                                      child: FittedBox(
+                                        child: Column(
+                                          children: [
+                                            Text(
+                                              weekdays[index]
+                                                  .substring(0, 3)
+                                                  .capitalizeFirst,
+                                              style: TextStyle(
+                                                color:
+                                                    isSelected
+                                                        ? Colors.white
+                                                        : null,
+                                              ),
+                                            ),
+                                            Text(
+                                              (thisDay.day).toString(),
+                                              style: TextStyle(
+                                                color:
+                                                    isSelected
+                                                        ? Colors.white
+                                                        : null,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  }),
+                                ),
+                                Divider(
+                                  color: MyAppColors.third.withValues(
+                                    alpha: 0.2,
                                   ),
-                                const Spacer(),
-                                arrowIcon,
+                                  thickness: 1,
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: List.generate(weekdays.length, (
+                                    index,
+                                  ) {
+                                    String day = DateFormat(
+                                      DateFormat.WEEKDAY,
+                                    ).format(DateTime.now());
+
+                                    DateTime thisDay = DateTime.now().add(
+                                      Duration(
+                                        days: index - weekdays.indexOf(day),
+                                      ),
+                                    );
+
+                                    bool isSelected = haveWorkoutDay(
+                                      workoutPlans.first,
+                                      thisDay,
+                                    );
+                                    return SizedBox(
+                                      width: 32,
+                                      child:
+                                          isSelected
+                                              ? Center(
+                                                child: CircleAvatar(
+                                                  radius: 3,
+                                                  backgroundColor:
+                                                      MyAppColors.second,
+                                                ),
+                                              )
+                                              : null,
+                                    );
+                                  }),
+                                ),
                               ],
                             ),
-                            const Gap(10),
-                            Container(
-                              height: 100,
-                              padding: const EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                color: MyAppColors.transparentGray,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Column(
-                                children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: List.generate(weekdays.length, (
-                                      index,
-                                    ) {
-                                      String day = DateFormat(
-                                        DateFormat.WEEKDAY,
-                                      ).format(DateTime.now());
-                                      bool isSelected =
-                                          weekdays.indexOf(day) == index;
-
-                                      DateTime thisDay = DateTime.now().add(
-                                        Duration(
-                                          days: index - weekdays.indexOf(day),
-                                        ),
-                                      );
-
-                                      return Container(
-                                        width: 32,
-                                        height: 44,
-                                        padding: const EdgeInsets.all(2),
-                                        decoration: BoxDecoration(
-                                          color:
-                                              isSelected
-                                                  ? MyAppColors.third
-                                                  : null,
-                                          borderRadius: BorderRadius.circular(
-                                            4,
-                                          ),
-                                        ),
-                                        child: FittedBox(
-                                          child: Column(
-                                            children: [
-                                              Text(
-                                                weekdays[index]
-                                                    .substring(0, 3)
-                                                    .capitalizeFirst,
-                                                style: TextStyle(
-                                                  color:
-                                                      isSelected
-                                                          ? Colors.white
-                                                          : null,
-                                                ),
-                                              ),
-                                              Text(
-                                                (thisDay.day).toString(),
-                                                style: TextStyle(
-                                                  color:
-                                                      isSelected
-                                                          ? Colors.white
-                                                          : null,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      );
-                                    }),
-                                  ),
-                                  Divider(
-                                    color: MyAppColors.third.withValues(
-                                      alpha: 0.2,
-                                    ),
-                                    thickness: 1,
-                                  ),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: List.generate(weekdays.length, (
-                                      index,
-                                    ) {
-                                      String day = DateFormat(
-                                        DateFormat.WEEKDAY,
-                                      ).format(DateTime.now());
-
-                                      DateTime thisDay = DateTime.now().add(
-                                        Duration(
-                                          days: index - weekdays.indexOf(day),
-                                        ),
-                                      );
-
-                                      bool isSelected = haveWorkoutDay(
-                                        allInfoController
-                                            .getWorkoutPlansList
-                                            .value
-                                            .first,
-                                        thisDay,
-                                      );
-                                      return SizedBox(
-                                        width: 32,
-                                        child:
-                                            isSelected
-                                                ? Center(
-                                                  child: CircleAvatar(
-                                                    radius: 3,
-                                                    backgroundColor:
-                                                        MyAppColors.second,
-                                                  ),
-                                                )
-                                                : null,
-                                      );
-                                    }),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
                   );
-                } else {
-                  return const Text("Something Found Wrong");
                 }
               }),
               const Gap(10),
@@ -569,7 +582,8 @@ class _HomePageState extends State<HomePage>
                     Obx(
                       () => TextButton(
                         onPressed:
-                            allInfoController.marathonList.isEmpty
+                            allInfoController.marathonList.value?.isEmpty ??
+                                    true
                                 ? null
                                 : () {
                                   widget.pageController.jumpToPage(2);
@@ -578,7 +592,8 @@ class _HomePageState extends State<HomePage>
                           "See All",
                           style: TextStyle(
                             color:
-                                allInfoController.marathonList.isEmpty
+                                allInfoController.marathonList.value?.isEmpty ??
+                                        true
                                     ? MyAppColors.mutedGray
                                     : MyAppColors.third,
                           ),
@@ -589,11 +604,15 @@ class _HomePageState extends State<HomePage>
                 ),
               ),
 
-              Obx(
-                () => SizedBox(
-                  height: allInfoController.marathonList.isEmpty ? 120 : 220,
+              Obx(() {
+                final marathons = allInfoController.marathonList.value;
+                if (marathons == null) {
+                  return _buildShimmerEffect(height: 220, width: 300);
+                }
+                return SizedBox(
+                  height: marathons.isEmpty ? 120 : 220,
                   child:
-                      allInfoController.marathonList.isEmpty
+                      marathons.isEmpty
                           ? Container(
                             height: 220,
                             width: MediaQuery.of(context).size.width,
@@ -609,7 +628,6 @@ class _HomePageState extends State<HomePage>
                               children: [
                                 Icon(
                                   Icons.run_circle_outlined,
-                                  // Or any other suitable icon
                                   size: 40,
                                   color: Colors.grey[400],
                                 ),
@@ -631,16 +649,14 @@ class _HomePageState extends State<HomePage>
                                 child: ListView.builder(
                                   controller: scrollControllerMarathon,
                                   scrollDirection: Axis.horizontal,
-                                  itemCount:
-                                      allInfoController.marathonList.length,
+                                  itemCount: marathons.length,
                                   padding: const EdgeInsets.only(right: 15),
                                   itemBuilder: (context, index) {
                                     return getMarathonCard(
                                       width: 300,
                                       height: 220,
                                       context: context,
-                                      marathonData:
-                                          allInfoController.marathonList[index],
+                                      marathonData: marathons[index],
                                       margin: const EdgeInsets.only(left: 15),
                                     );
                                   },
@@ -650,8 +666,8 @@ class _HomePageState extends State<HomePage>
                                 _buildShimmerEffect(height: 220, width: 300),
                             ],
                           ),
-                ),
-              ),
+                );
+              }),
               Padding(
                 padding: const EdgeInsets.all(15.0),
                 child: Row(
@@ -667,7 +683,7 @@ class _HomePageState extends State<HomePage>
                     Obx(
                       () => TextButton(
                         onPressed:
-                            allInfoController.getBlogList.isEmpty
+                            allInfoController.getBlogList.value?.isEmpty ?? true
                                 ? null
                                 : () {
                                   Navigator.push(
@@ -682,7 +698,8 @@ class _HomePageState extends State<HomePage>
                           "See All",
                           style: TextStyle(
                             color:
-                                allInfoController.getBlogList.isEmpty
+                                allInfoController.getBlogList.value?.isEmpty ??
+                                        true
                                     ? MyAppColors.mutedGray
                                     : MyAppColors.third,
                           ),
@@ -694,63 +711,61 @@ class _HomePageState extends State<HomePage>
               ),
               SizedBox(
                 height: 210,
-                child: Obx(
-                  () =>
-                      allInfoController.getBlogList.isEmpty
-                          ? Container(
-                            height: 220,
-                            width: MediaQuery.of(context).size.width,
-                            margin: const EdgeInsets.only(left: 10, right: 10),
-                            decoration: BoxDecoration(
-                              color: MyAppColors.transparentGray,
-                              borderRadius: BorderRadius.circular(10),
+                child: Obx(() {
+                  final blogs = allInfoController.getBlogList.value;
+                  if (blogs == null) {
+                    return _buildShimmerEffect(height: 210, width: 300);
+                  }
+                  return blogs.isEmpty
+                      ? Container(
+                        height: 220,
+                        width: MediaQuery.of(context).size.width,
+                        margin: const EdgeInsets.only(left: 10, right: 10),
+                        decoration: BoxDecoration(
+                          color: MyAppColors.transparentGray,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        padding: const EdgeInsets.all(10),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.text_snippet_rounded,
+                              size: 40,
+                              color: Colors.grey[400],
                             ),
-                            padding: const EdgeInsets.all(10),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.text_snippet_rounded,
-                                  // Or any other suitable icon
-                                  size: 40,
-                                  color: Colors.grey[400],
-                                ),
-                                const Gap(5),
-                                Text(
-                                  "Blogs are Coming Near You Soon! Stay Tuned.",
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.grey[600],
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ],
-                            ),
-                          )
-                          : Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Expanded(
-                                child: ListView.builder(
-                                  scrollDirection: Axis.horizontal,
-                                  controller: scrollControllerBlog,
-                                  itemCount:
-                                      allInfoController.getBlogList.length,
-                                  itemBuilder: (context, index) {
-                                    return getBlogCard(
-                                      context,
-                                      allInfoController.getBlogList[index],
-                                    );
-                                  },
-                                ),
+                            const Gap(5),
+                            Text(
+                              "Blogs are Coming Near You Soon! Stay Tuned.",
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.grey[600],
                               ),
-                              if (isBlogLoading)
-                                _buildShimmerEffect(height: 80, width: 165),
-                            ],
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
+                        ),
+                      )
+                      : Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              controller: scrollControllerBlog,
+                              itemCount: blogs.length,
+                              itemBuilder: (context, index) {
+                                return getBlogCard(context, blogs[index]);
+                              },
+                            ),
                           ),
-                ),
+                          if (isBlogLoading)
+                            _buildShimmerEffect(height: 80, width: 160),
+                        ],
+                      );
+                }),
               ),
             ],
           ),

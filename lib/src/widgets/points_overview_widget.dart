@@ -197,17 +197,23 @@ class _PointsOverviewWidgetState extends State<PointsOverviewWidget> {
                                       svg: calorieIconBlue,
                                       title: "Calories",
                                       points:
-                                          controller.workStatus.value.calories
+                                          controller.workStatus.value?.calories
                                               ?.toString() ??
                                           "0",
                                       target:
-                                          controller.getWorkoutPlansList.isNotEmpty ?
-                                          (controller
+                                          controller
                                                       .getWorkoutPlansList
-                                                      .first
-                                                      .caloriesGoal ??
-                                                  0)
-                                              .abs() : 0,
+                                                      .value
+                                                      ?.isNotEmpty ??
+                                                  false
+                                              ? (controller
+                                                          .getWorkoutPlansList
+                                                          .value
+                                                          ?.first
+                                                          .caloriesGoal ??
+                                                      0)
+                                                  .abs()
+                                              : 0,
                                     ),
                                   ),
                                 ),
@@ -240,7 +246,8 @@ class _PointsOverviewWidgetState extends State<PointsOverviewWidget> {
                                   svg: heartIconSVGYellow,
                                   title: "Heart Points",
                                   points: double.parse(
-                                    controller.workStatus.value.heartPts ?? "0",
+                                    controller.workStatus.value?.heartPts ??
+                                        "0",
                                   ).toStringAsFixed(2),
                                 ),
                               ),
@@ -261,15 +268,20 @@ class _PointsOverviewWidgetState extends State<PointsOverviewWidget> {
                                   svg: workOutIconSVGGreen,
                                   title: "Workout Time",
                                   points:
-                                      controller.workStatus.value.durationMs
+                                      controller.workStatus.value?.durationMs
                                           ?.toStringAsFixed(2) ??
                                       "0",
                                   target:
-                                      controller.getWorkoutPlansList.isNotEmpty ?
-                                      (int.parse(
-                                            "${(controller.getWorkoutPlansList.first.workoutTimeMs ?? 0)}",
-                                          ).abs() /
-                                          60000) : 0,
+                                      (controller
+                                                  .getWorkoutPlansList
+                                                  .value
+                                                  ?.isNotEmpty ??
+                                              false)
+                                          ? (int.parse(
+                                                "${(controller.getWorkoutPlansList.value?.first.workoutTimeMs ?? 0)}",
+                                              ).abs() /
+                                              60000)
+                                          : 0,
                                 ),
                               ),
                             ),
@@ -358,20 +370,20 @@ class _PointsOverviewWidgetState extends State<PointsOverviewWidget> {
 
   PieChart getPieChart(AllInfoController controller) {
     double targetCalBran = 1.0;
-    if (controller.getWorkoutPlansList.isNotEmpty) {
+    if (controller.getWorkoutPlansList.value?.isNotEmpty ?? false) {
       targetCalBran =
-          controller.getWorkoutPlansList.value.first.caloriesGoal
+          controller.getWorkoutPlansList.value?.first.caloriesGoal
               ?.toDouble()
               .abs() ??
-              1.0;
+          1.0;
     }
 
     if (!(targetCalBran > 0)) targetCalBran = 1;
 
     double targetWorkout = 1.0;
-    if (controller.getWorkoutPlansList.isNotEmpty) {
+    if (controller.getWorkoutPlansList.value?.isNotEmpty ?? false) {
       targetWorkout = double.parse(
-        controller.getWorkoutPlansList.value.first.workoutTimeMs ?? "0",
+        controller.getWorkoutPlansList.value?.first.workoutTimeMs ?? "0",
       );
     }
     targetWorkout /= 60000;
@@ -396,20 +408,20 @@ class _PointsOverviewWidgetState extends State<PointsOverviewWidget> {
                     touchedSection.title.toString();
               } else if (touchedSection.title.toString() == "Heart Points") {
                 controller.selectedPoints.value = double.parse(
-                  controller.workStatus.value.heartPts ?? "0",
+                  controller.workStatus.value?.heartPts ?? "0",
                 ).toPrecision(2);
                 controller.selectedCategory.value =
                     touchedSection.title.toString();
               } else if (touchedSection.title.toString() == "Calories") {
                 controller.selectedPoints.value = double.parse(
-                  controller.workStatus.value.calories ?? "0",
+                  controller.workStatus.value?.calories ?? "0",
                 ).toPrecision(2);
                 controller.selectedCategory.value =
                     touchedSection.title.toString();
               } else if (touchedSection.title.toString() == "Duration") {
                 controller
                     .selectedPoints
-                    .value = (controller.workStatus.value.durationMs ?? 0)
+                    .value = (controller.workStatus.value?.durationMs ?? 0)
                     .toPrecision(2);
                 controller.selectedCategory.value =
                     touchedSection.title.toString();
@@ -429,7 +441,7 @@ class _PointsOverviewWidgetState extends State<PointsOverviewWidget> {
         sections: [
           PieChartSectionData(
             value:
-                double.parse(controller.workStatus.value.heartPts ?? "0.0") /
+                double.parse(controller.workStatus.value?.heartPts ?? "0.0") /
                 targetHartPoints,
             color: Colors.yellow,
             radius:
@@ -439,7 +451,7 @@ class _PointsOverviewWidgetState extends State<PointsOverviewWidget> {
           ),
           PieChartSectionData(
             value:
-                (controller.workStatus.value.durationMs?.toDouble() ?? 1) /
+                (controller.workStatus.value?.durationMs?.toDouble() ?? 1) /
                 targetWorkout,
             color: Colors.green,
             radius: controller.selectedCategory.value == "Duration" ? 27 : 20,
@@ -456,7 +468,7 @@ class _PointsOverviewWidgetState extends State<PointsOverviewWidget> {
 
           PieChartSectionData(
             value:
-                double.parse(controller.workStatus.value.calories ?? "0.0") /
+                double.parse(controller.workStatus.value?.calories ?? "0.0") /
                 targetCalBran,
             color: Colors.blue,
             title: "Calories",

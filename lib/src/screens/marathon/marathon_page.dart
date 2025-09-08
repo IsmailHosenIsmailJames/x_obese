@@ -5,6 +5,7 @@ import "package:flutter/material.dart";
 import "package:flutter_svg/flutter_svg.dart";
 import "package:gap/gap.dart";
 import "package:get/get.dart";
+import "package:shimmer/shimmer.dart";
 import "package:toastification/toastification.dart";
 import "package:x_obese/src/apis/apis_url.dart";
 import "package:x_obese/src/apis/middleware/jwt_middleware.dart";
@@ -17,7 +18,32 @@ import "package:x_obese/src/theme/colors.dart";
 import "package:x_obese/src/widgets/back_button.dart";
 import "package:x_obese/src/screens/marathon/components/virtual_marathon_cards.dart";
 
-int nextPageNumber = 2;
+mixin PaginationController<T extends StatefulWidget> on State<T> {
+  void addPaginationListener({
+    required ScrollController controller,
+    required Future<void> Function() onFetch,
+    required ValueGetter<bool> isLoading,
+    required ValueSetter<bool> setLoading,
+    double threshold = 0.9,
+  }) {
+    controller.addListener(() async {
+      if (controller.position.hasContentDimensions &&
+          !isLoading() &&
+          controller.position.pixels >=
+              controller.position.maxScrollExtent * threshold) {
+        if (!mounted) return;
+        setLoading(true);
+        try {
+          await onFetch();
+        } finally {
+          if (mounted) {
+            setLoading(false);
+          }
+        }
+      }
+    });
+  }
+}
 
 class MarathonPage extends StatefulWidget {
   final PageController pageController;
@@ -27,75 +53,84 @@ class MarathonPage extends StatefulWidget {
   State<MarathonPage> createState() => _MarathonPageState();
 }
 
-// load more marathon data
-
-bool isLoading = false;
-Future<void> getMoreMarathonData() async {
-  AllInfoController allInfoController = Get.find();
-
-  DioClient dioClient = DioClient(baseAPI);
-  log("try to get more marathon info -> $nextPageNumber");
-  try {
-    // get marathon programs
-    final response = await dioClient.dio.get(
-      "/api/marathon/v1/marathon?page=$nextPageNumber&size=10",
-    );
-    printResponse(response);
-    if (response.statusCode == 200) {
-      List marathonListData = response.data["data"];
-      if (marathonListData.isEmpty) {
-        return;
-      }
-      nextPageNumber++;
-
-      for (var marathon in marathonListData) {
-        allInfoController.marathonList.add(MarathonModel.fromMap(marathon));
-      }
-    }
-  } on DioException catch (e) {
-    log(e.message ?? "", name: "Error");
-    if (e.response != null) {
-      printResponse(e.response!);
-    }
-  }
-}
-
-class _MarathonPageState extends State<MarathonPage> {
+class _MarathonPageState extends State<MarathonPage> with PaginationController<MarathonPage> {
   int selectedIndex = 0;
   PageController pageController = PageController();
   AllInfoController allInfoController = Get.find();
 
   ScrollController scrollControllerVirtual = ScrollController();
   ScrollController scrollControllerOnsite = ScrollController();
+  bool _isLoading = false;
 
   @override
   void initState() {
-    log("Marathon page init state");
-    scrollControllerOnsite.addListener(() async {
-      if (scrollControllerOnsite.position.pixels ==
-          scrollControllerOnsite.position.maxScrollExtent) {
-        setState(() {
-          isLoading = false;
-        });
-        await getMoreMarathonData();
-        setState(() {
-          isLoading = false;
-        });
-      }
-    });
-    scrollControllerVirtual.addListener(() async {
-      if (scrollControllerVirtual.position.pixels ==
-          scrollControllerVirtual.position.maxScrollExtent) {
-        setState(() {
-          isLoading = false;
-        });
-        await getMoreMarathonData();
-        setState(() {
-          isLoading = false;
-        });
-      }
-    });
     super.initState();
+    addPaginationListener(
+      controller: scrollControllerVirtual,
+      onFetch: _getMoreMarathonData,
+      isLoading: () => _isLoading,
+      setLoading: (loading) => setState(() => _isLoading = loading),
+    );
+    addPaginationListener(
+      controller: scrollControllerOnsite,
+      onFetch: _getMoreMarathonData,
+      isLoading: () => _isLoading,
+      setLoading: (loading) => setState(() => _isLoading = loading),
+    );
+  }
+
+  @override
+  void dispose() {
+    scrollControllerVirtual.dispose();
+    scrollControllerOnsite.dispose();
+    pageController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _getMoreMarathonData() async {
+    DioClient dioClient = DioClient(baseAPI);
+    final page = ((allInfoController.marathonList.value?.length ?? 0) / 10).ceil() + 1;
+    log("try to get more marathon info -> page $page");
+    try {
+      final response = await dioClient.dio.get(
+        "/api/marathon/v1/marathon?page=$page&size=10",
+      );
+      printResponse(response);
+      if (response.statusCode == 200) {
+        List marathonListData = response.data["data"];
+        if (marathonListData.isEmpty) {
+          return;
+        }
+
+        final newMarathons = marathonListData
+            .map((data) => MarathonModel.fromMap(data))
+            .toList();
+        allInfoController.marathonList.value = [
+          ...allInfoController.marathonList.value ?? [],
+          ...newMarathons,
+        ];
+      }
+    } on DioException catch (e) {
+      log(e.message ?? "", name: "Error");
+      if (e.response != null) {
+        printResponse(e.response!);
+      }
+    }
+  }
+
+  Widget _buildMarathonItemShimmer() {
+    return Shimmer.fromColors(
+        baseColor: Colors.grey.shade300,
+        highlightColor: Colors.grey.shade100,
+        child: Container(
+          height: 250,
+          width: double.infinity,
+          margin: const EdgeInsets.only(top: 20),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(8),
+          ),
+        ));
   }
 
   @override
@@ -134,7 +169,6 @@ class _MarathonPageState extends State<MarathonPage> {
             ),
           ),
           const Gap(20),
-
           Padding(
             padding: const EdgeInsets.only(top: 15.0, left: 15, right: 15),
             child: Container(
@@ -149,10 +183,9 @@ class _MarathonPageState extends State<MarathonPage> {
                 children: [
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor:
-                          selectedIndex == 0
-                              ? MyAppColors.primary
-                              : Colors.transparent,
+                      backgroundColor: selectedIndex == 0
+                          ? MyAppColors.primary
+                          : Colors.transparent,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(100),
                       ),
@@ -165,13 +198,11 @@ class _MarathonPageState extends State<MarathonPage> {
                     },
                     child: const Text(" Virtual Marathon "),
                   ),
-
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor:
-                          selectedIndex == 1
-                              ? MyAppColors.primary
-                              : Colors.transparent,
+                      backgroundColor: selectedIndex == 1
+                          ? MyAppColors.primary
+                          : Colors.transparent,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(100),
                       ),
@@ -188,7 +219,6 @@ class _MarathonPageState extends State<MarathonPage> {
               ),
             ),
           ),
-
           Expanded(
             child: PageView(
               controller: pageController,
@@ -198,138 +228,141 @@ class _MarathonPageState extends State<MarathonPage> {
                 });
               },
               children: [
-                Obx(
-                  () =>
-                      allInfoController.marathonList
-                              .map((element) => element.type == "virtual")
-                              .isEmpty
-                          ? Container(
-                            height: 220,
-                            width: MediaQuery.of(context).size.width,
-                            margin: const EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              color: MyAppColors.transparentGray,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            padding: const EdgeInsets.all(10),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.run_circle_outlined,
-                                  // Or any other suitable icon
-                                  size: 40,
-                                  color: Colors.grey[400],
-                                ),
-                                const Gap(5),
-                                Text(
-                                  "Exciting Marathon Events Coming Near You Soon! Stay Tuned.",
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.grey[600],
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ],
-                            ),
-                          )
-                          : ListView.builder(
-                            controller: scrollControllerVirtual,
-                            padding: const EdgeInsets.only(
-                              top: 15.0,
-                              left: 15,
-                              right: 15,
-                            ),
-                            itemCount: allInfoController.marathonList.length,
-                            itemBuilder: (context, index) {
-                              if (allInfoController.marathonList[index].type ==
-                                  "virtual") {
-                                return SizedBox(
-                                  height: 250,
-                                  width: MediaQuery.of(context).size.width,
-                                  child: getMarathonCard(
-                                    height: 300,
-                                    width: MediaQuery.of(context).size.width,
-                                    marathonData:
-                                        allInfoController.marathonList[index],
-                                    context: context,
-                                    margin: const EdgeInsets.only(top: 20),
-                                  ),
-                                );
-                              } else {
-                                return const SizedBox();
-                              }
-                            },
+                Obx(() {
+                  final allMarathons = allInfoController.marathonList.value;
+                  if (allMarathons == null) {
+                    return ListView.builder(
+                      itemCount: 3,
+                      itemBuilder: (context, index) =>
+                          _buildMarathonItemShimmer(),
+                    );
+                  }
+                  final virtualMarathons =
+                      allMarathons.where((m) => m.type == "virtual").toList();
+                  if (virtualMarathons.isEmpty) {
+                    return Container(
+                      height: 220,
+                      width: MediaQuery.of(context).size.width,
+                      margin: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: MyAppColors.transparentGray,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      padding: const EdgeInsets.all(10),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.run_circle_outlined,
+                            size: 40,
+                            color: Colors.grey[400],
                           ),
-                ),
-                Obx(
-                  () =>
-                      allInfoController.marathonList
-                              .map((element) => element.type != "virtual")
-                              .isEmpty
-                          ? Container(
-                            height: 220,
-                            width: MediaQuery.of(context).size.width,
-                            margin: const EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              color: MyAppColors.transparentGray,
-                              borderRadius: BorderRadius.circular(10),
+                          const Gap(5),
+                          Text(
+                            "Exciting Marathon Events Coming Near You Soon! Stay Tuned.",
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.grey[600],
                             ),
-                            padding: const EdgeInsets.all(10),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.run_circle_outlined,
-                                  // Or any other suitable icon
-                                  size: 40,
-                                  color: Colors.grey[400],
-                                ),
-                                const Gap(5),
-                                Text(
-                                  "Exciting Marathon Events Coming Near You Soon! Stay Tuned.",
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.grey[600],
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ],
-                            ),
-                          )
-                          : ListView.builder(
-                            controller: scrollControllerOnsite,
-                            padding: const EdgeInsets.only(
-                              top: 15.0,
-                              left: 15,
-                              right: 15,
-                            ),
-                            itemCount: allInfoController.marathonList.length,
-                            itemBuilder: (context, index) {
-                              if (allInfoController.marathonList[index].type !=
-                                  "virtual") {
-                                return getOnsiteMarathon(
-                                  context: context,
-                                  marathonData:
-                                      allInfoController.marathonList[index],
-                                  margin: const EdgeInsets.only(top: 20),
-                                );
-                              } else {
-                                return const SizedBox();
-                              }
-                            },
+                            textAlign: TextAlign.center,
                           ),
-                ),
+                        ],
+                      ),
+                    );
+                  }
+                  return ListView.builder(
+                    controller: scrollControllerVirtual,
+                    padding: const EdgeInsets.only(
+                      top: 15.0,
+                      left: 15,
+                      right: 15,
+                    ),
+                    itemCount: virtualMarathons.length + (_isLoading ? 1 : 0),
+                    itemBuilder: (context, index) {
+                      if (index >= virtualMarathons.length) {
+                        return _buildMarathonItemShimmer();
+                      }
+                      return SizedBox(
+                        height: 250,
+                        width: MediaQuery.of(context).size.width,
+                        child: getMarathonCard(
+                          height: 300,
+                          width: MediaQuery.of(context).size.width,
+                          marathonData: virtualMarathons[index],
+                          context: context,
+                          margin: const EdgeInsets.only(top: 20),
+                        ),
+                      );
+                    },
+                  );
+                }),
+                Obx(() {
+                  final allMarathons = allInfoController.marathonList.value;
+                  if (allMarathons == null) {
+                    return ListView.builder(
+                      itemCount: 3,
+                      itemBuilder: (context, index) =>
+                          _buildMarathonItemShimmer(),
+                    );
+                  }
+                  final onsiteMarathons =
+                      allMarathons.where((m) => m.type != "virtual").toList();
+                  if (onsiteMarathons.isEmpty) {
+                    return Container(
+                      height: 220,
+                      width: MediaQuery.of(context).size.width,
+                      margin: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: MyAppColors.transparentGray,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      padding: const EdgeInsets.all(10),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.run_circle_outlined,
+                            size: 40,
+                            color: Colors.grey[400],
+                          ),
+                          const Gap(5),
+                          Text(
+                            "Exciting Marathon Events Coming Near You Soon! Stay Tuned.",
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.grey[600],
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+                  return ListView.builder(
+                    controller: scrollControllerOnsite,
+                    padding: const EdgeInsets.only(
+                      top: 15.0,
+                      left: 15,
+                      right: 15,
+                    ),
+                    itemCount: onsiteMarathons.length + (_isLoading ? 1 : 0),
+                    itemBuilder: (context, index) {
+                      if (index >= onsiteMarathons.length) {
+                        return _buildMarathonItemShimmer();
+                      }
+                      return getOnsiteMarathon(
+                        context: context,
+                        marathonData: onsiteMarathons[index],
+                        margin: const EdgeInsets.only(top: 20),
+                      );
+                    },
+                  );
+                }),
               ],
             ),
           ),
-          if (isLoading)
-            LinearProgressIndicator(
-              color: MyAppColors.third,
-              backgroundColor: MyAppColors.primary,
-            ),
         ],
       ),
     );
@@ -344,7 +377,6 @@ class _MarathonPageState extends State<MarathonPage> {
       builder: (context) {
         return Dialog(
           insetPadding: const EdgeInsets.all(10),
-
           child: Padding(
             padding: const EdgeInsets.all(20),
             child: Column(
@@ -382,24 +414,21 @@ class _MarathonPageState extends State<MarathonPage> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder:
-                                (context) => ShowSearchResult(
-                                  marathonUserList:
-                                      searchResult
-                                          .map(
-                                            (e) => MarathonUserModel.fromMap(
-                                              Map<String, dynamic>.from(e),
-                                            ),
-                                          )
-                                          .toList(),
-                                ),
+                            builder: (context) => ShowSearchResult(
+                              marathonUserList: searchResult
+                                  .map(
+                                    (e) => MarathonUserModel.fromMap(
+                                      Map<String, dynamic>.from(e),
+                                    ),
+                                  )
+                                  .toList(),
+                            ),
                           ),
                         );
                       } on DioException catch (e) {
                         toastification.show(
                           context: context,
-                          title:
-                              e.response?.data["message"] ??
+                          title: e.response?.data["message"] ??
                               "Something went wrong",
                           type: ToastificationType.error,
                         );
