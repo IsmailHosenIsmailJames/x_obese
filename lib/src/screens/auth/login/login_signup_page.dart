@@ -130,67 +130,69 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width / 3,
-                            height: 53,
-                            child: TextButton(
-                              style: TextButton.styleFrom(
-                                backgroundColor:
-                                    pageName == AuthPageName.login
-                                        ? MyAppColors.primary
-                                        : MyAppColors.transparentGray,
-                                foregroundColor:
-                                    pageName == AuthPageName.login
-                                        ? MyAppColors.third
-                                        : Colors.black,
-                                elevation: 0,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(100),
+                          Expanded(
+                            child: SizedBox(
+                              height: 53,
+                              child: TextButton(
+                                style: TextButton.styleFrom(
+                                  backgroundColor:
+                                      pageName == AuthPageName.login
+                                          ? MyAppColors.primary
+                                          : MyAppColors.transparentGray,
+                                  foregroundColor:
+                                      pageName == AuthPageName.login
+                                          ? MyAppColors.third
+                                          : Colors.black,
+                                  elevation: 0,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(100),
+                                  ),
                                 ),
-                              ),
-                              onPressed: () {
-                                setState(() {
-                                  pageName = AuthPageName.login;
-                                });
-                              },
-                              child: const Text(
-                                "Login",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 16,
+                                onPressed: () {
+                                  setState(() {
+                                    pageName = AuthPageName.login;
+                                  });
+                                },
+                                child: const Text(
+                                  "Login",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 16,
+                                  ),
                                 ),
                               ),
                             ),
                           ),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width / 3,
-                            height: 53,
-                            child: TextButton(
-                              style: TextButton.styleFrom(
-                                padding: EdgeInsets.zero,
-                                backgroundColor:
-                                    pageName == AuthPageName.signup
-                                        ? MyAppColors.primary
-                                        : MyAppColors.transparentGray,
-                                foregroundColor:
-                                    pageName == AuthPageName.signup
-                                        ? MyAppColors.third
-                                        : Colors.black,
-                                elevation: 0,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(100),
+                          Expanded(
+                            child: SizedBox(
+                              height: 53,
+                              child: TextButton(
+                                style: TextButton.styleFrom(
+                                  padding: EdgeInsets.zero,
+                                  backgroundColor:
+                                      pageName == AuthPageName.signup
+                                          ? MyAppColors.primary
+                                          : MyAppColors.transparentGray,
+                                  foregroundColor:
+                                      pageName == AuthPageName.signup
+                                          ? MyAppColors.third
+                                          : Colors.black,
+                                  elevation: 0,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(100),
+                                  ),
                                 ),
-                              ),
-                              onPressed: () {
-                                setState(() {
-                                  pageName = AuthPageName.signup;
-                                });
-                              },
-                              child: const Text(
-                                "Signup",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 16,
+                                onPressed: () {
+                                  setState(() {
+                                    pageName = AuthPageName.signup;
+                                  });
+                                },
+                                child: const Text(
+                                  "Signup",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 16,
+                                  ),
                                 ),
                               ),
                             ),
@@ -305,6 +307,15 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                             );
                           },
                         ),
+                      ),
+                    ),
+                    const Gap(20),
+                    Center(
+                      child: TextButton(
+                        onPressed: () {
+                          // TODO: We need to implement continue as a Guest feaures
+                        },
+                        child: const Text("Continue as Guest"),
                       ),
                     ),
                   ],
