@@ -5,7 +5,7 @@ import "package:x_obese/src/core/common/functions/is_information_fulfilled.dart"
 import "package:x_obese/src/data/user_db.dart";
 import "package:x_obese/src/screens/auth/login/login_signup_page.dart";
 import "package:x_obese/src/screens/info_collector/info_collector.dart";
-import "package:x_obese/src/screens/info_collector/model/all_info_model.dart";
+import "package:x_obese/src/screens/info_collector/model/user_info_model.dart";
 import "package:x_obese/src/screens/intro/intro_page.dart";
 import "package:x_obese/src/screens/navs/naves_page.dart";
 import "package:x_obese/src/theme/colors.dart";
@@ -58,7 +58,7 @@ class App extends StatelessWidget {
         "/infoCollector": (BuildContext context) {
           final String? info = Hive.box("user").get("info");
           return InfoCollector(
-            initialData: info != null ? AllInfoModel.fromJson(info) : null,
+            initialData: info != null ? UserInfoModel.fromJson(info) : null,
           );
         },
         "/workout": (BuildContext context) {
@@ -69,7 +69,7 @@ class App extends StatelessWidget {
           UserDB.userAllInfo() == null
               ? "/intro"
               : isInformationNotFullFilled(
-                AllInfoModel.fromJson(Hive.box("user").get("info")),
+                UserInfoModel.fromJson(Hive.box("user").get("info")),
               )
               ? "/infoCollector"
               : (UserDB.accessToken() == null && UserDB.refreshToken() == null)

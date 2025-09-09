@@ -240,7 +240,7 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
           timestampMillis,
           isUtc: true,
         );
-        print("timestamp: ${timestamp.toString()}");
+        log("timestamp: ${timestamp.toString()}");
       }
     }
   }

@@ -1,6 +1,6 @@
 import "package:dio/dio.dart" as dio;
 import "package:equatable/equatable.dart";
-import "package:x_obese/src/screens/info_collector/model/all_info_model.dart";
+import "package:x_obese/src/screens/info_collector/model/user_info_model.dart";
 
 abstract class AuthState extends Equatable {
   const AuthState();
@@ -23,7 +23,7 @@ class AuthCodeSentSuccess extends AuthState {
 }
 
 class AuthVerificationSuccess extends AuthState {
-  final AllInfoModel userData;
+  final UserInfoModel userData;
 
   const AuthVerificationSuccess(this.userData);
 
@@ -43,7 +43,7 @@ class AuthFailure extends AuthState {
 class AuthNavigateToHome extends AuthState {}
 
 class AuthNavigateToInfoCollector extends AuthState {
-  final AllInfoModel userData;
+  final UserInfoModel userData;
 
   const AuthNavigateToInfoCollector(this.userData);
 

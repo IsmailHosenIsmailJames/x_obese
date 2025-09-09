@@ -5,7 +5,7 @@ import "package:gap/gap.dart";
 import "package:get/get.dart";
 import "package:intl/intl.dart";
 import "package:x_obese/src/screens/info_collector/controller/all_info_controller.dart";
-import "package:x_obese/src/screens/info_collector/model/all_info_model.dart";
+import "package:x_obese/src/screens/info_collector/model/user_info_model.dart";
 import "package:x_obese/src/screens/create_workout_plan/controller/create_workout_plan_controller.dart";
 import "package:x_obese/src/screens/create_workout_plan/model/create_workout_plan_model.dart";
 import "package:x_obese/src/theme/colors.dart";
@@ -144,7 +144,7 @@ class _CreateWorkoutPlanPage3State extends State<CreateWorkoutPlanPage3> {
 
 Widget workoutPlanOverview({
   required BuildContext context,
-  required AllInfoModel allInfoUser,
+  required UserInfoModel allInfoUser,
   required String userBMI,
   required DateTime startDate,
   required DateTime endDate,

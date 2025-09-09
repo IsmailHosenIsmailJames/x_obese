@@ -1,6 +1,6 @@
 import "package:flutter/material.dart";
 import "package:get/get.dart";
-import "package:x_obese/src/screens/info_collector/model/all_info_model.dart";
+import "package:x_obese/src/screens/info_collector/model/user_info_model.dart";
 import "package:x_obese/src/screens/info_collector/pages/birth_date.dart";
 import "package:x_obese/src/screens/info_collector/pages/full_from.dart";
 import "package:x_obese/src/screens/info_collector/pages/gender.dart";
@@ -11,7 +11,7 @@ import "package:x_obese/src/screens/info_collector/pages/name.dart";
 import "controller/all_info_controller.dart";
 
 class InfoCollector extends StatefulWidget {
-  final AllInfoModel? initialData;
+  final UserInfoModel? initialData;
   const InfoCollector({super.key, required this.initialData});
 
   @override
@@ -25,7 +25,7 @@ class _InfoCollectorState extends State<InfoCollector> {
 
   @override
   void initState() {
-    allInfoController.allInfo.value = widget.initialData ?? AllInfoModel();
+    allInfoController.allInfo.value = widget.initialData ?? UserInfoModel();
     super.initState();
   }
 

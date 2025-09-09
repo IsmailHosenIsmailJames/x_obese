@@ -1,6 +1,6 @@
-import "package:x_obese/src/screens/info_collector/model/all_info_model.dart";
+import "package:x_obese/src/screens/info_collector/model/user_info_model.dart";
 
-bool isInformationNotFullFilled(AllInfoModel userData) {
+bool isInformationNotFullFilled(UserInfoModel userData) {
   return userData.fullName == null ||
       userData.email == null ||
       userData.address == null ||

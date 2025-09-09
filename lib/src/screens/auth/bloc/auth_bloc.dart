@@ -8,7 +8,7 @@ import "package:x_obese/src/data/user_db.dart";
 import "package:x_obese/src/screens/auth/bloc/auth_event.dart";
 import "package:x_obese/src/screens/auth/bloc/auth_state.dart";
 import "package:x_obese/src/screens/auth/repository/auth_repository.dart";
-import "package:x_obese/src/screens/info_collector/model/all_info_model.dart";
+import "package:x_obese/src/screens/info_collector/model/user_info_model.dart";
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AuthRepository authRepository;
@@ -74,7 +74,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         if (userDataResponse != null &&
             (userDataResponse.statusCode == 200 ||
                 userDataResponse.statusCode == 201)) {
-          final userData = AllInfoModel.fromMap(
+          final userData = UserInfoModel.fromMap(
             Map<String, dynamic>.from(userDataResponse.data["data"]),
           );
           await UserDB.saveUserAllInfo(userData);

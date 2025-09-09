@@ -221,7 +221,7 @@ class MyHealthFunctions {
         }
       }
     } catch (e) {
-      log('Error fetching workout time: $e', name: 'MyHealthFunctions');
+      log("Error fetching workout time: $e", name: "MyHealthFunctions");
     }
     return workoutTime;
   }

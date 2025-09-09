@@ -6,7 +6,7 @@ import "package:hive_flutter/hive_flutter.dart";
 import "package:x_obese/src/apis/apis_url.dart";
 import "package:x_obese/src/apis/middleware/jwt_middleware.dart";
 import "package:x_obese/src/screens/blog/model/get_blog_model.dart";
-import "package:x_obese/src/screens/info_collector/model/all_info_model.dart";
+import "package:x_obese/src/screens/info_collector/model/user_info_model.dart";
 import "package:dio/dio.dart" as dio;
 import "package:x_obese/src/screens/create_workout_plan/model/get_workout_plans.dart";
 import "package:x_obese/src/screens/marathon/models/marathon_model.dart";
@@ -20,11 +20,12 @@ class AllInfoController extends GetxController {
   static final DioClient _dioClient = DioClient(baseAPI);
   static final Box _userBox = Hive.box("user");
 
-  Rx<AllInfoModel> allInfo = Rx<AllInfoModel>(AllInfoModel());
+  Rx<UserInfoModel> allInfo = Rx<UserInfoModel>(UserInfoModel());
   Rx<WorkStatusModel?> workStatus = Rx<WorkStatusModel?>(null);
   Rx<List<MarathonModel>?> marathonList = Rx<List<MarathonModel>?>(null);
-  Rx<List<GetWorkoutPlans>?> getWorkoutPlansList =
-      Rx<List<GetWorkoutPlans>?>(null);
+  Rx<List<GetWorkoutPlans>?> getWorkoutPlansList = Rx<List<GetWorkoutPlans>?>(
+    null,
+  );
   Rx<List<GetBlogModel>?> getBlogList = Rx<List<GetBlogModel>?>(null);
 
   @override
@@ -38,7 +39,7 @@ class AllInfoController extends GetxController {
     try {
       final response = await _dioClient.dio.patch(userDataPath, data: data);
       if (response.statusCode == 200) {
-        final newInfo = AllInfoModel.fromMap(response.data["data"]);
+        final newInfo = UserInfoModel.fromMap(response.data["data"]);
         allInfo.value = newInfo;
         _userBox.put("info", newInfo.toJson());
         return true;
@@ -65,7 +66,7 @@ class AllInfoController extends GetxController {
     final infoJson = _userBox.get("info");
     if (infoJson != null) {
       log(infoJson, name: "User Info");
-      allInfo.value = AllInfoModel.fromJson(infoJson);
+      allInfo.value = UserInfoModel.fromJson(infoJson);
     }
 
     // Load marathon list

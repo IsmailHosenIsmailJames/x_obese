@@ -1,6 +1,6 @@
 import "dart:convert";
 
-class AllInfoModel {
+class UserInfoModel {
   String? id;
   String? mobile;
   String? fullName;
@@ -14,7 +14,7 @@ class AllInfoModel {
   int? heightIn;
   int? weight;
 
-  AllInfoModel({
+  UserInfoModel({
     this.id,
     this.mobile,
     this.fullName,
@@ -29,7 +29,7 @@ class AllInfoModel {
     this.weight,
   });
 
-  AllInfoModel copyWith({
+  UserInfoModel copyWith({
     String? id,
     String? mobile,
     String? fullName,
@@ -42,7 +42,7 @@ class AllInfoModel {
     int? heightFt,
     int? heightIn,
     int? weight,
-  }) => AllInfoModel(
+  }) => UserInfoModel(
     id: id ?? this.id,
     mobile: mobile ?? this.mobile,
     fullName: fullName ?? this.fullName,
@@ -57,13 +57,13 @@ class AllInfoModel {
     weight: weight ?? this.weight,
   );
 
-  factory AllInfoModel.fromJson(String str) =>
-      AllInfoModel.fromMap(json.decode(str));
+  factory UserInfoModel.fromJson(String str) =>
+      UserInfoModel.fromMap(json.decode(str));
 
   String toJson() => json.encode(toMap());
 
-  factory AllInfoModel.fromMap(Map<String, dynamic> json) {
-    return AllInfoModel(
+  factory UserInfoModel.fromMap(Map<String, dynamic> json) {
+    return UserInfoModel(
       id: json["id"],
       mobile: json["mobile"],
       fullName: json["fullName"],
