@@ -7,10 +7,13 @@ Widget getBackButton(BuildContext context, Function() onPressed, {Size? size}) {
     height: size?.height ?? 50,
     width: size?.width ?? 50,
     child: IconButton(
-      style: IconButton.styleFrom(
-        backgroundColor: MyAppColors.transparentGray,
-        padding: EdgeInsets.zero,
-      ),
+      style:
+          size == null
+              ? null
+              : IconButton.styleFrom(
+                backgroundColor: MyAppColors.transparentGray,
+                padding: EdgeInsets.zero,
+              ),
       padding: EdgeInsets.zero,
       onPressed: onPressed,
       icon: SvgPicture.string(

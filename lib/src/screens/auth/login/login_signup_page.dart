@@ -8,8 +8,8 @@ import "package:x_obese/src/screens/auth/bloc/auth_bloc.dart";
 import "package:x_obese/src/screens/auth/bloc/auth_event.dart";
 import "package:x_obese/src/screens/auth/bloc/auth_state.dart";
 import "package:x_obese/src/screens/auth/login/otp_page.dart";
-import "package:x_obese/src/screens/auth/login/success_page.dart";
 import "package:x_obese/src/screens/info_collector/model/user_info_model.dart";
+import "package:x_obese/src/screens/navs/naves_page.dart";
 import "package:x_obese/src/theme/colors.dart";
 
 class LoginSignupPage extends StatefulWidget {
@@ -319,7 +319,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => const LoginSuccessPage(),
+                                builder: (context) => const NavesPage(),
                               ),
                             );
                           }

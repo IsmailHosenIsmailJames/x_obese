@@ -12,6 +12,11 @@ class UserDB {
     _preferences = await SharedPreferences.getInstance();
   }
 
+  static Future<void> deleteUserData() async {
+    await Hive.box("user").deleteFromDisk();
+    await init();
+  }
+
   static UserInfoModel? userAllInfo() {
     String? info = _userDBBox!.get("info", defaultValue: null);
     if (info == null) return null;

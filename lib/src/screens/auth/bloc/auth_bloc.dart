@@ -8,6 +8,7 @@ import "package:x_obese/src/data/user_db.dart";
 import "package:x_obese/src/screens/auth/bloc/auth_event.dart";
 import "package:x_obese/src/screens/auth/bloc/auth_state.dart";
 import "package:x_obese/src/screens/auth/repository/auth_repository.dart";
+import "package:x_obese/src/screens/info_collector/controller/all_info_controller.dart";
 import "package:x_obese/src/screens/info_collector/model/user_info_model.dart";
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
@@ -80,6 +81,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           );
           await UserDB.saveUserAllInfo(userData);
 
+          await AllInfoController().dataAsync();
+
           if (isInformationNotFullFilled(userData)) {
             emit(AuthNavigateToInfoCollector(userData));
           } else {
@@ -117,6 +120,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       return const AuthFailure("Unable to extract refresh token");
     }
     return null;
+  }
+
+  UserInfoModel? userInfoModel() {
+    return UserDB.userAllInfo();
   }
 
   Future<void> _continueAsGuest(

@@ -5,6 +5,8 @@ import "package:get/get.dart";
 import "package:hive_flutter/hive_flutter.dart";
 import "package:x_obese/src/apis/apis_url.dart";
 import "package:x_obese/src/apis/middleware/jwt_middleware.dart";
+import "package:x_obese/src/core/health/my_health_functions.dart";
+import "package:x_obese/src/data/user_db.dart";
 import "package:x_obese/src/screens/blog/model/get_blog_model.dart";
 import "package:x_obese/src/screens/info_collector/model/user_info_model.dart";
 import "package:dio/dio.dart" as dio;
@@ -46,7 +48,7 @@ class AllInfoController extends GetxController {
       }
       return false;
     } on dio.DioException catch (e) {
-      log(e.message.toString());
+      log(e.message.toString(), name: "updateUserInfo");
       if (e.response != null) printResponse(e.response!);
       return false;
     }
@@ -102,6 +104,24 @@ class AllInfoController extends GetxController {
   }
 
   Future<void> _fetchWorkoutStatus() async {
+    UserInfoModel? userInfoModel = UserDB.userAllInfo();
+    if (userInfoModel?.isGuest ?? true) {
+      log("Guest has no Workout Status save. User demo");
+      final status = WorkStatusModel(
+        heartPts: "0",
+        distanceKm: "0",
+        calories: "0",
+        steps: await MyHealthFunctions.fetchSteps(
+          DateTime.now().copyWith(hour: 0, minute: 0, second: 0),
+          DateTime.now(),
+        ),
+      );
+      workStatus.value = status.copyWith(
+        durationMs: (status.durationMs ?? 0) / 60000,
+        steps: status.steps ?? 0,
+      );
+      return;
+    }
     try {
       final response = await _dioClient.dio.get(
         "$getUserWorkoutStatus?view=weekly",
@@ -117,7 +137,10 @@ class AllInfoController extends GetxController {
         selectedPoints.value = double.parse(workStatus.value?.calories ?? "0");
       }
     } on dio.DioException catch (e) {
-      log("Failed to fetch workout status: ${e.message}");
+      log(
+        "Failed to fetch workout status: ${e.message}",
+        name: "_fetchWorkoutStatus",
+      );
     }
   }
 
@@ -133,11 +156,19 @@ class AllInfoController extends GetxController {
                 .toList();
       }
     } on dio.DioException catch (e) {
-      log("Failed to fetch marathon programs: ${e.message}");
+      log(
+        "Failed to fetch marathon programs: ${e.message}",
+        name: "_fetchMarathonPrograms",
+      );
     }
   }
 
   Future<void> _fetchWorkoutPlans() async {
+    UserInfoModel? userInfoModel = UserDB.userAllInfo();
+    if (userInfoModel?.isGuest ?? true) {
+      log("Guest has no Workout Plans");
+      return;
+    }
     try {
       final response = await _dioClient.dio.get(workoutPlanPath);
       if (response.statusCode == 200) {

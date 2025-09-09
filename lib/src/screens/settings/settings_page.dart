@@ -1,5 +1,6 @@
 import "package:cached_network_image/cached_network_image.dart";
 import "package:flutter/material.dart";
+import "package:flutter_bloc/flutter_bloc.dart";
 import "package:flutter_svg/flutter_svg.dart";
 import "package:gap/gap.dart";
 import "package:get/get.dart";
@@ -7,9 +8,12 @@ import "package:hive_flutter/hive_flutter.dart";
 import "package:shared_preferences/shared_preferences.dart";
 import "package:x_obese/src/apis/apis_url.dart";
 import "package:x_obese/src/apis/middleware/jwt_middleware.dart";
+import "package:x_obese/src/data/user_db.dart";
+import "package:x_obese/src/screens/auth/bloc/auth_bloc.dart";
 import "package:x_obese/src/screens/auth/login/login_signup_page.dart";
 import "package:x_obese/src/screens/info_collector/controller/all_info_controller.dart";
 import "package:x_obese/src/screens/info_collector/info_collector.dart";
+import "package:x_obese/src/screens/info_collector/model/user_info_model.dart";
 import "package:x_obese/src/screens/intro/intro_page.dart";
 import "package:x_obese/src/screens/settings/about_view.dart";
 import "package:x_obese/src/screens/settings/notification_settings_view.dart";
@@ -17,6 +21,7 @@ import "package:x_obese/src/screens/settings/personal_details_view.dart";
 import "package:x_obese/src/theme/colors.dart";
 import "package:x_obese/src/widgets/app_bar.dart";
 import "package:x_obese/src/widgets/back_button.dart";
+import "package:x_obese/src/widgets/popup_for_signup.dart";
 
 class SettingsPage extends StatefulWidget {
   final PageController pageController;
@@ -32,6 +37,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
   @override
   Widget build(BuildContext context) {
+    UserInfoModel? userInfoModel = context.read<AuthBloc>().userInfoModel();
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.all(20),
@@ -81,16 +87,22 @@ class _SettingsPageState extends State<SettingsPage> {
 
                     IconButton(
                       onPressed: () async {
-                        await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder:
-                                (context) => InfoCollector(
-                                  initialData: allInfoController.allInfo.value,
-                                ),
-                          ),
-                        );
-                        allInfoController.dataAsync();
+                        if (userInfoModel?.isGuest ?? true) {
+                          showSignupPopup(context);
+                          return;
+                        } else {
+                          await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder:
+                                  (context) => InfoCollector(
+                                    initialData:
+                                        allInfoController.allInfo.value,
+                                  ),
+                            ),
+                          );
+                          allInfoController.dataAsync();
+                        }
                       },
                       icon: SvgPicture.string(
                         '''<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -102,88 +114,91 @@ class _SettingsPageState extends State<SettingsPage> {
                   ],
                 ),
                 const Gap(35),
-                const Padding(
-                  padding: EdgeInsets.all(10.0),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      "My Account",
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.black,
+                if (!(userInfoModel?.isGuest ?? true))
+                  const Padding(
+                    padding: EdgeInsets.all(10.0),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        "My Account",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black,
+                        ),
                       ),
                     ),
                   ),
-                ),
 
-                SizedBox(
-                  width: double.infinity,
-                  height: 40,
-                  child: TextButton(
-                    style: TextButton.styleFrom(
-                      padding: const EdgeInsets.only(left: 10, right: 10),
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.zero,
-                      ),
-                    ),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const PersonalDetailsView(),
+                if (!(userInfoModel?.isGuest ?? true))
+                  SizedBox(
+                    width: double.infinity,
+                    height: 40,
+                    child: TextButton(
+                      style: TextButton.styleFrom(
+                        padding: const EdgeInsets.only(left: 10, right: 10),
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.zero,
                         ),
-                      );
-                    },
-
-                    child: Row(
-                      children: [
-                        const Text(
-                          "Personal Details",
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                            color: Colors.black,
+                      ),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const PersonalDetailsView(),
                           ),
-                        ),
-                        const Spacer(),
-                        arrowIcon,
-                      ],
+                        );
+                      },
+
+                      child: Row(
+                        children: [
+                          const Text(
+                            "Personal Details",
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.black,
+                            ),
+                          ),
+                          const Spacer(),
+                          arrowIcon,
+                        ],
+                      ),
                     ),
                   ),
-                ),
                 const Gap(5),
 
-                SizedBox(
-                  width: double.infinity,
-                  height: 40,
-                  child: TextButton(
-                    style: TextButton.styleFrom(
-                      padding: const EdgeInsets.only(left: 10, right: 10),
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.zero,
+                if (!(userInfoModel?.isGuest ?? true))
+                  SizedBox(
+                    width: double.infinity,
+                    height: 40,
+                    child: TextButton(
+                      style: TextButton.styleFrom(
+                        padding: const EdgeInsets.only(left: 10, right: 10),
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.zero,
+                        ),
+                      ),
+                      onPressed: () {
+                        showAccountDeletionPopup(context);
+                      },
+
+                      child: Row(
+                        children: [
+                          const Text(
+                            "Account Deletion",
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.black,
+                            ),
+                          ),
+                          const Spacer(),
+                          arrowIcon,
+                        ],
                       ),
                     ),
-                    onPressed: () {
-                      showAccountDeletionPopup(context);
-                    },
-
-                    child: Row(
-                      children: [
-                        const Text(
-                          "Account Deletion",
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                            color: Colors.black,
-                          ),
-                        ),
-                        const Spacer(),
-                        arrowIcon,
-                      ],
-                    ),
                   ),
-                ),
                 const Gap(5),
 
                 SizedBox(
@@ -274,39 +289,61 @@ class _SettingsPageState extends State<SettingsPage> {
                   const Gap(10),
                   InkWell(
                     onTap: () async {
-                      await clearTokens();
-                      await clearTokens();
-                      Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const LoginSignupPage(),
-                        ),
-                        (route) => false,
-                      );
-                      // showDialog(
-                      //   context: context,
-                      //   builder: (context) {
-                      //     return AlertDialog(
-                      //       title: Text('Are you sure ?'),
-                      //       content: Text(''),
-                      //     );
-                      //   },
-                      // );
+                      if (userInfoModel?.isGuest ?? true) {
+                        await UserDB.deleteUserData();
+                        Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const LoginSignupPage(),
+                          ),
+                          (route) => false,
+                        );
+                      } else {
+                        await clearTokens();
+                        await clearTokens();
+                        Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const LoginSignupPage(),
+                          ),
+                          (route) => false,
+                        );
+                        // showDialog(
+                        //   context: context,
+                        //   builder: (context) {
+                        //     return AlertDialog(
+                        //       title: Text('Are you sure ?'),
+                        //       content: Text(''),
+                        //     );
+                        //   },
+                        // );
+                      }
                     },
                     child: Container(
                       width: double.infinity,
                       height: 50,
                       decoration: BoxDecoration(
-                        color: Colors.red[50],
+                        color:
+                            (userInfoModel?.isGuest ?? true)
+                                ? Colors.green[50]
+                                : Colors.red[50],
                         borderRadius: BorderRadius.circular(5),
                       ),
-                      child: const Row(
+                      child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Icon(Icons.logout_rounded),
-                          Gap(20),
-                          Text("Signout"),
+                          Icon(
+                            (userInfoModel?.isGuest ?? true)
+                                ? Icons.login_rounded
+                                : Icons.logout_rounded,
+                          ),
+                          const Gap(20),
+                          Text(
+                            (userInfoModel?.isGuest ?? true)
+                                ? "Sign Up"
+                                : "Signout",
+                          ),
                         ],
                       ),
                     ),

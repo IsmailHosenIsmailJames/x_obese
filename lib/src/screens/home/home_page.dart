@@ -4,6 +4,7 @@ import "dart:developer";
 import "package:cached_network_image/cached_network_image.dart";
 import "package:dio/dio.dart" as dio;
 import "package:flutter/material.dart";
+import "package:flutter_bloc/flutter_bloc.dart";
 import "package:flutter_svg/svg.dart";
 import "package:gap/gap.dart";
 import "package:get/get.dart";
@@ -13,11 +14,13 @@ import "package:shimmer/shimmer.dart";
 import "package:x_obese/src/apis/apis_url.dart";
 import "package:x_obese/src/apis/middleware/jwt_middleware.dart";
 import "package:x_obese/src/resources/svg_string.dart";
+import "package:x_obese/src/screens/auth/bloc/auth_bloc.dart";
 import "package:x_obese/src/screens/blog/blog_list_view.dart";
 import "package:x_obese/src/screens/blog/model/get_blog_model.dart";
 import "package:x_obese/src/screens/create_workout_plan/create_workout_plan.dart";
 import "package:x_obese/src/screens/create_workout_plan/model/get_workout_plans.dart";
 import "package:x_obese/src/screens/info_collector/controller/all_info_controller.dart";
+import "package:x_obese/src/screens/info_collector/model/user_info_model.dart";
 import "package:x_obese/src/screens/marathon/components/virtual_marathon_cards.dart";
 import "package:x_obese/src/screens/marathon/models/marathon_model.dart";
 import "package:x_obese/src/screens/navs/naves_page.dart";
@@ -26,6 +29,7 @@ import "package:x_obese/src/theme/colors.dart";
 import "package:x_obese/src/widgets/banners/banners.dart";
 import "package:x_obese/src/widgets/get_blog_card.dart";
 import "package:x_obese/src/widgets/points_overview_widget.dart";
+import "package:x_obese/src/widgets/popup_for_signup.dart";
 
 mixin PaginationController<T extends StatefulWidget> on State<T> {
   void addPaginationListener({
@@ -385,13 +389,21 @@ class _HomePageState extends State<HomePage>
                                 ),
                               ),
                               onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder:
-                                        (context) => const CreateWorkoutPlan(),
-                                  ),
-                                );
+                                UserInfoModel? userInfoModel =
+                                    context.read<AuthBloc>().userInfoModel();
+                                if (userInfoModel?.isGuest ?? true) {
+                                  showSignupPopup(context);
+                                  return;
+                                } else {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder:
+                                          (context) =>
+                                              const CreateWorkoutPlan(),
+                                    ),
+                                  );
+                                }
                               },
                               child: const Text("Create"),
                             ),
