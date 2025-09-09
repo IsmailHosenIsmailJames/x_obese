@@ -53,7 +53,8 @@ class MarathonPage extends StatefulWidget {
   State<MarathonPage> createState() => _MarathonPageState();
 }
 
-class _MarathonPageState extends State<MarathonPage> with PaginationController<MarathonPage> {
+class _MarathonPageState extends State<MarathonPage>
+    with PaginationController<MarathonPage> {
   int selectedIndex = 0;
   PageController pageController = PageController();
   AllInfoController allInfoController = Get.find();
@@ -89,7 +90,8 @@ class _MarathonPageState extends State<MarathonPage> with PaginationController<M
 
   Future<void> _getMoreMarathonData() async {
     DioClient dioClient = DioClient(baseAPI);
-    final page = ((allInfoController.marathonList.value?.length ?? 0) / 10).ceil() + 1;
+    final page =
+        ((allInfoController.marathonList.value?.length ?? 0) / 10).ceil() + 1;
     log("try to get more marathon info -> page $page");
     try {
       final response = await dioClient.dio.get(
@@ -102,9 +104,10 @@ class _MarathonPageState extends State<MarathonPage> with PaginationController<M
           return;
         }
 
-        final newMarathons = marathonListData
-            .map((data) => MarathonModel.fromMap(data))
-            .toList();
+        final newMarathons =
+            marathonListData
+                .map((data) => MarathonModel.fromMap(data))
+                .toList();
         allInfoController.marathonList.value = [
           ...allInfoController.marathonList.value ?? [],
           ...newMarathons,
@@ -120,17 +123,18 @@ class _MarathonPageState extends State<MarathonPage> with PaginationController<M
 
   Widget _buildMarathonItemShimmer() {
     return Shimmer.fromColors(
-        baseColor: Colors.grey.shade300,
-        highlightColor: Colors.grey.shade100,
-        child: Container(
-          height: 250,
-          width: double.infinity,
-          margin: const EdgeInsets.only(top: 20),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(8),
-          ),
-        ));
+      baseColor: Colors.grey.shade300,
+      highlightColor: Colors.grey.shade100,
+      child: Container(
+        height: 250,
+        width: double.infinity,
+        margin: const EdgeInsets.only(top: 20),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(8),
+        ),
+      ),
+    );
   }
 
   @override
@@ -183,9 +187,10 @@ class _MarathonPageState extends State<MarathonPage> with PaginationController<M
                 children: [
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: selectedIndex == 0
-                          ? MyAppColors.primary
-                          : Colors.transparent,
+                      backgroundColor:
+                          selectedIndex == 0
+                              ? MyAppColors.primary
+                              : Colors.transparent,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(100),
                       ),
@@ -200,9 +205,10 @@ class _MarathonPageState extends State<MarathonPage> with PaginationController<M
                   ),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: selectedIndex == 1
-                          ? MyAppColors.primary
-                          : Colors.transparent,
+                      backgroundColor:
+                          selectedIndex == 1
+                              ? MyAppColors.primary
+                              : Colors.transparent,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(100),
                       ),
@@ -233,8 +239,8 @@ class _MarathonPageState extends State<MarathonPage> with PaginationController<M
                   if (allMarathons == null) {
                     return ListView.builder(
                       itemCount: 3,
-                      itemBuilder: (context, index) =>
-                          _buildMarathonItemShimmer(),
+                      itemBuilder:
+                          (context, index) => _buildMarathonItemShimmer(),
                     );
                   }
                   final virtualMarathons =
@@ -302,8 +308,8 @@ class _MarathonPageState extends State<MarathonPage> with PaginationController<M
                   if (allMarathons == null) {
                     return ListView.builder(
                       itemCount: 3,
-                      itemBuilder: (context, index) =>
-                          _buildMarathonItemShimmer(),
+                      itemBuilder:
+                          (context, index) => _buildMarathonItemShimmer(),
                     );
                   }
                   final onsiteMarathons =
@@ -414,21 +420,24 @@ class _MarathonPageState extends State<MarathonPage> with PaginationController<M
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => ShowSearchResult(
-                              marathonUserList: searchResult
-                                  .map(
-                                    (e) => MarathonUserModel.fromMap(
-                                      Map<String, dynamic>.from(e),
-                                    ),
-                                  )
-                                  .toList(),
-                            ),
+                            builder:
+                                (context) => ShowSearchResult(
+                                  marathonUserList:
+                                      searchResult
+                                          .map(
+                                            (e) => MarathonUserModel.fromMap(
+                                              Map<String, dynamic>.from(e),
+                                            ),
+                                          )
+                                          .toList(),
+                                ),
                           ),
                         );
                       } on DioException catch (e) {
                         toastification.show(
                           context: context,
-                          title: e.response?.data["message"] ??
+                          title:
+                              e.response?.data["message"] ??
                               "Something went wrong",
                           type: ToastificationType.error,
                         );

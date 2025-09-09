@@ -8,7 +8,9 @@ import "package:flutter_svg/flutter_svg.dart";
 import "package:fluttertoast/fluttertoast.dart";
 import "package:gap/gap.dart";
 import "package:get/get.dart";
+import "package:gpt_markdown/gpt_markdown.dart";
 import "package:intl/intl.dart";
+import "package:url_launcher/url_launcher.dart";
 import "package:x_obese/src/apis/apis_url.dart";
 import "package:x_obese/src/apis/middleware/jwt_middleware.dart";
 import "package:x_obese/src/screens/activity/workout_page.dart";
@@ -93,7 +95,7 @@ class _MarathonDetailsViewState extends State<MarathonDetailsView> {
                     padding: const EdgeInsets.all(15.0),
                     child: getBackButton(context, () {
                       Navigator.pop(context);
-                    }),
+                    }, size: const Size(40, 40)),
                   ),
                 ),
               ],
@@ -113,20 +115,36 @@ class _MarathonDetailsViewState extends State<MarathonDetailsView> {
                     ),
                   ),
                   const Gap(8),
-                  Text(
+                  GptMarkdown(
                     widget.marathonData.description ?? "",
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w300,
-                      color: MyAppColors.mutedGray,
-                    ),
+                    onLinkTap: (url, title) {
+                      launchUrl(
+                        Uri.parse(url),
+                        mode: LaunchMode.externalApplication,
+                      );
+                    },
+                    linkBuilder: (context, text, url, style) {
+                      return Text.rich(
+                        text,
+                        style: style.copyWith(
+                          color: Colors.blue,
+                          decoration: TextDecoration.underline,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      );
+                    },
+                    style: TextStyle(color: MyAppColors.mutedGray),
                   ),
                   const Gap(16),
                   Row(
                     children: [
                       SizedBox(
+                        width:
+                            (fullMarathonDataModel?.particiants!.length ?? 0) >
+                                    0
+                                ? 70
+                                : 0,
                         height: 30,
-                        width: 70,
                         child:
                             fullMarathonDataModel == null ||
                                     fullMarathonDataModel?.particiants == null
@@ -216,13 +234,25 @@ class _MarathonDetailsViewState extends State<MarathonDetailsView> {
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                   ),
                   const Gap(12),
-                  Text(
+                  GptMarkdown(
                     widget.marathonData.about ?? "",
-                    style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w300,
-                      color: MyAppColors.mutedGray,
-                    ),
+                    onLinkTap: (url, title) {
+                      launchUrl(
+                        Uri.parse(url),
+                        mode: LaunchMode.externalApplication,
+                      );
+                    },
+                    linkBuilder: (context, text, url, style) {
+                      return Text.rich(
+                        text,
+                        style: style.copyWith(
+                          color: Colors.blue,
+                          decoration: TextDecoration.underline,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      );
+                    },
+                    style: TextStyle(color: MyAppColors.mutedGray),
                   ),
                   const Gap(24),
                   const Text(

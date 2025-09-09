@@ -1,6 +1,8 @@
 import "package:cached_network_image/cached_network_image.dart";
 import "package:flutter/material.dart";
 import "package:gap/gap.dart";
+import "package:gpt_markdown/gpt_markdown.dart";
+import "package:url_launcher/url_launcher.dart";
 import "package:x_obese/src/screens/blog/model/get_blog_model.dart";
 import "package:x_obese/src/theme/colors.dart";
 import "package:x_obese/src/widgets/back_button.dart";
@@ -21,6 +23,7 @@ class _BlogDetailsViewState extends State<BlogDetailsView> {
       body: Stack(
         children: [
           SingleChildScrollView(
+            padding: const EdgeInsets.only(top: 60),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -85,13 +88,47 @@ class _BlogDetailsViewState extends State<BlogDetailsView> {
                         ),
                       ),
                       const Divider(color: Colors.transparent),
+
+                      Text(
+                        "Description",
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: MyAppColors.mutedGray,
+                        ),
+                      ),
+                      GptMarkdown(widget.blogData.description ?? ""),
+
+                      const Divider(color: Colors.transparent),
+                      Text(
+                        "Details",
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: MyAppColors.mutedGray,
+                        ),
+                      ),
                       SafeArea(
-                        child: Text(
+                        bottom: true,
+                        right: false,
+                        left: false,
+                        top: false,
+                        child: GptMarkdown(
                           widget.blogData.details ?? "",
-                          style: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                          ),
+                          onLinkTap: (url, title) {
+                            launchUrl(
+                              Uri.parse(url),
+                              mode: LaunchMode.externalApplication,
+                            );
+                          },
+                          linkBuilder: (context, text, url, style) {
+                            return Text.rich(
+                              text,
+                              style: style.copyWith(
+                                color: Colors.blue,
+                                decoration: TextDecoration.underline,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            );
+                          },
                         ),
                       ),
                     ],
@@ -102,10 +139,10 @@ class _BlogDetailsViewState extends State<BlogDetailsView> {
           ),
           SafeArea(
             child: Padding(
-              padding: const EdgeInsets.all(15.0),
+              padding: const EdgeInsets.only(left: 15),
               child: getBackButton(context, () {
                 Navigator.pop(context);
-              }),
+              }, size: const Size(40, 40)),
             ),
           ),
         ],

@@ -1,11 +1,17 @@
 import "package:flutter/material.dart";
 import "package:flutter_svg/svg.dart";
+import "package:x_obese/src/theme/colors.dart";
 
-Widget getBackButton(BuildContext context, Function() onPressed) {
+Widget getBackButton(BuildContext context, Function() onPressed, {Size? size}) {
   return SizedBox(
-    height: 50,
-    width: 50,
+    height: size?.height ?? 50,
+    width: size?.width ?? 50,
     child: IconButton(
+      style: IconButton.styleFrom(
+        backgroundColor: MyAppColors.transparentGray,
+        padding: EdgeInsets.zero,
+      ),
+      padding: EdgeInsets.zero,
       onPressed: onPressed,
       icon: SvgPicture.string(
         '''<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
