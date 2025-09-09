@@ -17,6 +17,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<SignupRequested>(_onSignupRequested);
     on<LoginRequested>(_onLoginRequested);
     on<VerifyOTP>(_onVerifyOTP);
+    on<ContinueAsGuest>(_continueAsGuest);
   }
 
   Future<void> _onSignupRequested(
@@ -116,5 +117,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       return const AuthFailure("Unable to extract refresh token");
     }
     return null;
+  }
+
+  Future<void> _continueAsGuest(
+    ContinueAsGuest event,
+    Emitter<AuthState> emit,
+  ) async {
+    await UserDB.saveUserAllInfo(event.userInfoModel);
+    emit(AuthNavigateToHome());
   }
 }

@@ -71,7 +71,9 @@ class App extends StatelessWidget {
               : isInformationNotFullFilled(
                 UserInfoModel.fromJson(Hive.box("user").get("info")),
               )
-              ? "/infoCollector"
+              ? UserInfoModel.fromJson(Hive.box("user").get("info")).isGuest
+                  ? "/home"
+                  : "/infoCollector"
               : (UserDB.accessToken() == null && UserDB.refreshToken() == null)
               ? "/login"
               : "/home",

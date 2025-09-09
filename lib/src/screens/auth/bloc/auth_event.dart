@@ -1,4 +1,5 @@
 import "package:equatable/equatable.dart";
+import "package:x_obese/src/screens/info_collector/model/user_info_model.dart";
 
 abstract class AuthEvent extends Equatable {
   const AuthEvent();
@@ -38,4 +39,12 @@ class VerifyOTP extends AuthEvent {
 
 class GetUserData extends AuthEvent {
   const GetUserData();
+}
+
+class ContinueAsGuest extends AuthEvent {
+  final UserInfoModel userInfoModel;
+  const ContinueAsGuest({required this.userInfoModel});
+
+  @override
+  List<Object> get props => [userInfoModel];
 }

@@ -13,6 +13,7 @@ class UserInfoModel {
   int? heightFt;
   int? heightIn;
   int? weight;
+  bool isGuest;
 
   UserInfoModel({
     this.id,
@@ -27,6 +28,7 @@ class UserInfoModel {
     this.heightFt,
     this.heightIn,
     this.weight,
+    this.isGuest = false,
   });
 
   UserInfoModel copyWith({
@@ -42,6 +44,7 @@ class UserInfoModel {
     int? heightFt,
     int? heightIn,
     int? weight,
+    bool? isGuest,
   }) => UserInfoModel(
     id: id ?? this.id,
     mobile: mobile ?? this.mobile,
@@ -55,6 +58,7 @@ class UserInfoModel {
     heightFt: heightFt ?? this.heightFt,
     heightIn: heightIn ?? this.heightIn,
     weight: weight ?? this.weight,
+    isGuest: isGuest ?? this.isGuest,
   );
 
   factory UserInfoModel.fromJson(String str) =>
@@ -76,6 +80,7 @@ class UserInfoModel {
       heightFt: json["heightFt"],
       heightIn: json["heightIn"],
       weight: json["weight"],
+      isGuest: json["isGuest"] ?? false,
     );
   }
 
@@ -92,5 +97,6 @@ class UserInfoModel {
     "heightFt": heightFt,
     "heightIn": heightIn,
     "weight": weight,
+    "isGuest": isGuest,
   };
 }

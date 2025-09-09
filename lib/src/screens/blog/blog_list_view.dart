@@ -5,6 +5,7 @@ import "package:dio/dio.dart";
 import "package:flutter/material.dart";
 import "package:gap/gap.dart";
 import "package:get/get.dart";
+import "package:gpt_markdown/gpt_markdown.dart";
 import "package:shimmer/shimmer.dart";
 import "package:x_obese/src/apis/apis_url.dart";
 import "package:x_obese/src/apis/middleware/jwt_middleware.dart";
@@ -49,7 +50,8 @@ class BlogListView extends StatefulWidget {
   State<BlogListView> createState() => _BlogListViewState();
 }
 
-class _BlogListViewState extends State<BlogListView> with PaginationController<BlogListView> {
+class _BlogListViewState extends State<BlogListView>
+    with PaginationController<BlogListView> {
   AllInfoController allInfoController = Get.find();
   ScrollController scrollController = ScrollController();
   bool isLoading = false;
@@ -72,7 +74,8 @@ class _BlogListViewState extends State<BlogListView> with PaginationController<B
   }
 
   Future<void> _getMoreBlogData() async {
-    final page = ((allInfoController.getBlogList.value?.length ?? 0) / 10).ceil() + 1;
+    final page =
+        ((allInfoController.getBlogList.value?.length ?? 0) / 10).ceil() + 1;
     log("try to get more blogs -> page $page");
     DioClient dioClient = DioClient(baseAPI);
     try {
@@ -82,9 +85,13 @@ class _BlogListViewState extends State<BlogListView> with PaginationController<B
       if (response.statusCode == 200 || response.statusCode == 201) {
         List allBlogs = response.data["data"] ?? [];
         if (allBlogs.isNotEmpty) {
-          final newBlogs = allBlogs
-              .map((data) => GetBlogModel.fromMap(Map<String, dynamic>.from(data)))
-              .toList();
+          final newBlogs =
+              allBlogs
+                  .map(
+                    (data) =>
+                        GetBlogModel.fromMap(Map<String, dynamic>.from(data)),
+                  )
+                  .toList();
           allInfoController.getBlogList.value = [
             ...allInfoController.getBlogList.value ?? [],
             ...newBlogs,
@@ -123,23 +130,11 @@ class _BlogListViewState extends State<BlogListView> with PaginationController<B
               ),
             ),
             const Gap(8),
-            Container(
-              height: 20,
-              width: double.infinity,
-              color: Colors.white,
-            ),
+            Container(height: 20, width: double.infinity, color: Colors.white),
             const Gap(8),
-            Container(
-              height: 15,
-              width: double.infinity,
-              color: Colors.white,
-            ),
+            Container(height: 15, width: double.infinity, color: Colors.white),
             const Gap(4),
-            Container(
-              height: 15,
-              width: double.infinity,
-              color: Colors.white,
-            ),
+            Container(height: 15, width: double.infinity, color: Colors.white),
           ],
         ),
       ),
@@ -158,9 +153,10 @@ class _BlogListViewState extends State<BlogListView> with PaginationController<B
             right: false,
             child: Row(
               children: [
+                const Gap(15),
                 getBackButton(context, () {
                   Navigator.pop(context);
-                }),
+                }, size: const Size(40, 40)),
                 const Gap(55),
                 const Text(
                   "Our Blogs & Tips",
@@ -192,9 +188,9 @@ class _BlogListViewState extends State<BlogListView> with PaginationController<B
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => BlogDetailsView(
-                                blogData: blogs[index],
-                              ),
+                              builder:
+                                  (context) =>
+                                      BlogDetailsView(blogData: blogs[index]),
                             ),
                           );
                         },
@@ -278,7 +274,7 @@ class _BlogListViewState extends State<BlogListView> with PaginationController<B
                                 ),
                               ),
                               const Gap(8),
-                              Text(
+                              GptMarkdown(
                                 blogs[index].description ?? "",
                                 style: TextStyle(
                                   fontSize: 15,

@@ -8,6 +8,8 @@ import "package:x_obese/src/screens/auth/bloc/auth_bloc.dart";
 import "package:x_obese/src/screens/auth/bloc/auth_event.dart";
 import "package:x_obese/src/screens/auth/bloc/auth_state.dart";
 import "package:x_obese/src/screens/auth/login/otp_page.dart";
+import "package:x_obese/src/screens/auth/login/success_page.dart";
+import "package:x_obese/src/screens/info_collector/model/user_info_model.dart";
 import "package:x_obese/src/theme/colors.dart";
 
 class LoginSignupPage extends StatefulWidget {
@@ -311,11 +313,29 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                     ),
                     const Gap(20),
                     Center(
-                      child: TextButton(
-                        onPressed: () {
-                          // TODO: We need to implement continue as a Guest feaures
+                      child: BlocListener<AuthBloc, AuthState>(
+                        listener: (context, state) {
+                          if (state is AuthNavigateToHome) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const LoginSuccessPage(),
+                              ),
+                            );
+                          }
                         },
-                        child: const Text("Continue as Guest"),
+                        child: TextButton(
+                          onPressed: () {
+                            UserInfoModel userInfoModel = UserInfoModel(
+                              fullName: "Guest",
+                              isGuest: true,
+                            );
+                            context.read<AuthBloc>().add(
+                              ContinueAsGuest(userInfoModel: userInfoModel),
+                            );
+                          },
+                          child: const Text("Continue as Guest"),
+                        ),
                       ),
                     ),
                   ],
