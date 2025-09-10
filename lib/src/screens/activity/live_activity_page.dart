@@ -23,6 +23,7 @@ import "package:x_obese/src/core/common/functions/calculate_distance.dart"
 import "package:x_obese/src/core/common/functions/calculate_distance.dart";
 import "package:x_obese/src/core/common/functions/format_sec_to_time.dart";
 import "package:x_obese/src/core/permissions/permission.dart";
+import "package:x_obese/src/data/user_db.dart";
 import "package:x_obese/src/screens/activity/controller/activity_controller.dart";
 import "package:x_obese/src/screens/activity/controller/lock_controller.dart";
 import "package:x_obese/src/screens/info_collector/controller/all_info_controller.dart";
@@ -32,6 +33,7 @@ import "package:x_obese/src/theme/colors.dart";
 import "package:x_obese/src/widgets/app_bar.dart";
 import "package:x_obese/src/widgets/back_button.dart";
 import "package:x_obese/src/widgets/loading_popup.dart";
+import "package:x_obese/src/widgets/popup_for_signup.dart";
 
 import "foreground/foreground_exercise_service.dart";
 
@@ -742,84 +744,94 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
     BuildContext context,
     WorkoutCalculationResult workoutCalculationResult,
   ) {
-    showDialog(
-      context: context,
-      builder:
-          (dialogContext) => Dialog(
-            insetPadding: const EdgeInsets.all(10),
+    if (UserDB.userAllInfo()?.isGuest ?? true) {
+      showSignupPopup(context);
+    } else {
+      showDialog(
+        context: context,
+        builder:
+            (dialogContext) => Dialog(
+              insetPadding: const EdgeInsets.all(10),
 
-            child: Container(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    "Are you sure?",
-                    style: TextStyle(fontSize: 26, fontWeight: FontWeight.w500),
-                  ),
-                  const Gap(20),
-                  Row(
-                    children: [
-                      const Text(
-                        "Distance:",
-                        style: TextStyle(fontWeight: FontWeight.bold),
+              child: Container(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      "Are you sure?",
+                      style: TextStyle(
+                        fontSize: 26,
+                        fontWeight: FontWeight.w500,
                       ),
-                      const Gap(10),
-                      Text(
-                        "${((distanceEveryPaused + workoutCalculationResult.totalDistance) / 1000).toStringAsFixed(2)} km",
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      const Text(
-                        "Duration:",
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      const Gap(10),
-                      Text("${formatSeconds(workoutDurationSec)} Minutes"),
-                    ],
-                  ),
-                  const Gap(20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      ElevatedButton.icon(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: MyAppColors.transparentGray,
+                    ),
+                    const Gap(20),
+                    Row(
+                      children: [
+                        const Text(
+                          "Distance:",
+                          style: TextStyle(fontWeight: FontWeight.bold),
                         ),
-                        onPressed: () {
-                          showBackWarning = false;
-                          Navigator.pop(dialogContext);
-                        },
-                        icon: const Icon(
-                          Icons.arrow_right_alt_outlined,
-                          color: Colors.green,
+                        const Gap(10),
+                        Text(
+                          "${((distanceEveryPaused + workoutCalculationResult.totalDistance) / 1000).toStringAsFixed(2)} km",
                         ),
-                        label: const Text("Continue"),
-                      ),
-                      const Gap(20),
-                      ElevatedButton.icon(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: MyAppColors.transparentGray,
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        const Text(
+                          "Duration:",
+                          style: TextStyle(fontWeight: FontWeight.bold),
                         ),
-                        onPressed: () async {
-                          Navigator.pop(dialogContext);
-                          await saveWorkout(context, workoutCalculationResult);
-                          await dismissWorkout();
-                        },
-                        icon: const Icon(Icons.done, color: Colors.green),
-                        label: const Text("Save Now"),
-                      ),
-                    ],
-                  ),
-                ],
+                        const Gap(10),
+                        Text("${formatSeconds(workoutDurationSec)} Minutes"),
+                      ],
+                    ),
+                    const Gap(20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        ElevatedButton.icon(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: MyAppColors.transparentGray,
+                          ),
+                          onPressed: () {
+                            showBackWarning = false;
+                            Navigator.pop(dialogContext);
+                          },
+                          icon: const Icon(
+                            Icons.arrow_right_alt_outlined,
+                            color: Colors.green,
+                          ),
+                          label: const Text("Continue"),
+                        ),
+                        const Gap(20),
+                        ElevatedButton.icon(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: MyAppColors.transparentGray,
+                          ),
+                          onPressed: () async {
+                            Navigator.pop(dialogContext);
+                            await saveWorkout(
+                              context,
+                              workoutCalculationResult,
+                            );
+                            await dismissWorkout();
+                          },
+                          icon: const Icon(Icons.done, color: Colors.green),
+                          label: const Text("Save Now"),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-    );
+      );
+    }
   }
 
   Future<void> saveWorkout(
@@ -827,6 +839,7 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
     workout_calculator.WorkoutCalculationResult workoutCalculationResult,
   ) async {
     if (!mounted) return;
+
     if (await checkConnectivity() == false) {
       if (!mounted) return;
       showDialog(
