@@ -97,6 +97,8 @@ class _NavesPageState extends State<NavesPage> {
             );
           });
         }
+      } else {
+        navsController.changeBottomNav(0);
       }
     });
   }

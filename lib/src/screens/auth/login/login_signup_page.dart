@@ -324,7 +324,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                             );
                           }
                         },
-                        child: TextButton(
+                        child: TextButton.icon(
                           onPressed: () {
                             UserInfoModel userInfoModel = UserInfoModel(
                               fullName: "Guest",
@@ -334,7 +334,9 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                               ContinueAsGuest(userInfoModel: userInfoModel),
                             );
                           },
-                          child: const Text("Continue as Guest"),
+                          iconAlignment: IconAlignment.end,
+                          icon: const Icon(Icons.arrow_forward_rounded),
+                          label: const Text("Continue as Guest"),
                         ),
                       ),
                     ),

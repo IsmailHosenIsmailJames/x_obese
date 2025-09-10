@@ -299,24 +299,63 @@ class _SettingsPageState extends State<SettingsPage> {
                           (route) => false,
                         );
                       } else {
-                        await clearTokens();
-                        await clearTokens();
-                        Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const LoginSignupPage(),
-                          ),
-                          (route) => false,
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              insetPadding: const EdgeInsets.all(10),
+                              title: const Text("Are you sure?"),
+                              content: const Text(
+                                "Signing out will remove your session from this device. You can sign in again anytime.",
+                                style: TextStyle(color: Colors.black87),
+                              ),
+                              actions: [
+                                TextButton.icon(
+                                  style: TextButton.styleFrom(
+                                    foregroundColor: Colors.green,
+                                  ),
+                                  onPressed: () async {
+                                    await clearTokens();
+                                    await clearTokens();
+                                    Navigator.pushAndRemoveUntil(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder:
+                                            (context) =>
+                                                const LoginSignupPage(),
+                                      ),
+                                      (route) => false,
+                                    );
+                                  },
+                                  label: const Text("Cancel"),
+                                  icon: const Icon(Icons.close_rounded),
+                                  iconAlignment: IconAlignment.start,
+                                ),
+                                TextButton.icon(
+                                  style: TextButton.styleFrom(
+                                    foregroundColor: Colors.redAccent,
+                                  ),
+                                  onPressed: () async {
+                                    await clearTokens();
+                                    await clearTokens();
+                                    Navigator.pushAndRemoveUntil(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder:
+                                            (context) =>
+                                                const LoginSignupPage(),
+                                      ),
+                                      (route) => false,
+                                    );
+                                  },
+                                  label: const Text("Sign Out"),
+                                  icon: const Icon(Icons.arrow_forward_rounded),
+                                  iconAlignment: IconAlignment.end,
+                                ),
+                              ],
+                            );
+                          },
                         );
-                        // showDialog(
-                        //   context: context,
-                        //   builder: (context) {
-                        //     return AlertDialog(
-                        //       title: Text('Are you sure ?'),
-                        //       content: Text(''),
-                        //     );
-                        //   },
-                        // );
                       }
                     },
                     child: Container(
@@ -434,6 +473,7 @@ class _SettingsPageState extends State<SettingsPage> {
                             "/api/user/v1/profile/token",
                           );
                           await Hive.deleteFromDisk();
+                          await Hive.initFlutter();
                           await (await SharedPreferences.getInstance()).clear();
                           Navigator.pop(context);
                           Navigator.pushAndRemoveUntil(
