@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import "package:fluttertoast/fluttertoast.dart";
 import "package:gap/gap.dart";
 import "package:get/get.dart";
 import "package:x_obese/src/widgets/back_button.dart";
@@ -19,7 +20,6 @@ class _GenderCollectorState extends State<GenderCollector> {
   final AllInfoController controller = Get.find();
   @override
   void initState() {
-    controller.allInfo.value.gender = "Male";
     super.initState();
   }
 
@@ -118,6 +118,10 @@ class _GenderCollectorState extends State<GenderCollector> {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
+                    if (controller.allInfo.value.gender == null) {
+                      Fluttertoast.showToast(msg: "Please select your gender");
+                      return;
+                    }
                     widget.pageController.animateToPage(
                       2,
                       duration: const Duration(milliseconds: 300),

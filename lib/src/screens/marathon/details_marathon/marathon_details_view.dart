@@ -21,6 +21,7 @@ import "package:x_obese/src/screens/marathon/models/marathon_model.dart";
 import "package:x_obese/src/screens/marathon/models/marathon_user_model.dart";
 import "package:x_obese/src/theme/colors.dart";
 import "package:x_obese/src/widgets/back_button.dart";
+import "package:x_obese/src/widgets/popup_for_signup.dart";
 
 class MarathonDetailsView extends StatefulWidget {
   final MarathonModel marathonData;
@@ -268,12 +269,15 @@ class _MarathonDetailsViewState extends State<MarathonDetailsView> {
         </svg>''',
                       ),
                       const Gap(10),
-                      Text(
-                        "${DateFormat.yMMMMd().format(widget.marathonData.startDate!)}  TO  ${DateFormat.yMMMMd().format(widget.marathonData.endDate!)}",
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w300,
-                          color: MyAppColors.mutedGray,
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.75,
+                        child: Text(
+                          "${DateFormat.yMMMMd().format(widget.marathonData.startDate!)}  TO  ${DateFormat.yMMMMd().format(widget.marathonData.endDate!)}",
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w300,
+                            color: MyAppColors.mutedGray,
+                          ),
                         ),
                       ),
                     ],
@@ -335,6 +339,10 @@ class _MarathonDetailsViewState extends State<MarathonDetailsView> {
                                   if (fullMarathonDataModel == null ||
                                       (fullMarathonDataModel!.data?.joined ??
                                           false)) {
+                                    return;
+                                  }
+                                  if (allInfoController.allInfo.value.isGuest) {
+                                    showSignupPopup(context);
                                     return;
                                   }
                                   DioClient dioClient = DioClient(baseAPI);
