@@ -2,61 +2,17 @@ import "package:health/health.dart";
 
 /// Data types available on iOS via Apple Health.
 const List<HealthDataType> dataTypesIOS = [
-  HealthDataType.ACTIVE_ENERGY_BURNED,
-  HealthDataType.BASAL_ENERGY_BURNED,
-  HealthDataType.BLOOD_OXYGEN,
-  HealthDataType.BODY_MASS_INDEX,
-  HealthDataType.BODY_TEMPERATURE,
-  HealthDataType.HEART_RATE,
-  HealthDataType.HEIGHT,
   HealthDataType.STEPS,
-  HealthDataType.WEIGHT,
   HealthDataType.DISTANCE_WALKING_RUNNING,
-  HealthDataType.WALKING_SPEED,
-  HealthDataType.SLEEP_AWAKE,
-  HealthDataType.SLEEP_ASLEEP,
-  HealthDataType.SLEEP_IN_BED,
-  HealthDataType.SLEEP_LIGHT,
-  HealthDataType.SLEEP_DEEP,
-  HealthDataType.SLEEP_REM,
   HealthDataType.EXERCISE_TIME,
   HealthDataType.WORKOUT,
-
-  // note that a phone cannot write these ECG-based types - only read them
-  // HealthDataType.ELECTROCARDIOGRAM,
-  // HealthDataType.HIGH_HEART_RATE_EVENT,
-  // HealthDataType.IRREGULAR_HEART_RATE_EVENT,
-  // HealthDataType.LOW_HEART_RATE_EVENT,
-  // HealthDataType.RESTING_HEART_RATE,
-  // HealthDataType.WALKING_HEART_RATE,
-  // HealthDataType.ATRIAL_FIBRILLATION_BURDEN,
-  HealthDataType.GENDER,
 ];
 
 /// Data types available on Android via the Google Health Connect API.
 const List<HealthDataType> dataTypesAndroid = [
-  HealthDataType.ACTIVE_ENERGY_BURNED,
-  HealthDataType.BASAL_ENERGY_BURNED,
-  HealthDataType.BLOOD_OXYGEN,
-  HealthDataType.HEIGHT,
-  HealthDataType.WEIGHT,
-  HealthDataType.BODY_MASS_INDEX,
-  HealthDataType.HEART_RATE,
   HealthDataType.STEPS,
   HealthDataType.DISTANCE_DELTA,
-  HealthDataType.SPEED,
-  HealthDataType.SLEEP_ASLEEP,
-  HealthDataType.SLEEP_AWAKE_IN_BED,
-  HealthDataType.SLEEP_AWAKE,
-  HealthDataType.SLEEP_DEEP,
-  HealthDataType.SLEEP_LIGHT,
-  HealthDataType.SLEEP_OUT_OF_BED,
-  HealthDataType.SLEEP_REM,
-  HealthDataType.SLEEP_UNKNOWN,
-  HealthDataType.SLEEP_SESSION,
   HealthDataType.WORKOUT,
-  HealthDataType.RESTING_HEART_RATE,
-  HealthDataType.TOTAL_CALORIES_BURNED,
 ];
 
 enum AppState {
