@@ -37,6 +37,8 @@
     <!-- Privacy usage descriptions -->
     <key>NSHealthShareUsageDescription</key>
     <string>We use HealthKit to read your activity data and provide personalized fitness insights.</string>
+    <key>NSHealthUpdateUsageDescription</key>
+    <string>We use HealthKit to save your workout data and health metrics to provide comprehensive fitness tracking.</string>
 
     <!-- Location permissions -->
     <key>NSLocationWhenInUseUsageDescription</key>
