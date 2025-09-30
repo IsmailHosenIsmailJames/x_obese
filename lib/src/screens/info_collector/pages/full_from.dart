@@ -1,4 +1,3 @@
-
 import "dart:developer";
 import "dart:io";
 
@@ -12,6 +11,7 @@ import "package:get/get.dart";
 
 import "package:image_picker/image_picker.dart";
 import "package:intl/intl.dart";
+import "package:x_obese/src/apis/apis_url.dart";
 import "package:x_obese/src/apis/middleware/jwt_middleware.dart";
 import "package:x_obese/src/screens/info_collector/controller/all_info_controller.dart";
 import "package:x_obese/src/theme/colors.dart";
@@ -357,7 +357,7 @@ class _FullFromInfoCollectorState extends State<FullFromInfoCollector> {
           decoration: BoxDecoration(color: MyAppColors.transparentGray),
           child:
               profileImage == null
-                  ? controller.allInfo.value.image == null
+                  ? controller.allInfo.value.imagePath == null
                       ? Center(
                         child: Icon(
                           Icons.person,
@@ -366,7 +366,8 @@ class _FullFromInfoCollectorState extends State<FullFromInfoCollector> {
                         ),
                       )
                       : CachedNetworkImage(
-                        imageUrl: controller.allInfo.value.image!,
+                        imageUrl:
+                            "$baseAPI/$imagePath/${controller.allInfo.value.imagePath}",
                         fit: BoxFit.cover,
                       )
                   : Image.file(profileImage!, fit: BoxFit.cover),

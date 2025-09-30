@@ -474,6 +474,7 @@ class _SettingsPageState extends State<SettingsPage> {
                           );
                           await Hive.deleteFromDisk();
                           await Hive.initFlutter();
+                          await Hive.openBox("user");
                           await (await SharedPreferences.getInstance()).clear();
                           Navigator.pop(context);
                           Navigator.pushAndRemoveUntil(
