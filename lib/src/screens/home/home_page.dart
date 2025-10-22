@@ -15,7 +15,6 @@ import "package:x_obese/src/apis/apis_url.dart";
 import "package:x_obese/src/apis/middleware/jwt_middleware.dart";
 import "package:x_obese/src/resources/svg_string.dart";
 import "package:x_obese/src/screens/auth/bloc/auth_bloc.dart";
-// import "package:x_obese/src/screens/blog/blog_list_view.dart";
 import "package:x_obese/src/screens/blog/model/get_blog_model.dart";
 import "package:x_obese/src/screens/create_workout_plan/create_workout_plan.dart";
 import "package:x_obese/src/screens/create_workout_plan/model/get_workout_plans.dart";
@@ -27,7 +26,6 @@ import "package:x_obese/src/screens/navs/naves_page.dart";
 import "package:x_obese/src/screens/workout_plan_overview/workout_plan_overview_screen.dart";
 import "package:x_obese/src/theme/colors.dart";
 import "package:x_obese/src/widgets/banners/banners.dart";
-// import "package:x_obese/src/widgets/get_blog_card.dart";
 import "package:x_obese/src/widgets/points_overview_widget.dart";
 import "package:x_obese/src/widgets/popup_for_signup.dart";
 
@@ -681,105 +679,6 @@ class _HomePageState extends State<HomePage>
                 );
               }),
 
-              // Padding(
-              //   padding: const EdgeInsets.all(15.0),
-              //   child: Row(
-              //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //     children: [
-              //       const Text(
-              //         "Our Blogs & Tips",
-              //         style: TextStyle(
-              //           fontSize: 16,
-              //           fontWeight: FontWeight.w500,
-              //         ),
-              //       ),
-              //       Obx(
-              //         () => TextButton(
-              //           onPressed:
-              //               allInfoController.getBlogList.value?.isEmpty ?? true
-              //                   ? null
-              //                   : () {
-              //                     Navigator.push(
-              //                       context,
-              //                       MaterialPageRoute(
-              //                         builder:
-              //                             (context) => const BlogListView(),
-              //                       ),
-              //                     );
-              //                   },
-              //           child: Text(
-              //             "See All",
-              //             style: TextStyle(
-              //               color:
-              //                   allInfoController.getBlogList.value?.isEmpty ??
-              //                           true
-              //                       ? MyAppColors.mutedGray
-              //                       : MyAppColors.third,
-              //             ),
-              //           ),
-              //         ),
-              //       ),
-              //     ],
-              //   ),
-              // ),
-              // SizedBox(
-              //   height: 210,
-              //   child: Obx(() {
-              //     final blogs = allInfoController.getBlogList.value;
-              //     if (blogs == null) {
-              //       return _buildShimmerEffect(height: 210, width: 300);
-              //     }
-              //     return blogs.isEmpty
-              //         ? Container(
-              //           height: 220,
-              //           width: MediaQuery.of(context).size.width,
-              //           margin: const EdgeInsets.only(left: 10, right: 10),
-              //           decoration: BoxDecoration(
-              //             color: MyAppColors.transparentGray,
-              //             borderRadius: BorderRadius.circular(10),
-              //           ),
-              //           padding: const EdgeInsets.all(10),
-              //           child: Column(
-              //             mainAxisAlignment: MainAxisAlignment.center,
-              //             crossAxisAlignment: CrossAxisAlignment.center,
-              //             children: [
-              //               Icon(
-              //                 Icons.text_snippet_rounded,
-              //                 size: 40,
-              //                 color: Colors.grey[400],
-              //               ),
-              //               const Gap(5),
-              //               Text(
-              //                 "Blogs are Coming Near You Soon! Stay Tuned.",
-              //                 style: TextStyle(
-              //                   fontSize: 14,
-              //                   color: Colors.grey[600],
-              //                 ),
-              //                 textAlign: TextAlign.center,
-              //               ),
-              //             ],
-              //           ),
-              //         )
-              //         : Row(
-              //           mainAxisAlignment: MainAxisAlignment.start,
-              //           crossAxisAlignment: CrossAxisAlignment.start,
-              //           children: [
-              //             Expanded(
-              //               child: ListView.builder(
-              //                 scrollDirection: Axis.horizontal,
-              //                 controller: scrollControllerBlog,
-              //                 itemCount: blogs.length,
-              //                 itemBuilder: (context, index) {
-              //                   return getBlogCard(context, blogs[index]);
-              //                 },
-              //               ),
-              //             ),
-              //             if (isBlogLoading)
-              //               _buildShimmerEffect(height: 80, width: 160),
-              //           ],
-              //         );
-              //   }),
-              // ),
               const Gap(30),
             ],
           ),

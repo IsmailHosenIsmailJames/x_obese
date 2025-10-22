@@ -138,7 +138,7 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
               latLonOfPositions.last.latitude,
               latLonOfPositions.last.longitude,
             ),
-            16.5,
+            18,
           ),
         );
       } else {
