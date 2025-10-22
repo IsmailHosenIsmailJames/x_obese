@@ -1,19 +1,14 @@
 import "dart:convert";
 import "dart:developer";
-import "dart:io";
 
 import "package:flutter/material.dart";
-// import "package:flutter_foreground_task/flutter_foreground_task.dart";
 import "package:flutter_svg/svg.dart";
 import "package:geolocator/geolocator.dart" hide ActivityType;
 import "package:get/get.dart";
 import "package:hive_flutter/hive_flutter.dart";
 import "package:shared_preferences/shared_preferences.dart";
-import "package:x_obese/main.dart";
 import "package:x_obese/src/core/common/functions/calculate_distance.dart";
-import "package:x_obese/src/core/in_app_update/in_app_android_update/in_app_update_android.dart";
 import "package:x_obese/src/core/permissions/permission.dart";
-// import "package:x_obese/src/core/background/background_task.dart";
 import "package:x_obese/src/resources/svg_string.dart";
 import "package:x_obese/src/screens/activity/live_activity_page.dart";
 import "package:x_obese/src/screens/activity/workout_page.dart";
@@ -52,12 +47,6 @@ class _NavesPageState extends State<NavesPage> {
       if (!isPermissionAlreadyRequested) await requestPermissions();
       Hive.box("user").put("isPermissionAlreadyRequested", true);
       // Schedule update check after MaterialApp is built
-
-      if (isUpdateChecked != true) {
-        if (Platform.isAndroid) {
-          inAppUpdateAndroid(context);
-        }
-      }
 
       if (widget.autoNavToWorkout == true) {
         navsController.changeBottomNav(1);

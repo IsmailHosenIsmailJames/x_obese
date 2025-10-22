@@ -52,13 +52,10 @@ dependencies:
   carp_serializable: ^2.0.1
   bloc: ^9.0.0
   clipboard: ^2.0.2
-  open_file: ^3.5.10
   path_provider: ^2.1.5
   shimmer: ^3.0.0
   gpt_markdown: ^1.1.4
   url_launcher: ^6.3.2
-  package_info_plus: ^9.0.0
-  device_info_plus: ^12.2.0
 
 dev_dependencies:
   flutter_test:

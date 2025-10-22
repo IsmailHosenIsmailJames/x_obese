@@ -1,8 +1,4 @@
-import "dart:io";
-
 import "package:flutter/material.dart";
-import "package:x_obese/main.dart";
-import "package:x_obese/src/core/in_app_update/in_app_android_update/in_app_update_android.dart";
 import "package:x_obese/src/screens/intro/pages/intro_page_1.dart";
 import "package:x_obese/src/screens/intro/pages/intro_page_2.dart";
 import "package:x_obese/src/screens/intro/pages/intro_page_3.dart";
@@ -19,19 +15,6 @@ class IntroPage extends StatefulWidget {
 
 class _IntroPageState extends State<IntroPage> {
   PageController pageController = PageController();
-
-  @override
-  void initState() {
-    // Schedule update check after MaterialApp is built
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (isUpdateChecked != true) {
-        if (Platform.isAndroid) {
-          inAppUpdateAndroid(context);
-        }
-      }
-    });
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
