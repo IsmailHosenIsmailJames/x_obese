@@ -29,6 +29,7 @@ class ForegroundExerciseTask extends TaskHandler {
 
   Future<void> _handleGeolocationHistory() async {
     startTime = DateTime.now();
+    lastPositionTimeStamp = DateTime.now();
 
     pedestrianStatusStream ??= Pedometer.pedestrianStatusStream;
     stepCountStream ??= Pedometer.stepCountStream;
@@ -94,20 +95,48 @@ class ForegroundExerciseTask extends TaskHandler {
     FlutterForegroundTask.sendDataToMain(geolocationHistory);
   }
 
-  List<PedestrianStatus> pedestrianStatusList = [];
+  int activeTimeMS = 0;
+  PedestrianStatus? previousPedestrianStatus;
+  DateTime? lastUsedPedestrianStatus;
   void onPedestrianStatusReceive(PedestrianStatus status) {
-    pedestrianStatusList.add(status);
+    if (previousPedestrianStatus != null) {
+      if ((status.status == "stopped" &&
+              previousPedestrianStatus!.status == "walking") ||
+          (status.status == "walking" &&
+              previousPedestrianStatus!.status == "walking")) {
+        activeTimeMS +=
+            status.timeStamp
+                .difference(previousPedestrianStatus!.timeStamp)
+                .abs()
+                .inMilliseconds;
+        log("onPedestrianStatusReceive -> $activeTimeMS", name: "Steps & GPS");
+      }
+    } else {
+      if (status.status == "walking") {
+        activeTimeMS +=
+            status.timeStamp.difference(startTime!).abs().inMilliseconds;
+      }
+    }
+
+    previousPedestrianStatus = status;
+    lastUsedPedestrianStatus = DateTime.now();
   }
 
-  List<StepCount> stepCountList = [];
+  StepCount? previousStepData;
+  int totalStepCount = 0;
   void onStepDataReceive(StepCount stepCount) {
-    stepCountList.add(stepCount);
+    if (previousStepData != null) {
+      totalStepCount += (stepCount.steps - previousStepData!.steps).abs();
+    }
+    previousStepData = stepCount;
   }
 
   Position? lastPosition;
+  DateTime? lastPositionTimeStamp;
   Future<void> onPositionDataReceive(Position position) async {
     DateTime now = DateTime.now();
-    int totalTimeDifference = now.difference(startTime!).abs().inMilliseconds;
+    int totalTimeDifference =
+        now.difference(lastPositionTimeStamp!).abs().inMilliseconds;
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     await sharedPreferences.reload();
 
@@ -118,25 +147,13 @@ class ForegroundExerciseTask extends TaskHandler {
       (element) => element.name == activityTypeString,
     );
 
-    // calculate active movement time
-    int inactiveTime = 0;
-
-    for (int i = 0; i < pedestrianStatusList.length; i++) {
-      PedestrianStatus current = pedestrianStatusList[i];
-      DateTime currentTimeStamp = current.timeStamp;
-      if (i == 0) currentTimeStamp = DateTime.now();
-      if (current.status != "stopped") {
-        if (i == pedestrianStatusList.length) {
-          inactiveTime += currentTimeStamp.difference(now).abs().inMilliseconds;
-        } else {
-          PedestrianStatus next = pedestrianStatusList[i];
-          inactiveTime += next.timeStamp.difference(now).abs().inMilliseconds;
-        }
-      }
+    int activeTime = activeTimeMS;
+    if (previousPedestrianStatus?.status == "walking") {
+      activeTime +=
+          lastUsedPedestrianStatus!.difference(now).abs().inMilliseconds;
+      lastUsedPedestrianStatus = now;
     }
-
-    int activeTime = totalTimeDifference - inactiveTime;
-    if (pedestrianStatusList.isEmpty) activeTime = 0;
+    log("Active time MS: $activeTime", name: "Steps & GPS");
 
     double topSpeedMh = 0;
     switch (activity) {
@@ -150,21 +167,15 @@ class ForegroundExerciseTask extends TaskHandler {
     double topPossibleDistance = ((activeTime / 1000) / (60 * 60)) * topSpeedMh;
 
     // find the steps difference and top covered distance
-    int stepCount = 0;
-    if (stepCountList.isNotEmpty && stepCountList.length > 1) {
-      stepCount = (stepCountList.first.steps - stepCountList.last.steps).abs();
-    } else {
-      stepCount = ((topPossibleDistance * 0.8) / 1.0).toInt();
-    }
 
     double topStepDistanceCovered = 0;
     switch (activity) {
       case ActivityType.walking:
-        topStepDistanceCovered = stepCount * 0.8;
+        topStepDistanceCovered = totalStepCount * 0.8;
       case ActivityType.running:
-        topStepDistanceCovered = stepCount * 1.5;
+        topStepDistanceCovered = totalStepCount * 1.5;
       case ActivityType.cycling:
-        topStepDistanceCovered = stepCount * 1.5;
+        topStepDistanceCovered = totalStepCount * 1.5;
     }
 
     // calculate distance provided by GPS
@@ -191,19 +202,19 @@ class ForegroundExerciseTask extends TaskHandler {
     gpsDistance;
 
     // clear & replace previous data
-    if (pedestrianStatusList.isNotEmpty) {
-      PedestrianStatus last = pedestrianStatusList.last;
-      pedestrianStatusList = [last];
-    }
+    activeTimeMS = 0;
+    totalStepCount = 0;
 
-    if (stepCountList.isNotEmpty) {
-      stepCountList = [stepCountList.last];
-    }
     lastPosition = position;
+    lastPositionTimeStamp = DateTime.now();
 
     Fluttertoast.showToast(
       msg:
-          "${pedestrianStatusList.isEmpty ? "E" : pedestrianStatusList.last.status.substring(0, 1)}:${topPossibleDistance.toStringAsPrecision(1)}:${topStepDistanceCovered.toStringAsPrecision(1)}:${gpsDistance.toStringAsPrecision(1)}",
+          "${previousPedestrianStatus?.status.substring(0, 1) ?? "E"}:${topPossibleDistance.toStringAsPrecision(1)}:${topStepDistanceCovered.toStringAsPrecision(1)}:${gpsDistance.toStringAsPrecision(1)}",
+    );
+    log(
+      "${previousPedestrianStatus?.status.substring(0, 1) ?? "E"}:${topPossibleDistance.toStringAsPrecision(1)}:${topStepDistanceCovered.toStringAsPrecision(1)}:${gpsDistance.toStringAsPrecision(1)}",
+      name: "Steps & GPS",
     );
   }
 
