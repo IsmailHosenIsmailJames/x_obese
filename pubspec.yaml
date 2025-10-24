@@ -56,7 +56,6 @@ dependencies:
   shimmer: ^3.0.0
   gpt_markdown: ^1.1.4
   url_launcher: ^6.3.2
-  flutter_activity_recognition: ^4.0.0
 
 dev_dependencies:
   flutter_test:

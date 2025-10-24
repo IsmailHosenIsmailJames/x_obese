@@ -122,10 +122,7 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
                 .map((e) => Position.fromMap(jsonDecode(e)))
                 .toList();
 
-        log(
-          latLonOfPositions.length.toString(),
-          name: "onPage-> latLonOfPositions",
-        );
+        log(latLonOfPositions.toString(), name: "onPage-> latLonOfPositions");
 
         if (latLonOfPositions.isEmpty) {
           latLonOfPositions = [widget.initialLatLon];
@@ -341,19 +338,6 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
                       ),
                       zoomControlsEnabled: false,
                       markers: {
-                        Marker(
-                          markerId: const MarkerId("start"),
-                          infoWindow: InfoWindow(
-                            title: "${widget.workoutType} starting point",
-                          ),
-                          icon: BitmapDescriptor.defaultMarkerWithHue(
-                            BitmapDescriptor.hueBlue,
-                          ),
-                          position: LatLng(
-                            latLonOfPositions.first.latitude,
-                            latLonOfPositions.first.longitude,
-                          ),
-                        ),
                         Marker(
                           markerId: const MarkerId("end"),
                           infoWindow: InfoWindow(
