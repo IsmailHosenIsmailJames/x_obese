@@ -9,6 +9,8 @@ class PositionNodes {
   final double gpsDistance;
   final double selectedDistance;
   final ActivityStatus status;
+  final int durationMS;
+  final int steps;
   PositionNodes({
     required this.position,
     required this.maxPossibleDistance,
@@ -16,6 +18,8 @@ class PositionNodes {
     required this.gpsDistance,
     required this.selectedDistance,
     required this.status,
+    required this.durationMS,
+    required this.steps,
   });
 
   Map<String, dynamic> toMap() {
@@ -26,6 +30,8 @@ class PositionNodes {
       "gpsDistance": gpsDistance,
       "selectedDistance": selectedDistance,
       "status": status.name,
+      "durationMS": durationMS,
+      "steps": steps,
     };
   }
 
@@ -41,6 +47,8 @@ class PositionNodes {
       status: ActivityStatus.values.firstWhere(
         (element) => element.name == map["status"],
       ),
+      durationMS: (map["durationMS"] as num).toInt(),
+      steps: (map["steps"] as num).toInt(),
     );
   }
 
