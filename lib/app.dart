@@ -4,6 +4,7 @@ import "package:flutter_native_splash/flutter_native_splash.dart";
 import "package:hive_flutter/hive_flutter.dart";
 import "package:x_obese/src/core/common/functions/is_information_fulfilled.dart";
 import "package:x_obese/src/data/user_db.dart";
+import "package:x_obese/src/screens/activity/models/position_nodes.dart";
 import "package:x_obese/src/screens/auth/bloc/auth_bloc.dart";
 import "package:x_obese/src/screens/auth/bloc/auth_state.dart";
 import "package:x_obese/src/screens/auth/login/login_signup_page.dart";
@@ -13,9 +14,14 @@ import "package:x_obese/src/screens/intro/intro_page.dart";
 import "package:x_obese/src/screens/navs/naves_page.dart";
 import "package:x_obese/src/theme/colors.dart";
 
+import "src/screens/activity/models/activity_types.dart";
+
 class App extends StatelessWidget {
   static GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
-  const App({super.key});
+  final List<PositionNodes>? positionNodes;
+  final bool? isPaused;
+  final ActivityType? activityType;
+  const App({super.key, this.positionNodes, this.isPaused, this.activityType});
   @override
   Widget build(BuildContext context) {
     FlutterNativeSplash.remove();
@@ -29,6 +35,7 @@ class App extends StatelessWidget {
             TargetPlatform.windows: CupertinoPageTransitionsBuilder(),
           },
         );
+
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, state) {
         UserInfoModel? userInfoModel = context.read<AuthBloc>().userInfoModel();
@@ -68,11 +75,18 @@ class App extends StatelessWidget {
               );
             },
             "/workout": (BuildContext context) {
-              return const NavesPage(autoNavToWorkout: true);
+              return NavesPage(
+                autoNavToWorkout: true,
+                isPaused: isPaused,
+                positionNodes: positionNodes,
+                activityType: activityType,
+              );
             },
           },
           initialRoute:
-              userInfoModel == null
+              (positionNodes != null && isPaused != null)
+                  ? "/workout"
+                  : userInfoModel == null
                   ? "/intro"
                   : isInformationNotFullFilled(userInfoModel)
                   ? userInfoModel.isGuest

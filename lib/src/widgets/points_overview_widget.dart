@@ -55,7 +55,9 @@ class _PointsOverviewWidgetState extends State<PointsOverviewWidget> {
     });
 
     initCallFinished = true;
-    setState(() {});
+    try {
+      setState(() {});
+    } on Exception catch (_) {}
   }
 
   Future<void> fetchData() async {
