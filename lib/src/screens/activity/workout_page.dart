@@ -4,7 +4,7 @@ import "package:flutter/material.dart";
 import "package:flutter_svg/svg.dart";
 import "package:fluttertoast/fluttertoast.dart";
 import "package:gap/gap.dart";
-import "package:geolocator/geolocator.dart";
+import "package:geolocator/geolocator.dart" hide ActivityType;
 import "package:get/get.dart";
 import "package:x_obese/src/screens/activity/live_activity_page.dart";
 import "package:x_obese/src/screens/marathon/details_marathon/model/full_marathon_data_model.dart";
@@ -13,8 +13,8 @@ import "package:x_obese/src/theme/colors.dart";
 import "package:x_obese/src/widgets/app_bar.dart";
 import "package:x_obese/src/widgets/back_button.dart";
 import "package:x_obese/src/widgets/loading_popup.dart";
-import "package:x_obese/src/core/common/functions/calculate_distance.dart"
-    as workout_calculator;
+
+import "models/activity_types.dart";
 
 class ActivityPage extends StatefulWidget {
   final MarathonUserModel? marathonUserModel;
@@ -34,13 +34,12 @@ class ActivityPage extends StatefulWidget {
 }
 
 class _ActivityPageState extends State<ActivityPage> {
-  List<workout_calculator.ActivityType> workOutMode = [
-    workout_calculator.ActivityType.running,
-    workout_calculator.ActivityType.walking,
-    workout_calculator.ActivityType.cycling,
+  List<ActivityType> workOutMode = [
+    ActivityType.running,
+    ActivityType.walking,
+    ActivityType.cycling,
   ];
-  workout_calculator.ActivityType selectedMode =
-      workout_calculator.ActivityType.walking;
+  ActivityType selectedMode = ActivityType.walking;
   int requestTime = 0;
 
   @override

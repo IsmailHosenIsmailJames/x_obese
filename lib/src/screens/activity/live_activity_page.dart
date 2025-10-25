@@ -1,7 +1,7 @@
 import "dart:async";
-import "dart:convert";
 import "dart:developer";
 
+import "package:dartx/dartx.dart";
 import "package:dio/dio.dart" as dio;
 import "package:dio/dio.dart";
 import "package:fluentui_system_icons/fluentui_system_icons.dart";
@@ -10,7 +10,7 @@ import "package:flutter_foreground_task/flutter_foreground_task.dart";
 import "package:flutter_svg/svg.dart";
 import "package:fluttertoast/fluttertoast.dart";
 import "package:gap/gap.dart";
-import "package:geolocator/geolocator.dart";
+import "package:geolocator/geolocator.dart" hide ActivityType;
 import "package:get/get.dart";
 import "package:google_maps_flutter/google_maps_flutter.dart";
 import "package:permission_handler/permission_handler.dart";
@@ -18,14 +18,12 @@ import "package:shared_preferences/shared_preferences.dart";
 import "package:wakelock_plus/wakelock_plus.dart";
 import "package:x_obese/src/apis/middleware/jwt_middleware.dart";
 import "package:x_obese/src/common_functions/common_functions.dart";
-import "package:x_obese/src/core/common/functions/calculate_distance.dart"
-    as workout_calculator;
-import "package:x_obese/src/core/common/functions/calculate_distance.dart";
 import "package:x_obese/src/core/common/functions/format_sec_to_time.dart";
 import "package:x_obese/src/core/permissions/permission.dart";
 import "package:x_obese/src/data/user_db.dart";
 import "package:x_obese/src/screens/activity/controller/activity_controller.dart";
 import "package:x_obese/src/screens/activity/controller/lock_controller.dart";
+import "package:x_obese/src/screens/activity/models/position_nodes.dart";
 import "package:x_obese/src/screens/info_collector/controller/all_info_controller.dart";
 import "package:x_obese/src/screens/marathon/details_marathon/model/full_marathon_data_model.dart";
 import "package:x_obese/src/screens/marathon/models/marathon_user_model.dart";
@@ -36,9 +34,10 @@ import "package:x_obese/src/widgets/loading_popup.dart";
 import "package:x_obese/src/widgets/popup_for_signup.dart";
 
 import "foreground/foreground_exercise_service.dart";
+import "models/activity_types.dart";
 
 class LiveActivityPage extends StatefulWidget {
-  final workout_calculator.ActivityType workoutType;
+  final ActivityType workoutType;
   final MarathonUserModel? marathonUserModel;
   final FullMarathonDataModel? marathonData;
   final Position initialLatLon;
@@ -58,9 +57,7 @@ class LiveActivityPage extends StatefulWidget {
 class _LiveActivityPageState extends State<LiveActivityPage> {
   final Completer<GoogleMapController> googleMapController =
       Completer<GoogleMapController>();
-  double distanceEveryPaused = 0;
-  late List<Position> latLonOfPositions = [widget.initialLatLon];
-  int workoutDurationSec = 1;
+  late List<PositionNodes> positionNodes = [];
   bool isPaused = false;
   late AllInfoController controller;
 
@@ -76,27 +73,11 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
       SharedPreferences sharedPreferences =
           await SharedPreferences.getInstance();
       await sharedPreferences.reload();
-      distanceEveryPaused =
-          sharedPreferences.getDouble("distanceEveryPaused") ?? 0;
       String? previousWorkoutType = sharedPreferences.getString("workout_type");
       if (previousWorkoutType != widget.workoutType.name) {
         await dismissWorkout();
       }
 
-      latLonOfPositions =
-          (sharedPreferences.getStringList("geolocationHistory") ?? [])
-              .map((e) => Position.fromMap(jsonDecode(e)))
-              .toList();
-
-      if (latLonOfPositions.isNotEmpty) {
-        workoutDurationSec =
-            latLonOfPositions.first.timestamp
-                .difference(latLonOfPositions.last.timestamp)
-                .inSeconds
-                .abs();
-      } else {
-        latLonOfPositions = [widget.initialLatLon];
-      }
       await sharedPreferences.setString(
         "workout_type",
         widget.workoutType.name,
@@ -107,63 +88,16 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
         await _startService();
       }
     });
-    streamSubscription = Stream.periodic(const Duration(seconds: 5), (
-      computationCount,
-    ) {
-      return DateTime.now();
-    }).listen((event) async {
-      SharedPreferences sharedPreferences =
-          await SharedPreferences.getInstance();
-      await sharedPreferences.reload();
-      isPaused = sharedPreferences.getBool("isPaused") ?? false;
-      if (!isPaused) {
-        latLonOfPositions =
-            (sharedPreferences.getStringList("geolocationHistory") ?? [])
-                .map((e) => Position.fromMap(jsonDecode(e)))
-                .toList();
-
-        log(latLonOfPositions.toString(), name: "onPage-> latLonOfPositions");
-
-        if (latLonOfPositions.isEmpty) {
-          latLonOfPositions = [widget.initialLatLon];
-        }
-
-        final controller = await googleMapController.future;
-        controller.animateCamera(
-          CameraUpdate.newLatLngZoom(
-            LatLng(
-              latLonOfPositions.last.latitude,
-              latLonOfPositions.last.longitude,
-            ),
-            18,
-          ),
-        );
-      } else {
-        if (latLonOfPositions.isNotEmpty) {
-          distanceEveryPaused +=
-              workout_calculator.WorkoutCalculator(
-                rawPositions: latLonOfPositions,
-                activityType: widget.workoutType,
-              ).processData().totalDistance;
-          sharedPreferences.setStringList("geolocationHistory", []);
-          sharedPreferences.setDouble(
-            "distanceEveryPaused",
-            distanceEveryPaused,
-          );
-        }
-      }
-      if (!isDispose) setState(() {});
-    });
 
     Timer.periodic(const Duration(seconds: 1), (timer) async {
       SharedPreferences sharedPreferences =
           await SharedPreferences.getInstance();
       await sharedPreferences.reload();
 
-      isPaused = sharedPreferences.getBool("isPaused") ?? false;
+      bool temIsPaused = sharedPreferences.getBool("isPaused") ?? false;
 
-      if (isPaused == false) {
-        workoutDurationSec++;
+      if (isPaused != temIsPaused) {
+        isPaused = temIsPaused;
         if (!isDispose) setState(() {});
       }
     });
@@ -174,8 +108,8 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
 
   @override
   void dispose() {
-    streamSubscription.cancel();
     isDispose = true;
+    streamSubscription.cancel();
     WakelockPlus.disable();
     FlutterForegroundTask.removeTaskDataCallback(_onReceiveTaskData);
     super.dispose();
@@ -198,7 +132,12 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
         notificationButtons: [
           const NotificationButton(
             id: "dismiss_workout",
-            text: "Dismiss it",
+            text: "Dismiss Workout",
+            textColor: Colors.red,
+          ),
+          const NotificationButton(
+            id: "pause_workout",
+            text: "Pause Workout",
             textColor: Colors.red,
           ),
         ],
@@ -231,16 +170,39 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
     );
   }
 
-  void _onReceiveTaskData(Object data) {
-    if (data is Map<String, dynamic>) {
-      final dynamic timestampMillis = data["timestampMillis"];
-      if (timestampMillis != null) {
-        final DateTime timestamp = DateTime.fromMillisecondsSinceEpoch(
-          timestampMillis,
-          isUtc: true,
-        );
-        log("timestamp: ${timestamp.toString()}");
+  bool dismissCommandFromNotification = false;
+
+  void _onReceiveTaskData(Object data) async {
+    try {
+      if (data == "dismiss_workout") {
+        dismissCommandFromNotification = true;
+        Navigator.pop(context);
+        return;
       }
+      if (data == "resume_workout") {
+        isPaused = false;
+        if (!isDispose) setState(() {});
+        return;
+      }
+      if (data == "pause_workout") {
+        isPaused = true;
+        if (!isDispose) setState(() {});
+      }
+      positionNodes =
+          (data as List)
+              .map((e) => PositionNodes.fromJson(e as String))
+              .toList();
+      log(positionNodes.length.toString(), name: "onReceiveTaskData");
+      GoogleMapController controller = await googleMapController.future;
+      double lat = positionNodes.last.position.latitude;
+      double long = positionNodes.last.position.longitude;
+      await controller.animateCamera(
+        CameraUpdate.newLatLngZoom(LatLng(lat, long), 19),
+        duration: const Duration(milliseconds: 500),
+      );
+      if (!isDispose) setState(() {});
+    } catch (e) {
+      log(e.toString(), name: "onReceiveTaskData");
     }
   }
 
@@ -248,14 +210,28 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
 
   @override
   Widget build(BuildContext context) {
-    workout_calculator.WorkoutCalculationResult workoutCalculationResult =
-        workout_calculator.WorkoutCalculator(
-          rawPositions: latLonOfPositions,
-          activityType: widget.workoutType,
-        ).processData();
+    double distance = positionNodes.map((e) => e.selectedDistance).sum();
+    int durationInSec =
+        (positionNodes.map((e) => e.durationMS).sum() / 1000).toInt();
+    double calculatedSpeed =
+        positionNodes.isNotEmpty
+            ? ((positionNodes.last.selectedDistance / 1000) /
+                ((positionNodes.last.durationMS / 1000) / (60 * 60)))
+            : 0;
+
+    ActivityStatus lastActivityType =
+        positionNodes.isNotEmpty
+            ? positionNodes.last.status
+            : ActivityStatus.stopped;
+    lastActivityType =
+        lastActivityType == ActivityStatus.unknown
+            ? ActivityStatus.stopped
+            : lastActivityType;
+
     return PopScope(
-      canPop: false,
+      canPop: dismissCommandFromNotification,
       onPopInvoked: (didPop) async {
+        if (dismissCommandFromNotification) return;
         await Future.delayed(const Duration(milliseconds: 200));
         if (showBackWarning) {
           showDialog(
@@ -327,28 +303,38 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
                           widget.initialLatLon.latitude,
                           widget.initialLatLon.longitude,
                         ),
-                        zoom: 16.5,
+                        zoom: 19,
                       ),
 
                       onMapCreated: (controller) {
                         googleMapController.complete(controller);
                       },
                       polylines: getPolylineFromLatLonList(
-                        workoutCalculationResult.filteredPath,
+                        positionNodes
+                            .map(
+                              (e) => LatLng(
+                                e.position.latitude,
+                                e.position.longitude,
+                              ),
+                            )
+                            .toList(),
                       ),
                       zoomControlsEnabled: false,
-                      markers: {
-                        Marker(
-                          markerId: const MarkerId("end"),
-                          infoWindow: InfoWindow(
-                            title: "${widget.workoutType} ending point",
-                          ),
-                          position: LatLng(
-                            latLonOfPositions.last.latitude,
-                            latLonOfPositions.last.longitude,
-                          ),
-                        ),
-                      },
+                      markers:
+                          positionNodes.isNotEmpty
+                              ? {
+                                Marker(
+                                  markerId: const MarkerId("end"),
+                                  infoWindow: InfoWindow(
+                                    title: "${widget.workoutType} ending point",
+                                  ),
+                                  position: LatLng(
+                                    positionNodes.last.position.latitude,
+                                    positionNodes.last.position.longitude,
+                                  ),
+                                ),
+                              }
+                              : {},
                     ),
                     Column(
                       children: [
@@ -376,12 +362,7 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
                                   Text(
-                                    (distanceEveryPaused +
-                                            workoutCalculationResult
-                                                    .totalDistance /
-                                                1000)
-                                        .toPrecision(2)
-                                        .toString(),
+                                    "${(distance >= 1000 ? (distance / 1000).toStringAsPrecision(2) : distance.toInt())}",
                                     style: const TextStyle(
                                       fontSize: 24,
                                       fontWeight: FontWeight.w700,
@@ -390,7 +371,7 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
                                   Padding(
                                     padding: const EdgeInsets.only(bottom: 3),
                                     child: Text(
-                                      " km",
+                                      distance >= 1000 ? " KM" : " Meter",
                                       style: TextStyle(
                                         fontSize: 16,
                                         color: MyAppColors.second,
@@ -450,7 +431,11 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
                                     ),
                                     const Gap(5),
                                     Text(
-                                      "${((latLonOfPositions.last.speed == 0.0 ? workoutCalculationResult.averageSpeed : latLonOfPositions.last.speed) * 3.6).toPrecision(2)} km/h",
+                                      "${positionNodes.isNotEmpty
+                                          ? calculatedSpeed > 0
+                                              ? calculatedSpeed.toPrecision(2)
+                                              : 0
+                                          : "..."} km/h",
                                       style: const TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.w400,
@@ -475,7 +460,15 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
                                     10,
 
                                 decoration: BoxDecoration(
-                                  color: const Color(0xffFAFAFA),
+                                  color:
+                                      lastActivityType == ActivityStatus.stopped
+                                          ? const Color.fromARGB(
+                                            255,
+                                            255,
+                                            211,
+                                            211,
+                                          )
+                                          : const Color(0xffFAFAFA),
                                   borderRadius: BorderRadius.circular(4),
                                 ),
                                 child: Column(
@@ -500,7 +493,7 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
                                     ),
                                     const Gap(5),
                                     Text(
-                                      formatSeconds(workoutDurationSec),
+                                      formatSeconds(durationInSec),
                                       style: const TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.w400,
@@ -520,6 +513,19 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
                             ],
                           ),
                         ),
+                        const Gap(10),
+                        if (lastActivityType == ActivityStatus.stopped)
+                          Container(
+                            padding: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              color: const Color(0xffFAFAFA),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: const Text(
+                              "You stopped",
+                              style: TextStyle(color: Colors.redAccent),
+                            ),
+                          ),
                         const Spacer(),
 
                         GetX<LockController>(
@@ -660,7 +666,7 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
                                               showBackWarning = false;
                                               showSaveWorkoutPopupWithInfo(
                                                 context,
-                                                workoutCalculationResult,
+                                                positionNodes,
                                               );
                                             },
                                             icon: Icon(
@@ -726,8 +732,11 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
 
   void showSaveWorkoutPopupWithInfo(
     BuildContext context,
-    WorkoutCalculationResult workoutCalculationResult,
+    List<PositionNodes> positionNodes,
   ) {
+    int durationInSec =
+        (positionNodes.map((e) => e.durationMS).sum() / 1000).toInt();
+
     if (UserDB.userAllInfo()?.isGuest ?? true) {
       showSignupPopup(context);
     } else {
@@ -760,7 +769,7 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
                         ),
                         const Gap(10),
                         Text(
-                          "${((distanceEveryPaused + workoutCalculationResult.totalDistance) / 1000).toStringAsFixed(2)} km",
+                          "${(this.positionNodes.map((e) => e.selectedDistance).sum() / 1000).toStringAsPrecision(2)} km",
                         ),
                       ],
                     ),
@@ -771,7 +780,7 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                         const Gap(10),
-                        Text("${formatSeconds(workoutDurationSec)} Minutes"),
+                        Text("${formatSeconds(durationInSec)} Minutes"),
                       ],
                     ),
                     const Gap(20),
@@ -799,10 +808,7 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
                           ),
                           onPressed: () async {
                             Navigator.pop(dialogContext);
-                            await saveWorkout(
-                              context,
-                              workoutCalculationResult,
-                            );
+                            await saveWorkout(context, positionNodes);
                             await dismissWorkout();
                           },
                           icon: const Icon(Icons.done, color: Colors.green),
@@ -820,8 +826,10 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
 
   Future<void> saveWorkout(
     BuildContext context,
-    workout_calculator.WorkoutCalculationResult workoutCalculationResult,
+    List<PositionNodes> positionNodes,
   ) async {
+    int durationInMS = positionNodes.map((e) => e.durationMS).sum().toInt();
+
     if (!mounted) return;
 
     if (await checkConnectivity() == false) {
@@ -843,7 +851,7 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
                   ),
                   onPressed: () {
                     Navigator.pop(context);
-                    saveWorkout(context, workoutCalculationResult);
+                    saveWorkout(context, positionNodes);
                   },
                   child: const Text("Try Again"),
                 ),
@@ -863,20 +871,17 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
       if (widget.marathonUserModel != null) {
         var res = await activityController.saveMarathonUserActivity({
           "distanceKm":
-              ((distanceEveryPaused + workoutCalculationResult.totalDistance) /
-                      1000)
+              (positionNodes.map((e) => e.selectedDistance).sum() / 1000)
                   .toString(),
-          "durationMs": workoutDurationSec * 1000,
+          "durationMs": durationInMS,
         }, widget.marathonData!.data!.marathonUserId!);
         if (res != null) response = res;
       }
       var res = await activityController.saveActivity({
-        "distanceKm":
-            (distanceEveryPaused + workoutCalculationResult.totalDistance) /
-            1000,
+        "distanceKm": positionNodes.map((e) => e.selectedDistance).sum() / 1000,
         "type": widget.workoutType.toString(),
-        "durationMs": workoutDurationSec * 1000,
-        // "steps": 1000, // optional
+        "durationMs": durationInMS,
+        "steps": positionNodes.map((e) => e.steps).sum(), // optional
       });
 
       allInfoController.dataAsync();
@@ -888,6 +893,7 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
 
       if (response?.statusCode == 200 || response?.statusCode == 201) {
         Fluttertoast.showToast(msg: "Saved successfully");
+        dismissWorkout();
         if (mounted) {
           Navigator.pop(context);
         }
