@@ -1,15 +1,13 @@
 import "dart:async";
-import "dart:convert";
 import "dart:developer";
 
 import "package:flutter/foundation.dart";
 import "package:flutter_foreground_task/flutter_foreground_task.dart";
-import "package:fluttertoast/fluttertoast.dart";
 import "package:geolocator/geolocator.dart" hide ActivityType;
-import "package:get/get.dart";
 import "package:pedometer/pedometer.dart";
 import "package:shared_preferences/shared_preferences.dart";
 import "package:x_obese/src/core/common/functions/calculate_distance.dart";
+import "package:x_obese/src/screens/activity/models/position_nodes.dart";
 
 @pragma("vm:entry-point")
 void startCallback() {
@@ -48,51 +46,6 @@ class ForegroundExerciseTask extends TaskHandler {
     positionStreamSubscription ??= positionStream?.listen((event) {
       onPositionDataReceive(event);
     });
-
-    // deprecated
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    await sharedPreferences.reload();
-    bool isPaused = sharedPreferences.getBool("isPaused") ?? false;
-    if (isPaused) return;
-    Position position = await Geolocator.getCurrentPosition();
-    List<String> geolocationHistory =
-        sharedPreferences.getStringList("geolocationHistory") ?? [];
-    geolocationHistory.add(jsonEncode(position));
-    await sharedPreferences.setStringList(
-      "geolocationHistory",
-      geolocationHistory,
-    );
-
-    String? activityType =
-        sharedPreferences.getString("workout_type") ?? "walking";
-
-    ActivityType activity = ActivityType.values.firstWhere(
-      (element) => element.name == activityType,
-    );
-    List<Position> positions =
-        geolocationHistory.map((e) => Position.fromMap(jsonDecode(e))).toList();
-    WorkoutCalculationResult workoutCalculationResult =
-        WorkoutCalculator(
-          rawPositions: positions,
-          activityType: activity,
-        ).processData();
-    double distanceEveryPaused =
-        sharedPreferences.getDouble("distanceEveryPaused") ?? 0.0;
-
-    if (positions.isEmpty) {
-      return;
-    }
-    int durationInSec =
-        positions.first.timestamp.difference(DateTime.now()).inSeconds.abs();
-    FlutterForegroundTask.updateService(
-      notificationTitle: "Workout is running",
-      notificationText:
-          "Distance: ${(distanceEveryPaused + workoutCalculationResult.totalDistance / 1000).toPrecision(2)} km, Duration: ${durationInSec ~/ 60}:${durationInSec % 60} min, Avg speed: ${((positions.last.speed == 0.0 ? workoutCalculationResult.averageSpeed : positions.last.speed) * 3.6).toPrecision(2)} km/h",
-      callback: startCallback,
-    );
-
-    log("geolocationHistory: ${geolocationHistory.length}");
-    FlutterForegroundTask.sendDataToMain(geolocationHistory);
   }
 
   int activeTimeMS = 0;
@@ -147,6 +100,8 @@ class ForegroundExerciseTask extends TaskHandler {
       (element) => element.name == activityTypeString,
     );
 
+    bool isPaused = sharedPreferences.getBool("isPaused") ?? false;
+
     int activeTime = activeTimeMS;
     if (previousPedestrianStatus?.status == "walking") {
       activeTime +=
@@ -155,27 +110,28 @@ class ForegroundExerciseTask extends TaskHandler {
     }
     log("Active time MS: $activeTime", name: "Steps & GPS");
 
-    double topSpeedMh = 0;
+    double maxSpeedMh = 0;
     switch (activity) {
       case ActivityType.walking:
-        topSpeedMh = 6400;
+        maxSpeedMh = 6400;
       case ActivityType.running:
-        topSpeedMh = 10000;
+        maxSpeedMh = 10000;
       case ActivityType.cycling:
-        topSpeedMh = 20000;
+        maxSpeedMh = 20000;
     }
-    double topPossibleDistance = ((activeTime / 1000) / (60 * 60)) * topSpeedMh;
 
-    // find the steps difference and top covered distance
+    double maxPossibleDistance = ((activeTime / 1000) / (60 * 60)) * maxSpeedMh;
 
-    double topStepDistanceCovered = 0;
+    // find the steps difference and max covered distance
+
+    double maxStepDistanceCovered = 0;
     switch (activity) {
       case ActivityType.walking:
-        topStepDistanceCovered = totalStepCount * 0.8;
+        maxStepDistanceCovered = totalStepCount * 0.8;
       case ActivityType.running:
-        topStepDistanceCovered = totalStepCount * 1.5;
+        maxStepDistanceCovered = totalStepCount * 1.5;
       case ActivityType.cycling:
-        topStepDistanceCovered = totalStepCount * 1.5;
+        maxStepDistanceCovered = totalStepCount * 1.5;
     }
 
     // calculate distance provided by GPS
@@ -183,7 +139,7 @@ class ForegroundExerciseTask extends TaskHandler {
     if (lastPosition == null) {
       gpsDistance = position.speed * ((totalTimeDifference / 1000) / (60 * 60));
       if (gpsDistance == 0) {
-        gpsDistance = topStepDistanceCovered;
+        gpsDistance = maxStepDistanceCovered;
       }
     } else {
       gpsDistance = Geolocator.distanceBetween(
@@ -194,12 +150,23 @@ class ForegroundExerciseTask extends TaskHandler {
       );
     }
 
-    // top possible distance by active time
-    topPossibleDistance;
-    // top possible distance by steps
-    topStepDistanceCovered;
+    // max possible distance by active time
+    maxPossibleDistance;
+    // max possible distance by steps
+    maxStepDistanceCovered;
     // GPS distance covered
     gpsDistance;
+
+    double selectedDistance = 0;
+    if (maxStepDistanceCovered > maxPossibleDistance) {
+      maxPossibleDistance = maxPossibleDistance;
+    }
+
+    if (maxPossibleDistance > gpsDistance) {
+      selectedDistance = gpsDistance;
+    } else {
+      selectedDistance = maxPossibleDistance * 0.8;
+    }
 
     // clear & replace previous data
     activeTimeMS = 0;
@@ -208,12 +175,34 @@ class ForegroundExerciseTask extends TaskHandler {
     lastPosition = position;
     lastPositionTimeStamp = DateTime.now();
 
-    Fluttertoast.showToast(
-      msg:
-          "${previousPedestrianStatus?.status.substring(0, 1) ?? "E"}:${topPossibleDistance.toStringAsPrecision(1)}:${topStepDistanceCovered.toStringAsPrecision(1)}:${gpsDistance.toStringAsPrecision(1)}",
+    if (isPaused) return;
+
+    List<PositionNodes> activityNodesList =
+        (sharedPreferences.getStringList("activityNodesList") ?? [])
+            .map((e) => PositionNodes.fromJson(e))
+            .toList();
+    activityNodesList.add(
+      PositionNodes(
+        position: position,
+        maxPossibleDistance: maxPossibleDistance,
+        maxStepDistanceCovered: maxStepDistanceCovered,
+        gpsDistance: gpsDistance,
+        selectedDistance: selectedDistance,
+        status: ActivityStatus.values.firstWhere(
+          (element) => element.name == previousPedestrianStatus!.status,
+        ),
+      ),
     );
+
+    await sharedPreferences.setStringList(
+      "activityNodesList",
+      activityNodesList.map((e) => e.toJson()).toList(),
+    );
+
+    FlutterForegroundTask.sendDataToMain(activityNodesList);
+
     log(
-      "${previousPedestrianStatus?.status.substring(0, 1) ?? "E"}:${topPossibleDistance.toStringAsPrecision(1)}:${topStepDistanceCovered.toStringAsPrecision(1)}:${gpsDistance.toStringAsPrecision(1)}",
+      "${previousPedestrianStatus?.status.substring(0, 1) ?? "E"}:${maxPossibleDistance.toStringAsPrecision(1)}:${maxStepDistanceCovered.toStringAsPrecision(1)}:${gpsDistance.toStringAsPrecision(1)}:S-$selectedDistance",
       name: "Steps & GPS",
     );
   }
