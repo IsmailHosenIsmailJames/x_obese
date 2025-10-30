@@ -3,21 +3,33 @@ import "package:flutter_svg/svg.dart";
 import "package:x_obese/src/screens/navs/naves_page.dart";
 import "package:x_obese/src/theme/colors.dart";
 
-class LoginSuccessPage extends StatelessWidget {
+class LoginSuccessPage extends StatefulWidget {
   const LoginSuccessPage({super.key});
 
-  Future<void> autoRoute(BuildContext context) async {
+  @override
+  State<LoginSuccessPage> createState() => _LoginSuccessPageState();
+}
+
+class _LoginSuccessPageState extends State<LoginSuccessPage> {
+  @override
+  void initState() {
+    super.initState();
+    _autoRoute();
+  }
+
+  Future<void> _autoRoute() async {
     await Future.delayed(const Duration(seconds: 2));
-    Navigator.pushAndRemoveUntil(
-      context,
-      MaterialPageRoute(builder: (context) => const NavesPage()),
-      (route) => false,
-    );
+    if (mounted) {
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => const NavesPage()),
+        (route) => false,
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    autoRoute(context);
     return Scaffold(
       backgroundColor: MyAppColors.primary,
       body: Center(
