@@ -66,6 +66,9 @@ class _PointsOverviewWidgetState extends State<PointsOverviewWidget> {
       DateTime(now.year, now.month, now.day),
       now,
     );
+    if (!((steps ?? 0) > 0)) {
+      steps = controller.workStatus.value?.steps ?? 0;
+    }
     if (steps != null) {
       controller.stepsCount.value = steps;
       log(steps.toString(), name: "Steps");

@@ -133,6 +133,7 @@ class AllInfoController extends GetxController {
         workStatus.value = status.copyWith(
           durationMs: (status.durationMs ?? 0) / 60000,
         );
+        stepsCount.value = workStatus.value?.steps ?? 0;
         selectedCategory.value = "Calories";
         selectedPoints.value = double.parse(workStatus.value?.calories ?? "0");
       }

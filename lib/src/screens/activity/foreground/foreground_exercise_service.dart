@@ -188,26 +188,27 @@ class ForegroundExerciseTask extends TaskHandler {
             .map((e) => PositionNodes.fromJson(e))
             .toList();
 
-    positionNodes.add(
-      PositionNodes(
-        position: position,
-        maxPossibleDistance: maxPossibleDistance,
-        maxStepDistanceCovered: maxStepDistanceCovered,
-        gpsDistance: gpsDistance,
-        selectedDistance: selectedDistance,
-        durationMS: activeTime,
-        steps: totalSteps,
-        status: ActivityStatus.values.firstWhere(
-          (element) =>
-              element.name == (previousPedestrianStatus?.status ?? "unknown"),
+    if (previousPedestrianStatus?.status != "stopped") {
+      positionNodes.add(
+        PositionNodes(
+          position: position,
+          maxPossibleDistance: maxPossibleDistance,
+          maxStepDistanceCovered: maxStepDistanceCovered,
+          gpsDistance: gpsDistance,
+          selectedDistance: selectedDistance,
+          durationMS: activeTime,
+          steps: totalSteps,
+          status: ActivityStatus.values.firstWhere(
+            (element) =>
+                element.name == (previousPedestrianStatus?.status ?? "unknown"),
+          ),
         ),
-      ),
-    );
-
-    await sharedPreferences.setStringList(
-      "activityNodesList",
-      positionNodes.map((e) => e.toJson()).toList(),
-    );
+      );
+      await sharedPreferences.setStringList(
+        "activityNodesList",
+        positionNodes.map((e) => e.toJson()).toList(),
+      );
+    }
 
     FlutterForegroundTask.sendDataToMain(
       positionNodes.map((e) => e.toJson()).toList(),
