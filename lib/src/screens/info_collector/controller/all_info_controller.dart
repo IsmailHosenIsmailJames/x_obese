@@ -127,6 +127,7 @@ class AllInfoController extends GetxController {
         "$getUserWorkoutStatus?view=weekly",
       );
       if (response.statusCode == 200 && response.data["data"] != null) {
+        log(response.data.toString(), name: "WorkoutStatus");
         final status = WorkStatusModel.fromMap(
           Map<String, dynamic>.from(response.data["data"]),
         );

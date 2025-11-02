@@ -883,7 +883,7 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
         "type": widget.workoutType.toString(),
         "durationMs": durationInMS,
         "steps": positionNodes.map((e) => e.steps).sum(), // optional
-      });
+      }, positionNodes.map((e) => e.steps).sum());
 
       allInfoController.dataAsync();
 
