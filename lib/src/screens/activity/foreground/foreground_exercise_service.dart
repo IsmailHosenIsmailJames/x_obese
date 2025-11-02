@@ -234,7 +234,7 @@ class ForegroundExerciseTask extends TaskHandler {
       notificationText:
           "Distance: ${distance >= 1000 ? (distance / 1000).toStringAsPrecision(2) : distance.toInt()} ${distance >= 1000 ? "KM" : "Meter"}, "
           "Duration: ${formatSeconds(durationInSec)}, "
-          "Last Speed: ${calculatedSpeed > 0 ? calculatedSpeed : "..."} KM/H",
+          "Last Speed: ${calculatedSpeed > 0 ? calculatedSpeed.toStringAsPrecision(2) : "..."} KM/H",
     );
     log(
       "${previousPedestrianStatus?.status.substring(0, 1) ?? "E"}:${maxPossibleDistance.toStringAsPrecision(1)}:${maxStepDistanceCovered.toStringAsPrecision(1)}:${gpsDistance.toStringAsPrecision(1)}:S-$selectedDistance",
