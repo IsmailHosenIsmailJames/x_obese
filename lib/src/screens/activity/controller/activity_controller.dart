@@ -31,6 +31,7 @@ class ActivityController extends GetxController {
 
   Future<dio.Response?> saveMarathonUserActivity(
     Map data,
+    int steps,
     String userID,
   ) async {
     try {
@@ -40,6 +41,19 @@ class ActivityController extends GetxController {
       );
       printResponse(response);
       if (response.statusCode == 200 || response.statusCode == 201) {
+        try {
+          DateTime now = DateTime.now();
+          final response = await dioClient.dio.post(
+            "/api/user/v1/workout/steps",
+            data: {
+              "steps": steps,
+              "createdAt": "${now.year}-${now.month}-${now.day}",
+            },
+          );
+          log(response.data.toString(), name: "workout/steps");
+        } on Exception catch (e) {
+          log(e.toString(), name: "Steps Save error");
+        }
         final message = response.data["message"] ?? "";
         Fluttertoast.showToast(msg: message);
         return response;

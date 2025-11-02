@@ -188,7 +188,7 @@ class ForegroundExerciseTask extends TaskHandler {
             .map((e) => PositionNodes.fromJson(e))
             .toList();
 
-    if (previousPedestrianStatus?.status != "stopped") {
+    if (previousPedestrianStatus?.status == "walking") {
       positionNodes.add(
         PositionNodes(
           position: position,

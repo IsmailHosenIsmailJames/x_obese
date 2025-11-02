@@ -61,8 +61,6 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
   bool isPaused = false;
   late AllInfoController controller;
 
-  late StreamSubscription streamSubscription;
-
   @override
   void initState() {
     WakelockPlus.enable();
@@ -109,7 +107,6 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
   @override
   void dispose() {
     isDispose = true;
-    streamSubscription.cancel();
     WakelockPlus.disable();
     FlutterForegroundTask.removeTaskDataCallback(_onReceiveTaskData);
     super.dispose();
@@ -869,12 +866,16 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
       dio.Response? response;
 
       if (widget.marathonUserModel != null) {
-        var res = await activityController.saveMarathonUserActivity({
-          "distanceKm":
-              (positionNodes.map((e) => e.selectedDistance).sum() / 1000)
-                  .toString(),
-          "durationMs": durationInMS,
-        }, widget.marathonData!.data!.marathonUserId!);
+        var res = await activityController.saveMarathonUserActivity(
+          {
+            "distanceKm":
+                (positionNodes.map((e) => e.selectedDistance).sum() / 1000)
+                    .toString(),
+            "durationMs": durationInMS,
+          },
+          positionNodes.map((e) => e.steps).sum(),
+          widget.marathonData?.data?.marathonUserId ?? "",
+        );
         if (res != null) response = res;
       }
       var res = await activityController.saveActivity({
