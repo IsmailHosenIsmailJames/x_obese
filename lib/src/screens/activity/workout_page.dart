@@ -230,22 +230,54 @@ class _ActivityPageState extends State<ActivityPage> {
   }
 
   Future<void> getLocationAndStartActivity() async {
-    requestTime++;
-    showLoadingPopUp(context, loadingText: "Getting your location...");
     LocationPermission status = await Geolocator.checkPermission();
     log(status.toString());
     if (status == LocationPermission.denied) {
-      status = await Geolocator.requestPermission();
-
-      if (status == LocationPermission.denied && requestTime > 2) {
-        Fluttertoast.showToast(msg: "Location Permission is Required");
-        await Geolocator.openLocationSettings();
-      }
+      showDialog(
+        context: context,
+        builder:
+            (context) => AlertDialog(
+              insetPadding: const EdgeInsets.all(10),
+              title: const Text(
+                "To make a workout, we need your location permission!",
+              ),
+              content: const Text(
+                "Please allow location permission to continue. We will use location to track your activity and provide accurate data. We will use location only during the activity.",
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text("Cancel"),
+                ),
+                ElevatedButton(
+                  onPressed: () async {
+                    requestTime++;
+                    Navigator.pop(context);
+                    status = await Geolocator.requestPermission();
+                    if (status == LocationPermission.denied &&
+                        requestTime > 2) {
+                      Fluttertoast.showToast(
+                        msg: "Location Permission is Required",
+                      );
+                      await Geolocator.openLocationSettings();
+                    }
+                    if (status == LocationPermission.deniedForever) {
+                      Fluttertoast.showToast(
+                        msg: "Location Permission is Required",
+                      );
+                      await Geolocator.openLocationSettings();
+                    }
+                  },
+                  child: const Text("Allow"),
+                ),
+              ],
+            ),
+      );
+      return;
     }
-    if (status == LocationPermission.deniedForever) {
-      Fluttertoast.showToast(msg: "Location Permission is Required");
-      await Geolocator.openLocationSettings();
-    }
+    showLoadingPopUp(context, loadingText: "Getting your location...");
     status = await Geolocator.checkPermission();
     if (status == LocationPermission.whileInUse ||
         status == LocationPermission.always) {

@@ -65,11 +65,13 @@ class DioClient {
 
       // If refresh token is null, or if refreshing fails, logout
       await clearTokens();
-      Navigator.pushAndRemoveUntil(
-        App.navigatorKey.currentContext!,
-        MaterialPageRoute(builder: (context) => const LoginSignupPage()),
-        (route) => false,
-      );
+      final navigator = App.navigatorKey.currentState;
+      if (navigator != null) {
+        navigator.pushAndRemoveUntil(
+          MaterialPageRoute(builder: (_) => const LoginSignupPage()),
+          (route) => false,
+        );
+      }
     }
     return handler.next(error);
   }

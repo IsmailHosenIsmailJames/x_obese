@@ -306,10 +306,10 @@ class _PointsOverviewWidgetState extends State<PointsOverviewWidget> {
                   child: Column(
                     children: [
                       Text(
-                        "Data Read from ${Platform.isAndroid ? "Google Health Connect" : "Apple Health"} is not Granted. To Grant it, click the button below.",
+                        "Data Read from ${Platform.isAndroid ? "Google Health Connect" : "Apple Health"} is not Granted. To Grant it, click the button below. It may ask for location permission if not already granted.",
                         textAlign: TextAlign.center,
                         style: const TextStyle(
-                          fontSize: 16,
+                          fontSize: 14,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
