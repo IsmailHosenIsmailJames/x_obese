@@ -242,7 +242,7 @@ class _ActivityPageState extends State<ActivityPage> {
                 "To make a workout, we need your location permission!",
               ),
               content: const Text(
-                "Please allow location permission to continue. We will use location to track your activity and provide accurate data. We will use location only during the activity.",
+                "Please allow location permission to continue. We will use location to track your activity and provide accurate data. We will access location on background while running workout.",
               ),
               actions: [
                 TextButton(
