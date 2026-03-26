@@ -2,6 +2,8 @@ import "package:geolocator/geolocator.dart";
 
 import "dart:convert";
 
+import "activity_status.dart";
+
 class PositionNodes {
   final Position position;
   final double maxPossibleDistance;
@@ -57,5 +59,3 @@ class PositionNodes {
   factory PositionNodes.fromJson(String source) =>
       PositionNodes.fromMap(jsonDecode(source) as Map<String, dynamic>);
 }
-
-enum ActivityStatus { walking, stopped, unknown }

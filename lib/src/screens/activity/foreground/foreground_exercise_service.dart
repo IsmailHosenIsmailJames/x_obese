@@ -7,8 +7,9 @@ import "package:flutter/material.dart";
 import "package:flutter_foreground_task/flutter_foreground_task.dart";
 import "package:geolocator/geolocator.dart" hide ActivityType;
 import "package:pedometer/pedometer.dart";
-import "package:shared_preferences/shared_preferences.dart";
 import "package:x_obese/src/core/common/functions/format_sec_to_time.dart";
+import "package:x_obese/src/screens/activity/data/workout_repository.dart";
+import "package:x_obese/src/screens/activity/models/activity_status.dart";
 import "package:x_obese/src/screens/activity/models/position_nodes.dart";
 
 import "../models/activity_types.dart";
@@ -19,6 +20,8 @@ void startCallback() {
 }
 
 class ForegroundExerciseTask extends TaskHandler {
+  final WorkoutRepository _repository = WorkoutRepository();
+
   Stream<PedestrianStatus>? pedestrianStatusStream;
   Stream<StepCount>? stepCountStream;
   Stream<Position>? positionStream;
@@ -94,17 +97,10 @@ class ForegroundExerciseTask extends TaskHandler {
     DateTime now = DateTime.now();
     int totalTimeDifference =
         now.difference(lastPositionTimeStamp!).abs().inMilliseconds;
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    await sharedPreferences.reload();
 
-    String? activityTypeString =
-        sharedPreferences.getString("workout_type") ?? "walking";
-
-    ActivityType activity = ActivityType.values.firstWhere(
-      (element) => element.name == activityTypeString,
-    );
-
-    bool isPaused = sharedPreferences.getBool("isPaused") ?? false;
+    ActivityType activity =
+        await _repository.getWorkoutType() ?? ActivityType.walking;
+    bool isPaused = await _repository.getIsPaused();
 
     int activeTime = activeTimeMS;
     if (previousPedestrianStatus?.status == "walking") {
@@ -126,8 +122,6 @@ class ForegroundExerciseTask extends TaskHandler {
 
     double maxPossibleDistance = ((activeTime / 1000) / (60 * 60)) * maxSpeedMh;
 
-    // find the steps difference and max covered distance
-
     double maxStepDistanceCovered = 0;
     switch (activity) {
       case ActivityType.walking:
@@ -138,7 +132,6 @@ class ForegroundExerciseTask extends TaskHandler {
         maxStepDistanceCovered = totalStepCount * 1.5;
     }
 
-    // calculate distance provided by GPS
     double gpsDistance = 0;
     if (lastPosition == null) {
       gpsDistance = position.speed * ((totalTimeDifference / 1000) / (60 * 60));
@@ -154,13 +147,6 @@ class ForegroundExerciseTask extends TaskHandler {
       );
     }
 
-    // max possible distance by active time
-    maxPossibleDistance;
-    // max possible distance by steps
-    maxStepDistanceCovered;
-    // GPS distance covered
-    gpsDistance;
-
     double selectedDistance = 0;
     if (maxStepDistanceCovered > maxPossibleDistance) {
       maxPossibleDistance = maxPossibleDistance;
@@ -174,7 +160,6 @@ class ForegroundExerciseTask extends TaskHandler {
 
     int totalSteps = totalStepCount;
 
-    // clear & replace previous data
     activeTimeMS = 0;
     totalStepCount = 0;
 
@@ -183,10 +168,7 @@ class ForegroundExerciseTask extends TaskHandler {
 
     if (isPaused) return;
 
-    List<PositionNodes> positionNodes =
-        (sharedPreferences.getStringList("activityNodesList") ?? [])
-            .map((e) => PositionNodes.fromJson(e))
-            .toList();
+    List<PositionNodes> positionNodes = await _repository.getPositionNodes();
 
     if (previousPedestrianStatus?.status == "walking") {
       positionNodes.add(
@@ -201,18 +183,17 @@ class ForegroundExerciseTask extends TaskHandler {
           status: ActivityStatus.values.firstWhere(
             (element) =>
                 element.name == (previousPedestrianStatus?.status ?? "unknown"),
+            orElse: () => ActivityStatus.unknown,
           ),
         ),
       );
-      await sharedPreferences.setStringList(
-        "activityNodesList",
-        positionNodes.map((e) => e.toJson()).toList(),
-      );
+      await _repository.savePositionNodes(positionNodes);
     }
 
     FlutterForegroundTask.sendDataToMain(
       positionNodes.map((e) => e.toJson()).toList(),
     );
+
     double distance = positionNodes.map((e) => e.selectedDistance).sum();
     int durationInSec =
         (positionNodes.map((e) => e.durationMS).sum() / 1000).toInt();
@@ -222,34 +203,22 @@ class ForegroundExerciseTask extends TaskHandler {
                 ((positionNodes.last.durationMS / 1000) / (60 * 60)))
             : 0;
 
-    ActivityStatus lastActivityType =
-        positionNodes.isNotEmpty
-            ? positionNodes.last.status
-            : ActivityStatus.stopped;
-    lastActivityType =
-        lastActivityType == ActivityStatus.unknown
-            ? ActivityStatus.stopped
-            : lastActivityType;
     FlutterForegroundTask.updateService(
       notificationText:
           "Distance: ${distance >= 1000 ? (distance / 1000).toStringAsPrecision(2) : distance.toInt()} ${distance >= 1000 ? "KM" : "Meter"}, "
           "Duration: ${formatSeconds(durationInSec)}, "
           "Last Speed: ${calculatedSpeed > 0 ? calculatedSpeed.toStringAsPrecision(2) : "..."} KM/H",
     );
-    log(
-      "${previousPedestrianStatus?.status.substring(0, 1) ?? "E"}:${maxPossibleDistance.toStringAsPrecision(1)}:${maxStepDistanceCovered.toStringAsPrecision(1)}:${gpsDistance.toStringAsPrecision(1)}:S-$selectedDistance",
-      name: "Steps & GPS",
-    );
   }
 
   @override
   Future<void> onStart(DateTime timestamp, TaskStarter starter) async {
-    _handleGeolocationHistory();
+    await _handleGeolocationHistory();
   }
 
   @override
   Future<void> onRepeatEvent(DateTime timestamp) async {
-    _handleGeolocationHistory();
+    await _handleGeolocationHistory();
   }
 
   @override
@@ -270,11 +239,12 @@ class ForegroundExerciseTask extends TaskHandler {
   void onNotificationButtonPressed(String id) async {
     if (id == "dismiss_workout") {
       FlutterForegroundTask.sendDataToMain("dismiss_workout");
-      dismissWorkout();
+      await _repository.clearWorkoutData();
+      FlutterForegroundTask.stopService();
     }
     if (id == "pause_workout") {
       FlutterForegroundTask.sendDataToMain("pause_workout");
-      (await SharedPreferences.getInstance()).setBool("isPaused", true);
+      await _repository.saveIsPaused(true);
       FlutterForegroundTask.updateService(
         notificationTitle: "Your Workout is Paused!",
         notificationButtons: [
@@ -293,9 +263,9 @@ class ForegroundExerciseTask extends TaskHandler {
     }
     if (id == "resume_workout") {
       FlutterForegroundTask.sendDataToMain("resume_workout");
-      (await SharedPreferences.getInstance()).setBool("isPaused", false);
+      await _repository.saveIsPaused(false);
       FlutterForegroundTask.updateService(
-        notificationTitle: "Your Workout is Paused!",
+        notificationTitle: "Your Workout is running",
         notificationButtons: [
           const NotificationButton(
             id: "dismiss_workout",
@@ -303,38 +273,25 @@ class ForegroundExerciseTask extends TaskHandler {
             textColor: Colors.red,
           ),
           const NotificationButton(
-            id: "resume_workout",
+            id: "pause_workout",
             text: "Pause Workout",
             textColor: Colors.red,
           ),
         ],
       );
     }
-    if (kDebugMode) {
-      print("onNotificationButtonPressed: $id");
-    }
   }
 
   @override
   void onNotificationPressed() {
     FlutterForegroundTask.launchApp("/workout");
-    if (kDebugMode) {
-      print("onNotificationPressed");
-    }
   }
 
   @override
-  void onNotificationDismissed() {
-    if (kDebugMode) {
-      print("onNotificationDismissed");
-    }
-  }
+  void onNotificationDismissed() {}
 }
 
-Future dismissWorkout() async {
-  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-  await sharedPreferences.remove("activityNodesList");
-  await sharedPreferences.remove("workout_type");
-  await sharedPreferences.remove("isPaused");
+Future<void> dismissWorkout() async {
+  await WorkoutRepository().clearWorkoutData();
   FlutterForegroundTask.stopService();
 }
