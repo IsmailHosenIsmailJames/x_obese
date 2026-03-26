@@ -1,5 +1,6 @@
 import "package:cached_network_image/cached_network_image.dart";
 import "package:flutter/material.dart";
+import "package:go_router/go_router.dart";
 import "package:x_obese/src/screens/marathon/models/marathon_user_model.dart";
 import "package:x_obese/src/theme/colors.dart";
 
@@ -57,7 +58,7 @@ class _ShowSearchResultState extends State<ShowSearchResult> {
                                     backgroundColor: MyAppColors.mutedGray,
                                   ),
                                   onPressed: () {
-                                    Navigator.pop(context);
+                                    context.pop();
                                   },
                                   icon: const Icon(Icons.close),
                                 ),

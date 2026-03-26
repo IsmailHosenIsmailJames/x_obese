@@ -4,7 +4,7 @@ import "dart:developer";
 import "package:dio/dio.dart";
 import "package:flutter/material.dart";
 import "package:shared_preferences/shared_preferences.dart";
-import "package:x_obese/app.dart";
+import "package:x_obese/src/core/router/app_router.dart";
 import "package:x_obese/src/screens/auth/login/login_signup_page.dart";
 
 class DioClient {
@@ -65,7 +65,7 @@ class DioClient {
 
       // If refresh token is null, or if refreshing fails, logout
       await clearTokens();
-      final navigator = App.navigatorKey.currentState;
+      final navigator = AppRouter.rootNavigatorKey.currentState;
       if (navigator != null) {
         navigator.pushAndRemoveUntil(
           MaterialPageRoute(builder: (_) => const LoginSignupPage()),
@@ -114,11 +114,13 @@ class DioClient {
         }
       } else if (response.statusCode == 403) {
         await clearTokens();
-        Navigator.pushAndRemoveUntil(
-          App.navigatorKey.currentContext!,
-          MaterialPageRoute(builder: (context) => const LoginSignupPage()),
-          (route) => false,
-        );
+        final navigator = AppRouter.rootNavigatorKey.currentState;
+        if (navigator != null) {
+          navigator.pushAndRemoveUntil(
+            MaterialPageRoute(builder: (context) => const LoginSignupPage()),
+            (route) => false,
+          );
+        }
       }
     } catch (e) {
       log("Error during token refresh: $e");

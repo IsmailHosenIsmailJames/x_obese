@@ -5,6 +5,7 @@ import "package:flutter/material.dart";
 import "package:flutter_svg/flutter_svg.dart";
 import "package:gap/gap.dart";
 import "package:get/get.dart";
+import "package:go_router/go_router.dart";
 import "package:x_obese/src/apis/apis_url.dart";
 import "package:x_obese/src/apis/middleware/jwt_middleware.dart";
 import "package:x_obese/src/screens/info_collector/controller/all_info_controller.dart";
@@ -65,7 +66,7 @@ class _LeaderBoardViewState extends State<LeaderBoardView> {
                   getAppBar(
                     backButton: getBackButton(
                       context,
-                          () => Navigator.pop(context),
+                          () => context.pop(),
                     ),
                     title: "Leaderboard",
                     showLogo: true,

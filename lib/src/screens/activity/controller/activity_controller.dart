@@ -54,7 +54,7 @@ class ActivityController extends GetxController {
     super.onInit();
     FlutterForegroundTask.addTaskDataCallback(_onReceiveTaskData);
     _initForegroundTask();
-    _loadPersistedState();
+    loadPersistedState();
   }
 
   @override
@@ -86,7 +86,7 @@ class ActivityController extends GetxController {
     );
   }
 
-  Future<void> _loadPersistedState() async {
+  Future<void> loadPersistedState() async {
     isPaused.value = await _repository.getIsPaused();
     workoutType.value = await _repository.getWorkoutType();
     positionNodes.assignAll(await _repository.getPositionNodes());
@@ -161,8 +161,13 @@ class ActivityController extends GetxController {
   Future<void> togglePause() async {
     isPaused.value = !isPaused.value;
     await _repository.saveIsPaused(isPaused.value);
-    // Note: The background service polls SharedPreferences for isPaused status
-    // or we can send data to it if needed.
+    
+    // Sync with background service
+    if (isPaused.value) {
+      FlutterForegroundTask.sendDataToTask("pause_workout");
+    } else {
+      FlutterForegroundTask.sendDataToTask("resume_workout");
+    }
   }
 
   Future<void> stopWorkout({bool shouldPop = false}) async {

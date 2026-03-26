@@ -8,15 +8,14 @@ import "package:flutter_svg/flutter_svg.dart";
 import "package:fluttertoast/fluttertoast.dart";
 import "package:gap/gap.dart";
 import "package:get/get.dart";
+import "package:go_router/go_router.dart";
 import "package:gpt_markdown/gpt_markdown.dart";
 import "package:intl/intl.dart";
 import "package:url_launcher/url_launcher.dart";
 import "package:x_obese/src/apis/apis_url.dart";
 import "package:x_obese/src/apis/middleware/jwt_middleware.dart";
-import "package:x_obese/src/screens/activity/workout_page.dart";
 import "package:x_obese/src/screens/info_collector/controller/all_info_controller.dart";
 import "package:x_obese/src/screens/marathon/details_marathon/model/full_marathon_data_model.dart";
-import "package:x_obese/src/screens/marathon/leader_board/leader_board_view.dart";
 import "package:x_obese/src/screens/marathon/models/marathon_model.dart";
 import "package:x_obese/src/screens/marathon/models/marathon_user_model.dart";
 import "package:x_obese/src/theme/colors.dart";
@@ -95,7 +94,7 @@ class _MarathonDetailsViewState extends State<MarathonDetailsView> {
                   child: Padding(
                     padding: const EdgeInsets.all(15.0),
                     child: getBackButton(context, () {
-                      Navigator.pop(context);
+                      context.pop();
                     }, size: const Size(40, 40)),
                   ),
                 ),
@@ -410,15 +409,12 @@ class _MarathonDetailsViewState extends State<MarathonDetailsView> {
                                   response.data["data"],
                                 );
 
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder:
-                                    (context) => ActivityPage(
-                                      marathonData: fullMarathonDataModel,
-                                      marathonUserModel: marathonUserModel,
-                                    ),
-                              ),
+                            context.push(
+                              "/activity",
+                              extra: {
+                                "marathonData": fullMarathonDataModel,
+                                "marathonUserModel": marathonUserModel,
+                              },
                             );
                           } on DioException catch (e) {
                             if (e.response != null) {
@@ -466,20 +462,14 @@ class _MarathonDetailsViewState extends State<MarathonDetailsView> {
                                   ),
                                 );
                               }
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder:
-                                      (context) => LeaderBoardView(
-                                        title:
-                                            fullMarathonDataModel
-                                                ?.data
-                                                ?.title ??
-                                            "",
-                                        leaderboardUsers: marathonUserList,
-                                        marathonData: fullMarathonDataModel!,
-                                      ),
-                                ),
+                              context.push(
+                                "/leaderboard",
+                                extra: {
+                                  "title":
+                                      fullMarathonDataModel?.data?.title ?? "",
+                                  "leaderboardUsers": marathonUserList,
+                                  "marathonData": fullMarathonDataModel!,
+                                },
                               );
                             } else {
                               Fluttertoast.showToast(

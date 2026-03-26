@@ -3,13 +3,12 @@ import "package:flutter_bloc/flutter_bloc.dart";
 import "package:flutter_svg/svg.dart";
 import "package:fluttertoast/fluttertoast.dart";
 import "package:gap/gap.dart";
+import "package:go_router/go_router.dart";
 import "package:x_obese/src/common_functions/common_functions.dart";
 import "package:x_obese/src/screens/auth/bloc/auth_bloc.dart";
 import "package:x_obese/src/screens/auth/bloc/auth_event.dart";
 import "package:x_obese/src/screens/auth/bloc/auth_state.dart";
-import "package:x_obese/src/screens/auth/login/otp_page.dart";
 import "package:x_obese/src/screens/info_collector/model/user_info_model.dart";
-import "package:x_obese/src/screens/navs/naves_page.dart";
 import "package:x_obese/src/theme/colors.dart";
 
 class LoginSignupPage extends StatefulWidget {
@@ -31,16 +30,13 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthCodeSentSuccess) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder:
-                    (context) => OtpPage(
-                      isSignup: pageName == AuthPageName.signup,
-                      phone: phoneController.text.trim(),
-                      response: state.response,
-                    ),
-              ),
+            context.push(
+              "/otp",
+              extra: {
+                "isSignup": pageName == AuthPageName.signup,
+                "phone": phoneController.text.trim(),
+                "response": state.response,
+              },
             );
           } else if (state is AuthFailure) {
             Fluttertoast.showToast(msg: state.error);
@@ -316,12 +312,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                       child: BlocListener<AuthBloc, AuthState>(
                         listener: (context, state) {
                           if (state is AuthNavigateToHome) {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const NavesPage(),
-                              ),
-                            );
+                            context.go("/home");
                           }
                         },
                         child: TextButton.icon(

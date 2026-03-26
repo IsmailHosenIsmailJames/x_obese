@@ -3,6 +3,7 @@ import "dart:developer";
 import "package:flutter/material.dart";
 import "package:gap/gap.dart";
 import "package:get/get.dart";
+import "package:go_router/go_router.dart";
 import "package:intl/intl.dart";
 import "package:x_obese/src/screens/info_collector/controller/all_info_controller.dart";
 import "package:x_obese/src/screens/info_collector/model/user_info_model.dart";
@@ -51,7 +52,7 @@ class _CreateWorkoutPlanPage3State extends State<CreateWorkoutPlanPage3> {
             children: [
               getAppBar(
                 backButton: getBackButton(context, () {
-                  Navigator.pop(context);
+                  context.pop();
                 }),
                 title: "Plan Overview",
                 showLogo: true,
@@ -129,7 +130,7 @@ class _CreateWorkoutPlanPage3State extends State<CreateWorkoutPlanPage3> {
                 height: 50,
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.pop(context);
+                    context.pop();
                   },
                   child: const Text("Done"),
                 ),

@@ -1,11 +1,12 @@
 import "dart:developer";
-
+ 
 import "package:flutter/material.dart";
+
 import "package:flutter_svg/svg.dart";
 import "package:get/get.dart";
+import "package:go_router/go_router.dart";
 import "package:hive_flutter/hive_flutter.dart";
 import "package:x_obese/src/resources/svg_string.dart";
-import "package:x_obese/src/screens/activity/live_activity_page.dart";
 import "package:x_obese/src/screens/activity/workout_page.dart";
 import "package:x_obese/src/screens/home/home_page.dart";
 import "package:x_obese/src/screens/info_collector/controller/all_info_controller.dart";
@@ -57,15 +58,12 @@ class _NavesPageState extends State<NavesPage> {
             widget.positionNodes!.isNotEmpty &&
             widget.isPaused != null) {
           log("message999");
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder:
-                  (context) => LiveActivityPage(
-                    workoutType: widget.activityType!,
-                    initialLatLon: widget.positionNodes!.last.position,
-                  ),
-            ),
+          context.push(
+            "/live-activity",
+            extra: {
+              "workoutType": widget.activityType!,
+              "initialLatLon": widget.positionNodes!.last.position,
+            },
           );
         } else {}
       } else {

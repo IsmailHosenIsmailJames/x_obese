@@ -1,6 +1,6 @@
 import "package:flutter/material.dart";
+import "package:go_router/go_router.dart";
 import "package:x_obese/src/data/user_db.dart";
-import "package:x_obese/src/screens/auth/login/login_signup_page.dart";
 import "package:x_obese/src/theme/colors.dart";
 
 Future<void> showSignupPopup(BuildContext context) async {
@@ -37,7 +37,7 @@ Future<void> showSignupPopup(BuildContext context) async {
           actions: [
             TextButton.icon(
               style: TextButton.styleFrom(foregroundColor: Colors.redAccent),
-              onPressed: () => Navigator.pop(context),
+              onPressed: () => context.pop(),
               icon: const Icon(Icons.close_rounded),
               label: const Text("Cancel"),
             ),
@@ -45,13 +45,9 @@ Future<void> showSignupPopup(BuildContext context) async {
               style: TextButton.styleFrom(foregroundColor: Colors.green),
               onPressed: () async {
                 await UserDB.deleteUserData();
-                Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const LoginSignupPage(),
-                  ),
-                  (route) => false,
-                );
+                if (context.mounted) {
+                  context.go("/login");
+                }
               },
               iconAlignment: IconAlignment.end,
               icon: const Icon(Icons.arrow_forward_rounded),

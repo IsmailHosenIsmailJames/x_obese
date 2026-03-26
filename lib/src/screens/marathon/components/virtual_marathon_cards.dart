@@ -2,8 +2,8 @@ import "package:cached_network_image/cached_network_image.dart";
 import "package:flutter/material.dart";
 import "package:flutter_svg/svg.dart";
 import "package:gap/gap.dart";
+import "package:go_router/go_router.dart";
 import "package:x_obese/src/resources/svg_string.dart";
-import "package:x_obese/src/screens/marathon/details_marathon/marathon_details_view.dart";
 import "package:x_obese/src/screens/marathon/models/marathon_model.dart";
 import "package:x_obese/src/theme/colors.dart";
 
@@ -97,15 +97,12 @@ Widget getMarathonCard({
                     iconAlignment: IconAlignment.end,
                   ),
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder:
-                            (context) => MarathonDetailsView(
-                              isVirtual: marathonData.type == "virtual",
-                              marathonData: marathonData,
-                            ),
-                      ),
+                    context.push(
+                      "/marathon-details",
+                      extra: {
+                        "isVirtual": marathonData.type == "virtual",
+                        "marathonData": marathonData,
+                      },
                     );
                   },
                   label: Text(

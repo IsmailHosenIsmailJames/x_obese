@@ -57,6 +57,7 @@ dependencies:
   gpt_markdown: ^1.1.4
   url_launcher: ^6.3.2
   dartx: ^1.2.0
+  go_router: ^17.1.0
 
 dev_dependencies:
   flutter_test:

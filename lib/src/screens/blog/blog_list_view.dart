@@ -6,10 +6,10 @@ import "package:flutter/material.dart";
 import "package:gap/gap.dart";
 import "package:get/get.dart";
 import "package:gpt_markdown/gpt_markdown.dart";
+import "package:go_router/go_router.dart";
 import "package:shimmer/shimmer.dart";
 import "package:x_obese/src/apis/apis_url.dart";
 import "package:x_obese/src/apis/middleware/jwt_middleware.dart";
-import "package:x_obese/src/screens/blog/blog_details_view.dart";
 import "package:x_obese/src/screens/blog/model/get_blog_model.dart";
 import "package:x_obese/src/screens/info_collector/controller/all_info_controller.dart";
 import "package:x_obese/src/theme/colors.dart";
@@ -155,7 +155,7 @@ class _BlogListViewState extends State<BlogListView>
               children: [
                 const Gap(15),
                 getBackButton(context, () {
-                  Navigator.pop(context);
+                  context.pop();
                 }, size: const Size(40, 40)),
                 const Gap(55),
                 const Text(
@@ -185,13 +185,9 @@ class _BlogListViewState extends State<BlogListView>
                     children: [
                       InkWell(
                         onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder:
-                                  (context) =>
-                                      BlogDetailsView(blogData: blogs[index]),
-                            ),
+                          context.push(
+                            "/blog-details",
+                            extra: blogs[index],
                           );
                         },
                         child: Padding(

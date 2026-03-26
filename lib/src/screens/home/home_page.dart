@@ -8,6 +8,7 @@ import "package:flutter_bloc/flutter_bloc.dart";
 import "package:flutter_svg/svg.dart";
 import "package:gap/gap.dart";
 import "package:get/get.dart";
+import "package:go_router/go_router.dart";
 import "package:hive_flutter/adapters.dart";
 import "package:intl/intl.dart";
 import "package:shimmer/shimmer.dart";
@@ -15,16 +16,12 @@ import "package:x_obese/src/apis/apis_url.dart";
 import "package:x_obese/src/apis/middleware/jwt_middleware.dart";
 import "package:x_obese/src/resources/svg_string.dart";
 import "package:x_obese/src/screens/auth/bloc/auth_bloc.dart";
-import "package:x_obese/src/screens/blog/blog_list_view.dart";
 import "package:x_obese/src/screens/blog/model/get_blog_model.dart";
-import "package:x_obese/src/screens/create_workout_plan/create_workout_plan.dart";
 import "package:x_obese/src/screens/create_workout_plan/model/get_workout_plans.dart";
 import "package:x_obese/src/screens/info_collector/controller/all_info_controller.dart";
 import "package:x_obese/src/screens/info_collector/model/user_info_model.dart";
 import "package:x_obese/src/screens/marathon/components/virtual_marathon_cards.dart";
 import "package:x_obese/src/screens/marathon/models/marathon_model.dart";
-import "package:x_obese/src/screens/navs/naves_page.dart";
-import "package:x_obese/src/screens/workout_plan_overview/workout_plan_overview_screen.dart";
 import "package:x_obese/src/theme/colors.dart";
 import "package:x_obese/src/widgets/banners/banners.dart";
 import "package:x_obese/src/widgets/get_blog_card.dart";
@@ -241,13 +238,7 @@ class _HomePageState extends State<HomePage>
       backgroundColor: MyAppColors.primary,
       body: RefreshIndicator(
         onRefresh: () async {
-          Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(builder: (context) => const NavesPage()),
-            (route) {
-              return false;
-            },
-          );
+          context.go("/home");
         },
         child: SingleChildScrollView(
           child: Column(
@@ -395,14 +386,7 @@ class _HomePageState extends State<HomePage>
                                   showSignupPopup(context);
                                   return;
                                 } else {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder:
-                                          (context) =>
-                                              const CreateWorkoutPlan(),
-                                    ),
-                                  );
+                                  context.push("/create-workout");
                                 }
                               },
                               child: const Text("Create"),
@@ -415,17 +399,9 @@ class _HomePageState extends State<HomePage>
                 } else {
                   return GestureDetector(
                     onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder:
-                              (context) => WorkoutPlanOverviewScreen(
-                                getWorkoutPlansList:
-                                    allInfoController
-                                        .getWorkoutPlansList
-                                        .value!,
-                              ),
-                        ),
+                      context.push(
+                        "/workout-overview",
+                        extra: allInfoController.getWorkoutPlansList.value!,
                       );
                     },
                     child: Padding(
@@ -698,13 +674,7 @@ class _HomePageState extends State<HomePage>
                             allInfoController.getBlogList.value?.isEmpty ?? true
                                 ? null
                                 : () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder:
-                                          (context) => const BlogListView(),
-                                    ),
-                                  );
+                                  context.push("/blogs");
                                 },
                         child: Text(
                           "See All",

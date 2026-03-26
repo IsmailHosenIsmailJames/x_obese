@@ -13,9 +13,9 @@ class Banners extends StatefulWidget {
   State<Banners> createState() => _BannersState();
 }
 
-List<BannerModel> bannersModelList = [];
-
 class _BannersState extends State<Banners> {
+  List<BannerModel> bannersModelList = [];
+
   @override
   void initState() {
     initCall();
@@ -32,6 +32,7 @@ class _BannersState extends State<Banners> {
               .toList();
     }
 
+    if (!mounted) return;
     setState(() {});
 
     final response = await DioClient(baseAPI).dio.get(banners);
@@ -47,6 +48,7 @@ class _BannersState extends State<Banners> {
       "user",
     ).put("banners", bannersModelList.map((e) => e.toMap()).toList());
 
+    if (!mounted) return;
     setState(() {});
   }
 

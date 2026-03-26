@@ -233,6 +233,39 @@ class ForegroundExerciseTask extends TaskHandler {
     if (kDebugMode) {
       print("onReceiveData: $data");
     }
+    if (data == "pause_workout") {
+      FlutterForegroundTask.updateService(
+        notificationTitle: "Your Workout is Paused!",
+        notificationButtons: [
+          const NotificationButton(
+            id: "dismiss_workout",
+            text: "Dismiss Workout",
+            textColor: Colors.red,
+          ),
+          const NotificationButton(
+            id: "resume_workout",
+            text: "Resume Workout",
+            textColor: Colors.green,
+          ),
+        ],
+      );
+    } else if (data == "resume_workout") {
+      FlutterForegroundTask.updateService(
+        notificationTitle: "Your Workout is running",
+        notificationButtons: [
+          const NotificationButton(
+            id: "dismiss_workout",
+            text: "Dismiss Workout",
+            textColor: Colors.red,
+          ),
+          const NotificationButton(
+            id: "pause_workout",
+            text: "Pause Workout",
+            textColor: Colors.red,
+          ),
+        ],
+      );
+    }
   }
 
   @override
@@ -284,7 +317,7 @@ class ForegroundExerciseTask extends TaskHandler {
 
   @override
   void onNotificationPressed() {
-    FlutterForegroundTask.launchApp("/workout");
+    FlutterForegroundTask.launchApp("/live-activity-resume");
   }
 
   @override

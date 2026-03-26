@@ -1,10 +1,9 @@
 import "package:cached_network_image/cached_network_image.dart";
 import "package:flutter/material.dart";
 import "package:gap/gap.dart";
+import "package:go_router/go_router.dart";
 import "package:x_obese/src/screens/marathon/models/marathon_model.dart";
 import "package:x_obese/src/theme/colors.dart";
-
-import "../details_marathon/marathon_details_view.dart";
 
 Widget getOnsiteMarathon({
   required BuildContext context,
@@ -98,15 +97,12 @@ Widget getOnsiteMarathon({
                     iconAlignment: IconAlignment.end,
                   ),
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder:
-                            (context) => MarathonDetailsView(
-                              isVirtual: marathonData.type == "virtual",
-                              marathonData: marathonData,
-                            ),
-                      ),
+                    context.push(
+                      "/marathon-details",
+                      extra: {
+                        "isVirtual": marathonData.type == "virtual",
+                        "marathonData": marathonData,
+                      },
                     );
                   },
                   label: const Text("Physical  Challenge"),

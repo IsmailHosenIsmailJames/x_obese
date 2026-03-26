@@ -4,6 +4,7 @@ import "package:flutter/material.dart";
 import "package:flutter_svg/svg.dart";
 import "package:gap/gap.dart";
 import "package:get/get.dart";
+import "package:go_router/go_router.dart";
 import "package:x_obese/src/screens/info_collector/controller/all_info_controller.dart";
 import "package:x_obese/src/screens/create_workout_plan/controller/create_workout_plan_controller.dart";
 import "package:x_obese/src/theme/colors.dart";
@@ -67,7 +68,7 @@ class _CreateWorkoutPlanPage1State extends State<CreateWorkoutPlanPage1> {
             children: [
               getAppBar(
                 backButton: getBackButton(context, () {
-                  Navigator.pop(context);
+                  context.pop();
                 }),
                 title: "Workout Goal",
                 showLogo: true,

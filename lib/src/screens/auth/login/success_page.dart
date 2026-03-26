@@ -1,6 +1,6 @@
 import "package:flutter/material.dart";
 import "package:flutter_svg/svg.dart";
-import "package:x_obese/src/screens/navs/naves_page.dart";
+import "package:go_router/go_router.dart";
 import "package:x_obese/src/theme/colors.dart";
 
 class LoginSuccessPage extends StatefulWidget {
@@ -20,11 +20,7 @@ class _LoginSuccessPageState extends State<LoginSuccessPage> {
   Future<void> _autoRoute() async {
     await Future.delayed(const Duration(seconds: 2));
     if (mounted) {
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (context) => const NavesPage()),
-        (route) => false,
-      );
+      context.go("/home");
     }
   }
 

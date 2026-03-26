@@ -1,10 +1,10 @@
 import "package:flutter/material.dart";
 import "package:gap/gap.dart";
 import "package:get/get.dart";
+import "package:go_router/go_router.dart";
 import "package:intl/intl.dart";
 import "package:table_calendar/table_calendar.dart";
 import "package:x_obese/src/screens/info_collector/controller/all_info_controller.dart";
-import "package:x_obese/src/screens/create_workout_plan/create_workout_plan.dart";
 import "package:x_obese/src/screens/create_workout_plan/model/create_workout_plan_model.dart";
 import "package:x_obese/src/screens/create_workout_plan/model/get_workout_plans.dart";
 import "package:x_obese/src/screens/create_workout_plan/pages/page_3.dart";
@@ -40,7 +40,7 @@ class _WorkoutPlanOverviewScreenState extends State<WorkoutPlanOverviewScreen> {
               child: getAppBar(
                 backButton: getBackButton(
                   context,
-                  () => Navigator.pop(context),
+                  () => context.pop(),
                 ),
                 title: "Plan Overview",
                 showLogo: true,
@@ -185,14 +185,7 @@ class _WorkoutPlanOverviewScreenState extends State<WorkoutPlanOverviewScreen> {
                               backgroundColor: MyAppColors.transparentGray,
                             ),
                             onPressed: () {
-                              Navigator.pushAndRemoveUntil(
-                                context,
-                                MaterialPageRoute(
-                                  builder:
-                                      (context) => const CreateWorkoutPlan(),
-                                ),
-                                (route) => false,
-                              );
+                              context.go("/create-workout");
                             },
                             child: Text(
                               "Create Plan",
@@ -238,16 +231,13 @@ class _WorkoutPlanOverviewScreenState extends State<WorkoutPlanOverviewScreen> {
                                             .toString(),
                                   );
 
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                  builder:
-                                      (context) => CreateWorkoutPlan(
-                                        createWorkoutPlanModel:
-                                            createWorkoutPlanModel,
-                                        id: getWorkoutPlans.id,
-                                      ),
-                                ),
+                              context.pushReplacement(
+                                "/create-workout",
+                                extra: {
+                                  "createWorkoutPlanModel":
+                                      createWorkoutPlanModel,
+                                  "id": getWorkoutPlans.id,
+                                },
                               );
                             },
                             child: const Text(

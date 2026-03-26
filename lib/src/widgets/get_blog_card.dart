@@ -1,19 +1,14 @@
 import "package:cached_network_image/cached_network_image.dart";
 import "package:flutter/material.dart";
 import "package:gap/gap.dart";
-import "package:x_obese/src/screens/blog/blog_details_view.dart";
+import "package:go_router/go_router.dart";
 import "package:x_obese/src/screens/blog/model/get_blog_model.dart";
 import "package:x_obese/src/theme/colors.dart";
 
 Widget getBlogCard(BuildContext context, GetBlogModel blogData) {
   return GestureDetector(
     onTap: () {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => BlogDetailsView(blogData: blogData),
-        ),
-      );
+      context.push("/blog-details", extra: blogData);
     },
     child: Container(
       width: 165,

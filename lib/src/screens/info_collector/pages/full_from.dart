@@ -8,6 +8,7 @@ import "package:flutter_svg/flutter_svg.dart";
 import "package:fluttertoast/fluttertoast.dart";
 import "package:gap/gap.dart";
 import "package:get/get.dart";
+import "package:go_router/go_router.dart";
 
 import "package:image_picker/image_picker.dart";
 import "package:intl/intl.dart";
@@ -72,7 +73,7 @@ class _FullFromInfoCollectorState extends State<FullFromInfoCollector> {
         await controller.updateUserInfo(dio.FormData.fromMap(userData));
       }
       if (Navigator.canPop(context)) {
-        Navigator.pop(context);
+                    context.pop();
       }
     } on dio.DioException catch (e) {
       log(e.message ?? "");
@@ -82,7 +83,7 @@ class _FullFromInfoCollectorState extends State<FullFromInfoCollector> {
       }
     }
     if (success) {
-      Navigator.pushNamedAndRemoveUntil(context, "/home", (route) => true);
+      context.go("/home");
       Fluttertoast.showToast(msg: "Account information saved successful");
     } else {
       Fluttertoast.showToast(msg: "Failed to save account information");

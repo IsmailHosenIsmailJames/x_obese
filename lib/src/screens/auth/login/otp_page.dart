@@ -4,13 +4,12 @@ import "package:flutter_bloc/flutter_bloc.dart";
 import "package:flutter_svg/svg.dart";
 import "package:fluttertoast/fluttertoast.dart";
 import "package:gap/gap.dart";
+import "package:go_router/go_router.dart";
 import "package:pinput/pinput.dart";
 import "package:x_obese/src/common_functions/common_functions.dart";
 import "package:x_obese/src/screens/auth/bloc/auth_bloc.dart";
 import "package:x_obese/src/screens/auth/bloc/auth_event.dart";
 import "package:x_obese/src/screens/auth/bloc/auth_state.dart";
-import "package:x_obese/src/screens/auth/login/success_page.dart";
-import "package:x_obese/src/screens/info_collector/info_collector.dart";
 import "package:x_obese/src/theme/colors.dart";
 
 class OtpPage extends StatefulWidget {
@@ -57,20 +56,9 @@ class _OtpPageState extends State<OtpPage> {
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthNavigateToHome) {
-            Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(builder: (context) => const LoginSuccessPage()),
-              (route) => false,
-            );
+            context.go("/success");
           } else if (state is AuthNavigateToInfoCollector) {
-            Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(
-                builder:
-                    (context) => InfoCollector(initialData: state.userData),
-              ),
-              (route) => false,
-            );
+            context.go("/infoCollector", extra: state.userData);
           } else if (state is AuthFailure) {
             Fluttertoast.showToast(msg: state.error);
           }
@@ -90,7 +78,7 @@ class _OtpPageState extends State<OtpPage> {
                       width: 50,
                       child: IconButton(
                         onPressed: () {
-                          Navigator.pop(context);
+                          context.pop();
                         },
                         icon: SvgPicture.string(
                           '''<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">

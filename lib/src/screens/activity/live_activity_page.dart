@@ -50,8 +50,8 @@ class _LiveActivityPageState extends State<LiveActivityPage> {
   final Completer<GoogleMapController> googleMapController =
       Completer<GoogleMapController>();
 
-  final ActivityController activityController = Get.find<ActivityController>();
-  final AllInfoController allInfoController = Get.find();
+  final ActivityController activityController = Get.put(ActivityController());
+  final AllInfoController allInfoController = Get.put(AllInfoController());
   final LockController lockController = Get.put(LockController());
 
   @override

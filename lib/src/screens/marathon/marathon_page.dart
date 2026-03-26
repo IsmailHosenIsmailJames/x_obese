@@ -5,6 +5,7 @@ import "package:flutter/material.dart";
 import "package:flutter_svg/flutter_svg.dart";
 import "package:gap/gap.dart";
 import "package:get/get.dart";
+import "package:go_router/go_router.dart";
 import "package:shimmer/shimmer.dart";
 import "package:toastification/toastification.dart";
 import "package:x_obese/src/apis/apis_url.dart";
@@ -13,7 +14,6 @@ import "package:x_obese/src/screens/info_collector/controller/all_info_controlle
 import "package:x_obese/src/screens/marathon/components/onsite_marathon_card.dart";
 import "package:x_obese/src/screens/marathon/models/marathon_model.dart";
 import "package:x_obese/src/screens/marathon/models/marathon_user_model.dart";
-import "package:x_obese/src/screens/marathon/show_search_result/show_search_result.dart";
 import "package:x_obese/src/theme/colors.dart";
 import "package:x_obese/src/widgets/back_button.dart";
 import "package:x_obese/src/screens/marathon/components/virtual_marathon_cards.dart";
@@ -414,24 +414,19 @@ class _MarathonPageState extends State<MarathonPage>
                         final response = await dioClient.dio.get(
                           "/api/marathon/v1/user?search=$searchText",
                         );
-                        Navigator.pop(context);
+                        GoRouter.of(context).pop();
                         printResponse(response);
                         List searchResult = response.data["data"];
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder:
-                                (context) => ShowSearchResult(
-                                  marathonUserList:
-                                      searchResult
-                                          .map(
-                                            (e) => MarathonUserModel.fromMap(
-                                              Map<String, dynamic>.from(e),
-                                            ),
-                                          )
-                                          .toList(),
-                                ),
-                          ),
+                        GoRouter.of(context).push(
+                          "/search-result",
+                          extra:
+                              searchResult
+                                  .map(
+                                    (e) => MarathonUserModel.fromMap(
+                                      Map<String, dynamic>.from(e),
+                                    ),
+                                  )
+                                  .toList(),
                         );
                       } on DioException catch (e) {
                         toastification.show(

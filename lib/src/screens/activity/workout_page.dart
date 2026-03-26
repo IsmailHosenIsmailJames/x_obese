@@ -6,13 +6,13 @@ import "package:fluttertoast/fluttertoast.dart";
 import "package:gap/gap.dart";
 import "package:geolocator/geolocator.dart" hide ActivityType;
 import "package:get/get.dart";
-import "package:x_obese/src/screens/activity/live_activity_page.dart";
 import "package:x_obese/src/screens/marathon/details_marathon/model/full_marathon_data_model.dart";
 import "package:x_obese/src/screens/marathon/models/marathon_user_model.dart";
 import "package:x_obese/src/theme/colors.dart";
 import "package:x_obese/src/widgets/app_bar.dart";
 import "package:x_obese/src/widgets/back_button.dart";
 import "package:x_obese/src/widgets/loading_popup.dart";
+import "package:go_router/go_router.dart";
 
 import "models/activity_types.dart";
 
@@ -72,7 +72,7 @@ class _ActivityPageState extends State<ActivityPage> {
                       curve: Curves.easeIn,
                     );
                   } else {
-                    Navigator.pop(context);
+                    context.pop();
                   }
                 }),
                 title: "Workout",
@@ -247,14 +247,14 @@ class _ActivityPageState extends State<ActivityPage> {
               actions: [
                 TextButton(
                   onPressed: () {
-                    Navigator.pop(context);
+                    context.pop();
                   },
                   child: const Text("Cancel"),
                 ),
                 ElevatedButton(
                   onPressed: () async {
                     requestTime++;
-                    Navigator.pop(context);
+                    context.pop();
                     status = await Geolocator.requestPermission();
                     if (status == LocationPermission.denied &&
                         requestTime > 2) {
@@ -301,7 +301,7 @@ class _ActivityPageState extends State<ActivityPage> {
                       backgroundColor: MyAppColors.third,
                     ),
                     onPressed: () {
-                      Navigator.pop(context);
+                      context.pop();
                       getLocationAndStartActivity();
                     },
                     label: const Text(
@@ -315,17 +315,14 @@ class _ActivityPageState extends State<ActivityPage> {
         return;
       }
       Navigator.pop(context);
-      await Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder:
-              (context) => LiveActivityPage(
-                workoutType: selectedMode,
-                initialLatLon: position,
-                marathonData: widget.marathonData,
-                marathonUserModel: widget.marathonUserModel,
-              ),
-        ),
+      context.push(
+        "/live-activity",
+        extra: {
+          "workoutType": selectedMode,
+          "initialLatLon": position,
+          "marathonData": widget.marathonData,
+          "marathonUserModel": widget.marathonUserModel,
+        },
       );
 
       requestTime = 0;
