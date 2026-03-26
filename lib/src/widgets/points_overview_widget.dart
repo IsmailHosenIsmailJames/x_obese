@@ -56,6 +56,7 @@ class _PointsOverviewWidgetState extends State<PointsOverviewWidget> {
 
     initCallFinished = true;
     try {
+      if (!mounted) return;
       setState(() {});
     } on Exception catch (_) {}
   }

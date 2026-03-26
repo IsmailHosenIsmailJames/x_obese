@@ -13,6 +13,7 @@ import "package:x_obese/src/widgets/app_bar.dart";
 import "package:x_obese/src/widgets/back_button.dart";
 import "package:x_obese/src/widgets/loading_popup.dart";
 import "package:go_router/go_router.dart";
+import "package:permission_handler/permission_handler.dart";
 
 import "models/activity_types.dart";
 
@@ -230,6 +231,12 @@ class _ActivityPageState extends State<ActivityPage> {
   }
 
   Future<void> getLocationAndStartActivity() async {
+    final PermissionStatus notifStatus = await Permission.notification.request();
+    if (notifStatus.isDenied || notifStatus.isPermanentlyDenied) {
+      Fluttertoast.showToast(msg: "Notification permission is required for accurate background tracking");
+      // Could open app settings here, but we will let them proceed for now
+    }
+
     LocationPermission status = await Geolocator.checkPermission();
     log(status.toString());
     if (status == LocationPermission.denied) {
