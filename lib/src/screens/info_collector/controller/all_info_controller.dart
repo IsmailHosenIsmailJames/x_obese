@@ -202,16 +202,21 @@ class AllInfoController extends GetxController {
     }
   }
 
-  Future<ActivityHistoryModel?> fetchActivityHistory(String view) async {
+  Future<ActivityHistoryModel?> fetchActivityHistory(
+    String view, {
+    DateTime? date,
+  }) async {
     UserInfoModel? userInfoModel = UserDB.userAllInfo();
     if (userInfoModel?.isGuest ?? true) {
       log("Guest has no Activity History");
       return null;
     }
     try {
-      final response = await _dioClient.dio.get(
-        "$getActivityHistoryPath?view=$view",
-      );
+      String url = "$getActivityHistoryPath?view=$view";
+      if (date != null) {
+        url += "&date=${date.toIso8601String()}";
+      }
+      final response = await _dioClient.dio.get(url);
       if (response.statusCode == 200 && response.data["data"] != null) {
         final model = ActivityHistoryModel.fromJson(response.data["data"]);
         activityHistory.value = model;

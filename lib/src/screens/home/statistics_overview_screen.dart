@@ -12,13 +12,15 @@ class StatisticsOverviewScreen extends StatefulWidget {
   const StatisticsOverviewScreen({super.key});
 
   @override
-  State<StatisticsOverviewScreen> createState() => _StatisticsOverviewScreenState();
+  State<StatisticsOverviewScreen> createState() =>
+      _StatisticsOverviewScreenState();
 }
 
 class _StatisticsOverviewScreenState extends State<StatisticsOverviewScreen> {
   final AllInfoController controller = Get.find();
   String selectedView = "Weekly"; // Daily, Weekly, Monthly
   bool isLoading = true;
+  DateTime referenceDate = DateTime.now();
 
   @override
   void initState() {
@@ -28,7 +30,10 @@ class _StatisticsOverviewScreenState extends State<StatisticsOverviewScreen> {
 
   Future<void> _fetchData() async {
     setState(() => isLoading = true);
-    await controller.fetchActivityHistory(selectedView.toLowerCase());
+    await controller.fetchActivityHistory(
+      selectedView.toLowerCase(),
+      date: referenceDate,
+    );
     if (mounted) {
       setState(() => isLoading = false);
     }
@@ -54,14 +59,6 @@ class _StatisticsOverviewScreenState extends State<StatisticsOverviewScreen> {
           ),
         ),
         centerTitle: true,
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 15.0),
-            child: SvgPicture.string(
-              '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="#047CEC"/></svg>',
-            ),
-          ),
-        ],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 15.0),
@@ -184,42 +181,79 @@ class _StatisticsOverviewScreenState extends State<StatisticsOverviewScreen> {
 
   Widget _buildDateNavigator() {
     String dateRange = "";
-    DateTime now = DateTime.now();
     if (selectedView == "Daily") {
-      dateRange = DateFormat("MMMM d").format(now);
+      dateRange = DateFormat("MMMM d, y").format(referenceDate);
     } else if (selectedView == "Weekly") {
-      DateTime weekStart = now.subtract(const Duration(days: 7));
+      DateTime weekStart = referenceDate.subtract(const Duration(days: 7));
       dateRange =
-          "${DateFormat('MMMM d').format(weekStart)} - ${DateFormat('MMMM d').format(now)}";
+          "${DateFormat('MMM d').format(weekStart)} - ${DateFormat('MMM d, y').format(referenceDate)}";
     } else {
-      DateTime monthStart = now.subtract(const Duration(days: 30));
+      DateTime monthStart = referenceDate.subtract(const Duration(days: 30));
       dateRange =
-          "${DateFormat('MMMM d').format(monthStart)} - ${DateFormat('MMMM d').format(now)}";
+          "${DateFormat('MMM d').format(monthStart)} - ${DateFormat('MMM d, y').format(referenceDate)}";
     }
+
+    bool isFuture =
+        referenceDate.isAfter(DateTime.now()) ||
+        DateFormat('yMd').format(referenceDate) ==
+            DateFormat('yMd').format(DateTime.now());
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        _buildNavButton(Icons.arrow_back_ios, () {}),
+        _buildNavButton(Icons.arrow_back_ios, () {
+          setState(() {
+            if (selectedView == "Daily") {
+              referenceDate = referenceDate.subtract(const Duration(days: 1));
+            } else if (selectedView == "Weekly") {
+              referenceDate = referenceDate.subtract(const Duration(days: 7));
+            } else {
+              referenceDate = referenceDate.subtract(const Duration(days: 30));
+            }
+          });
+          _fetchData();
+        }),
         const Gap(20),
         Text(
           dateRange,
           style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
         ),
         const Gap(20),
-        _buildNavButton(Icons.arrow_forward_ios, () {}),
+        Opacity(
+          opacity: isFuture ? 0.3 : 1.0,
+          child: _buildNavButton(Icons.arrow_forward_ios, () {
+            if (isFuture) return;
+            setState(() {
+              if (selectedView == "Daily") {
+                referenceDate = referenceDate.add(const Duration(days: 1));
+              } else if (selectedView == "Weekly") {
+                referenceDate = referenceDate.add(const Duration(days: 7));
+              } else {
+                referenceDate = referenceDate.add(const Duration(days: 30));
+              }
+              // Don't go beyond today
+              if (referenceDate.isAfter(DateTime.now())) {
+                referenceDate = DateTime.now();
+              }
+            });
+            _fetchData();
+          }),
+        ),
       ],
     );
   }
 
   Widget _buildNavButton(IconData icon, VoidCallback onTap) {
-    return Container(
-      padding: const EdgeInsets.all(8),
-      decoration: BoxDecoration(
-        color: MyAppColors.transparentGray,
-        shape: BoxShape.circle,
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          color: MyAppColors.transparentGray,
+          shape: BoxShape.circle,
+        ),
+        child: Icon(icon, size: 14, color: MyAppColors.third),
       ),
-      child: Icon(icon, size: 14, color: MyAppColors.third),
     );
   }
 

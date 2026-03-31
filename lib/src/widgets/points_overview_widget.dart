@@ -322,9 +322,15 @@ class _PointsOverviewWidgetState extends State<PointsOverviewWidget> {
                         ),
                         child: const Text("Grant Permissions"),
                         onPressed: () async {
-                          AppState appState =
+                          AppState result =
                               await MyHealthFunctions.authorizePermissions();
-                          log(appState.toString(), name: "AppState");
+                          log(result.toString(), name: "AppState");
+                          if (result == AppState.AUTHORIZED) {
+                            setState(() {
+                              appState = result;
+                            });
+                            await fetchData();
+                          }
                         },
                       ),
                     ],

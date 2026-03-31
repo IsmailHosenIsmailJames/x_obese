@@ -55,35 +55,54 @@ class _WorkoutPlanOverviewScreenState extends State<WorkoutPlanOverviewScreen> {
                   right: 15,
                 ),
                 children: [
-                  workoutPlanOverview(
-                    context: context,
-                    allInfoUser: allInfoController.allInfo.value,
-                    userBMI: widget.getWorkoutPlansList.first.bmi ?? "",
-                    startDate:
-                        widget.getWorkoutPlansList.first.startDate ??
-                        DateTime.now(),
-                    endDate:
-                        widget.getWorkoutPlansList.first.endDate ??
-                        DateTime.now(),
-                    goalType:
-                        (widget.getWorkoutPlansList.first.goalType ?? "None")
-                            .replaceAll("_", " ")
-                            .capitalizeFirst,
-                    weightGoal:
-                        widget.getWorkoutPlansList.first.weightGoal
-                            ?.toString() ??
-                        "0",
-                    workoutDays:
-                        widget.getWorkoutPlansList.first.workoutDays ?? "",
-                    workoutTimeMs:
-                        widget.getWorkoutPlansList.first.workoutTimeMs ?? "0",
+                  Obx(() {
+                    final userInfo = allInfoController.allInfo.value;
+                    String dynamicBMI = "";
+                    if (userInfo.weight != null &&
+                        userInfo.heightFt != null &&
+                        userInfo.heightIn != null) {
+                      double weight = userInfo.weight!.toDouble();
+                      double heightInMeters =
+                          (userInfo.heightFt! * 0.3048) +
+                          (userInfo.heightIn! * 0.0254);
+                      if (heightInMeters > 0) {
+                        dynamicBMI =
+                            (weight / (heightInMeters * heightInMeters))
+                                .toStringAsFixed(2);
+                      }
+                    }
 
-                    daysTotal:
-                        (widget.getWorkoutPlansList.first.totalDays ?? "")
-                            .toString(),
-                    calorieBairn:
-                        widget.getWorkoutPlansList.first.caloriesGoal ?? 0,
-                  ),
+                    return workoutPlanOverview(
+                      context: context,
+                      allInfoUser: userInfo,
+                      userBMI: dynamicBMI.isNotEmpty
+                          ? dynamicBMI
+                          : (widget.getWorkoutPlansList.first.bmi ?? ""),
+                      startDate:
+                          widget.getWorkoutPlansList.first.startDate ??
+                          DateTime.now(),
+                      endDate:
+                          widget.getWorkoutPlansList.first.endDate ??
+                          DateTime.now(),
+                      goalType:
+                          (widget.getWorkoutPlansList.first.goalType ?? "None")
+                              .replaceAll("_", " ")
+                              .capitalizeFirst,
+                      weightGoal:
+                          widget.getWorkoutPlansList.first.weightGoal
+                              ?.toString() ??
+                          "0",
+                      workoutDays:
+                          widget.getWorkoutPlansList.first.workoutDays ?? "",
+                      workoutTimeMs:
+                          widget.getWorkoutPlansList.first.workoutTimeMs ?? "0",
+                      daysTotal:
+                          (widget.getWorkoutPlansList.first.totalDays ?? "")
+                              .toString(),
+                      calorieBairn:
+                          widget.getWorkoutPlansList.first.caloriesGoal ?? 0,
+                    );
+                  }),
                   const Gap(20),
                   const Padding(
                     padding: EdgeInsets.all(10),
