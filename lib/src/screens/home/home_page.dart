@@ -316,6 +316,90 @@ class _HomePageState extends State<HomePage>
                 padding: EdgeInsets.all(15.0),
                 child: PointsOverviewWidget(),
               ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                child: GestureDetector(
+                  onTap: () {
+                    context.push("/statistics-overview");
+                  },
+                  child: Container(
+                    height: 50,
+                    width: double.infinity,
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    decoration: BoxDecoration(
+                      color: MyAppColors.transparentGray,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.bar_chart_outlined,
+                              color: MyAppColors.third,
+                            ),
+                            const Gap(10),
+                            const Text(
+                              "View Statistics Overview",
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Icon(
+                          Icons.arrow_forward_ios,
+                          size: 16,
+                          color: MyAppColors.mutedGray,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              const Gap(15),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                child: GestureDetector(
+                  onTap: () {
+                    context.push("/workout-history");
+                  },
+                  child: Container(
+                    height: 50,
+                    width: double.infinity,
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    decoration: BoxDecoration(
+                      color: MyAppColors.transparentGray,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            Icon(Icons.history, color: MyAppColors.third),
+                            const Gap(10),
+                            const Text(
+                              "View Activity History",
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Icon(
+                          Icons.arrow_forward_ios,
+                          size: 16,
+                          color: MyAppColors.mutedGray,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
               const Gap(20),
               Obx(() {
                 final workoutPlans =

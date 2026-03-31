@@ -1,4 +1,4 @@
-String baseAPI = "http://103.168.140.134:6053";
+String baseAPI = "http://192.168.0.182:6053";
 String signUpPath = "/api/auth/v1/users/sign-up";
 String logInPath = "/api/auth/v1/users/login";
 String verifyOTPPath = "/api/auth/v1/users/verify-otp";
@@ -8,5 +8,7 @@ String saveStepsCount = "/api/user/v1/workout/steps";
 String workoutPlanPath = "/api/user/v1/workout/plan";
 String blogPath = "/api/other/v1/blog";
 String getUserWorkoutStatus = "/api/user/v1/workout";
+String getActivityHistoryPath = "/api/user/v1/workout/history";
+String getWorkoutHistoryListPath = "/api/user/v1/workout/list";
 String banners = "/api/other/v1/banner";
 String imagePath = "uploads/photos";

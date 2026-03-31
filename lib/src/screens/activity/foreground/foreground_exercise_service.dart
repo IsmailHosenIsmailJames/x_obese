@@ -33,32 +33,40 @@ class ForegroundExerciseTask extends TaskHandler {
   DateTime? startTime;
 
   Future<void> _handleGeolocationHistory() async {
+    log("_handleGeolocationHistory starting streams...", name: "ActivityDebug");
     startTime = DateTime.now();
     lastPositionTimeStamp = DateTime.now();
 
-    pedestrianStatusStream ??= Pedometer.pedestrianStatusStream;
-    stepCountStream ??= Pedometer.stepCountStream;
-    positionStream ??= Geolocator.getPositionStream();
+    try {
+      pedestrianStatusStream ??= Pedometer.pedestrianStatusStream;
+      stepCountStream ??= Pedometer.stepCountStream;
+      positionStream ??= Geolocator.getPositionStream();
 
-    pedestrianStatusStreamSubscription ??= pedestrianStatusStream?.listen((
-      event,
-    ) {
-      onPedestrianStatusReceive(event);
-    });
+      pedestrianStatusStreamSubscription ??= pedestrianStatusStream?.listen((
+        event,
+      ) {
+        onPedestrianStatusReceive(event);
+      });
 
-    stepCountStreamSubscription ??= stepCountStream?.listen((event) {
-      onStepDataReceive(event);
-    });
+      stepCountStreamSubscription ??= stepCountStream?.listen((event) {
+        onStepDataReceive(event);
+      });
 
-    positionStreamSubscription ??= positionStream?.listen((event) {
-      onPositionDataReceive(event);
-    });
+      positionStreamSubscription ??= positionStream?.listen((event) {
+        onPositionDataReceive(event);
+      });
+      log("Streams initialized success.", name: "ActivityDebug");
+    } catch (e) {
+      log("Error initializing streams: $e", name: "ActivityDebug");
+    }
   }
+
 
   int activeTimeMS = 0;
   PedestrianStatus? previousPedestrianStatus;
   DateTime? lastUsedPedestrianStatus;
   void onPedestrianStatusReceive(PedestrianStatus status) {
+    log("onPedestrianStatusReceive: ${status.status}", name: "ActivityDebug");
     if (previousPedestrianStatus != null) {
       if ((status.status == "stopped" &&
               previousPedestrianStatus!.status == "walking") ||
@@ -69,12 +77,13 @@ class ForegroundExerciseTask extends TaskHandler {
                 .difference(previousPedestrianStatus!.timeStamp)
                 .abs()
                 .inMilliseconds;
-        log("onPedestrianStatusReceive -> $activeTimeMS", name: "Steps & GPS");
+        log("activeTimeMS accumulated: $activeTimeMS", name: "ActivityDebug");
       }
     } else {
       if (status.status == "walking") {
         activeTimeMS +=
             status.timeStamp.difference(startTime!).abs().inMilliseconds;
+        log("Initial walking activeTimeMS: $activeTimeMS", name: "ActivityDebug");
       }
     }
 
@@ -85,6 +94,7 @@ class ForegroundExerciseTask extends TaskHandler {
   StepCount? previousStepData;
   int totalStepCount = 0;
   void onStepDataReceive(StepCount stepCount) {
+    log("onStepDataReceive: ${stepCount.steps}", name: "ActivityDebug");
     if (previousStepData != null) {
       totalStepCount += (stepCount.steps - previousStepData!.steps).abs();
     }
@@ -94,6 +104,7 @@ class ForegroundExerciseTask extends TaskHandler {
   Position? lastPosition;
   DateTime? lastPositionTimeStamp;
   Future<void> onPositionDataReceive(Position position) async {
+    log("onPositionDataReceive: lat=${position.latitude}, lon=${position.longitude}, status=${previousPedestrianStatus?.status}", name: "ActivityDebug");
     DateTime now = DateTime.now();
     int totalTimeDifference =
         now.difference(lastPositionTimeStamp!).abs().inMilliseconds;
@@ -108,7 +119,8 @@ class ForegroundExerciseTask extends TaskHandler {
           lastUsedPedestrianStatus!.difference(now).abs().inMilliseconds;
       lastUsedPedestrianStatus = now;
     }
-    log("Active time MS: $activeTime", name: "Steps & GPS");
+    log("Calculated activeTime this tick: $activeTime, isPaused: $isPaused", name: "ActivityDebug");
+
 
     double maxSpeedMh = 0;
     switch (activity) {
@@ -171,6 +183,7 @@ class ForegroundExerciseTask extends TaskHandler {
     List<PositionNodes> positionNodes = await _repository.getPositionNodes();
 
     if (previousPedestrianStatus?.status == "walking") {
+      log("Adding walking node. selectedDistance: $selectedDistance, steps: $totalSteps", name: "ActivityDebug");
       positionNodes.add(
         PositionNodes(
           position: position,
@@ -188,6 +201,8 @@ class ForegroundExerciseTask extends TaskHandler {
         ),
       );
       await _repository.savePositionNodes(positionNodes);
+    } else {
+      log("Skipping node addition. Status is: ${previousPedestrianStatus?.status}", name: "ActivityDebug");
     }
 
     FlutterForegroundTask.sendDataToMain(
@@ -195,6 +210,7 @@ class ForegroundExerciseTask extends TaskHandler {
     );
 
     double distance = positionNodes.map((e) => e.selectedDistance).sum();
+
     int durationInSec =
         (positionNodes.map((e) => e.durationMS).sum() / 1000).toInt();
     double calculatedSpeed =
@@ -213,8 +229,10 @@ class ForegroundExerciseTask extends TaskHandler {
 
   @override
   Future<void> onStart(DateTime timestamp, TaskStarter starter) async {
+    log("ForegroundExerciseTask onStart called at $timestamp", name: "ActivityDebug");
     await _handleGeolocationHistory();
   }
+
 
   @override
   Future<void> onRepeatEvent(DateTime timestamp) async {

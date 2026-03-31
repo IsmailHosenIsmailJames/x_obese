@@ -29,6 +29,8 @@ import "package:x_obese/src/screens/intro/intro_page.dart";
 import "package:x_obese/src/screens/navs/naves_page.dart";
 import "package:x_obese/src/screens/workout_plan_overview/workout_plan_overview_screen.dart";
 import "package:x_obese/src/screens/marathon/show_search_result/show_search_result.dart";
+import "package:x_obese/src/screens/home/statistics_overview_screen.dart";
+import "package:x_obese/src/screens/home/workout_history_screen.dart";
 import "package:dio/dio.dart" as dio;
 
 class AppRouter {
@@ -194,6 +196,14 @@ class AppRouter {
               marathonData: extra?["marathonData"] as FullMarathonDataModel?,
             );
           },
+        ),
+        GoRoute(
+          path: "/statistics-overview",
+          builder: (context, state) => const StatisticsOverviewScreen(),
+        ),
+        GoRoute(
+          path: "/workout-history",
+          builder: (context, state) => const WorkoutHistoryScreen(),
         ),
         GoRoute(
           path: "/search-result",

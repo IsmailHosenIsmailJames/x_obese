@@ -13,6 +13,8 @@ import "package:dio/dio.dart" as dio;
 import "package:x_obese/src/screens/create_workout_plan/model/get_workout_plans.dart";
 import "package:x_obese/src/screens/marathon/models/marathon_model.dart";
 import "package:x_obese/src/screens/resources/workout/status.dart";
+import "package:x_obese/src/screens/home/model/activity_history_model.dart";
+import "package:x_obese/src/screens/home/model/workout_model.dart";
 
 class AllInfoController extends GetxController {
   RxDouble selectedPoints = 0.0.obs;
@@ -29,6 +31,8 @@ class AllInfoController extends GetxController {
     null,
   );
   Rx<List<GetBlogModel>?> getBlogList = Rx<List<GetBlogModel>?>(null);
+  Rx<ActivityHistoryModel?> activityHistory = Rx<ActivityHistoryModel?>(null);
+  RxList<WorkoutModel> myWorkouts = <WorkoutModel>[].obs;
 
   @override
   void onInit() {
@@ -195,6 +199,45 @@ class AllInfoController extends GetxController {
       }
     } on dio.DioException catch (e) {
       log("Failed to fetch blogs: ${e.message}");
+    }
+  }
+
+  Future<ActivityHistoryModel?> fetchActivityHistory(String view) async {
+    UserInfoModel? userInfoModel = UserDB.userAllInfo();
+    if (userInfoModel?.isGuest ?? true) {
+      log("Guest has no Activity History");
+      return null;
+    }
+    try {
+      final response = await _dioClient.dio.get(
+        "$getActivityHistoryPath?view=$view",
+      );
+      if (response.statusCode == 200 && response.data["data"] != null) {
+        final model = ActivityHistoryModel.fromJson(response.data["data"]);
+        activityHistory.value = model;
+        return model;
+      }
+    } on dio.DioException catch (e) {
+      log("Failed to fetch activity history: ${e.message}");
+    }
+    return null;
+  }
+
+  Future<void> fetchMyWorkouts() async {
+    UserInfoModel? userInfoModel = UserDB.userAllInfo();
+    if (userInfoModel?.isGuest ?? true) {
+      log("Guest has no Workout History");
+      return;
+    }
+    try {
+      final response = await _dioClient.dio.get(getWorkoutHistoryListPath);
+      if (response.statusCode == 200 && response.data["data"] != null) {
+        final List workoutListData = response.data["data"]["data"] ?? [];
+        myWorkouts.value =
+            workoutListData.map((data) => WorkoutModel.fromMap(data)).toList();
+      }
+    } on dio.DioException catch (e) {
+      log("Failed to fetch workout list: ${e.message}");
     }
   }
 }

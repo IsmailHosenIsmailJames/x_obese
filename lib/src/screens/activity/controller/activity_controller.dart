@@ -118,11 +118,13 @@ class ActivityController extends GetxController {
           (data as List)
               .map((e) => PositionNodes.fromJson(e as String))
               .toList();
+      log("Received ${nodes.length} nodes from background service.", name: "ActivityDebug");
       positionNodes.assignAll(nodes);
     } catch (e) {
       log(e.toString(), name: "ActivityController_onReceiveTaskData");
     }
   }
+
 
   Future<void> startWorkout(ActivityType type) async {
     workoutType.value = type;
