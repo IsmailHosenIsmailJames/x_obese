@@ -357,28 +357,37 @@ class _MarathonDetailsViewState extends State<MarathonDetailsView> {
                                         printResponse(value);
                                         if (value.statusCode == 200 ||
                                             value.statusCode == 201) {
+                                          if (!mounted) return;
                                           setState(() {
-                                            fullMarathonDataModel
-                                                ?.data
-                                                ?.joined = true;
+                                            fullMarathonDataModel?.data?.joined =
+                                                true;
                                           });
                                           log("Joined Successfully");
-                                          Get.snackbar(
-                                            "Success",
-                                            "You have joined the challenge successfully",
-                                            backgroundColor: Colors.green,
-                                            colorText: Colors.white,
-                                          );
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                                const SnackBar(
+                                                  content: Text(
+                                                    "You have joined the challenge successfully",
+                                                  ),
+                                                  backgroundColor: Colors.green,
+                                                  duration: Duration(seconds: 2),
+                                                ),
+                                              );
                                         }
                                       })
                                       .onError((error, stackTrace) {
                                         log(error.toString());
-                                        Get.snackbar(
-                                          "Error",
-                                          error.toString(),
-                                          backgroundColor: Colors.red,
-                                          colorText: Colors.white,
-                                        );
+                                        if (!mounted) return;
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                              SnackBar(
+                                                content: Text(error.toString()),
+                                                backgroundColor: Colors.red,
+                                                duration: const Duration(
+                                                  seconds: 2,
+                                                ),
+                                              ),
+                                            );
                                       });
                                 },
                         label: Text(
