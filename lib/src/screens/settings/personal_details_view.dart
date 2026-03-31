@@ -119,7 +119,7 @@ class PersonalDetailsView extends StatelessWidget {
                       const Text("Weight"),
                       const Spacer(),
                       Text(
-                        "${allInfoController.allInfo.value.weight} kg",
+                        "${allInfoController.allInfo.value.weight?.toStringAsFixed(1) ?? 0} kg",
                         style: TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.w300,

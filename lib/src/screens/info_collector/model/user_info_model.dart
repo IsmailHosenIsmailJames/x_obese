@@ -12,7 +12,7 @@ class UserInfoModel {
   DateTime? birth;
   int? heightFt;
   int? heightIn;
-  int? weight;
+  double? weight;
   bool isGuest;
 
   UserInfoModel({
@@ -43,7 +43,7 @@ class UserInfoModel {
     DateTime? birth,
     int? heightFt,
     int? heightIn,
-    int? weight,
+    double? weight,
     bool? isGuest,
   }) => UserInfoModel(
     id: id ?? this.id,
@@ -79,7 +79,7 @@ class UserInfoModel {
       birth: json["birth"] != null ? DateTime.parse(json["birth"]) : null,
       heightFt: json["heightFt"],
       heightIn: json["heightIn"],
-      weight: json["weight"],
+      weight: (json["weight"] as num?)?.toDouble(),
       isGuest: json["isGuest"] ?? false,
     );
   }

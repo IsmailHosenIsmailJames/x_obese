@@ -18,14 +18,17 @@ class _HeightWeigthCollectorState extends State<HeightWeigthCollector> {
   final AllInfoController controller = Get.find();
   int? fit;
   int? inch;
-  int? weight;
+  int? weightInt;
+  int? weightDecimal;
   @override
   void initState() {
     if (controller.allInfo.value.heightFt != null &&
         controller.allInfo.value.weight != null) {
       fit = controller.allInfo.value.heightFt;
       inch = controller.allInfo.value.heightIn;
-      weight = controller.allInfo.value.weight!.toInt();
+      double w = controller.allInfo.value.weight!;
+      weightInt = w.toInt();
+      weightDecimal = ((w - weightInt!) * 10).round();
     }
     super.initState();
   }
@@ -110,30 +113,32 @@ class _HeightWeigthCollectorState extends State<HeightWeigthCollector> {
                                   ),
                             ),
                           ),
-                          const Gap(10),
-                          Container(
-                            width: 60,
-                            height: MediaQuery.of(context).size.height * 0.5,
-                            decoration: BoxDecoration(
-                              color: MyAppColors.transparentGray,
-                              borderRadius: BorderRadius.circular(7),
+                          if (fit != null) ...[
+                            const Gap(10),
+                            Container(
+                              width: 60,
+                              height: MediaQuery.of(context).size.height * 0.5,
+                              decoration: BoxDecoration(
+                                color: MyAppColors.transparentGray,
+                                borderRadius: BorderRadius.circular(7),
+                              ),
+                              child: ListView.builder(
+                                itemCount: 12,
+                                scrollDirection: Axis.vertical,
+                                itemBuilder:
+                                    (context, index) => getButtonSelection(
+                                      index: index,
+                                      toCompare: inch,
+                                      text: "$index in",
+                                      onPressed: () {
+                                        setState(() {
+                                          inch = index;
+                                        });
+                                      },
+                                    ),
+                              ),
                             ),
-                            child: ListView.builder(
-                              itemCount: 12,
-                              scrollDirection: Axis.vertical,
-                              itemBuilder:
-                                  (context, index) => getButtonSelection(
-                                    index: index,
-                                    toCompare: inch,
-                                    text: "$index in",
-                                    onPressed: () {
-                                      setState(() {
-                                        inch = index;
-                                      });
-                                    },
-                                  ),
-                            ),
-                          ),
+                          ],
                         ],
                       ),
                     ],
@@ -148,28 +153,80 @@ class _HeightWeigthCollectorState extends State<HeightWeigthCollector> {
                         ),
                       ),
                       const Gap(20),
-                      Container(
-                        width: 70,
-                        height: MediaQuery.of(context).size.height * 0.5,
-                        decoration: BoxDecoration(
-                          color: MyAppColors.transparentGray,
-                          borderRadius: BorderRadius.circular(7),
-                        ),
-                        child: ListView.builder(
-                          itemCount: 300,
-                          itemBuilder:
-                              (context, index) => getButtonSelection(
-                                index: index + 25,
-                                toCompare: weight,
-                                text: "${index + 25} kg",
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            width: 65,
+                            height: MediaQuery.of(context).size.height * 0.5,
+                            decoration: BoxDecoration(
+                              color: MyAppColors.transparentGray,
+                              borderRadius: BorderRadius.circular(7),
+                            ),
+                            child: ListView.builder(
+                              itemCount: 300,
+                              itemBuilder:
+                                  (context, index) => getButtonSelection(
+                                    index: index + 25,
+                                    toCompare: weightInt,
+                                    text: "${index + 25}",
 
-                                onPressed: () {
-                                  setState(() {
-                                    weight = index + 25;
-                                  });
-                                },
+                                    onPressed: () {
+                                      setState(() {
+                                        weightInt = index + 25;
+                                      });
+                                    },
+                                  ),
+                            ),
+                          ),
+                          if (weightInt != null) ...[
+                            const Gap(5),
+                            Container(
+                              padding: const EdgeInsets.only(top: 10),
+                              child: const Text(
+                                ".",
+                                style: TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
-                        ),
+                            ),
+                            const Gap(5),
+                            Container(
+                              width: 50,
+                              height: MediaQuery.of(context).size.height * 0.5,
+                              decoration: BoxDecoration(
+                                color: MyAppColors.transparentGray,
+                                borderRadius: BorderRadius.circular(7),
+                              ),
+                              child: ListView.builder(
+                                itemCount: 10,
+                                itemBuilder:
+                                    (context, index) => getButtonSelection(
+                                      index: index,
+                                      toCompare: weightDecimal,
+                                      text: "$index",
+                                      onPressed: () {
+                                        setState(() {
+                                          weightDecimal = index;
+                                        });
+                                      },
+                                    ),
+                              ),
+                            ),
+                            const Gap(5),
+                            Container(
+                              padding: const EdgeInsets.only(top: 10),
+                              child: const Text(
+                                "kg",
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ],
                       ),
                     ],
                   ),
@@ -181,10 +238,13 @@ class _HeightWeigthCollectorState extends State<HeightWeigthCollector> {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
-                    if (fit != null && weight != null) {
+                    if (fit != null && weightInt != null) {
                       controller.allInfo.value.heightFt = fit;
                       controller.allInfo.value.heightIn = inch;
-                      controller.allInfo.value.weight = weight;
+                      double combinedWeight =
+                          weightInt!.toDouble() +
+                          (weightDecimal ?? 0).toDouble() / 10.0;
+                      controller.allInfo.value.weight = combinedWeight;
                       widget.pageController.nextPage(
                         duration: const Duration(milliseconds: 300),
                         curve: Curves.linear,
