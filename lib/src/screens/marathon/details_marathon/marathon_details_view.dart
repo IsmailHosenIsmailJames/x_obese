@@ -73,12 +73,6 @@ class _MarathonDetailsViewState extends State<MarathonDetailsView> {
     }
   }
 
-  List<Alignment> profileAlignmentList = [
-    Alignment.centerRight,
-    Alignment.center,
-    Alignment.centerLeft,
-  ];
-
   AllInfoController allInfoController = Get.find<AllInfoController>();
 
   @override
@@ -150,92 +144,15 @@ class _MarathonDetailsViewState extends State<MarathonDetailsView> {
                   const Gap(16),
                   Row(
                     children: [
-                      SizedBox(
-                        width:
-                            (fullMarathonDataModel?.particiants!.length ?? 0) >
-                                    0
-                                ? 70
-                                : 0,
-                        height: 30,
-                        child:
-                            fullMarathonDataModel == null ||
-                                    fullMarathonDataModel?.particiants == null
-                                ? Container(
-                                      height: 30,
-                                      width: 70,
-                                      decoration: BoxDecoration(
-                                        color: MyAppColors.third.withValues(
-                                          alpha: 0.2,
-                                        ),
-                                        borderRadius: BorderRadius.circular(8),
-                                      ),
-                                    )
-                                    .animate(
-                                      onPlay:
-                                          (controller) => controller.repeat(),
-                                    )
-                                    .shimmer(
-                                      duration: 1200.ms,
-                                      color: const Color.fromARGB(
-                                        255,
-                                        163,
-                                        231,
-                                        255,
-                                      ),
-                                    )
-                                : Stack(
-                                  children: List.generate(
-                                    profileAlignmentList.length,
-                                    (index) {
-                                      if (index >
-                                          (fullMarathonDataModel
-                                                      ?.particiants!
-                                                      .length ??
-                                                  0) -
-                                              1) {
-                                        return Container();
-                                      }
-                                      return Align(
-                                        alignment: profileAlignmentList[index],
-                                        child: Container(
-                                          height: 30,
-                                          width: 30,
-
-                                          decoration: BoxDecoration(
-                                            border: Border.all(
-                                              width: 3,
-                                              color: MyAppColors.primary,
-                                            ),
-                                            borderRadius: BorderRadius.circular(
-                                              15,
-                                            ),
-                                            image:
-                                                fullMarathonDataModel
-                                                            ?.particiants?[index]
-                                                            .imagePath ==
-                                                        null
-                                                    ? null
-                                                    : DecorationImage(
-                                                      image: CachedNetworkImageProvider(
-                                                        fullMarathonDataModel!
-                                                            .particiants![index]
-                                                            .imagePath!,
-                                                      ),
-                                                    ),
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                ),
-                      ),
+                      _buildFacepile(),
                       const Gap(10),
                       Text(
-                        "${fullMarathonDataModel?.totalParticiants} Participants",
+                        "${fullMarathonDataModel?.totalParticiants ?? 0} Participants",
                         style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400,
-                          color: MyAppColors.mutedGray,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                          color: MyAppColors.mutedGray.withValues(alpha: 0.8),
+                          letterSpacing: 0.2,
                         ),
                       ),
                     ],
@@ -524,6 +441,136 @@ class _MarathonDetailsViewState extends State<MarathonDetailsView> {
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildFacepile() {
+    if (fullMarathonDataModel == null ||
+        fullMarathonDataModel?.particiants == null) {
+      return _buildShimmer();
+    }
+
+    final participants = fullMarathonDataModel!.particiants!;
+    if (participants.isEmpty) return const SizedBox.shrink();
+
+    const double avatarSize = 32;
+    const double overlap = 12;
+    final int maxShown = 3; // Keep it compact
+    final int totalCount =
+        fullMarathonDataModel!.totalParticiants ?? participants.length;
+    final int shownCount =
+        participants.length > maxShown ? maxShown : participants.length;
+    final bool hasMore = totalCount > shownCount;
+    final int moreCount = totalCount - shownCount;
+
+    return SizedBox(
+      height: avatarSize,
+      width: (shownCount * (avatarSize - overlap)) +
+          overlap +
+          (hasMore ? avatarSize - overlap + 4 : 0),
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          for (int i = 0; i < shownCount; i++)
+            Positioned(
+              left: i * (avatarSize - overlap),
+              child: _buildAvatar(participants[i], avatarSize),
+            ),
+          if (hasMore)
+            Positioned(
+              left: shownCount * (avatarSize - overlap),
+              child: _buildMoreIndicator(moreCount, avatarSize),
+            ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildAvatar(Particiant participant, double size) {
+    return Container(
+      height: size,
+      width: size,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        border: Border.all(color: MyAppColors.primary, width: 2.0),
+        color: MyAppColors.third.withValues(alpha: 0.1),
+      ),
+      child: ClipOval(
+        child:
+            participant.imagePath != null &&
+                    !participant.imagePath!.contains("null")
+                ? CachedNetworkImage(
+                  imageUrl: participant.imagePath!,
+                  fit: BoxFit.cover,
+                  placeholder:
+                      (context, url) => Container(
+                        color: MyAppColors.third.withValues(alpha: 0.05),
+                      ),
+                  errorWidget: (context, url, error) => _buildDefaultAvatar(size),
+                )
+                : _buildDefaultAvatar(size),
+      ),
+    );
+  }
+
+  Widget _buildDefaultAvatar(double size) {
+    return Container(
+      color: MyAppColors.third.withValues(alpha: 0.05),
+      child: Icon(
+        Icons.person,
+        size: size * 0.6,
+        color: MyAppColors.mutedGray.withValues(alpha: 0.5),
+      ),
+    );
+  }
+
+  Widget _buildMoreIndicator(int count, double size) {
+    return Container(
+      height: size,
+      width: size,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        border: Border.all(color: MyAppColors.primary, width: 2.0),
+        color: MyAppColors.third,
+      ),
+      child: Center(
+        child: Text(
+          "+$count",
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 10,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildShimmer() {
+    const double size = 32;
+    const double overlap = 14;
+    const int count = 3;
+
+    return SizedBox(
+      height: size,
+      width: (count * (size - overlap)) + overlap,
+      child: Stack(
+        children: List.generate(
+          count,
+          (index) => Positioned(
+            left: index * (size - overlap),
+            child: Container(
+              height: size,
+              width: size,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: MyAppColors.third.withValues(alpha: 0.2),
+                border: Border.all(color: MyAppColors.primary, width: 2),
+              ),
+            ).animate(onPlay: (c) => c.repeat()).shimmer(duration: 1200.ms),
+          ),
         ),
       ),
     );
