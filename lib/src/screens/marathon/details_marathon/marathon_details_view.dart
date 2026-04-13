@@ -52,8 +52,20 @@ class _MarathonDetailsViewState extends State<MarathonDetailsView> {
       );
       printResponse(response);
       if (response.statusCode == 200 || response.statusCode == 201) {
+        final model = FullMarathonDataModel.fromMap(response.data);
+        final currentUserId = allInfoController.allInfo.value.id;
+
+        if (model.data != null &&
+            model.particiants != null &&
+            currentUserId != null) {
+          final isJoined = model.particiants!.any((p) => p.id == currentUserId);
+          if (isJoined) {
+            model.data!.joined = true;
+          }
+        }
+
         setState(() {
-          fullMarathonDataModel = FullMarathonDataModel.fromMap(response.data);
+          fullMarathonDataModel = model;
         });
       }
     } on DioException catch (e) {

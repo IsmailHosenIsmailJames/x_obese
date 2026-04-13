@@ -50,6 +50,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           (response.statusCode == 200 || response.statusCode == 201)) {
         emit(AuthCodeSentSuccess(response));
       } else {
+        log(response?.statusCode.toString() ?? "Null", name: "API");
         emit(AuthFailure(response?.data["message"] ?? "Login Failed"));
       }
     } catch (e) {

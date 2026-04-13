@@ -2,40 +2,48 @@
   "success": true,
   "message": "Get Marathon details successfully!",
   "data": {
-    "id": "m-uuid-1",
-    "title": "February 5k Challenge Run",
-    "description": "A program designed to push your limits, build endurance, and celebrate your strength!",
-    "about": "A program designed to push your limits, build endurance, and celebrate your strength! Whether this program offers personalized training plans, progress tracking, and a vibrant community to keep you motivated every step of the way.",
-    "distanceKm": 5,
-    "location": null,
-    "startDate": "2025-01-01T00:00:00.000Z",
-    "endDate": "2025-02-01T00:00:00.000Z",
-    "imagePath": "http://116.68.200.97:6053/uploads/photos/e9c961ab-d837-4d27-8d92-ceb1dfdfd083-1741854397870.png",
+    "id": "6c0e93fb-1921-4da4-a7d9-a03de0b8bfcb",
+    "title": "Xenobese 5KM Virtual Run Challenge",
+    "description": "Take on the Xenobese 5K Virtual Run Challenge — run anytime, anywhere! Whether on the streets, in the park, or on a treadmill, this challenge is about pushing your limits, staying active, and being part of a global fitness community",
+    "about": "The Xenobese 5K Virtual Run Challenge is designed to inspire fitness and self-motivation. Run at your own pace, in your own space, and be part of the movement toward healthier living.",
+    "startDate": "2025-10-01T07:50:00.000Z",
+    "endDate": "2025-10-31T07:50:00.000Z",
+    "imagePath": "http://103.168.140.134:6053/uploads/photos/40111008-7eb8-45de-9e7c-817197ccefe6-1756281287384.webp",
     "type": "virtual",
     "createdBy": null,
-    "createdAt": "2025-03-13T09:27:25.588Z",
-    "updatedAt": "2025-03-13T09:27:25.588Z",
-    "Rewards": []
+    "createdAt": "2025-08-27T07:54:47.407Z",
+    "updatedAt": "2025-08-31T10:05:51.903Z",
+    "location": null,
+    "distanceKm": 5,
+    "Rewards": [
+      {
+        "id": "a51c8ac6-df6b-43af-8469-35abfc982e7d",
+        "text": "Medal",
+        "marathonId": "6c0e93fb-1921-4da4-a7d9-a03de0b8bfcb",
+        "createdAt": "2025-08-27T07:54:47.407Z",
+        "updatedAt": "2025-08-27T07:54:47.407Z"
+      }
+    ]
   },
-  "totalParticiants": 4,
+  "totalParticiants": 7,
   "particiants": [
     {
-      "id": "user-uuid-4",
-      "fullName": "Daisy Clark",
-      "image": "doctor3.jpg",
-      "imagePath": "http://116.68.200.97:6053/uploads/photos/doctor3.jpg"
+      "id": "fd4d54de-5eac-4749-88fb-ac6e19ee5995",
+      "fullName": "Muhammad Muhtashim",
+      "image": null,
+      "imagePath": "http://103.168.140.134:6053/uploads/photos/null"
     },
     {
-      "id": "user-uuid-3",
-      "fullName": "Charlie Brown",
-      "image": "doctor2.jpg",
-      "imagePath": "http://116.68.200.97:6053/uploads/photos/doctor2.jpg"
+      "id": "af3c89b4-b108-4606-897e-617510e6b2fa",
+      "fullName": "Ismail Hossain James ",
+      "image": "809ba69d-0ee2-4901-ac11-c6ccf590f55b-1756899729864.jpg",
+      "imagePath": "http://103.168.140.134:6053/uploads/photos/809ba69d-0ee2-4901-ac11-c6ccf590f55b-1756899729864.jpg"
     },
     {
-      "id": "user-uuid-2",
-      "fullName": "Bob Williams",
-      "image": "doctor.jpg",
-      "imagePath": "http://116.68.200.97:6053/uploads/photos/doctor.jpg"
+      "id": "12f032a9-231e-46a9-b50a-a4fe3e1cfda3",
+      "fullName": "Yasin ",
+      "image": null,
+      "imagePath": "http://103.168.140.134:6053/uploads/photos/null"
     }
   ]
 }
