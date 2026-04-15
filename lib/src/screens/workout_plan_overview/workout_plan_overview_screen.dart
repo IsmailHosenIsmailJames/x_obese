@@ -8,6 +8,7 @@ import "package:x_obese/src/screens/info_collector/controller/all_info_controlle
 import "package:x_obese/src/screens/create_workout_plan/model/create_workout_plan_model.dart";
 import "package:x_obese/src/screens/create_workout_plan/model/get_workout_plans.dart";
 import "package:x_obese/src/screens/create_workout_plan/pages/page_3.dart";
+import "package:x_obese/src/screens/workout_plan_overview/controller/get_hoidays.dart";
 import "package:x_obese/src/theme/colors.dart";
 import "package:x_obese/src/widgets/app_bar.dart";
 import "package:x_obese/src/widgets/back_button.dart";
@@ -38,10 +39,7 @@ class _WorkoutPlanOverviewScreenState extends State<WorkoutPlanOverviewScreen> {
             Padding(
               padding: const EdgeInsets.only(top: 15.0, left: 15, right: 15),
               child: getAppBar(
-                backButton: getBackButton(
-                  context,
-                  () => context.pop(),
-                ),
+                backButton: getBackButton(context, () => context.pop()),
                 title: "Plan Overview",
                 showLogo: true,
               ),
@@ -119,52 +117,84 @@ class _WorkoutPlanOverviewScreenState extends State<WorkoutPlanOverviewScreen> {
                     child: TableCalendar(
                       calendarBuilders: CalendarBuilders(
                         selectedBuilder: (context, day, focusedDay) {
+                          final first = widget.getWorkoutPlansList.first;
+                          List<String> weekdays =
+                              first.workoutDays?.split(",") ?? [];
+                          bool isSelected = false;
+                          if (!(first.startDate != null &&
+                                  first.endDate != null &&
+                                  day.isAfter(first.startDate!) &&
+                                  day.isBefore(first.endDate!)) &&
+                              !(isSameDate(first.endDate, day) ||
+                                  isSameDate(first.startDate, day))) {
+                            isSelected = false;
+                          } else {
+                            isSelected = weekdays.contains(
+                              DateFormat(DateFormat.WEEKDAY).format(day),
+                            );
+                          }
+
+                          Map? holidayData = holidays.firstWhereOrNull(
+                            (element) =>
+                                element["date"] ==
+                                DateFormat("yyyy-MM-dd").format(day),
+                          );
                           return Stack(
                             children: [
                               Center(
                                 child: Text(
                                   day.day.toString(),
                                   style: TextStyle(
-                                    color:
-                                        day.month != focusedDay.month
-                                            ? const Color(0xffD9D9D9)
-                                            : MyAppColors.third,
+                                    color: day.month != focusedDay.month
+                                        ? const Color(0xffD9D9D9)
+                                        : MyAppColors.third,
                                   ),
                                 ),
                               ),
                               Align(
                                 alignment: Alignment.bottomCenter,
-                                child: SizedBox(
-                                  height: 6,
-                                  width: 6,
-                                  child: CircleAvatar(
-                                    backgroundColor:
-                                        isSameDate(day, DateTime.now()) == false
-                                            ? MyAppColors.second
-                                            : MyAppColors.third,
-                                  ),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    if (isSelected)
+                                      SizedBox(
+                                        height: 6,
+                                        width: 6,
+                                        child: CircleAvatar(
+                                          backgroundColor:
+                                              isSameDate(day, DateTime.now()) ==
+                                                  false
+                                              ? MyAppColors.second
+                                              : MyAppColors.third,
+                                        ),
+                                      ),
+
+                                    if (holidayData != null)
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                          right: 3.0,
+                                        ),
+                                        child: Text(
+                                          holidayData["name"],
+                                          style: const TextStyle(fontSize: 10),
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 1,
+                                        ),
+                                      ),
+                                  ],
                                 ),
                               ),
                             ],
                           );
                         },
                       ),
+
                       selectedDayPredicate: (day) {
-                        final first = widget.getWorkoutPlansList.first;
-                        List<String> weekdays =
-                            first.workoutDays?.split(",") ?? [];
-                        if (!(first.startDate != null &&
-                                first.endDate != null &&
-                                day.isAfter(first.startDate!) &&
-                                day.isBefore(first.endDate!)) &&
-                            !(isSameDate(first.endDate, day) ||
-                                isSameDate(first.startDate, day))) {
-                          return false;
-                        }
-                        return weekdays.contains(
-                          DateFormat(DateFormat.WEEKDAY).format(day),
-                        );
+                        return true;
                       },
+
                       calendarStyle: CalendarStyle(
                         todayDecoration: BoxDecoration(
                           color: MyAppColors.third,
@@ -184,7 +214,11 @@ class _WorkoutPlanOverviewScreenState extends State<WorkoutPlanOverviewScreen> {
                       firstDay: DateTime.utc(2010, 10, 16),
                       lastDay: DateTime.utc(2030, 3, 14),
                       focusedDay: DateTime.now(),
-                      headerVisible: false,
+                      headerVisible: true,
+                      headerStyle: const HeaderStyle(
+                        formatButtonVisible: false,
+                        titleCentered: true,
+                      ),
                       daysOfWeekHeight: 30,
                       daysOfWeekStyle: const DaysOfWeekStyle(
                         weekdayStyle: TextStyle(color: Color(0xffD9D9D9)),
@@ -222,33 +256,34 @@ class _WorkoutPlanOverviewScreenState extends State<WorkoutPlanOverviewScreen> {
                             onPressed: () {
                               GetWorkoutPlans getWorkoutPlans =
                                   widget.getWorkoutPlansList.first;
-                              CreateWorkoutPlanModel createWorkoutPlanModel =
-                                  CreateWorkoutPlanModel(
-                                    weightGoal:
-                                        getWorkoutPlans.weightGoal.toString(),
-                                    goalType: getWorkoutPlans.goalType!
-                                        .replaceAll("_", " "),
-                                    endDate: getWorkoutPlans.endDate,
-                                    startDate: getWorkoutPlans.startDate,
-                                    activateReminder:
-                                        getWorkoutPlans.activateReminder,
-                                    reminderTime:
-                                        getWorkoutPlans.reminderTime != null
-                                            ? TimeOfDay.fromDateTime(
-                                              getWorkoutPlans.reminderTime!,
-                                            ).format(context)
-                                            : null,
-                                    workoutDays: getWorkoutPlans.workoutDays,
-                                    workoutTimeMs:
-                                        ((int.parse(
-                                                  getWorkoutPlans
-                                                          .workoutTimeMs ??
-                                                      "0",
-                                                ) /
-                                                60000))
-                                            .toInt()
-                                            .toString(),
-                                  );
+                              CreateWorkoutPlanModel
+                              createWorkoutPlanModel = CreateWorkoutPlanModel(
+                                weightGoal: getWorkoutPlans.weightGoal
+                                    .toString(),
+                                goalType: getWorkoutPlans.goalType!.replaceAll(
+                                  "_",
+                                  " ",
+                                ),
+                                endDate: getWorkoutPlans.endDate,
+                                startDate: getWorkoutPlans.startDate,
+                                activateReminder:
+                                    getWorkoutPlans.activateReminder,
+                                reminderTime:
+                                    getWorkoutPlans.reminderTime != null
+                                    ? TimeOfDay.fromDateTime(
+                                        getWorkoutPlans.reminderTime!,
+                                      ).format(context)
+                                    : null,
+                                workoutDays: getWorkoutPlans.workoutDays,
+                                workoutTimeMs:
+                                    ((int.parse(
+                                              getWorkoutPlans.workoutTimeMs ??
+                                                  "0",
+                                            ) /
+                                            60000))
+                                        .toInt()
+                                        .toString(),
+                              );
 
                               context.pushReplacement(
                                 "/create-workout",
