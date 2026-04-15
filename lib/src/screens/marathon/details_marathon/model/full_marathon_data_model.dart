@@ -1,6 +1,6 @@
-import 'package:json_annotation/json_annotation.dart';
+import "package:json_annotation/json_annotation.dart";
 
-part 'full_marathon_data_model.g.dart';
+part "full_marathon_data_model.g.dart";
 
 @JsonSerializable()
 class FullMarathonDataModel {
@@ -29,16 +29,15 @@ class FullMarathonDataModel {
     Data? data,
     int? totalParticiants,
     List<Particiant>? particiants,
-  }) =>
-      FullMarathonDataModel(
-        success: success ?? this.success,
-        message: message ?? this.message,
-        data: data ?? this.data,
-        totalParticiants: totalParticiants ?? this.totalParticiants,
-        particiants: particiants ?? this.particiants,
-      );
+  }) => FullMarathonDataModel(
+    success: success ?? this.success,
+    message: message ?? this.message,
+    data: data ?? this.data,
+    totalParticiants: totalParticiants ?? this.totalParticiants,
+    particiants: particiants ?? this.particiants,
+  );
 
-  // Manual fromMap to maintain backward compatibility if needed, 
+  // Manual fromMap to maintain backward compatibility if needed,
   // but fromJson is the standard for json_serializable.
   factory FullMarathonDataModel.fromMap(Map<String, dynamic> map) =>
       FullMarathonDataModel.fromJson(map);
@@ -59,11 +58,11 @@ class Data {
   final String? imagePath;
   final String? type;
   bool? joined;
-  final String? marathonUserId;
+  String? marathonUserId;
   final dynamic createdBy;
   final DateTime? createdAt;
   final DateTime? updatedAt;
-  @JsonKey(name: 'Rewards')
+  @JsonKey(name: "Rewards")
   final List<dynamic>? rewards;
 
   Data({
@@ -106,25 +105,24 @@ class Data {
     DateTime? createdAt,
     DateTime? updatedAt,
     List<dynamic>? rewards,
-  }) =>
-      Data(
-        id: id ?? this.id,
-        title: title ?? this.title,
-        description: description ?? this.description,
-        about: about ?? this.about,
-        distanceKm: distanceKm ?? this.distanceKm,
-        location: location ?? this.location,
-        startDate: startDate ?? this.startDate,
-        endDate: endDate ?? this.endDate,
-        imagePath: imagePath ?? this.imagePath,
-        type: type ?? this.type,
-        joined: joined ?? this.joined,
-        marathonUserId: marathonUserId ?? this.marathonUserId,
-        createdBy: createdBy ?? this.createdBy,
-        createdAt: createdAt ?? this.createdAt,
-        updatedAt: updatedAt ?? this.updatedAt,
-        rewards: rewards ?? this.rewards,
-      );
+  }) => Data(
+    id: id ?? this.id,
+    title: title ?? this.title,
+    description: description ?? this.description,
+    about: about ?? this.about,
+    distanceKm: distanceKm ?? this.distanceKm,
+    location: location ?? this.location,
+    startDate: startDate ?? this.startDate,
+    endDate: endDate ?? this.endDate,
+    imagePath: imagePath ?? this.imagePath,
+    type: type ?? this.type,
+    joined: joined ?? this.joined,
+    marathonUserId: marathonUserId ?? this.marathonUserId,
+    createdBy: createdBy ?? this.createdBy,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+    rewards: rewards ?? this.rewards,
+  );
 
   factory Data.fromMap(Map<String, dynamic> map) => Data.fromJson(map);
 
@@ -150,15 +148,15 @@ class Particiant {
     String? fullName,
     String? image,
     String? imagePath,
-  }) =>
-      Particiant(
-        id: id ?? this.id,
-        fullName: fullName ?? this.fullName,
-        image: image ?? this.image,
-        imagePath: imagePath ?? this.imagePath,
-      );
+  }) => Particiant(
+    id: id ?? this.id,
+    fullName: fullName ?? this.fullName,
+    image: image ?? this.image,
+    imagePath: imagePath ?? this.imagePath,
+  );
 
-  factory Particiant.fromMap(Map<String, dynamic> map) => Particiant.fromJson(map);
+  factory Particiant.fromMap(Map<String, dynamic> map) =>
+      Particiant.fromJson(map);
 
   Map<String, dynamic> toMap() => toJson();
 }

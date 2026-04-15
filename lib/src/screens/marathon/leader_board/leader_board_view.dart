@@ -1,4 +1,5 @@
 import "dart:convert";
+import "dart:developer";
 
 import "package:cached_network_image/cached_network_image.dart";
 import "package:flutter/material.dart";
@@ -42,9 +43,10 @@ class _LeaderBoardViewState extends State<LeaderBoardView> {
 
   Future<void> getMyData() async {
     DioClient dioClient = DioClient(baseAPI);
-    final response = await dioClient.dio.get(
-      "/api/marathon/v1/user/${widget.marathonData.data?.marathonUserId}/leaderboard",
-    );
+    String url =
+        "/api/marathon/v1/user/${widget.marathonData.data?.marathonUserId}/leaderboard";
+    log("API : $url");
+    final response = await dioClient.dio.get(url);
     myPosition = MyRank.fromMap(
       Map<String, dynamic>.from(response.data["data"]),
     );
@@ -64,10 +66,7 @@ class _LeaderBoardViewState extends State<LeaderBoardView> {
               child: Column(
                 children: [
                   getAppBar(
-                    backButton: getBackButton(
-                      context,
-                          () => context.pop(),
-                    ),
+                    backButton: getBackButton(context, () => context.pop()),
                     title: "Leaderboard",
                     showLogo: true,
                   ),
@@ -242,17 +241,16 @@ class _LeaderBoardViewState extends State<LeaderBoardView> {
                                   borderRadius: BorderRadius.circular(100),
                                   child: CircleAvatar(
                                     radius: 20,
-                                    child:
-                                        user.user?.imagePath == null
-                                            ? null
-                                            : SizedBox(
-                                              height: 40,
-                                              width: 40,
-                                              child: CachedNetworkImage(
-                                                imageUrl: user.user!.imagePath!,
-                                                fit: BoxFit.cover,
-                                              ),
+                                    child: user.user?.imagePath == null
+                                        ? null
+                                        : SizedBox(
+                                            height: 40,
+                                            width: 40,
+                                            child: CachedNetworkImage(
+                                              imageUrl: user.user!.imagePath!,
+                                              fit: BoxFit.cover,
                                             ),
+                                          ),
                                   ),
                                 ),
                                 const Gap(12),
@@ -319,18 +317,17 @@ class _LeaderBoardViewState extends State<LeaderBoardView> {
                       borderRadius: BorderRadius.circular(100),
                       child: CircleAvatar(
                         radius: 20,
-                        child:
-                            allInfoController.allInfo.value.image == null
-                                ? null
-                                : SizedBox(
-                                  height: 40,
-                                  width: 40,
-                                  child: CachedNetworkImage(
-                                    imageUrl:
-                                        allInfoController.allInfo.value.image!,
-                                    fit: BoxFit.cover,
-                                  ),
+                        child: allInfoController.allInfo.value.image == null
+                            ? null
+                            : SizedBox(
+                                height: 40,
+                                width: 40,
+                                child: CachedNetworkImage(
+                                  imageUrl:
+                                      allInfoController.allInfo.value.image!,
+                                  fit: BoxFit.cover,
                                 ),
+                              ),
                       ),
                     ),
                     const Gap(12),
@@ -379,22 +376,20 @@ class _LeaderBoardViewState extends State<LeaderBoardView> {
 
       decoration: BoxDecoration(
         border: Border.all(color: MyAppColors.second, width: 2),
-        image:
-            widget.leaderboardUsers[1].user?.imagePath == null
-                ? null
-                : DecorationImage(
-                  image: CachedNetworkImageProvider(
-                    widget.leaderboardUsers[1].user!.imagePath!,
-                  ),
-                  fit: BoxFit.cover,
+        image: widget.leaderboardUsers[1].user?.imagePath == null
+            ? null
+            : DecorationImage(
+                image: CachedNetworkImageProvider(
+                  widget.leaderboardUsers[1].user!.imagePath!,
                 ),
+                fit: BoxFit.cover,
+              ),
         borderRadius: BorderRadius.circular(100),
       ),
       child: Center(
-        child:
-            widget.leaderboardUsers[1].user?.imagePath == null
-                ? const Icon(Icons.person_outline, size: 16)
-                : null,
+        child: widget.leaderboardUsers[1].user?.imagePath == null
+            ? const Icon(Icons.person_outline, size: 16)
+            : null,
       ),
     );
   }
@@ -469,10 +464,12 @@ class MyRankData {
     marathonId: json["marathonId"],
     distanceKm: json["distanceKm"],
     durationMs: json["durationMs"],
-    createdAt:
-        json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
-    updatedAt:
-        json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
+    createdAt: json["createdAt"] == null
+        ? null
+        : DateTime.parse(json["createdAt"]),
+    updatedAt: json["updatedAt"] == null
+        ? null
+        : DateTime.parse(json["updatedAt"]),
   );
 
   Map<String, dynamic> toMap() => {

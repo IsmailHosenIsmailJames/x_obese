@@ -88,13 +88,12 @@ class _MarathonDetailsViewState extends State<MarathonDetailsView> {
                 SizedBox(
                   height: 194,
                   width: double.infinity,
-                  child:
-                      widget.marathonData.imagePath == null
-                          ? null
-                          : CachedNetworkImage(
-                            imageUrl: widget.marathonData.imagePath!,
-                            fit: BoxFit.cover,
-                          ),
+                  child: widget.marathonData.imagePath == null
+                      ? null
+                      : CachedNetworkImage(
+                          imageUrl: widget.marathonData.imagePath!,
+                          fit: BoxFit.cover,
+                        ),
                 ),
                 SafeArea(
                   child: Padding(
@@ -260,65 +259,71 @@ class _MarathonDetailsViewState extends State<MarathonDetailsView> {
                       height: 48,
                       child: ElevatedButton.icon(
                         iconAlignment: IconAlignment.end,
-                        onPressed:
-                            fullMarathonDataModel?.data?.joined == true
-                                ? null
-                                : () {
-                                  if (fullMarathonDataModel == null ||
-                                      (fullMarathonDataModel!.data?.joined ??
-                                          false)) {
-                                    return;
-                                  }
-                                  if (allInfoController.allInfo.value.isGuest) {
-                                    showSignupPopup(context);
-                                    return;
-                                  }
-                                  DioClient dioClient = DioClient(baseAPI);
-                                  dioClient.dio
-                                      .post(
-                                        "/api/marathon/v1/user",
-                                        data: {
-                                          "marathonId":
-                                              fullMarathonDataModel!.data!.id,
-                                        },
-                                      )
-                                      .then((value) {
-                                        printResponse(value);
-                                        if (value.statusCode == 200 ||
-                                            value.statusCode == 201) {
-                                          if (!mounted) return;
-                                          setState(() {
-                                            fullMarathonDataModel?.data?.joined =
-                                                true;
-                                          });
-                                          log("Joined Successfully");
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(
-                                                const SnackBar(
-                                                  content: Text(
-                                                    "You have joined the challenge successfully",
-                                                  ),
-                                                  backgroundColor: Colors.green,
-                                                  duration: Duration(seconds: 2),
-                                                ),
-                                              );
-                                        }
-                                      })
-                                      .onError((error, stackTrace) {
-                                        log(error.toString());
+                        onPressed: fullMarathonDataModel?.data?.joined == true
+                            ? null
+                            : () {
+                                if (fullMarathonDataModel == null ||
+                                    (fullMarathonDataModel!.data?.joined ??
+                                        false)) {
+                                  return;
+                                }
+                                if (allInfoController.allInfo.value.isGuest) {
+                                  showSignupPopup(context);
+                                  return;
+                                }
+                                DioClient dioClient = DioClient(baseAPI);
+                                dioClient.dio
+                                    .post(
+                                      "/api/marathon/v1/user",
+                                      data: {
+                                        "marathonId":
+                                            fullMarathonDataModel!.data!.id,
+                                      },
+                                    )
+                                    .then((value) {
+                                      printResponse(value);
+                                      if (value.statusCode == 200 ||
+                                          value.statusCode == 201) {
                                         if (!mounted) return;
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                              SnackBar(
-                                                content: Text(error.toString()),
-                                                backgroundColor: Colors.red,
-                                                duration: const Duration(
-                                                  seconds: 2,
-                                                ),
-                                              ),
-                                            );
-                                      });
-                                },
+                                        setState(() {
+                                          fullMarathonDataModel?.data?.joined =
+                                              true;
+                                          if (value.data["data"]?["id"] !=
+                                              null) {
+                                            fullMarathonDataModel
+                                                    ?.data
+                                                    ?.marathonUserId =
+                                                value.data["data"]["id"];
+                                          }
+                                        });
+                                        log("Joined Successfully");
+                                        ScaffoldMessenger.of(
+                                          context,
+                                        ).showSnackBar(
+                                          const SnackBar(
+                                            content: Text(
+                                              "You have joined the challenge successfully",
+                                            ),
+                                            backgroundColor: Colors.green,
+                                            duration: Duration(seconds: 2),
+                                          ),
+                                        );
+                                      }
+                                    })
+                                    .onError((error, stackTrace) {
+                                      log(error.toString());
+                                      if (!mounted) return;
+                                      ScaffoldMessenger.of(
+                                        context,
+                                      ).showSnackBar(
+                                        SnackBar(
+                                          content: Text(error.toString()),
+                                          backgroundColor: Colors.red,
+                                          duration: const Duration(seconds: 2),
+                                        ),
+                                      );
+                                    });
+                              },
                         label: Text(
                           widget.isVirtual ? "Join Challenge" : "Register Now",
                           style: const TextStyle(
@@ -339,8 +344,39 @@ class _MarathonDetailsViewState extends State<MarathonDetailsView> {
                         onPressed: () async {
                           try {
                             DioClient dioClient = DioClient(baseAPI);
+                            String? mUserId =
+                                fullMarathonDataModel?.data?.marathonUserId;
+
+                            if (mUserId == null) {
+                              final response = await dioClient.dio.get(
+                                "/api/marathon/v1/user?marathonId=${fullMarathonDataModel?.data?.id}&size=1000&page=1",
+                              );
+                              if (response.data["success"]) {
+                                List users = response.data["data"];
+                                final currentUserId =
+                                    allInfoController.allInfo.value.id;
+                                for (var user in users) {
+                                  if (user["userId"] == currentUserId) {
+                                    mUserId = user["id"];
+                                    fullMarathonDataModel
+                                            ?.data
+                                            ?.marathonUserId =
+                                        mUserId;
+                                    break;
+                                  }
+                                }
+                              }
+                            }
+
+                            if (mUserId == null) {
+                              Fluttertoast.showToast(
+                                msg: "User registration not found",
+                              );
+                              return;
+                            }
+
                             final response = await dioClient.dio.get(
-                              "/api/marathon/v1/user/${fullMarathonDataModel?.data?.marathonUserId}",
+                              "/api/marathon/v1/user/$mUserId",
                             );
                             final MarathonUserModel marathonUserModel =
                                 MarathonUserModel.fromMap(
@@ -400,6 +436,17 @@ class _MarathonDetailsViewState extends State<MarathonDetailsView> {
                                   ),
                                 );
                               }
+
+                              final currentUserId =
+                                  allInfoController.allInfo.value.id;
+                              for (var user in marathonUserList) {
+                                if (user.userId == currentUserId) {
+                                  fullMarathonDataModel?.data?.marathonUserId =
+                                      user.id;
+                                  break;
+                                }
+                              }
+
                               context.push(
                                 "/leaderboard",
                                 extra: {
@@ -460,14 +507,16 @@ class _MarathonDetailsViewState extends State<MarathonDetailsView> {
     final int maxShown = 3; // Keep it compact
     final int totalCount =
         fullMarathonDataModel!.totalParticiants ?? participants.length;
-    final int shownCount =
-        participants.length > maxShown ? maxShown : participants.length;
+    final int shownCount = participants.length > maxShown
+        ? maxShown
+        : participants.length;
     final bool hasMore = totalCount > shownCount;
     final int moreCount = totalCount - shownCount;
 
     return SizedBox(
       height: avatarSize,
-      width: (shownCount * (avatarSize - overlap)) +
+      width:
+          (shownCount * (avatarSize - overlap)) +
           overlap +
           (hasMore ? avatarSize - overlap + 4 : 0),
       child: Stack(
@@ -500,17 +549,15 @@ class _MarathonDetailsViewState extends State<MarathonDetailsView> {
       child: ClipOval(
         child:
             participant.imagePath != null &&
-                    !participant.imagePath!.contains("null")
-                ? CachedNetworkImage(
-                  imageUrl: participant.imagePath!,
-                  fit: BoxFit.cover,
-                  placeholder:
-                      (context, url) => Container(
-                        color: MyAppColors.third.withValues(alpha: 0.05),
-                      ),
-                  errorWidget: (context, url, error) => _buildDefaultAvatar(size),
-                )
-                : _buildDefaultAvatar(size),
+                !participant.imagePath!.contains("null")
+            ? CachedNetworkImage(
+                imageUrl: participant.imagePath!,
+                fit: BoxFit.cover,
+                placeholder: (context, url) =>
+                    Container(color: MyAppColors.third.withValues(alpha: 0.05)),
+                errorWidget: (context, url, error) => _buildDefaultAvatar(size),
+              )
+            : _buildDefaultAvatar(size),
       ),
     );
   }
