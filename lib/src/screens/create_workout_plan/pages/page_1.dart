@@ -54,6 +54,23 @@ class _CreateWorkoutPlanPage1State extends State<CreateWorkoutPlanPage1> {
         "6",
   );
 
+  double _getBMIAlignment(double bmi) {
+    // Anchor points based on UI labels and spaceAround layout
+    // Alignment range is -1.0 to 1.0
+    // spaceAround for 3 items puts them at 1/6, 1/2, 5/6 of width
+    // 1/6th width -> x = -0.66
+    // 1/2th width -> x = 0.0
+    // 5/6th width -> x = 0.66
+
+    if (bmi < 24.9) {
+      // Scale based on 18.4 to 24.9 range mapping to -0.66 to 0.0
+      return ((bmi - 24.9) / (24.9 - 18.4) * 0.66).clamp(-1.0, 1.0);
+    } else {
+      // Scale based on 24.9 to 29.9 range mapping to 0.0 to 0.66
+      return ((bmi - 24.9) / (29.9 - 24.9) * 0.66).clamp(-1.0, 1.0);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -127,7 +144,7 @@ class _CreateWorkoutPlanPage1State extends State<CreateWorkoutPlanPage1> {
                                   ),
                                 ),
                                 Align(
-                                  alignment: Alignment.bottomCenter,
+                                  alignment: Alignment(_getBMIAlignment(userBMI), 1),
                                   child: SvgPicture.string(
                                     '''<svg xmlns="http://www.w3.org/2000/svg" width="14" height="17" viewBox="0 0 14 17" fill="none">
                     <path d="M8.07342 14.7584C7.59014 16.0642 5.7432 16.0642 5.25992 14.7584L0.91581 3.02064C0.553252 2.04101 1.27799 1 2.32256 1H11.0108C12.0553 1 12.7801 2.041 12.4175 3.02063L8.07342 14.7584Z" fill="white" stroke="#9ADF8F"/>
@@ -394,13 +411,13 @@ enum BMICategory {
 BMICategory getBMICategory(double bmi) {
   if (bmi < 18.5) {
     return BMICategory.underweight;
-  } else if (bmi >= 18.5 && bmi < 24.9) {
+  } else if (bmi < 25.0) {
     return BMICategory.healthyWeight;
-  } else if (bmi >= 25.0 && bmi < 29.9) {
+  } else if (bmi < 30.0) {
     return BMICategory.overweight;
-  } else if (bmi >= 30.0 && bmi < 34.9) {
+  } else if (bmi < 35.0) {
     return BMICategory.obesityClassI;
-  } else if (bmi >= 35.0 && bmi < 39.9) {
+  } else if (bmi < 40.0) {
     return BMICategory.obesityClassII;
   } else {
     return BMICategory.obesityClassIII;
