@@ -266,9 +266,10 @@ class _CreateWorkoutPlanPage1State extends State<CreateWorkoutPlanPage1> {
                                   .goalType ==
                               "Lose Weight".toLowerCase()) {
                         createWorkoutPlanController
-                            .createWorkoutPlanModel
-                            .value
-                            .weightGoal = textEditingController.text;
+                                .createWorkoutPlanModel
+                                .value
+                                .weightGoal =
+                            textEditingController.text;
                       }
                       widget.pageController.nextPage(
                         duration: const Duration(milliseconds: 300),
@@ -321,10 +322,10 @@ class _CreateWorkoutPlanPage1State extends State<CreateWorkoutPlanPage1> {
           borderRadius: BorderRadius.circular(4),
           color:
               createWorkoutPlanController.createWorkoutPlanModel.value.goalType
-                          ?.toLowerCase() ==
-                      title.toLowerCase()
-                  ? MyAppColors.third
-                  : MyAppColors.transparentGray,
+                      ?.toLowerCase() ==
+                  title.toLowerCase()
+              ? MyAppColors.third
+              : MyAppColors.transparentGray,
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -336,13 +337,13 @@ class _CreateWorkoutPlanPage1State extends State<CreateWorkoutPlanPage1> {
                 svg,
                 color:
                     createWorkoutPlanController
-                                .createWorkoutPlanModel
-                                .value
-                                .goalType
-                                ?.toLowerCase() ==
-                            title.toLowerCase()
-                        ? MyAppColors.primary
-                        : const Color(0xff8AC6FF),
+                            .createWorkoutPlanModel
+                            .value
+                            .goalType
+                            ?.toLowerCase() ==
+                        title.toLowerCase()
+                    ? MyAppColors.primary
+                    : const Color(0xff8AC6FF),
               ),
             ),
             Gap(gap ?? 0),
@@ -353,13 +354,13 @@ class _CreateWorkoutPlanPage1State extends State<CreateWorkoutPlanPage1> {
                 fontWeight: FontWeight.w400,
                 color:
                     createWorkoutPlanController
-                                .createWorkoutPlanModel
-                                .value
-                                .goalType
-                                ?.toLowerCase() ==
-                            title.toLowerCase()
-                        ? MyAppColors.primary
-                        : const Color(0xff8AC6FF),
+                            .createWorkoutPlanModel
+                            .value
+                            .goalType
+                            ?.toLowerCase() ==
+                        title.toLowerCase()
+                    ? MyAppColors.primary
+                    : const Color(0xff8AC6FF),
               ),
             ),
           ],

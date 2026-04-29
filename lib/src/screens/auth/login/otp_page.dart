@@ -1,4 +1,3 @@
-import "package:dio/dio.dart" as dio;
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:flutter_svg/svg.dart";
@@ -15,13 +14,13 @@ import "package:x_obese/src/theme/colors.dart";
 class OtpPage extends StatefulWidget {
   final bool isSignup;
   final String phone;
-  final dio.Response response;
+  final String id;
 
   const OtpPage({
     super.key,
     required this.isSignup,
     required this.phone,
-    required this.response,
+    required this.id,
   });
 
   @override
@@ -36,7 +35,7 @@ class _OtpPageState extends State<OtpPage> {
       Fluttertoast.showToast(msg: "Check Internet Connection!");
       return;
     }
-    String id = widget.response.data["data"]?["id"] ?? "";
+    String id = widget.id;
     String type = widget.isSignup ? "signup" : "login";
     context.read<AuthBloc>().add(VerifyOTP(otp: otp, type: type, id: id));
   }

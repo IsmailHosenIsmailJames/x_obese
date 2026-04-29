@@ -1,4 +1,3 @@
-import "package:dio/dio.dart" as dio;
 import "package:equatable/equatable.dart";
 import "package:x_obese/src/screens/info_collector/model/user_info_model.dart";
 
@@ -14,12 +13,12 @@ class AuthInitial extends AuthState {}
 class AuthLoading extends AuthState {}
 
 class AuthCodeSentSuccess extends AuthState {
-  final dio.Response response;
+  final String id;
 
-  const AuthCodeSentSuccess(this.response);
+  const AuthCodeSentSuccess(this.id);
 
   @override
-  List<Object> get props => [response];
+  List<Object> get props => [id];
 }
 
 class AuthVerificationSuccess extends AuthState {

@@ -115,6 +115,7 @@ class _WorkoutPlanOverviewScreenState extends State<WorkoutPlanOverviewScreen> {
                     ),
 
                     child: TableCalendar(
+                      availableGestures: AvailableGestures.horizontalSwipe,
                       calendarBuilders: CalendarBuilders(
                         selectedBuilder: (context, day, focusedDay) {
                           final first = widget.getWorkoutPlansList.first;
@@ -285,7 +286,7 @@ class _WorkoutPlanOverviewScreenState extends State<WorkoutPlanOverviewScreen> {
                                         .toString(),
                               );
 
-                              context.pushReplacement(
+                              context.push(
                                 "/create-workout",
                                 extra: {
                                   "createWorkoutPlanModel":

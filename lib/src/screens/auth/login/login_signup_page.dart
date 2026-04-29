@@ -35,7 +35,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
               extra: {
                 "isSignup": pageName == AuthPageName.signup,
                 "phone": phoneController.text.trim(),
-                "response": state.response,
+                "id": state.id,
               },
             );
           } else if (state is AuthFailure) {

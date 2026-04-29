@@ -31,7 +31,7 @@ import "package:x_obese/src/screens/workout_plan_overview/workout_plan_overview_
 import "package:x_obese/src/screens/marathon/show_search_result/show_search_result.dart";
 import "package:x_obese/src/screens/home/statistics_overview_screen.dart";
 import "package:x_obese/src/screens/home/workout_history_screen.dart";
-import "package:dio/dio.dart" as dio;
+import "package:x_obese/src/core/router/extra_codec.dart";
 
 class AppRouter {
   static final GlobalKey<NavigatorState> rootNavigatorKey =
@@ -47,6 +47,7 @@ class AppRouter {
       navigatorKey: rootNavigatorKey,
       initialLocation: "/",
       debugLogDiagnostics: true,
+      extraCodec: const AppExtraCodec(),
       routes: [
         GoRoute(
           path: "/",
@@ -112,7 +113,7 @@ class AppRouter {
             return OtpPage(
               isSignup: extra["isSignup"] as bool,
               phone: extra["phone"] as String,
-              response: extra["response"] as dio.Response,
+              id: extra["id"] as String,
             );
           },
         ),

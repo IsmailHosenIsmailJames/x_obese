@@ -30,7 +30,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       final response = await authRepository.signup(event.phone);
       if (response != null &&
           (response.statusCode == 200 || response.statusCode == 201)) {
-        emit(AuthCodeSentSuccess(response));
+        final id = response.data["data"]?["id"] ?? "";
+        emit(AuthCodeSentSuccess(id));
       } else {
         emit(AuthFailure(response?.data["message"] ?? "Signup Failed"));
       }
@@ -48,7 +49,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       final response = await authRepository.login(event.phone);
       if (response != null &&
           (response.statusCode == 200 || response.statusCode == 201)) {
-        emit(AuthCodeSentSuccess(response));
+        final id = response.data["data"]?["id"] ?? "";
+        emit(AuthCodeSentSuccess(id));
       } else {
         log(response?.statusCode.toString() ?? "Null", name: "API");
         emit(AuthFailure(response?.data["message"] ?? "Login Failed"));

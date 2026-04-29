@@ -105,10 +105,10 @@ class _CreateWorkoutPlanPage3State extends State<CreateWorkoutPlanPage3> {
                           "0",
                       calorieBairn:
                           (createWorkoutPlanController
-                                  .workOutPlan
-                                  .value
-                                  ?.caloriesGoal ??
-                              0),
+                              .workOutPlan
+                              .value
+                              ?.caloriesGoal ??
+                          0),
 
                       daysTotal:
                           (createWorkoutPlanController
@@ -130,7 +130,7 @@ class _CreateWorkoutPlanPage3State extends State<CreateWorkoutPlanPage3> {
                 height: 50,
                 child: ElevatedButton(
                   onPressed: () {
-                    context.pop();
+                    context.go("/home");
                   },
                   child: const Text("Done"),
                 ),
