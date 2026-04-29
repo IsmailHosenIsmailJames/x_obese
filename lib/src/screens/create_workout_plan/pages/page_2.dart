@@ -333,7 +333,6 @@ class _CreateWorkoutPlanPage2State extends State<CreateWorkoutPlanPage2> {
                             onTap: () async {
                               DateTime? start = await showDatePicker(
                                 context: context,
-
                                 firstDate: DateTime.now(),
                                 lastDate: DateTime.now().add(
                                   const Duration(days: 365),
@@ -345,21 +344,41 @@ class _CreateWorkoutPlanPage2State extends State<CreateWorkoutPlanPage2> {
                                         .startDate ??
                                     DateTime.now(),
                               );
-                              setState(() {
-                                if (start != null) {
+                              if (start != null) {
+                                if (createWorkoutPlanController
+                                            .createWorkoutPlanModel.value.endDate !=
+                                        null &&
+                                    start.isAfter(
+                                      createWorkoutPlanController
+                                          .createWorkoutPlanModel
+                                          .value
+                                          .endDate!,
+                                    )) {
+                                  toastification.show(
+                                    context: context,
+                                    title: const Text("Invalid Start Date"),
+                                    description: const Text(
+                                      "The start date cannot be after the end date. Please select a valid range.",
+                                    ),
+                                    type: ToastificationType.error,
+                                    autoCloseDuration: const Duration(seconds: 3),
+                                  );
+                                  return;
+                                }
+                                setState(() {
                                   createWorkoutPlanController
                                       .createWorkoutPlanModel
                                       .value
                                       .startDate = start;
-                                }
-                                log(
-                                  createWorkoutPlanController
-                                      .createWorkoutPlanModel
-                                      .value
-                                      .startDate
-                                      .toString(),
-                                );
-                              });
+                                  log(
+                                    createWorkoutPlanController
+                                        .createWorkoutPlanModel
+                                        .value
+                                        .startDate
+                                        .toString(),
+                                  );
+                                });
+                              }
                             },
                             child: Text(
                               DateFormat.yMMMMd().format(
@@ -413,14 +432,34 @@ class _CreateWorkoutPlanPage2State extends State<CreateWorkoutPlanPage2> {
                                       const Duration(days: 365),
                                     ),
                               );
-                              setState(() {
-                                if (end != null) {
+                              if (end != null) {
+                                if (createWorkoutPlanController
+                                            .createWorkoutPlanModel.value.startDate !=
+                                        null &&
+                                    end.isBefore(
+                                      createWorkoutPlanController
+                                          .createWorkoutPlanModel
+                                          .value
+                                          .startDate!,
+                                    )) {
+                                  toastification.show(
+                                    context: context,
+                                    title: const Text("Invalid End Date"),
+                                    description: const Text(
+                                      "The end date cannot be before the start date. Please select a valid range.",
+                                    ),
+                                    type: ToastificationType.error,
+                                    autoCloseDuration: const Duration(seconds: 3),
+                                  );
+                                  return;
+                                }
+                                setState(() {
                                   createWorkoutPlanController
                                       .createWorkoutPlanModel
                                       .value
                                       .endDate = end;
-                                }
-                              });
+                                });
+                              }
                             },
                             child: Text(
                               DateFormat.yMMMMd().format(
@@ -504,7 +543,10 @@ class _CreateWorkoutPlanPage2State extends State<CreateWorkoutPlanPage2> {
                             .millisecondsSinceEpoch) {
                       toastification.show(
                         context: context,
-                        title: const Text("Start and End date not valid"),
+                        title: const Text("Invalid Date Range"),
+                        description: const Text(
+                          "The start date must be before the end date. Please adjust your selection.",
+                        ),
                         type: ToastificationType.error,
                         autoCloseDuration: const Duration(seconds: 3),
                       );
