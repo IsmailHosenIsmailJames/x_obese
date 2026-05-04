@@ -62,41 +62,7 @@ class _PointsOverviewWidgetState extends State<PointsOverviewWidget> {
   }
 
   Future<void> fetchData() async {
-    DateTime now = DateTime.now();
-    int? steps = await MyHealthFunctions.fetchSteps(
-      DateTime(now.year, now.month, now.day),
-      now,
-    );
-    if (!((steps ?? 0) > 0)) {
-      steps = controller.workStatus.value?.steps ?? 0;
-    }
-    if (steps != null) {
-      controller.stepsCount.value = steps;
-      log(steps.toString(), name: "Steps");
-    }
-
-    // double calories = await MyHealthFunctions.fetchCalories(
-    //   DateTime(now.year, now.month, now.day),
-    //   now,
-    // );
-    // controller.workStatus.value.calories = calories.toString();
-    // log(calories.toString(), name: "Calories");
-
-    // int heartPoints = await MyHealthFunctions.fetchHeartPoints(
-    //   // this week
-    //   DateTime(now.year, now.month, now.day).subtract(const Duration(days: 7)),
-    //   now,
-    // );
-    // controller.workStatus.value.heartPts = heartPoints.toString();
-
-    // log(heartPoints.toString(), name: "Heart Points");
-
-    // int workoutTime = await MyHealthFunctions.fetchWorkoutTime(
-    //   DateTime(now.year, now.month, now.day),
-    //   now,
-    // );
-    // controller.workStatus.value.durationMs = workoutTime * 60000;
-    // log(workoutTime.toString(), name: "Workout Time");
+    controller.stepsCount.value = controller.workStatus.value?.steps ?? 0;
   }
 
   @override

@@ -5,7 +5,6 @@ import "package:get/get.dart";
 import "package:hive_flutter/hive_flutter.dart";
 import "package:x_obese/src/apis/apis_url.dart";
 import "package:x_obese/src/apis/middleware/jwt_middleware.dart";
-import "package:x_obese/src/core/health/my_health_functions.dart";
 import "package:x_obese/src/data/user_db.dart";
 import "package:x_obese/src/screens/blog/model/get_blog_model.dart";
 import "package:x_obese/src/screens/info_collector/model/user_info_model.dart";
@@ -78,33 +77,23 @@ class AllInfoController extends GetxController {
     // Load marathon list
     final marathonListJson = _userBox.get("marathonList", defaultValue: "[]");
     final List marathonListData = jsonDecode(marathonListJson);
-    marathonList.value =
-        marathonListData
-            .map(
-              (data) => MarathonModel.fromMap(Map<String, dynamic>.from(data)),
-            )
-            .toList();
+    marathonList.value = marathonListData
+        .map((data) => MarathonModel.fromMap(Map<String, dynamic>.from(data)))
+        .toList();
 
     // Load workout plans
     final workoutPlansJson = _userBox.get("workoutPlans", defaultValue: "[]");
     final List workoutPlansData = jsonDecode(workoutPlansJson);
-    getWorkoutPlansList.value =
-        workoutPlansData
-            .map(
-              (data) =>
-                  GetWorkoutPlans.fromMap(Map<String, dynamic>.from(data)),
-            )
-            .toList();
+    getWorkoutPlansList.value = workoutPlansData
+        .map((data) => GetWorkoutPlans.fromMap(Map<String, dynamic>.from(data)))
+        .toList();
 
     // Load blogs
     final blogListJson = _userBox.get("blogList", defaultValue: "[]");
     final List blogListData = jsonDecode(blogListJson);
-    getBlogList.value =
-        blogListData
-            .map(
-              (data) => GetBlogModel.fromMap(Map<String, dynamic>.from(data)),
-            )
-            .toList();
+    getBlogList.value = blogListData
+        .map((data) => GetBlogModel.fromMap(Map<String, dynamic>.from(data)))
+        .toList();
   }
 
   Future<void> _fetchWorkoutStatus() async {
@@ -115,10 +104,7 @@ class AllInfoController extends GetxController {
         heartPts: "0",
         distanceKm: "0",
         calories: "0",
-        steps: await MyHealthFunctions.fetchSteps(
-          DateTime.now().copyWith(hour: 0, minute: 0, second: 0),
-          DateTime.now(),
-        ),
+        steps: 0,
       );
       workStatus.value = status.copyWith(
         durationMs: (status.durationMs ?? 0) / 60000,
@@ -156,10 +142,9 @@ class AllInfoController extends GetxController {
       if (response.statusCode == 200) {
         final List marathonListData = response.data["data"];
         _userBox.put("marathonList", jsonEncode(marathonListData));
-        marathonList.value =
-            marathonListData
-                .map((data) => MarathonModel.fromMap(data))
-                .toList();
+        marathonList.value = marathonListData
+            .map((data) => MarathonModel.fromMap(data))
+            .toList();
       }
     } on dio.DioException catch (e) {
       log(
@@ -180,8 +165,9 @@ class AllInfoController extends GetxController {
       if (response.statusCode == 200) {
         final List workoutPlans = response.data["data"];
         _userBox.put("workoutPlans", jsonEncode(workoutPlans));
-        getWorkoutPlansList.value =
-            workoutPlans.map((data) => GetWorkoutPlans.fromMap(data)).toList();
+        getWorkoutPlansList.value = workoutPlans
+            .map((data) => GetWorkoutPlans.fromMap(data))
+            .toList();
       }
     } on dio.DioException catch (e) {
       log("Failed to fetch workout plans: ${e.message}");
@@ -194,8 +180,9 @@ class AllInfoController extends GetxController {
       if (response.statusCode == 200) {
         final List blogList = response.data["data"] ?? [];
         _userBox.put("blogList", jsonEncode(blogList));
-        getBlogList.value =
-            blogList.map((data) => GetBlogModel.fromMap(data)).toList();
+        getBlogList.value = blogList
+            .map((data) => GetBlogModel.fromMap(data))
+            .toList();
       }
     } on dio.DioException catch (e) {
       log("Failed to fetch blogs: ${e.message}");
@@ -238,8 +225,9 @@ class AllInfoController extends GetxController {
       final response = await _dioClient.dio.get(getWorkoutHistoryListPath);
       if (response.statusCode == 200 && response.data["data"] != null) {
         final List workoutListData = response.data["data"]["data"] ?? [];
-        myWorkouts.value =
-            workoutListData.map((data) => WorkoutModel.fromMap(data)).toList();
+        myWorkouts.value = workoutListData
+            .map((data) => WorkoutModel.fromMap(data))
+            .toList();
       }
     } on dio.DioException catch (e) {
       log("Failed to fetch workout list: ${e.message}");
