@@ -1,90 +1,77 @@
 # X-Obese Fitness App
 
-X-Obese is a new fitness application designed to help users on their journey to a healthier lifestyle. This Flutter-based mobile app provides a range of features to track fitness activities, monitor progress, and stay motivated.
+X-Obese is a comprehensive fitness application built with Flutter, designed to help users track their health journey through step counting, workout monitoring, and community events.
 
-## Features
+---
 
-- **User Authentication:** Secure login and registration for a personalized experience.
-- **Fitness Tracking:**
-    - **Step Counter:** Pedometer functionality to track daily steps.
-    - **Workout Tracking:** Log various workout sessions, including running and walking.
-    - **GPS Integration:** Google Maps for tracking routes during outdoor activities.
-- **Health Data Integration:**
-    - **HealthKit & Google Fit:** Syncs with native health platforms to consolidate health data.
-- **Personalized Information:**
-    - **User Profile:** Collects and stores user data such as age, weight, and height for personalized recommendations.
-    - **Onboarding:** An introductory flow for new users to get acquainted with the app.
-- **Community and Events:**
-    - **Marathon Programs:** Participate in virtual and on-site marathons.
-        - **Virtual Marathons:** Complete challenges from anywhere.
-        - **On-Site Marathons:** Join physical events organized by Radiant Pharmaceutical.
-    - **Blogs:** Read articles and updates from the admin panel.
-- **User Interface:**
-    - **Customizable Theme:** A clean and modern UI with a custom color scheme and fonts.
-    - **Animations & Visualizations:** Engaging animations and charts to visualize progress.
-    - **Notifications:** Local notifications to keep users engaged and informed.
-- **Technical Features:**
-    - **State Management:** Utilizes Flutter Bloc for robust state management.
-    - **Local Storage:** Uses Hive and flutter_secure_storage for efficient and secure local data persistence.
-    - **API Integration:** Communicates with a backend server for data synchronization.
+## 📖 Documentation Links
 
-## Getting Started
+For a deeper dive into the project, please refer to the following guides:
 
-This project is a starting point for a Flutter application.
+- [**Architecture Guide**](ARCHITECTURE.md) - Details on state management, background services, and project structure.
+- [**API Integration Guide**](API_GUIDE.md) - Information on backend communication, authentication, and JWT handling.
 
-A few resources to get you started if this is your first Flutter project:
+---
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## 🚀 Key Features
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- **Activity Tracking:** Running, Walking, and Cycling with GPS and Step integration.
+- **Background Persistence:** Foreground services allow tracking to continue when the app is minimized.
+- **Health Sync:** Integration with Apple Health and Google Health Connect.
+- **Community:** Marathon programs (Virtual and On-Site) and health blogs.
+- **Workout Planning:** Customizable workout plans and history tracking.
 
-## Project Structure
+## 🛠 Tech Stack
 
-The project is organized into the following main directories:
+- **Framework:** Flutter
+- **State Management:** Bloc (Auth) & GetX (Features)
+- **Navigation:** GoRouter
+- **Persistence:** Hive & SharedPreferences
+- **Networking:** Dio
+- **Tracking:** flutter_foreground_task, geolocator, pedometer
 
-- `lib/`: The core of the application, containing all the Dart code.
-    - `src/`: Source code, divided into:
-        - `apis/`: API service integrations.
-        - `common_functions/`: Shared utility functions.
-        - `core/`: Core functionalities like health integration.
-        - `data/`: Data models and local database management.
-        - `resources/`: App-wide resources.
-        - `screens/`: UI screens for different features.
-        - `theme/`: App theme and styling.
-        - `widgets/`: Reusable UI components.
-    - `app.dart`: The main application widget.
-    - `main.dart`: The entry point of the application.
-- `assets/`: Static assets like images, fonts, and animations.
-- `android/`: Android-specific project files.
-- `ios/`: iOS-specific project files.
-- `pubspec.yaml`: The project's dependency and configuration file.
+## ⚙️ Getting Started
 
-## Dependencies
+### Prerequisites
 
-The project uses a variety of Flutter packages, including:
+- Flutter SDK (v3.8.0 or higher recommended)
+- Android Studio / Xcode for mobile development
+- A physical device is recommended for testing GPS and Pedometer features.
 
-- `flutter_bloc` for state management.
-- `get` for navigation and dependency injection.
-- `google_maps_flutter` for map integration.
-- `health` for HealthKit and Google Fit integration.
-- `pedometer` for step counting.
-- `hive_flutter` and `flutter_secure_storage` for local data storage.
-- And many more for UI, animations, and other functionalities.
-
-## How to Run
+### Installation
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/your-username/x_obese.git
+   git clone <repository-url>
    ```
 2. **Install dependencies:**
    ```bash
    flutter pub get
    ```
-3. **Run the app:**
+3. **Generate Serializers (if needed):**
+   ```bash
+   dart run build_runner build --delete-conflicting-outputs
+   ```
+4. **Run the app:**
    ```bash
    flutter run
    ```
+
+## 📂 Project Structure
+
+```text
+lib/
+├── src/
+│   ├── apis/               # API clients and interceptors
+│   ├── core/               # Routing, Health, Location services
+│   ├── data/               # Local persistence (Hive/SharedPrefs)
+│   ├── screens/            # UI Features (Auth, Home, Activity, etc.)
+│   ├── theme/              # Styles and Colors
+│   └── widgets/            # Reusable UI components
+├── app.dart                # Main App Widget
+└── main.dart               # Entry Point
+```
+
+## 🤝 Contribution and Handoff
+
+This project was developed by the primary developer who has now resigned. The documentation provided in the `ARCHITECTURE.md` and `API_GUIDE.md` files is intended to facilitate a smooth transition for the next developer.
